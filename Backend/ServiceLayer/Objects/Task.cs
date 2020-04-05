@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public readonly string Title;
         public readonly string Description;
         public readonly DateTime DueDate;
+        public readonly DateTime LastChangedDate;
         internal Task(int id, DateTime creationTime, string title, string description, DateTime dueDate)
         {
             this.Id = id;
@@ -20,6 +21,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Title = title;
             this.Description = description;
             this.DueDate = dueDate;
+            this.LastChangedDate = creationTime;
         }
         // You can add code here
     }
