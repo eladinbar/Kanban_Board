@@ -69,6 +69,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLayer\BoardPackage\Board.cs" />
+    <Compile Include="BusinessLayer\BoardPackage\BoardController.cs" />
+    <Compile Include="BusinessLayer\BoardPackage\Column.cs" />
+    <Compile Include="BusinessLayer\BoardPackage\Task.cs" />
+    <Compile Include="BusinessLayer\PresistedObject.cs" />
+    <Compile Include="BusinessLayer\UserPackage\User.cs" />
+    <Compile Include="BusinessLayer\UserPackage\UserController.cs" />
+    <Compile Include="DataAccessLayer\Board.cs" />
+    <Compile Include="DataAccessLayer\Column.cs" />
+    <Compile Include="DataAccessLayer\DalController.cs" />
+    <Compile Include="DataAccessLayer\DalObject.cs" />
+    <Compile Include="DataAccessLayer\Task.cs" />
+    <Compile Include="DataAccessLayer\User.cs" />
+    <Compile Include="ServiceLayer\BoardService.cs" />
     <Compile Include="ServiceLayer\Response.cs" />
     <Compile Include="ServiceLayer\ResponseT.cs" />
     <Compile Include="ServiceLayer\IService.cs" />
@@ -78,6 +92,7 @@
     <Compile Include="ServiceLayer\Objects\Task.cs" />
     <Compile Include="ServiceLayer\Objects\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLayer\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -85,9 +100,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BusinessLayer\" />
-    <Folder Include="DataAccessLayer\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
