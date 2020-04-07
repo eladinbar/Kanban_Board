@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
-    internal class User : PresistedObject<DataAccessLayer.User>
+    internal class User : PersistedObject<DataAccessLayer.User>
     {
     }
 }
