@@ -9,5 +9,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     interface PersistedObject<T> where T : DalObject<T>
     {
+         //
+        protected T ToDalObject();
+
+        //
+        protected void save();
     }
 }
