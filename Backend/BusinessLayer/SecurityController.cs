@@ -21,24 +21,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public UserPackage.UserController UserController 
         {
-            get { return UserControl; }
+            get { return this.UserControl; }
         }
 
         public BoardPackage.BoardController BoardController
         {
-            get { return BoardControl; }
+            get { return this.BoardControl; }
         }
 
         public UserPackage.User CurrentUser
         {
-            get { return CurrentUse; }
-            set { CurrentUse = value; }
+            get { return this.CurrentUse; }
+            set { this.CurrentUse = value; }
 
         }
 
         public bool UserValidation (string email)
         {
-            return false; // change to: return CurrentUse.Email().Equals(email); after class User is created in BL.
+            throw new NotImplementedException("this method still isn't implemented"); //return CurrentUse.Email().Equals(email); (after class User is created in BL).
         }
     }
 }
