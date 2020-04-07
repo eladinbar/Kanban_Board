@@ -22,6 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         {
             if (!Users.ContainsKey(email)) {
                User newUser = new User(email, password, nickname);
+               Users.Add(email, newUser);
             }
             else
                throw new ArgumentException("A user with this E-mail address already exists, please re-evaluate your information and try again.");
