@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    internal class Board : PresistedObject<DataAccessLayer.Board>
+    public class Board : PresistedObject<DataAccessLayer.Board>
     {
     }
 }
