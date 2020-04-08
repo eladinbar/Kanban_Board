@@ -10,9 +10,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private BusinessLayer.SecurityController SecurityControl;
 
-        public BoardService()
+        public BoardService(BusinessLayer.SecurityController sc)
         {
-            this.SecurityControl = new BusinessLayer.SecurityController();
+            this.SecurityControl = sc;
         }
 
         public BusinessLayer.SecurityController SecurityController
@@ -37,6 +37,36 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response AdvanceTask(string email, int columnOrdinal, int taskId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response<Column> GetColumn(string email, string columnName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response<Column> GetColumn(string email, int columnOrdinal)
         {
             throw new NotImplementedException();
         }

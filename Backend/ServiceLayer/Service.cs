@@ -13,22 +13,39 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
+        private BusinessLayer.SecurityController sc;
 
         /// <summary>
         /// Simple public constructor.
         /// </summary>
         public Service()
         {
-            throw new NotImplementedException();
+            this.sc = null;
         }
                
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
-        public Response LoadData()
+        public Response LoadData() //not finished__________________________________________________________________________________________
         {
-            throw new NotImplementedException();
+            // add method of checking existance of SecurityController appearance in the memory.
+            if (this.sc == null) // do we need LoadData to check if there is some current appearance of the programm.
+            {
+                try
+                {
+                    this.sc = new BusinessLayer.SecurityController();
+                    BoardService bs = new BoardService(sc);
+                    UserService us = new UserService(sc);
+                }
+                catch (Exception ex)
+                {
+                    //add Log(ex) for logging
+                    Response resp = new Response(ex.Message);
+                    return resp;
+                }
+            }
+            return new Response();
         }
 
 
