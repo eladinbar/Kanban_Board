@@ -31,6 +31,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public void Login (string email, string password) {
             if (!Users.ContainsKey(email))
                 throw new ArgumentException("The E-mail given does not exist in the database, please register and try again.");
+            else if (!Users[email].password.Equals(password))
+                throw new ArgumentException("Incorrect password. Please try again.");
             else
                 Users[email].Login();
         }
@@ -40,9 +42,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
 
         public void ChangePassword (string email, string oldPassword, string newPassword) {
-            if (Users[email].password == oldPassword)
+            if (Users[email].password.Equals(oldPassword))
                 ValidatePassword(newPassword);
-                Users[email].ChangePassword(newPassword);
+            Users[email].ChangePassword(newPassword);
         }
 
         private void ValidatePassword (string password) {
