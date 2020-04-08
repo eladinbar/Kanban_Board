@@ -43,8 +43,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         public void ChangePassword (string email, string oldPassword, string newPassword) {
             if (Users[email].password.Equals(oldPassword))
+            {
                 ValidatePassword(newPassword);
-            Users[email].ChangePassword(newPassword);
+                Users[email].ChangePassword(newPassword);
+            }
+            else
+                throw new ArgumentException("Old password does not match the current password. Please try again.");
         }
 
         private void ValidatePassword (string password) {
