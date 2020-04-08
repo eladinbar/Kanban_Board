@@ -8,5 +8,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class DalController
     {
+        public Dictionary<string, BusinessLayer.UserPackage.User> LoadAllUsers() {
+            throw new NotImplementedException();
+        }
+
     }
 }
