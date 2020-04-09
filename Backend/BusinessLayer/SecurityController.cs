@@ -32,13 +32,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public UserPackage.User CurrentUser
         {
             get { return this.CurrentUse; }
-            set { this.CurrentUse = value; }
 
         }
 
-        public bool UserValidation (string email)
+        //public void Login ()
+
+        public bool UserValidation(string email)
         {
-            throw new NotImplementedException("this method still isn't implemented"); //return CurrentUse.Email().Equals(email); (after class User is created in BL).
+            if (CurrentUse == null) return false;
+            return CurrentUse.email.Equals(email);
         }
     }
 }
