@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public UserPackage.User CurrentUser
         {
             get { return this.CurrentUse; }
-
+            set { this.CurrentUse = value; }
         }
 
         //public void Login ()
