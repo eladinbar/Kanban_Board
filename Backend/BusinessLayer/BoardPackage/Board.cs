@@ -8,5 +8,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class Board : PresistedObject<DataAccessLayer.Board>
     {
+        private List<Column> _columns;
+        private string _userEmail;
+
+        public Board(string email)
+        {
+
+        }
+
+        public Column GetColumn(string columnName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Column GetColumn(int columnOrdinal)
+        {
+            throw new NotImplementedException();
+        }
     }
+
 }

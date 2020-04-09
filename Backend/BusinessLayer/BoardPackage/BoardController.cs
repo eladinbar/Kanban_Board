@@ -8,18 +8,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class BoardController
     {
-        private Dictionary<String, Board> Boards;
-        int TaskCounter;
+        private Dictionary<String, Board> _boards;
+        int _TaskCounter;
 
         public BoardController()
         {
-            this.Boards = null;
-            this.TaskCounter = 0;
+            this._boards = null;
+            this._TaskCounter = 0;
         }
 
         public Board GetBoard(string email)
         {
-            throw new NotImplementedException();
+            Board newBoard;
+            if (_boards.TryGetValue(email, out newBoard))
+                return newBoard;
+            else
+                throw new ArgumentException("board not exist with this email");
         }
 
         public Column GetColumn(string email, string columnName)
