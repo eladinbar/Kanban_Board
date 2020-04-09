@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             get { return this.BoardControl; }
         }
-
+        
         public UserPackage.User CurrentUser
         {
             get { return this.CurrentUse; }
