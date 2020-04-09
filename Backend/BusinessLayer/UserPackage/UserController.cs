@@ -10,16 +10,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
     class UserController
     {
-        Dictionary<string, User> Users;
+        private Dictionary<string, User> Users;
 
-        public UserController()
-        {
+        public UserController() {
             DalController dalC = new DalController();
             this.Users = dalC.LoadAllUsers();
         }
 
-        public void Register(string email, string password, string nickname)
+        internal Dictionary<string, User> users
         {
+            get { return Users; }
+        }
+
+        public void Register(string email, string password, string nickname) {
             if (!Users.ContainsKey(email)) {
                User newUser = new User(email, password, nickname);
                Users.Add(email, newUser);
@@ -42,8 +45,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
 
         public void ChangePassword (string email, string oldPassword, string newPassword) {
-            if (Users[email].password.Equals(oldPassword))
-            {
+            if (Users[email].password.Equals(oldPassword)) {
                 ValidatePassword(newPassword);
                 Users[email].ChangePassword(newPassword);
             }
