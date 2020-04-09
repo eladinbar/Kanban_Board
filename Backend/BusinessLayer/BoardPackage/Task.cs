@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    public class Task : PresistedObject<DataAccessLayer.Task>
+    public class Task : PersistedObject<DataAccessLayer.Task>
     {
         private int _id;
         private string _title;
