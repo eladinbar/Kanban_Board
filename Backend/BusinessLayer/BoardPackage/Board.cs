@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    public class Board : PresistedObject<DataAccessLayer.Board>
+    public class Board : PersistedObject<DataAccessLayer.Board>
     {
         private List<Column> _columns;
         private string _userEmail;

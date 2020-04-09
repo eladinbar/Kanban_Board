@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
-    interface PresistedObject<T> where T : DalObject<T>
+    interface PersistedObject<T> where T : DalObject<T>
     {
     }
 }

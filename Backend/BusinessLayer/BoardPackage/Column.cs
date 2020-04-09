@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    public class Column : PresistedObject<DataAccessLayer.Column>
+    public class Column : PersistedObject<DataAccessLayer.Column>
     {
         private string _name;
         private int _limit;
