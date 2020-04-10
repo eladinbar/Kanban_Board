@@ -66,5 +66,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             throw new NotImplementedException();
         }
 
+        private Dictionary<string, Board> Boards { get; set; }
+        private int TaskCounter { get; set; }
+
     }
 }
