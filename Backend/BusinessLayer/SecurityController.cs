@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             UserControl = new UserPackage.UserController();
             BoardControl = new BoardPackage.BoardController();
-            CurrentUser = null;
+            this.CurrentUse = null;
         }
 
         public UserPackage.UserController UserController 
@@ -28,18 +28,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             get { return this.BoardControl; }
         }
-        
-        public UserPackage.User CurrentUser
-        {
-            get { return this.CurrentUse; }
-            set { this.CurrentUse = value; }
-        }
 
-        //public void Login () - receives CurrentUser from UserController whilst Login() method is callled in ServiceLayer
-        public UserPackage.User Login(string email, string password)
+        public UserPackage.User Login(string email, string password) //done++++++++++++++++++++++++++++++++++++++
         {
             if (CurrentUse != null) throw new AccessViolationException("There is already LoggedIn User. LogOut to switch for another User.");
-            this.CurrentUse = UserControl.Login(email, password); //should receive User from UserController.Login();
+            this.CurrentUse = UserControl.Login(email, password);
             return CurrentUse;
         }
 
