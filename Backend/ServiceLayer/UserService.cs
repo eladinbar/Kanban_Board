@@ -44,11 +44,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception ex)
             {
-                User tempStructExceptionUser = new User();
-                Response<User> resp = new Response<User>(tempStructExceptionUser, ex.Message);
+                Response<User> resp = new Response<User>(ex.Message);
                 return resp;
             }
-            //finally release!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
 
         public Response Logout(string email) //done+++++++++++++++++++++
