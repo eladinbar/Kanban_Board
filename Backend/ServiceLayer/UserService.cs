@@ -20,7 +20,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             get { return this.SecurityControl; }
         }
 
-        public Response Register(string email, string password, string nickname)
+        public Response Register(string email, string password, string nickname) //done++++++++++++++++++++++
         {
             try
             {
@@ -34,31 +34,40 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return new Response();                    
         }
 
-        public Response<User> Login (string email, string password)
+        public Response<User> Login (string email, string password) //done+++++++++++++++++++++++++++++++++++++++
         {
             try
             {
-                SecurityControl.UserController.Login(email, password);
+                BusinessLayer.UserPackage.User tempUser = SecurityControl.Login(email, password);
+                User tempStructUser = new User(tempUser.email,tempUser.nickname);
+                return new Response<User>(tempStructUser);        
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                User tempUser = new User();
-                Response<User> resp = new Response<User>(tempUser);
+                User tempStructExceptionUser = new User();
+                Response<User> resp = new Response<User>(tempStructExceptionUser, ex.Message);
                 return resp;
             }
-            SecurityControl.CurrentUser = 
-            User legalUser = new User(email, )
 
         }
 
-        public Response Logout(string email)
+        public Response Logout(string email) //done+++++++++++++++++++++
         {
-            throw new NotImplementedException();
+            SecurityControl.UserController.Logout(email);
+            return new Response("User "+email+" logged out.");
         }
 
-        public Response ChangePassword (string email, string oldPassword, string newPassword)
+        public Response ChangePassword (string email, string oldPassword, string newPassword) //done++++++++++++++++++++++++++
         {
-            throw new NotImplementedException();
+            try
+            {
+                this.SecurityControl.UserController.ChangePassword(email, oldPassword, newPassword);
+                return new Response("Password successfully changed.");
+            }
+            catch (Exception ex)
+            {
+                return new Response(ex.Message);
+            }
         }
     }
 }

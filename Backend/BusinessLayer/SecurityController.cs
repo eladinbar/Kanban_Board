@@ -35,9 +35,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set { this.CurrentUse = value; }
         }
 
-        //public void Login ()
+        //public void Login () - receives CurrentUser from UserController whilst Login() method is callled in ServiceLayer
+        public UserPackage.User Login(string email, string password)
+        {
+            if (CurrentUse != null) throw new AccessViolationException("There is already LoggedIn User. LogOut to switch for another User.");
+            this.CurrentUse = UserControl.Login(email, password); //should receive User from UserController.Login();
+            return CurrentUse;
+        }
 
-        public bool UserValidation(string email)
+        public bool UserValidation(string email) //done++++++++++++++++++++++++++++++++++++++
         {
             if (CurrentUse == null) return false;
             return CurrentUse.email.Equals(email);

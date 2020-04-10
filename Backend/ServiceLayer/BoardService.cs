@@ -25,7 +25,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (this.SecurityControl.UserValidation(email))
             {
                 BusinessLayer.BoardPackage.BoardController boardController = this.SecurityControl.BoardController;
-                
+                Board tempBoard = new Board(boardController.GetBoard(email).);
+                Response<Board> resp = new Response<Board>();
             }
             throw new NotImplementedException(); //waiting for BoardController columns dictionary
             
