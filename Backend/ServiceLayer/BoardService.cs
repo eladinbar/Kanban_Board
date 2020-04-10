@@ -15,61 +15,139 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.SecurityControl = sc;
         }
 
-        public BusinessLayer.SecurityController SecurityController
+
+        public Response<Board> GetBoard(string email) //done+++++++++++++++++++++++++++++++++++++++++++
         {
-            get { return this.SecurityControl; }
+            if (!this.SecurityControl.UserValidation(email)) return new Response<Board>("Invailid current user.");
+            List<string> tempColumnNames = this.SecurityControl.BoardController.GetBoard(email).getColumnNames();
+            Board tempStructBoard = new Board(tempColumnNames);
+            return new Response<Board>(tempStructBoard);
         }
 
-        public Response<Board> GetBoard(string email)
+        public Response LimitColumnTasks(string email, int columnOrdinal, int limit) //done+++++++++++++++++++++++++++++++++++++++++++
         {
-            if (this.SecurityControl.UserValidation(email))
+            if (!this.SecurityControl.UserValidation(email)) return new Response("Invalid current user.");
+            try
             {
-                BusinessLayer.BoardPackage.BoardController boardController = this.SecurityControl.BoardController;
-                Board tempBoard = new Board(boardController.GetBoard(email).);
-                Response<Board> resp = new Response<Board>();
+                this.SecurityControl.BoardController.LimitColumnTask(email, columnOrdinal, limit);
+                return new Response("Column limit has been updated successfully.");
             }
-            throw new NotImplementedException(); //waiting for BoardController columns dictionary
-            
+            catch (Exception ex)
+            {
+                return new Response(ex.Message);
+            }
+
         }
 
-        public Response LimitColumnTasks (string email, int columnOrdinal, int limit)
+        public Response<Task> AddTask(string email, string title, string description, DateTime dueDate) //in progress: verify BL.Task has getter of its CreationDate
         {
-            throw new NotImplementedException(); 
+            if (!this.SecurityControl.UserValidation(email)) return new Response<Task>("Invalid current user.");
+            try
+            {
+                BusinessLayer.BoardPackage.Task tempTask = this.SecurityControl.BoardController.AddTask(email, title, description, dueDate);
+                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationDate(), title, description, dueDate);
+                return new Response<Task>(tempStructTask, "Task has been added successfully.");
+            }
+            catch (Exception ex)
+            {
+                return new Response<Task>(ex.Message);
+            }
         }
 
-        public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
+        public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate) //done++++++++++++++++++++++++++++++++++++++
         {
-            throw new NotImplementedException();
+            if (!this.SecurityControl.UserValidation(email)) return new Response("Invalid current user.");
+            try
+            {
+                this.SecurityControl.BoardController.UpdateDueDate(email, columnOrdinal, taskId, newDueDate);
+                return new Response("Task due date has benn updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return new Response(ex.Message);
+            }
         }
 
-        public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
+        public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle) //done++++++++++++++++++++++++++++++++++++++
         {
-            throw new NotImplementedException();
+            if (!this.SecurityControl.UserValidation(email)) return new Response("Invalid current user.");
+            try
+            {
+                this.SecurityControl.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle);
+                return new Response("Task title has been updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return new Response(ex.Message);
+            }
         }
 
-        public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
+        public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription) //done+++++++++++++++++++++++++++++
         {
-            throw new NotImplementedException();
+            if (!this.SecurityControl.UserValidation(email)) return new Response("Invalid current user.");
+            try
+            {
+                this.SecurityControl.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
+                return new Response("Task description has been updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return new Response(ex.Message);
+            }
         }
 
-        public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
+        public Response AdvanceTask(string email, int columnOrdinal, int taskId) //done+++++++++++++++++++++++++++++
         {
-            throw new NotImplementedException();
+            if (!this.SecurityControl.UserValidation(email)) return new Response("Invalid current user.");
+            try
+            {
+                this.SecurityControl.BoardController.AdvanceTask(email, columnOrdinal, taskId);
+                return new Response("Task has been advanced successfully");
+            }
+            catch (Exception ex)
+            {
+                return new Response(ex.Message);
+            }
         }
 
-        public Response AdvanceTask(string email, int columnOrdinal, int taskId)
+        public Response<Column> GetColumn(string email, string columnName) //in progress--------------------------------------
         {
-            throw new NotImplementedException();
+            if (!this.SecurityControl.UserValidation(email)) return new Response<Column>("Invalid current user.");
+            try
+            {
+               BusinessLayer.BoardPackage.Column tempColumn = this.SecurityControl.BoardController.GetColumn(email, columnName);                
+               List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.GetTasks;
+               List<Task> structTaskList = new List<Task>();
+                foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
+                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.Title, tempTask.Description, tempTask.DueDate));
+                IReadOnlyCollection<Task> tempReadOnlyTaskList = structTaskList;            
+                Column tempStructColumn = new Column(tempReadOnlyTaskList, tempColumn.Name, tempColumn.Limit);
+                return new Response<Column>(tempStructColumn);
+            }
+            catch (Exception ex)
+            {
+                return new Response<Column>(ex.Message);
+            }
         }
 
-        public Response<Column> GetColumn(string email, string columnName)
+        public Response<Column> GetColumn(string email, int columnOrdinal) ////in progress--------------------------------------
         {
-            throw new NotImplementedException();
-        }
-
-        public Response<Column> GetColumn(string email, int columnOrdinal)
-        {
-            throw new NotImplementedException();
+            if (!this.SecurityControl.UserValidation(email)) return new Response<Column>("Invalid current user.");
+            try
+            {
+                BusinessLayer.BoardPackage.Column tempColumn = this.SecurityControl.BoardController.GetColumn(email, columnOrdinal);
+                List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.GetTasks;
+                List<Task> structTaskList = new List<Task>();
+                foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
+                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.Title, tempTask.Description, tempTask.DueDate));
+                IReadOnlyCollection<Task> tempReadOnlyTaskList = structTaskList;
+                Column tempStructColumn = new Column(tempReadOnlyTaskList, tempColumn.Name, tempColumn.Limit);
+                return new Response<Column>(tempStructColumn);
+            }
+            catch (Exception ex)
+            {
+                return new Response<Column>(ex.Message);
+            }
         }
     }
 }
