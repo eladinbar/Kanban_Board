@@ -9,61 +9,90 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     public class BoardController
     {
         private Dictionary<String, Board> _boards;
-        int _TaskCounter;
+        private int _taskCounter;
 
         public BoardController()
         {
-            this._boards = null;
-            this._TaskCounter = 0;
+            _boards = null;
+            _taskCounter = 1;
+        }
+
+        public void LoadData()
+        {
+
         }
 
         public Board GetBoard(string email)
         {
-            Board newBoard;
-            if (_boards.TryGetValue(email, out newBoard))
-                return newBoard;
+            Board tempBoard;
+            if (_boards.TryGetValue(email, out tempBoard))
+                return tempBoard;
             else
                 throw new ArgumentException("board not exist with this email");
         }
 
         public Column GetColumn(string email, string columnName)
         {
-            throw new NotImplementedException();
+            Board newBoard = GetBoard(email);
+            return newBoard.GetColumn(columnName);
         }
 
         public Column GetColumn(string email, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            Board b = GetBoard(email);
+            return b.GetColumn(columnOrdinal);
         }
 
         public void LimitColumnTask(string email, int columnOrdinal, int limit)
         {
-            throw new NotImplementedException();
+            Board b = GetBoard(email);
+            Column c = b.GetColumn(columnOrdinal);
+            if (limit > 0)
+                c.LimitColumnTasks(limit);
+            else
+                throw new ArgumentException("limit must be a ntural non zero number");
         }
 
-        public void AdvanceTask(string email, int columnOrdinal,int TaskId)
+        public void AdvanceTask(string email, int columnOrdinal,int taskId)
         {
-            throw new NotImplementedException();
+            Board b = GetBoard(email);
+            if (b.GetColumn(columnOrdinal).Name.Equals("Done"))
+                throw new ArgumentOutOfRangeException("cannot advance task at Done Column");
+            else
+            {
+                Column c = b.GetColumn(columnOrdinal);
+                if (c.GetTasks.Exists(x => x.Id == taskId))
+                {
+                    Task toAdvance = c.RemoveTask(taskId);
+                    c.InsertTask(toAdvance);
+                }
+                else
+                    throw new ArgumentException("Task #" + taskId + " is not in " + c.Name);
+            }
         }
 
         public Task AddTask(string email, string title, string description, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            Task newTask = new Task(title, description, dueDate, TaskCounter);
+            TaskCounter++;
+            Column c = GetColumn(email, 0);
+            c.InsertTask(newTask);
+            return newTask;            
         }
 
-        public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, int newTitle)
+        public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
         {
-            throw new NotImplementedException();
+            GetColumn(email, columnOrdinal).GetTask(taskId).UpdateTaskTitle(newTitle);
         }
 
-        public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, int newDescription)
+        public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription)
         {
-            throw new NotImplementedException();
+            GetColumn(email, columnOrdinal).GetTask(taskId).UpdateTaskDescription(newDescription);
         }
 
         public void UpdateDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
         {
-            throw new NotImplementedException();
+            GetColumn(email, columnOrdinal).GetTask(taskId).UpdateDuedate(newDueDate);
         }
 
         private Dictionary<string, Board> Boards { get; set; }

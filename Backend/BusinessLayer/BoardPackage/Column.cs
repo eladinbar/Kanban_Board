@@ -12,9 +12,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int _limit;
         private List<Task> Tasks;
 
-        public Column (string name)
+        public Column(string name)
         {
-            
+
         }
 
         public void LimitColumnTasks(int limit)
@@ -26,10 +26,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             throw new NotImplementedException();
         }
-         public Task RemoveTask(int id)
+        public Task RemoveTask(int id)
         {
             throw new NotImplementedException();
         }
+
+        public Task GetTask(int taskId)
+        {
+            if (GetTasks.Exists(x => x.Id == taskId))
+                return GetTasks.Find(x => x.Id == taskId);
+            else
+                return null;
+        }
+
+        public List<Task> GetTasks { get; }
+
+        public string Name { get;}
 
 
 
