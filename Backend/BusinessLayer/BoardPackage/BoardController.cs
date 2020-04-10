@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void AdvanceTask(string email, int columnOrdinal,int taskId)
         {
             Board b = GetBoard(email);
-            if (columnOrdinal > 1)
+            if (b.GetColumn(columnOrdinal).Name.Equals("Done"))
                 throw new ArgumentOutOfRangeException("cannot advance task at Done Column");
             else
             {
