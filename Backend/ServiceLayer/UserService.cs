@@ -25,13 +25,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityControl.UserController.Register(email, password, nickname);
+                return new Response("User has been registered successfully.");
             }
             catch (Exception ex)
             {
                 Response resp = new Response(ex.Message);
                 return resp;
             }
-            return new Response();                    
         }
 
         public Response<User> Login (string email, string password) //done+++++++++++++++++++++++++++++++++++++++

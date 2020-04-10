@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -117,11 +118,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                BusinessLayer.BoardPackage.Column tempColumn = this.SecurityControl.BoardController.GetColumn(email, columnName);                
                List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.GetTasks;
+
                List<Task> structTaskList = new List<Task>();
+
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
                     structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.Title, tempTask.Description, tempTask.DueDate));
-                IReadOnlyCollection<Task> tempReadOnlyTaskList = structTaskList;            
-                Column tempStructColumn = new Column(tempReadOnlyTaskList, tempColumn.Name, tempColumn.Limit);
+
+                IReadOnlyCollection<Task> tempReadOnlyStructTaskList = new ReadOnlyCollection<Task>(structTaskList);
+
+                Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
+
                 return new Response<Column>(tempStructColumn);
             }
             catch (Exception ex)
@@ -137,11 +143,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 BusinessLayer.BoardPackage.Column tempColumn = this.SecurityControl.BoardController.GetColumn(email, columnOrdinal);
                 List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.GetTasks;
+
                 List<Task> structTaskList = new List<Task>();
+
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
                     structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.Title, tempTask.Description, tempTask.DueDate));
-                IReadOnlyCollection<Task> tempReadOnlyTaskList = structTaskList;
-                Column tempStructColumn = new Column(tempReadOnlyTaskList, tempColumn.Name, tempColumn.Limit);
+
+                IReadOnlyCollection<Task> tempReadOnlyStructTaskList = new ReadOnlyCollection<Task>(structTaskList);
+
+                Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
                 return new Response<Column>(tempStructColumn);
             }
             catch (Exception ex)
