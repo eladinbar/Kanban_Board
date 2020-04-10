@@ -25,6 +25,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             throw new NotImplementedException();
         }
+
+        public List<string> getColumnNames()
+        {
+            List<string> columnNames = new List<string>();
+            foreach(Column c in _columns)
+            {
+                columnNames.Add(c.Name);
+            }
+            return columnNames;
+        }
     }
 
 }
