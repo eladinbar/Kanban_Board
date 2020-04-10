@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,19 +10,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     public class BoardController
     {
         private Dictionary<String, Board> _boards;
-        private int _taskCounter;
+        
 
         public BoardController()
         {
-            _boards = null;
-            _taskCounter = 1;
+            DalController dalC = new DalController();
+            _boards = dalC.LoadAllboards();            
         }
-
-        public void LoadData()
-        {
-
-        }
-
+              
         public Board GetBoard(string email)
         {
             Board tempBoard;
@@ -48,7 +44,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Board b = GetBoard(email);
             Column c = b.GetColumn(columnOrdinal);
             if (limit > 0)
+            {
                 c.LimitColumnTasks(limit);
+                c.Save();
+            }
+
             else
                 throw new ArgumentException("limit must be a ntural non zero number");
         }
@@ -61,22 +61,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
             {
                 Column c = b.GetColumn(columnOrdinal);
-                if (c.GetTasks.Exists(x => x.Id == taskId))
-                {
-                    Task toAdvance = c.RemoveTask(taskId);
-                    c.InsertTask(toAdvance);
-                }
-                else
-                    throw new ArgumentException("Task #" + taskId + " is not in " + c.Name);
+                Task toAdvance = c.RemoveTask(taskId);
+                Column targetColumn = b.GetColumn(columnOrdinal + 1); 
+                c.InsertTask(toAdvance);
+                c.Save();
             }
         }
 
         public Task AddTask(string email, string title, string description, DateTime dueDate)
         {
-            Task newTask = new Task(title, description, dueDate, TaskCounter);
-            TaskCounter++;
-            Column c = GetColumn(email, 0);
+            Column c = GetColumn(email, "Backlog");
+            if (!c.CheckLimit())
+                throw new Exception("backlog column is full");
+
+            int taskCounter = GetBoard(email).TaskCounter;
+            Task newTask = new Task(title, description, dueDate, taskCounter);
+            taskCounter++;
+            
             c.InsertTask(newTask);
+            c.Save();
             return newTask;            
         }
 
@@ -90,13 +93,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             GetColumn(email, columnOrdinal).GetTask(taskId).UpdateTaskDescription(newDescription);
         }
 
-        public void UpdateDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
+        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
         {
-            GetColumn(email, columnOrdinal).GetTask(taskId).UpdateDuedate(newDueDate);
+            GetColumn(email, columnOrdinal).GetTask(taskId).UpdateTaskDuedate(newDueDate);
         }
 
-        private Dictionary<string, Board> Boards { get; set; }
-        private int TaskCounter { get; set; }
+      
+       
 
        
 

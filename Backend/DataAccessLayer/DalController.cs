@@ -12,5 +12,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             throw new NotImplementedException();
         }
 
+        public Dictionary<string, BusinessLayer.BoardPackage.Board> LoadAllboards()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
