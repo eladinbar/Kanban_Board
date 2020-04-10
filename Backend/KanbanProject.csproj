@@ -74,6 +74,7 @@
     <Compile Include="BusinessLayer\BoardPackage\Column.cs" />
     <Compile Include="BusinessLayer\BoardPackage\Task.cs" />
     <Compile Include="BusinessLayer\PersistedObject.cs" />
+    <Compile Include="BusinessLayer\SecurityController.cs" />
     <Compile Include="BusinessLayer\UserPackage\User.cs" />
     <Compile Include="BusinessLayer\UserPackage\UserController.cs" />
     <Compile Include="DataAccessLayer\Board.cs" />
