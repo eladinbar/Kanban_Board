@@ -8,8 +8,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public abstract class DalObject<T> where T:DalObject<T>
     {
-        public T FromJson() {
-            throw new NotImplementedException();
-        }
+        public abstract string ToJson();
+
+        public abstract T FromJson(string json);
+
+        public abstract void Save();
     }
 }

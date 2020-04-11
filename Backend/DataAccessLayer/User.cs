@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
@@ -12,6 +13,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private string Email;
         private string Password;
 
+        public User () { }
+
         public User(string email, string password, string nickname)
         {
             this.Email = email;
@@ -19,16 +22,32 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.Nickname = nickname;
         }
 
-        public void Save() {
-            throw new NotImplementedException();
+        public string email {
+            get { return Email; }
         }
 
-        public string ToJson() {
-            throw new NotImplementedException();
+        public string password {
+            get { return Password; }
         }
 
-        public User FromJson() {
-            throw new NotImplementedException();
+        public string nickname {
+            get { return Nickname; }
+        }
+
+        public override string ToJson() {
+            return JsonSerializer.Serialize(this); //Returns the DAL User instance in Json (string) form
+        }
+
+        public override User FromJson(string json) {
+            DalController dc = new DalController();
+            User savedUser = JsonSerializer.Deserialize<User>(dc.ReadFromFile(json));
+            return savedUser; //Returns the user 
+        }
+
+        public override void Save()
+        {
+            DalController dc = new DalController();
+            dc.WriteToFile(Email, ToJson());
         }
     }
 }
