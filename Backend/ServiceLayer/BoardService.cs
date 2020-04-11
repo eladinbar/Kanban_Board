@@ -60,7 +60,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (!this.SecurityControl.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                this.SecurityControl.BoardController.UpdateDueDate(email, columnOrdinal, taskId, newDueDate);
+                this.SecurityControl.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
                 return new Response("Task due date has benn updated successfully.");
             }
             catch (Exception ex)

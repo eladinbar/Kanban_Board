@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
@@ -10,39 +11,83 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private string _name;
         private int _limit;
-        private List<Task> Tasks;
+        private List<Task> _tasks;
 
         public Column(string name)
         {
+            _name = name;
+            _limit = Int32.MaxValue;
+            _tasks = new List<Task>();
+
+        }
+
+        public Column(string name, List<Task> tasks)
+        {
+            _name = name;
+            _limit = Int32.MaxValue;
+            _tasks = tasks;
 
         }
 
         public void LimitColumnTasks(int limit)
         {
-            throw new NotImplementedException();
+            if (limit >= 0)
+                _limit = limit;
+            else
+                throw new ArgumentOutOfRangeException("Cannot use negative number to limit number of tasks");
         }
 
         public void InsertTask(Task t)
         {
-            throw new NotImplementedException();
+            if (!CheckLimit())
+                throw new ArgumentOutOfRangeException(Name + " column is full");
+            else
+                Tasks.Add(t);
         }
         public Task RemoveTask(int id)
         {
-            throw new NotImplementedException();
+            Task toRemove = Tasks.Find(x => x.Id.Equals(id));
+            if (Tasks.Remove(toRemove))
+                return toRemove;
+            else
+                throw new ArgumentException("Task #" + id + " is not in " + Name);
         }
-
+        
         public Task GetTask(int taskId)
         {
-            if (GetTasks.Exists(x => x.Id == taskId))
-                return GetTasks.Find(x => x.Id == taskId);
+            if (Tasks.Exists(x => x.Id == taskId))
+                return Tasks.Find(x => x.Id == taskId);
             else
                 return null;
         }
 
-        public List<Task> GetTasks { get; }
+        public DataAccessLayer.Column ToDalObject()
+        {
+            List<DataAccessLayer.Task> dalTasks = new List<DataAccessLayer.Task>();
+            foreach(Task t in Tasks)
+            {
+                dalTasks.Add(t.ToDalObject());
+            }
+            return new DataAccessLayer.Column(Name, Limit, dalTasks);
+        }
 
+        public void Save()
+        {
+            ToDalObject().Save();
+        }
+
+        public bool CheckLimit()
+        {
+            if (Tasks.Count() < Limit)
+                return true;
+            else
+                return false;
+        }
+        
+        //getters
         public string Name { get;}
-
+        public int Limit { get; }
+        public List<Task> Tasks { get; }
 
 
     }
