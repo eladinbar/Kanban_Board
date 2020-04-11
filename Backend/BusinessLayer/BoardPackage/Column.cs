@@ -21,10 +21,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         }
 
-        public Column(string name, List<Task> tasks)
+        public Column(string name, List<Task> tasks, int limit)
         {
             _name = name;
-            _limit = Int32.MaxValue;
+            _limit = limit;
             _tasks = tasks;
 
         }
@@ -71,9 +71,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return new DataAccessLayer.Column(Name, Limit, dalTasks);
         }
 
-        public void Save()
+        public void Save(string path)
         {
-            ToDalObject().Save();
+            ToDalObject().Save(path);
         }
 
         public bool CheckLimit()
@@ -82,6 +82,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 return true;
             else
                 return false;
+        }
+
+        public void Delete(string path) {
+            ToDalObject().Delete(path);
         }
         
         //getters

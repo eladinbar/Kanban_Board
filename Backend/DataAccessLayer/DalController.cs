@@ -10,19 +10,23 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class DalController
     {
-        private readonly string BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
+        private readonly string _BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
 
-        public void WriteToFile (string fileName, string content) {
-            File.WriteAllText(BASE_PATH + fileName + ".json", content);//
+        public void WriteToFile (string fileName, string content, string path) {
+            File.WriteAllText(_BASE_PATH + path + fileName + ".json", content);
         }
 
         public string ReadFromFile (string fileName) {
-            return File.ReadAllText(BASE_PATH + fileName + ".json");//
+            return File.ReadAllText(_BASE_PATH + fileName + ".json");
+        }
+
+        public void RemoveFromFile (string path) {
+            File.Delete(BASE_PATH + path);
         }
 
         public List<User> LoadAllUsers() {
             List<User> users = new List<User>();
-            DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Users\\");
+            DirectoryInfo dir = new DirectoryInfo(_BASE_PATH + "Users\\");
             if (dir.Exists) { //If the directory and any user data exists, load all of it
                 foreach (FileInfo user in dir.GetFiles("*.json")) {
                     User savedUser = new User();
@@ -37,42 +41,38 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public List<Board> LoadAllBoards() {
             List<Board> boards = new List<Board>();
-            DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\");
+            DirectoryInfo dir = new DirectoryInfo(_BASE_PATH + "Boards\\");
             if (dir.Exists) {
                 foreach (FileInfo board in dir.GetFiles("*.json")) {
                     Board savedBoard = new Board();
                     savedBoard = savedBoard.FromJson(board.Name);
-                    LoadAllColumns(board.Name);
+                    savedBoard = new Board(savedBoard.UserEmail, savedBoard.TaskCounter, LoadAllColumns(board.Name));
                     boards.Add(savedBoard);
                 }
             }
-            else
-                dir.Create();
             return boards;
         }
 
         private List<Column> LoadAllColumns(string boardName)
         {
             List<Column> columns = new List<Column>();
-            DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName + "\\");
+            DirectoryInfo dir = new DirectoryInfo(_BASE_PATH + "Boards\\" + boardName + "\\");
             if (dir.Exists)
             {
                 foreach (FileInfo column in dir.GetFiles("*.json"))
                 {
                     Column savedColumn = new Column();
                     savedColumn = savedColumn.FromJson(column.Name);
-                    LoadAllTasks(boardName, column.Name);
+                    savedColumn = new Column(savedColumn.Name, savedColumn.Limit, LoadAllTasks(boardName, column.Name));
                     columns.Add(savedColumn);
                 }
             }
-            else
-                dir.Create();
             return columns;
         }
 
         private List<Task> LoadAllTasks (string boardName, string columnName) {
             List<Task> tasks = new List<Task>();
-            DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName + "\\" + columnName + "\\");
+            DirectoryInfo dir = new DirectoryInfo(_BASE_PATH + "Boards\\" + boardName + "\\" + columnName + "\\");
             if (dir.Exists)
             {
                 foreach (FileInfo task in dir.GetFiles("*.json"))
@@ -82,9 +82,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     tasks.Add(savedTask);
                 }
             }
-            else
-                dir.Create();
             return tasks;
         }
+
+        public string BASE_PATH { get; }
     }
 }

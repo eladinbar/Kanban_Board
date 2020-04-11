@@ -1,6 +1,7 @@
 ﻿using IntroSE.Kanban.Backend.DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private Dictionary<String, Board> _boards;
         
-
         public BoardController()
         {
             DalController dalC = new DalController();
-            _boards = dalC.LoadAllboards();            
+            _boards = new Dictionary<string, Board>();
+            List<DataAccessLayer.Board> DALboards = dalC.LoadAllBoards();
+            foreach (DataAccessLayer.Board DALboard in DALboards) {
+                List<Column> columns = new List<Column>();
+                foreach (DataAccessLayer.Column DALcolumn in DALboard.Columns) {
+                    List<Task> tasks = new List<Task>();
+                    foreach (DataAccessLayer.Task DALtask in DALcolumn.Tasks) {
+                        tasks.Add(new Task(DALtask.Title, DALtask.Description, DALtask.DueDate, DALtask.Id, DALtask.CreationTime, DALtask.LastChangedDate));
+                    }
+                    columns.Add(new Column(DALcolumn.Name, tasks, DALcolumn.Limit));
+                }
+                _boards.Add(DALboard.UserEmail, new Board(DALboard.UserEmail, DALboard.TaskCounter, columns));
+            }
         }
               
         public Board GetBoard(string email)
@@ -46,11 +58,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (limit > 0)
             {
                 c.LimitColumnTasks(limit);
-                c.Save();
+                c.Save("Boards\\" + email + "\\");
             }
 
             else
-                throw new ArgumentException("limit must be a ntural non zero number");
+                throw new ArgumentException("limit must be a natural non zero number");
         }
 
         public void AdvanceTask(string email, int columnOrdinal,int taskId)
@@ -63,8 +75,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column c = b.GetColumn(columnOrdinal);
                 Task toAdvance = c.RemoveTask(taskId);
                 Column targetColumn = b.GetColumn(columnOrdinal + 1); 
-                c.InsertTask(toAdvance);
-                c.Save();
+                targetColumn.InsertTask(toAdvance);
+                //c.Save("Boards\\" + email + "\\");
+                //targetColumn.Save("Boards\\" + email + "\\");
+                toAdvance.Save("Boards\\" + email + "\\" + targetColumn.Name + "\\");
+                File.Delete()
             }
         }
 
@@ -79,23 +94,30 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             taskCounter++;
             
             c.InsertTask(newTask);
-            c.Save();
+            //c.Save("Boards\\" + email + "\\");
+            newTask.Save("Boards\\" + email + "\\" + c.Name + "\\");
             return newTask;            
         }
 
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
         {
-            GetColumn(email, columnOrdinal).GetTask(taskId).UpdateTaskTitle(newTitle);
+            Task editedTask = GetColumn(email, columnOrdinal).GetTask(taskId);
+            editedTask.UpdateTaskTitle(newTitle);
+            editedTask.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
         }
 
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription)
         {
-            GetColumn(email, columnOrdinal).GetTask(taskId).UpdateTaskDescription(newDescription);
+            Task editedTask = GetColumn(email, columnOrdinal).GetTask(taskId);
+            editedTask.UpdateTaskDescription(newDescription);
+            editedTask.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
         }
 
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
         {
-            GetColumn(email, columnOrdinal).GetTask(taskId).UpdateTaskDuedate(newDueDate);
+            Task editedTask = GetColumn(email, columnOrdinal).GetTask(taskId);
+            editedTask.UpdateTaskDuedate(newDueDate);
+            editedTask.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
         }
 
       

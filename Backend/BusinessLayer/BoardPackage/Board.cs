@@ -53,9 +53,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return columnNames;
         }
 
-        public void Save()
+        public void Save(string path)
         {
-            ToDalObject().Save();         
+            ToDalObject().Save(path);         
         }
 
         public DataAccessLayer.Board ToDalObject()

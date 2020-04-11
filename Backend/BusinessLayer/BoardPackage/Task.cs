@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private int _id;
         private string _title;
         private string _description;
-        private DateTime _creationDate;
+        private DateTime _creationTime;
         private DateTime _dueDate;
         private DateTime _lastChangedDate;
 
@@ -28,12 +28,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new ArgumentOutOfRangeException("description can not exceed 300 charecters");
 
             _dueDate = dueDate;
-            _creationDate = DateTime.Now;
+            _creationTime = DateTime.Now;
             _lastChangedDate = DateTime.Now;
             _id = id;
 
-            Save();
+        }
 
+        internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate) {
+            _title = title;
+            _description = description;
+            _dueDate = dueDate;
+            _id = id;
+            _creationTime = creationTime;
+            _lastChangedDate = lastChangedDate;
         }
 
         public void UpdateTaskTitle(string title)
@@ -42,7 +49,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 _title = title;
                 _lastChangedDate = new DateTime().ToLocalTime();
-                Save();
             }
             else
                 throw new ArgumentException("title can not exceed 50 charecters");
@@ -55,7 +61,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 _description = description;
                 _lastChangedDate = new DateTime().ToLocalTime();
-                Save();
             }
             else
                 throw new ArgumentException("description can not exceed 300 charecters");
@@ -70,18 +75,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 _dueDate = duedate;
                 _lastChangedDate = new DateTime().ToLocalTime();
-                Save();
             }
         }
 
         public DataAccessLayer.Task ToDalObject()
         {
-            return new DataAccessLayer.Task(Id, Title, Description, CreationDate, DueDate, LastChangedDate);
+            return new DataAccessLayer.Task(Id, Title, Description, CreationTime, DueDate, LastChangedDate);
         }
 
-        public void Save()
+        public void Save(string path)
         {
-            ToDalObject().Save();
+            ToDalObject().Save(path);
         }
 
         
@@ -90,7 +94,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public string Title { get; }
         public string Description { get; }
         public DateTime DueDate { get; }
-        public DateTime CreationDate { get; }
+        public DateTime CreationTime { get; }
         public DateTime LastChangedDate { get; }
     }
 }

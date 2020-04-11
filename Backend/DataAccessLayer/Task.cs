@@ -8,12 +8,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class Task : DalObject<Task>
     {
-        private int _id;
-        private string _title;
-        private string _description;
-        private DateTime _creationDate;
-        private DateTime _dueDate;
-        private DateTime _lastChangedDate;
+        private readonly int _id;
+        private readonly string _title;
+        private readonly string _description;
+        private readonly DateTime _creationDate;
+        private readonly DateTime _dueDate;
+        private readonly DateTime _lastChangedDate;
 
         public Task (int id, string title, string description, DateTime creationDate,DateTime dueDate, DateTime lastChangedDate)
         {
@@ -25,20 +25,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             _lastChangedDate = lastChangedDate;
         }
 
-        public void Save()
+        public Task() { }
+
+        public override void Save(string path)
         {
-            throw new NotImplementedException();
+            DalController dc = new DalController();
+            dc.WriteToFile("#" + _id + "", ToJson());
         }
 
-        public string ToJson()
-        {
-            throw new NotImplementedException();
-        }
+        //getters
+        public int Id { get; }
+        public string Title { get; }
+        public string Description { get; }
+        public DateTime DueDate { get; }
+        public DateTime CreationTime { get; }
+        public DateTime LastChangedDate { get; }
 
-        public User FromJson()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
     

@@ -11,6 +11,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         T ToDalObject();
 
-        void Save();
+        void Save(string path);
     }
 }

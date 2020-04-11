@@ -11,12 +11,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
     class UserController
     {
         private Dictionary<string, User> Users;
-        private DalController dalController;
 
         public UserController() {
             Users = new Dictionary<string, User>();
-            dalController = new DalController();
-            List<DataAccessLayer.User> DALusers = dalController.LoadAllUsers();
+            DalController dalC = new DalController();
+            List<DataAccessLayer.User> DALusers = dalC.LoadAllUsers();
             foreach (DataAccessLayer.User DALuser in DALusers) {
                 User savedUser = new User(DALuser.email, DALuser.password, DALuser.nickname);
                 Users.Add(savedUser.email, savedUser);

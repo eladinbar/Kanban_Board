@@ -46,7 +46,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.BoardPackage.Task tempTask = this.SecurityControl.BoardController.AddTask(email, title, description, dueDate);
-                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationDate(), title, description, dueDate);
+                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime, title, description, dueDate);
                 return new Response<Task>(tempStructTask, "Task has been added successfully.");
             }
             catch (Exception ex)
@@ -117,7 +117,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                BusinessLayer.BoardPackage.Column tempColumn = this.SecurityControl.BoardController.GetColumn(email, columnName);                
-               List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.GetTasks;
+               List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.Tasks;
 
                List<Task> structTaskList = new List<Task>();
 
@@ -142,7 +142,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.BoardPackage.Column tempColumn = this.SecurityControl.BoardController.GetColumn(email, columnOrdinal);
-                List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.GetTasks;
+                List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.Tasks;
 
                 List<Task> structTaskList = new List<Task>();
 

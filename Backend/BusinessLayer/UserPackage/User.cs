@@ -49,8 +49,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             return new DataAccessLayer.User(this.Email, this.Password, this.Nickname);
         }
 
-        public void Save() {
-            ToDalObject().Save();
+        public void Save(string path) {
+            ToDalObject().Save(path);
         }
     }
 }
