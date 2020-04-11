@@ -8,5 +8,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class Column : DalObject<Column>
     {
+
     }
 }

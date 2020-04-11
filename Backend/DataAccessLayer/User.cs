@@ -41,11 +41,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public override User FromJson(string json) {
             DalController dc = new DalController();
             User savedUser = JsonSerializer.Deserialize<User>(dc.ReadFromFile(json));
-            return savedUser; //Returns the user 
+            return savedUser; //Returns the user
         }
 
-        public override void Save()
-        {
+        public override void Save() {
             DalController dc = new DalController();
             dc.WriteToFile(Email, ToJson());
         }
