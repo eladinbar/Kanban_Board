@@ -37,18 +37,11 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             ServiceLayer.Service service = new ServiceLayer.Service();
 
 
-            //LoadData()
-            ServiceLayer.Response respLoadData = service.LoadData();
-            Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("First LoadData() call. Expected: succeed. Runtime outcome:");
-            Console.WriteLine(respLoadData.ErrorMessage);
-            Console.WriteLine("---------------------------------------------------------------");
-
-            ServiceLayer.Response respLoadData2 = service.LoadData();
-            Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("Second LoadData() call. Expected: failed. Runtime outcome:");
-            Console.WriteLine(respLoadData2.ErrorMessage);
-            Console.WriteLine("---------------------------------------------------------------");
+            //LoadData tests
+            LoadDataTest ldTest = new LoadDataTest();
+            ldTest.LoadData(service);
+            ldTest.LoadData(service);
+            ldTest.LoadData(service);
 
             LoginTest loginTest = new LoginTest(service);
             loginTest.AllGood(newProperUser1, propUser1Password);
