@@ -79,7 +79,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 //c.Save("Boards\\" + email + "\\");
                 //targetColumn.Save("Boards\\" + email + "\\");
                 toAdvance.Save("Boards\\" + email + "\\" + targetColumn.Name + "\\");
-                File.Delete()
             }
         }
 

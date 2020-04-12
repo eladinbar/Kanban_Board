@@ -11,6 +11,10 @@
 *.sln.docstates
 **/.idea
 
+#KanbanTests solution and UnitTest:
+KanbanTests/
+UnitTestProject1/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
