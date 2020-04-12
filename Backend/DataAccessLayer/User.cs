@@ -10,30 +10,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class User : DalObject<User>
     {
-        private readonly string Nickname;
-        private readonly string Email;
-        private readonly string Password;
+        private readonly string _email;
+        private readonly string _password;
+        private readonly string _nickname;
 
         public User(string email, string password, string nickname)
         {
-            this.Email = email;
-            this.Password = password;
-            this.Nickname = nickname;
+            _email = email;
+            _password = password;
+            _nickname = nickname;
         }
 
         public User() { }
-
-        public string email {
-            get { return Email; }
-        }
-
-        public string password {
-            get { return Password; }
-        }
-
-        public string nickname {
-            get { return Nickname; }
-        }
 
         public override void Save(string path) {
             DalController dc = new DalController();
@@ -42,5 +30,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 dir.Create();
             dc.WriteToFile(Email, ToJson(), "Users\\");
         }
+
+        //getters
+        public string Email { get; }
+        public string Password { get; }
+        public string Nickname { get; }
     }
 }

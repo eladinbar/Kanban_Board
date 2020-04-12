@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public override void Save(string path)
         {
             DalController dc = new DalController();
-            dc.WriteToFile("#" + _id + "", ToJson());
+            dc.WriteToFile("#" + this.Id + "", ToJson(), path);
         }
 
         //getters

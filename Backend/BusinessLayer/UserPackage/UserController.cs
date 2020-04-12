@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             DalController dalC = new DalController();
             List<DataAccessLayer.User> DALusers = dalC.LoadAllUsers();
             foreach (DataAccessLayer.User DALuser in DALusers) {
-                User savedUser = new User(DALuser.email, DALuser.password, DALuser.nickname);
+                User savedUser = new User(DALuser.Email, DALuser.Password, DALuser.Nickname);
                 Users.Add(savedUser.email, savedUser);
             }
         }
@@ -26,7 +26,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             if (!Users.ContainsKey(email)) {
                User newUser = new User(email, password, nickname);
                Users.Add(email, newUser);
-               newUser.Save();
+               newUser.Save("Users\\");
             }
             else
                throw new ArgumentException("A user with this E-mail address already exists, please re-evaluate your information and try again.");
@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             if (Users[email].password.Equals(oldPassword)) {
                 ValidatePassword(newPassword);
                 Users[email].ChangePassword(newPassword);
-                Users[email].Save();
+                Users[email].Save("Users\\");
             }
             else
                 throw new ArgumentException("Old password does not match the current password. Please try again.");

@@ -27,15 +27,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public List<User> LoadAllUsers() {
             List<User> users = new List<User>();
             DirectoryInfo dir = new DirectoryInfo(_BASE_PATH + "Users\\");
-            if (dir.Exists) { //If the directory and any user data exists, load all of it
-                foreach (FileInfo user in dir.GetFiles("*.json")) {
+            if (dir.Exists) //Checks that the directory exists and loads all user data from it
+            {
+                foreach (FileInfo user in dir.GetFiles("*.json"))
+                {
                     User savedUser = new User();
                     savedUser = savedUser.FromJson(user.Name);
                     users.Add(savedUser);
                 }
             }
-            else //Otherwise create a new folder to store future data in
-                dir.Create();
+            else
+                throw new FileLoadException("The Users directory does not exist");
             return users;
         }
 
@@ -50,6 +52,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     boards.Add(savedBoard);
                 }
             }
+            else
+                throw new FileLoadException("The Boards directory does not exist");
             return boards;
         }
 
@@ -67,6 +71,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     columns.Add(savedColumn);
                 }
             }
+            else
+                throw new FileLoadException("The " + boardName + " directory does not exist");
             return columns;
         }
 
@@ -82,9 +88,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     tasks.Add(savedTask);
                 }
             }
+            else
+                throw new FileLoadException("The " + columnName + " directory does not exist");
             return tasks;
         }
 
+        //getter
         public string BASE_PATH { get; }
     }
 }

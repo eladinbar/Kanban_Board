@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
@@ -27,10 +28,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + path);
             if (!dir.Exists)
                 dir.Create();
-            dc.WriteToFile(_name, ToJson(), path);
+            dc.WriteToFile(this.Name, ToJson(), path);
         }
 
-        public void Delete (string path) {
+        public void Delete (string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
+        {
             DalController dc = new DalController();
             dc.RemoveFromFile(path);
         }
@@ -38,6 +40,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         //getters
         public string Name { get; }
         public int Limit { get; }
+
+        [JsonIgnore] //List is retrieved using the individual <Task>.json files
         public List<Task> Tasks { get; }
     }
 }
