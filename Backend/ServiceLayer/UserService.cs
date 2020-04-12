@@ -8,23 +8,23 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     class UserService
     {
-        private BusinessLayer.SecurityController SecurityControl;
+        private BusinessLayer.SecurityController _securityController;
 
         public UserService(BusinessLayer.SecurityController sc)
         {
-            this.SecurityControl = sc;
+            _securityController = sc;
         }
 
         public BusinessLayer.SecurityController SecurityController
         {
-            get { return this.SecurityControl; }
+            get { return _securityController; }
         }
 
         public Response Register(string email, string password, string nickname) //done++++++++++++++++++++++
         {
             try
             {
-                SecurityControl.UserController.Register(email, password, nickname);
+                _securityController.UserController.Register(email, password, nickname);
                 return new Response("User has been registered successfully.");
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                BusinessLayer.UserPackage.User tempUser = SecurityControl.Login(email, password);
+                BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
                 User tempStructUser = new User(tempUser.email,tempUser.nickname);
                 return new Response<User>(tempStructUser);        
             }
@@ -51,7 +51,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response Logout(string email) //done+++++++++++++++++++++
         {
-            SecurityControl.UserController.Logout(email);
+            _securityController.UserController.Logout(email);
             return new Response("User "+email+" logged out.");
         }
 
@@ -59,7 +59,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                this.SecurityControl.UserController.ChangePassword(email, oldPassword, newPassword);
+                _securityController.UserController.ChangePassword(email, oldPassword, newPassword);
                 return new Response("Password successfully changed.");
             }
             catch (Exception ex)

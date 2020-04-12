@@ -13,39 +13,36 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
-        private BusinessLayer.SecurityController sc;
+        private BusinessLayer.SecurityController _securityController;
+        private BoardService _boardService;
+        private UserService _userService;
 
         /// <summary>
         /// Simple public constructor.
         /// </summary>
         public Service()
         {
-            this.sc = null;
+            _securityController = null;
         }
-               
+
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
-        public Response LoadData() //not finished__________________________________________________________________________________________
+        public Response LoadData() //done+++++++++++++++++++
         {
-            // add method of checking existance of SecurityController appearance in the memory.
-            if (this.sc == null) // do we need LoadData to check if there is some current appearance of the programm.
+            if (_securityController != null) return new Response("The data is already loaded.");
+            try
             {
-                try
-                {
-                    this.sc = new BusinessLayer.SecurityController();
-                    BoardService bs = new BoardService(sc);
-                    UserService us = new UserService(sc);
-                }
-                catch (Exception ex)
-                {
-                    //add Log(ex) for logging
-                    Response resp = new Response(ex.Message);
-                    return resp;
-                }
+                _securityController = new BusinessLayer.SecurityController();
+                _boardService = new BoardService(_securityController);
+                _userService = new UserService(_securityController);
+                return new Response("The data was loaded successfully.");
             }
-            return new Response();
+            catch (Exception ex)
+            {
+                return new Response(ex.Message);
+            }
         }
 
 
@@ -58,7 +55,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string email, string password, string nickname)
         {
-            throw new NotImplementedException();
+           try
+            {
+
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         /// <summary>
