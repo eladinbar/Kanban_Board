@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
@@ -13,7 +14,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
-
+            Console.WriteLine(Path.GetFullPath(@"..\..\") + "data\\");
             //declaring propper users and their passwords
             ServiceLayer.User newProperUser1 = new ServiceLayer.User("propUser1@mashu.com", "properNick1");
             string propUser1Password = "abC123";

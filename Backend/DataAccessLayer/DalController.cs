@@ -10,14 +10,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class DalController
     {
-        private readonly string _BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
+        private readonly string _BASE_PATH;
+
+        public DalController()
+        {
+            _BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
+        }
 
         public void WriteToFile (string fileName, string content, string path) {
             File.WriteAllText(BASE_PATH + path + fileName + ".json", content);
         }
 
         public string ReadFromFile (string fileName, string path) {
-            return File.ReadAllText(BASE_PATH + path + fileName + ".json");
+            return File.ReadAllText(BASE_PATH + path + fileName);
         }
 
         public void RemoveFromFile (string fileName, string path) {
@@ -86,6 +91,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         //getter
-        public string BASE_PATH { get; }
+        public string BASE_PATH { get { return _BASE_PATH; } }
     }
 }
