@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private readonly DateTime _dueDate;
         private readonly DateTime _lastChangedDate;
 
-        public Task (int id, string title, string description, DateTime creationDate,DateTime dueDate, DateTime lastChangedDate)
+        public Task(int id, string title, string description, DateTime creationDate, DateTime dueDate, DateTime lastChangedDate)
         {
             _id = id;
             _title = title;

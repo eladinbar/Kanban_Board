@@ -31,10 +31,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void LimitColumnTasks(int limit)
         {
-            if (limit >= 0)
-                _limit = limit;
-            else
+            if (limit == 0)
                 throw new ArgumentOutOfRangeException("Cannot use negative number to limit number of tasks");
+            else if (limit > Tasks.Count)
+                throw new ArgumentOutOfRangeException("Number of tasks is more then the desired limit");
+            else
+                _limit = limit;
         }
 
         public void InsertTask(Task t)
