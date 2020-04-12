@@ -83,10 +83,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
                 return false;
         }
-
-        public void Delete(string path) { //Removes tasks appearing in multiple columns (occurs when advancing tasks)
-            ToDalObject().Delete(path);
-        }
         
         //getters
         public string Name { get;}

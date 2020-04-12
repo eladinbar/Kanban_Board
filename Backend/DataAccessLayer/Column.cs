@@ -31,12 +31,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             dc.WriteToFile(this.Name, ToJson(), path);
         }
 
-        public void Delete (string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
-        {
-            DalController dc = new DalController();
-            dc.RemoveFromFile(path);
-        }
-
         //getters
         public string Name { get; }
         public int Limit { get; }

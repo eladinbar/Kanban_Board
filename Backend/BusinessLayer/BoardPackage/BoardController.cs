@@ -77,6 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column targetColumn = b.GetColumn(columnOrdinal + 1); 
                 targetColumn.InsertTask(toAdvance);
                 toAdvance.Save("Boards\\" + email + "\\" + targetColumn.Name + "\\");
+                toAdvance.Delete(toAdvance.Id + "", "Boards\\" + email + "\\" + c.Name + "\\");
             }
         }
 
