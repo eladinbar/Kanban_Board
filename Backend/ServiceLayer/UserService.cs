@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response Register(string email, string password, string nickname) //done++++++++++++++++++++++
+        public Response Register(string email, string password, string nickname) //add a method of creating a new Board of a new User
         {
             try
             {
@@ -59,8 +59,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response Logout(string email) //done+++++++++++++++++++++
         {
-            _securityController.UserController.Logout(email);
-            return new Response("User "+email+" logged out.");
+            try
+            {
+                _securityController.Logout(email);
+                return new Response("User " + email + " logged out.");
+            }
+            catch(Exception ex)
+            {
+                return new Response(ex.Message);
+            }
         }
 
 

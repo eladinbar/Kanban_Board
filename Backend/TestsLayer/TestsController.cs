@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Stopwatch timer = new Stopwatch();
             timer.Start();
 
-
+            
             ServiceLayer.Service service = new ServiceLayer.Service();
             ServiceLayer.Response resp = service.LoadData();
             Console.WriteLine(resp.ErrorMessage);
