@@ -36,8 +36,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     users.Add(savedUser);
                 }
             }
-            else
-                throw new FileLoadException("The Users directory does not exist");
             return users;
         }
 
@@ -52,8 +50,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     boards.Add(savedBoard);
                 }
             }
-            else
-                throw new FileLoadException("The Boards directory does not exist");
             return boards;
         }
 
@@ -71,8 +67,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     columns.Add(savedColumn);
                 }
             }
-            else
-                throw new FileLoadException("The " + boardName + " directory does not exist");
             return columns;
         }
 
@@ -88,8 +82,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     tasks.Add(savedTask);
                 }
             }
-            else
-                throw new FileLoadException("The " + columnName + " directory does not exist");
             return tasks;
         }
 
