@@ -16,8 +16,16 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
             
             ServiceLayer.Service service = new ServiceLayer.Service();
-            ServiceLayer.Response resp = service.LoadData();
-            Console.WriteLine(resp.ErrorMessage);
+
+            //LoadData()
+            ServiceLayer.Response respLoadData = service.LoadData();
+            Console.WriteLine(respLoadData.ErrorMessage);
+        
+            //LoadData() secondly. Expected: failed. Return: response.
+            ServiceLayer.Response respLoadData2 = service.LoadData();
+            Console.WriteLine(respLoadData2.ErrorMessage);
+
+
 
 
 
