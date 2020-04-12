@@ -17,47 +17,66 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
         public void AllGood(ServiceLayer.User user, string password)
         {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("LoginTest - AllGood().");
             Console.WriteLine("Input: proper existing user data.");
             Console.WriteLine("Expected: succeed - proper response.");
             Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password));
+            Console.WriteLine("---------------------------------------------------------------");
         }
 
 
         public void IncorrectPassword(ServiceLayer.User user, string incorrectPassword)
         {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("LoginTest - IncorrectPassword().");
             Console.WriteLine("Input: user data with incorrect password.");
             Console.WriteLine("Expected: failed - proper response.");
             Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, incorrectPassword));
+            Console.WriteLine("---------------------------------------------------------------");
         }
 
 
         public void IncorrectEmail(ServiceLayer.User user, string password)
         {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("LoginTest - IncorrectEmail().");
             Console.WriteLine("Input: user data with incorrect email.");
             Console.WriteLine("Expected: failed - proper response.");
             Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password));
+            Console.WriteLine("---------------------------------------------------------------");
         }
 
 
         public void AlreadyLoggedIn(ServiceLayer.User user, string password)
         {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("LoginTest - AlreadyLoggedIn().");
             Console.WriteLine("Input: user data.");
             Console.WriteLine("Expected: failed - other user already logged in.");
             Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password));
+            Console.WriteLine("---------------------------------------------------------------");
         }
 
         public void LogoutOfLoggedInUser(ServiceLayer.User user)
         {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("LoginTest - LogoutOfLoggedInUser().");
             Console.WriteLine("Input: logged in user data.");
             Console.WriteLine("Expected: succeed - proper response.");
             Console.WriteLine("Runtime outcome: " + _service.Logout(user.Email));
+            Console.WriteLine("---------------------------------------------------------------");
         }
 
         public void LogoutOfOtherUser(ServiceLayer.User user)
         {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("LoginTest - LogoutOfOtherUser().");
             Console.WriteLine("Input: not logged in user data.");
             Console.WriteLine("Expected: failled - other user is logged in.");
             Console.WriteLine("Runtime outcome: " + _service.Logout(user.Email));
+            Console.WriteLine("---------------------------------------------------------------");
+
         }
 
     }

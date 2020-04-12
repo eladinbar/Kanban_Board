@@ -26,6 +26,25 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine(respLoadData2.ErrorMessage);
 
 
+            //declaring propper users and their passwords
+            ServiceLayer.User newProperUser1 = new ServiceLayer.User("propUser1@mashu.com", "properNick1");
+            string propUser1Password = "abC123";
+
+            ServiceLayer.User newProperUser2 = new ServiceLayer.User("propUser2@mashu.com", "properNick2");
+            string propUser2Password = "abC123";
+
+            ServiceLayer.User newProperUser3 = new ServiceLayer.User("propUser3@mashu.com", "properNick3");
+            string propUser3Password = "abC123";
+
+
+            //declaring propper tasks
+
+
+
+
+            
+
+
 
 
 
