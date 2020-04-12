@@ -76,9 +76,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Task toAdvance = c.RemoveTask(taskId);
                 Column targetColumn = b.GetColumn(columnOrdinal + 1); 
                 targetColumn.InsertTask(toAdvance);
-                //c.Save("Boards\\" + email + "\\");
-                //targetColumn.Save("Boards\\" + email + "\\");
                 toAdvance.Save("Boards\\" + email + "\\" + targetColumn.Name + "\\");
+                toAdvance.Delete(toAdvance.Id + "", "Boards\\" + email + "\\" + c.Name + "\\");
             }
         }
 
@@ -93,30 +92,29 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             taskCounter++;
             
             c.InsertTask(newTask);
-            //c.Save("Boards\\" + email + "\\");
             newTask.Save("Boards\\" + email + "\\" + c.Name + "\\");
             return newTask;            
         }
 
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
         {
-            Task editedTask = GetColumn(email, columnOrdinal).GetTask(taskId);
-            editedTask.UpdateTaskTitle(newTitle);
-            editedTask.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+            Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
+            toUpdate.UpdateTaskTitle(newTitle);
+            toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
         }
 
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription)
         {
-            Task editedTask = GetColumn(email, columnOrdinal).GetTask(taskId);
-            editedTask.UpdateTaskDescription(newDescription);
-            editedTask.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+            Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
+            toUpdate.UpdateTaskDescription(newDescription);
+            toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
         }
 
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
         {
-            Task editedTask = GetColumn(email, columnOrdinal).GetTask(taskId);
-            editedTask.UpdateTaskDuedate(newDueDate);
-            editedTask.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+            Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
+            toUpdate.UpdateTaskDuedate(newDueDate);
+            toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
         }
 
       

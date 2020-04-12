@@ -14,9 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         public T FromJson(string json) {
-            DalController dc = new DalController();
-            T savedT = JsonSerializer.Deserialize<T>(dc.ReadFromFile(json));
-            return savedT; //Returns T
+            return JsonSerializer.Deserialize<T>(json);
         }
 
         public abstract void Save(string path);

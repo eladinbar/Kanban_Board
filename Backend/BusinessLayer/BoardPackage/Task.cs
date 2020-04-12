@@ -88,7 +88,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             ToDalObject().Save(path);
         }
 
-        
+        public void Delete(string fileName, string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
+        {
+            ToDalObject().Delete(Id + "", path);
+        }
+
         //getters
         public int Id { get;}
         public string Title { get; }

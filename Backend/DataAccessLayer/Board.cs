@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
@@ -28,7 +29,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + "Boards\\");
             if (!dir.Exists)
                 dir.Create();
-            dc.WriteToFile(_userEmail, ToJson(), "Boards\\");
+            dc.WriteToFile(this.UserEmail, ToJson(), "Boards\\");
             dir = new DirectoryInfo(dir + this.UserEmail);
             dir.Create();
         }
@@ -36,6 +37,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         //getters
         public string UserEmail { get; }
         public int TaskCounter { get; }
+
+        [JsonIgnore] //List is retrieved using the individual <Column>.json files
         public List<Column> Columns { get; }
     }
 }

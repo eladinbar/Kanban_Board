@@ -30,7 +30,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public override void Save(string path)
         {
             DalController dc = new DalController();
-            dc.WriteToFile("#" + _id + "", ToJson());
+            dc.WriteToFile(this.Id + "", ToJson(), path);
+        }
+
+        public void Delete(string fileName, string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
+        {
+            DalController dc = new DalController();
+            dc.RemoveFromFile(fileName, path);
         }
 
         //getters
