@@ -117,6 +117,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
         }
 
+        public void AddNewBoard(string email)
+        {
+            _boards.Add(email, new Board(email));
+        }
+
       
        
 
