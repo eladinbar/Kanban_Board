@@ -43,6 +43,9 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             ldTest.LoadData(service);
             ldTest.LoadData(service);
 
+            RegisterTest regTest = new RegisterTest(service);
+            regTest.AllGood(newProperUser1, propUser1Password);
+
             LoginTest loginTest = new LoginTest(service);
             loginTest.AllGood(newProperUser1, propUser1Password);
 
