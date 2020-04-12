@@ -97,8 +97,11 @@
     <Compile Include="ServiceLayer\Objects\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLayer\UserService.cs" />
+    <Compile Include="TestsLayer\ColumnInvolvedTests.cs" />
+    <Compile Include="TestsLayer\GetBoardTest.cs" />
     <Compile Include="TestsLayer\LoginTest.cs" />
     <Compile Include="TestsLayer\RegisterTest.cs" />
+    <Compile Include="TestsLayer\TaskInvolvedTests.cs" />
     <Compile Include="TestsLayer\TestsController.cs" />
   </ItemGroup>
   <ItemGroup>
