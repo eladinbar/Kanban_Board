@@ -125,7 +125,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response<Column> GetColumn(string email, string columnName) //in progress--------------------------------------
+        public Response<Column> GetColumn(string email, string columnName) ///done++++++++++++++++++++++++++++++++++++++
         {
             if (!_securityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
             try
@@ -158,7 +158,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response<Column> GetColumn(string email, int columnOrdinal) ////in progress--------------------------------------
+        public Response<Column> GetColumn(string email, int columnOrdinal) //done++++++++++++++++++++++++++++++++++++++
         {
             //this method replicates GetColumn(string email, string columnName), with only difference of calling BL.BC.GetColumn() with columnOrdinal.
             if (!_securityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
