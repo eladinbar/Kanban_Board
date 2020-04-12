@@ -21,7 +21,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("RegisterTest - AllGood().");
             Console.WriteLine("Input: proper new user data.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Register(user.Email, password, user.Nickname));
+            Console.WriteLine("Runtime outcome: " + _service.Register(user.Email, password, user.Nickname).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("RegisterTest - BadPassword().");
             Console.WriteLine("Input: new user data with non acceptable password.");
             Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Register(user.Email, nonAcceptablePassword, user.Nickname));
+            Console.WriteLine("Runtime outcome: " + _service.Register(user.Email, nonAcceptablePassword, user.Nickname).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }
@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("RegisterTest - ExistingEmail().");
             Console.WriteLine("Input: new user data with existing email.");
             Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Register(user.Email, password, user.Nickname));
+            Console.WriteLine("Runtime outcome: " + _service.Register(user.Email, password, user.Nickname).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }
@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("RegisterTest - ExistingNickname().");
             Console.WriteLine("Input: new user data with existing nickname.");
             Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Register(user.Email, password, user.Nickname));
+            Console.WriteLine("Runtime outcome: " + _service.Register(user.Email, password, user.Nickname).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }

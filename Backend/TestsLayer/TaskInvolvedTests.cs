@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - AddTaskAllGood().");
             Console.WriteLine("Input: proper new task details with existing email.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.AddTask(user.Email, task.Title, task.Description, task.DueDate));
+            Console.WriteLine("Runtime outcome: " + _service.AddTask(user.Email, task.Title, task.Description, task.DueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - AddTaskOverColumnLimit().");
             Console.WriteLine("Input: proper new task details with existing email.");
             Console.WriteLine("Expected: failed - reached column limit.");
-            Console.WriteLine("Runtime outcome: " + _service.AddTask(user.Email, task.Title, task.Description, task.DueDate));
+            Console.WriteLine("Runtime outcome: " + _service.AddTask(user.Email, task.Title, task.Description, task.DueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -46,7 +46,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskDueDateAllGood().");
             Console.WriteLine("Input: proper details.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(user.Email, columnOrdinal, task.Id, newDueDate));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(user.Email, columnOrdinal, task.Id, newDueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskDueDateNonExistOrdinal().");
             Console.WriteLine("Input: proper details except columnOrdinal.");
             Console.WriteLine("Expected: failed - non existing column ordinal.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(user.Email, badColumnOrdinal, task.Id, newDueDate));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(user.Email, badColumnOrdinal, task.Id, newDueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -66,7 +66,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskDueDateBadOrdinal().");
             Console.WriteLine("Input: proper details except columnOrdinal.");
             Console.WriteLine("Expected: failed - task in other column.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(user.Email, badColumnOrdinal, task.Id, newDueDate));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(user.Email, badColumnOrdinal, task.Id, newDueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -79,7 +79,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskTitleAllGood().");
             Console.WriteLine("Input: proper task details.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskTitle(user.Email, columnOrdinal, task.Id, newTitle));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskTitle(user.Email, columnOrdinal, task.Id, newTitle).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -89,7 +89,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskTitleNonExistOrdinal().");
             Console.WriteLine("Input: proper details except columnOrdinal.");
             Console.WriteLine("Expected: failed - non existing column ordinal.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskTitle(user.Email, badColumnOrdinal, task.Id, newTitle));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskTitle(user.Email, badColumnOrdinal, task.Id, newTitle).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -99,7 +99,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskTitleBadOrdinal().");
             Console.WriteLine("Input: proper details except columnOrdinal.");
             Console.WriteLine("Expected: failed - task in other column.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskTitle(user.Email, badColumnOrdinal, task.Id, newTitle));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskTitle(user.Email, badColumnOrdinal, task.Id, newTitle).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -111,7 +111,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskDescriptioneAllGood().");
             Console.WriteLine("Input: proper task details.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDescription(user.Email, columnOrdinal, task.Id, newDescription));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDescription(user.Email, columnOrdinal, task.Id, newDescription).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -121,7 +121,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskDescriptioneNonExistOrdinal().");
             Console.WriteLine("Input: proper details except columnOrdinal.");
             Console.WriteLine("Expected: failed - non existing column ordinal.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDescription(user.Email, badColumnOrdinal, task.Id, newDescription));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDescription(user.Email, badColumnOrdinal, task.Id, newDescription).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -131,7 +131,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - UpdateTaskDescriptionBadOrdinal().");
             Console.WriteLine("Input: proper details except columnOrdinal.");
             Console.WriteLine("Expected: failed - task in other column.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDescription(user.Email, badColumnOrdinal, task.Id, newDescription));
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDescription(user.Email, badColumnOrdinal, task.Id, newDescription).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -143,7 +143,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - AdvanceTaskAllGood().");
             Console.WriteLine("Input: proper task details.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(user.Email, columnOrdinal, task.Id));
+            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(user.Email, columnOrdinal, task.Id).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -153,7 +153,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - AdvanceTaskDoneColumn().");
             Console.WriteLine("Input: proper task details with 'done' column ordinal.");
             Console.WriteLine("Expected: failed - can't advance a task from 'done' column.");
-            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(user.Email, doneColumnOrdinal, task.Id));
+            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(user.Email, doneColumnOrdinal, task.Id).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -163,7 +163,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("TaskInvolvedTests - AdvanceTaskIdNotExist().");
             Console.WriteLine("Input: non existing task id.");
             Console.WriteLine("Expected: failed - task doesn't exist.");
-            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(user.Email, columnOrdinal, task.Id));
+            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(user.Email, columnOrdinal, task.Id).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }

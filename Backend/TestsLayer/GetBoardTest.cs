@@ -21,7 +21,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("GetBoardTest - AllGood().");
             Console.WriteLine("Input: proper user's email.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email));
+            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -31,7 +31,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("GetBoardTest - NonExistingEmail().");
             Console.WriteLine("Input: non existing email.");
             Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email));
+            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -41,7 +41,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("GetBoardTest - NotLoggedInUser().");
             Console.WriteLine("Input: not logged in user's email.");
             Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email));
+            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }

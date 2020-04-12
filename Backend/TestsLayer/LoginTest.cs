@@ -21,7 +21,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("LoginTest - AllGood().");
             Console.WriteLine("Input: proper existing user data.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password));
+            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("LoginTest - IncorrectPassword().");
             Console.WriteLine("Input: user data with incorrect password.");
             Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, incorrectPassword));
+            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, incorrectPassword).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("LoginTest - IncorrectEmail().");
             Console.WriteLine("Input: user data with incorrect email.");
             Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password));
+            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -54,7 +54,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("LoginTest - AlreadyLoggedIn().");
             Console.WriteLine("Input: user data.");
             Console.WriteLine("Expected: failed - other user already logged in.");
-            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password));
+            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -64,7 +64,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("LoginTest - LogoutOfLoggedInUser().");
             Console.WriteLine("Input: logged in user data.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Logout(user.Email));
+            Console.WriteLine("Runtime outcome: " + _service.Logout(user.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -74,7 +74,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("LoginTest - LogoutOfOtherUser().");
             Console.WriteLine("Input: not logged in user data.");
             Console.WriteLine("Expected: failled - other user is logged in.");
-            Console.WriteLine("Runtime outcome: " + _service.Logout(user.Email));
+            Console.WriteLine("Runtime outcome: " + _service.Logout(user.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }
