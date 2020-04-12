@@ -13,39 +13,36 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
-        private BusinessLayer.SecurityController sc;
+        private BusinessLayer.SecurityController _securityController;
+        private BoardService _boardService;
+        private UserService _userService;
 
         /// <summary>
         /// Simple public constructor.
         /// </summary>
         public Service()
         {
-            this.sc = null;
+            _securityController = null;
         }
-               
+
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
-        public Response LoadData() //not finished__________________________________________________________________________________________
+        public Response LoadData() 
         {
-            // add method of checking existance of SecurityController appearance in the memory.
-            if (this.sc == null) // do we need LoadData to check if there is some current appearance of the programm.
+            if (_securityController != null) return new Response("The data is already loaded.");
+            try
             {
-                try
-                {
-                    this.sc = new BusinessLayer.SecurityController();
-                    BoardService bs = new BoardService(sc);
-                    UserService us = new UserService(sc);
-                }
-                catch (Exception ex)
-                {
-                    //add Log(ex) for logging
-                    Response resp = new Response(ex.Message);
-                    return resp;
-                }
+                _securityController = new BusinessLayer.SecurityController();
+                _boardService = new BoardService(_securityController);
+                _userService = new UserService(_securityController);
+                return new Response("The data was loaded successfully.");
             }
-            return new Response();
+            catch (Exception ex)
+            {
+                return new Response(ex.Message);
+            }
         }
 
 
@@ -58,7 +55,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string email, string password, string nickname)
         {
-            throw new NotImplementedException();
+              return _userService.Register(email, password, nickname);
         }
 
         /// <summary>
@@ -69,7 +66,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            throw new NotImplementedException();
+                return _userService.Login(email, password);
         }
 
         /// <summary>        
@@ -79,7 +76,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
-            throw new NotImplementedException();
+            return _userService.Logout(email);
         }
 
         /// <summary>
@@ -89,7 +86,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public Response<Board> GetBoard(string email)
         {
-            throw new NotImplementedException();
+            return _boardService.GetBoard(email);
         }
 
         /// <summary>
@@ -101,7 +98,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
-            throw new NotImplementedException();
+            return _boardService.LimitColumnTasks(email,columnOrdinal,limit);
         }
 
         /// <summary>
@@ -114,7 +111,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            return _boardService.AddTask(email, title, description,dueDate);
         }
 
         /// <summary>
@@ -127,7 +124,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            return _boardService.UpdateTaskDueDate(email, columnOrdinal,taskId, dueDate);
         }
 
         /// <summary>
@@ -140,7 +137,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
-            throw new NotImplementedException();
+            return _boardService.UpdateTaskTitle(email, columnOrdinal, taskId, title);
         }
 
         /// <summary>
@@ -153,7 +150,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
         {
-            throw new NotImplementedException();
+            return _boardService.UpdateTaskDescription(email, columnOrdinal, taskId, description);
         }
 
         /// <summary>
@@ -165,7 +162,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            return _boardService.AdvanceTask(email, columnOrdinal, taskId);
         }
 
 
@@ -177,7 +174,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<Column> GetColumn(string email, string columnName)
         {
-            throw new NotImplementedException();
+            return _boardService.GetColumn(email, columnName);
         }
 
         /// <summary>
@@ -190,7 +187,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            return _boardService.GetColumn(email, columnOrdinal);
         }
     }
 }

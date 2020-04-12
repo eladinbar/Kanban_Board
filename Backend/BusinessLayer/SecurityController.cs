@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private BoardPackage.BoardController BoardControl;
         private UserPackage.User CurrentUse;
 
+
         public SecurityController()
         {
             UserControl = new UserPackage.UserController();
@@ -19,15 +20,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             this.CurrentUse = null;
         }
 
+
+
         public UserPackage.UserController UserController 
         {
             get { return this.UserControl; }
         }
 
+
+
         public BoardPackage.BoardController BoardController
         {
             get { return this.BoardControl; }
         }
+
+
 
         public UserPackage.User Login(string email, string password) //done++++++++++++++++++++++++++++++++++++++
         {
@@ -35,6 +42,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             this.CurrentUse = UserControl.Login(email, password);
             return CurrentUse;
         }
+
+
 
         public bool UserValidation(string email) //done++++++++++++++++++++++++++++++++++++++
         {
