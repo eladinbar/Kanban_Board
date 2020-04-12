@@ -15,17 +15,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             _securityController = sc;
         }
 
+
+
         public BusinessLayer.SecurityController SecurityController
         {
             get { return _securityController; }
         }
+
+
 
         public Response Register(string email, string password, string nickname) //done++++++++++++++++++++++
         {
             try
             {
                 _securityController.UserController.Register(email, password, nickname);
-                return new Response("User has been registered successfully.");
+                return new Response("User "+nickname+" has been registered successfully.");
             }
             catch (Exception ex)
             {
@@ -33,6 +37,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return resp;
             }
         }
+
+
 
         public Response<User> Login (string email, string password) //done+++++++++++++++++++++++++++++++++++++++
         {
@@ -49,11 +55,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+
+
         public Response Logout(string email) //done+++++++++++++++++++++
         {
             _securityController.UserController.Logout(email);
             return new Response("User "+email+" logged out.");
         }
+
+
 
         public Response ChangePassword (string email, string oldPassword, string newPassword) //done++++++++++++++++++++++++++
         {

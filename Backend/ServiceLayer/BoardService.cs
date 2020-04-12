@@ -25,6 +25,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return new Response<Board>(tempStructBoard);
         }
 
+
+
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit) //done+++++++++++++++++++++++++++++++++++++++++++
         {
             if (!_securityController.UserValidation(email)) return new Response("Invalid current user.");
@@ -40,7 +42,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         }
 
-        public Response<Task> AddTask(string email, string title, string description, DateTime dueDate) //in progress: verify BL.Task has getter of its CreationDate
+
+
+        public Response<Task> AddTask(string email, string title, string description, DateTime dueDate) //done++++++++++++++++++++++++++++++++++++++
         {
             if (!_securityController.UserValidation(email)) return new Response<Task>("Invalid current user.");
             try
@@ -54,6 +58,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response<Task>(ex.Message);
             }
         }
+
+
 
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate) //done++++++++++++++++++++++++++++++++++++++
         {
@@ -69,6 +75,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+
+
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle) //done++++++++++++++++++++++++++++++++++++++
         {
             if (!_securityController.UserValidation(email)) return new Response("Invalid current user.");
@@ -82,6 +90,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response(ex.Message);
             }
         }
+
+
 
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription) //done+++++++++++++++++++++++++++++
         {
@@ -97,6 +107,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+
+
         public Response AdvanceTask(string email, int columnOrdinal, int taskId) //done+++++++++++++++++++++++++++++
         {
             if (!_securityController.UserValidation(email)) return new Response("Invalid current user.");
@@ -110,6 +122,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response(ex.Message);
             }
         }
+
+
 
         public Response<Column> GetColumn(string email, string columnName) //in progress--------------------------------------
         {
@@ -141,6 +155,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response<Column>(ex.Message);
             }
         }
+
+
 
         public Response<Column> GetColumn(string email, int columnOrdinal) ////in progress--------------------------------------
         {
