@@ -20,6 +20,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Name = name;
             Limit = Int32.MaxValue;
             Tasks = new List<Task>();
+            log.Info("New column " + name + "created");
 
         }
 
@@ -28,33 +29,47 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Name = name;
             Limit = limit;
             Tasks = tasks;
+            log.Debug("load - Board " + name + "was loaded from memory");
 
         }
 
         public void LimitColumnTasks(int limit)
         {
             if (limit == 0)
+            {
+                log.Error("Attempt to set limit to 0");
                 throw new ArgumentOutOfRangeException("Cannot use negative number to limit number of tasks");
+            }
             else if (limit > Tasks.Count)
+            {
+                log.Error("number of tasks in the column was greater then limit set attempt");
                 throw new ArgumentOutOfRangeException("Number of tasks is more then the desired limit");
+            }
             else
                 Limit = limit;
         }
 
-        public void InsertTask(Task t)
+        internal void InsertTask(Task t)
         {
             if (!CheckLimit())
                 throw new ArgumentOutOfRangeException(Name + " column is full");
             else
                 Tasks.Add(t);
         }
-        public Task RemoveTask(int id)
+
+        internal Task RemoveTask(int id)
         {
             Task toRemove = Tasks.Find(x => x.Id.Equals(id));
             if (Tasks.Remove(toRemove))
+            {
+                log.Debug("task " + id + " was removed from " + Name);
                 return toRemove;
+            }
             else
+            {
+                log.Error("Removal attempt to non existing task");
                 throw new ArgumentException("Task #" + id + " is not in " + Name);
+            }
         }
         
         public Task GetTask(int taskId)
@@ -67,6 +82,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public DataAccessLayer.Column ToDalObject()
         {
+            log.Debug("Creating DalObject<Column>");
             List<DataAccessLayer.Task> dalTasks = new List<DataAccessLayer.Task>();
             foreach(Task t in Tasks)
             {
@@ -77,15 +93,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void Save(string path)
         {
+            log.Info("Column.save was called");
             ToDalObject().Save(path);
         }
 
-        public bool CheckLimit()
+        internal bool CheckLimit()
         {
             if (Tasks.Count() < Limit)
                 return true;
             else
                 return false;
         }
+
     }
 }

@@ -23,26 +23,28 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (title.Length > 0 && title.Length <= 50)
                 Title = title;
             else
-                throw new ArgumentOutOfRangeException("title can not exceed 50 charecters");
+                throw new ArgumentOutOfRangeException("title can not be empty or exceed 50 charecters");
             if (description.Length <= 300)
                 Description = description;
             else
                 throw new ArgumentOutOfRangeException("description can not exceed 300 charecters");
 
-            DueDate = dueDate;
-            CreationTime = DateTime.Now;
-            LastChangedDate = DateTime.Now;
+            DueDate = dueDate.ToLocalTime();
+            CreationTime = DateTime.Now.ToLocalTime();
+            LastChangedDate = DateTime.Now.ToLocalTime();
             Id = id;
+            log.Info("New task was created with " + id + " ID");
 
         }
 
         internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate) {
             Title = title;
             Description = description;
-            DueDate = dueDate;
+            DueDate = dueDate.ToLocalTime();
             Id = id;
-            CreationTime = creationTime;
-            LastChangedDate = lastChangedDate;
+            CreationTime = creationTime.ToLocalTime();
+            LastChangedDate = lastChangedDate.ToLocalTime();
+            log.Info("Task " + id + " was Loaded from memory");
         }
 
         public void UpdateTaskTitle(string title)
@@ -50,7 +52,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (title.Length > 0 && title.Length <= 50)
             {
                 Title = title;
-                LastChangedDate = new DateTime().ToLocalTime();
+                LastChangedDate = DateTime.Now.ToLocalTime();
             }
             else
                 throw new ArgumentException("title can not exceed 50 charecters");
@@ -62,7 +64,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (description.Length <= 300)
             {
                 Description = description;
-                LastChangedDate = new DateTime().ToLocalTime();
+                LastChangedDate = DateTime.Now.ToLocalTime();
             }
             else
                 throw new ArgumentException("description can not exceed 300 charecters");
@@ -71,12 +73,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
               
         public void UpdateTaskDuedate(DateTime duedate)
         {
-            if (duedate.CompareTo(new DateTime()) < 0)
+            if (duedate.CompareTo(DateTime.Now) < 0)
                 throw new ArgumentException("Due date cannot be set to past time");
             else
             {
-                DueDate = duedate;
-                LastChangedDate = new DateTime().ToLocalTime();
+                DueDate = duedate.ToLocalTime();
+                LastChangedDate = DateTime.Now.ToLocalTime();
             }
         }
 
@@ -88,11 +90,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void Save(string path)
         {
             ToDalObject().Save(path);
+            log.Info("Task.save was called");
         }
 
         public void Delete(string fileName, string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
         {
             ToDalObject().Delete(Id + "", path);
+            log.Info("Task " + Id + "deleted");
         }
     }
 }
