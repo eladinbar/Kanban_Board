@@ -29,6 +29,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 _securityController.UserController.Register(email, password, nickname);
+                _securityController.BoardController.AddNewBoard(email);
                 return new Response("User "+nickname+" has been registered successfully.");
             }
             catch (Exception ex)
