@@ -66,7 +66,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
 
         private void ValidateEmail (string email) {
-            if (!Regex.IsMatch(email, "^[a-zA-Z0-9]*$"))
+            if (!Regex.IsMatch(email, "^[a-zA-Z0-9@.]*$"))
                 throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*");
         }
     }
