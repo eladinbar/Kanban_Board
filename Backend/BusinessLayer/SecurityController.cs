@@ -8,47 +8,57 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class SecurityController
     {
-        private UserPackage.UserController UserControl;
-        private BoardPackage.BoardController BoardControl;
-        private UserPackage.User CurrentUse;
+        private UserPackage.UserController _userController;
+        private BoardPackage.BoardController _boardController;
+        private UserPackage.User _currentUser;
 
 
         public SecurityController()
         {
-            UserControl = new UserPackage.UserController();
-            BoardControl = new BoardPackage.BoardController();
-            this.CurrentUse = null;
+            _userController = new UserPackage.UserController();
+            _boardController = new BoardPackage.BoardController();
+            _currentUser = null;
         }
 
 
 
         public UserPackage.UserController UserController 
         {
-            get { return this.UserControl; }
+            get { return _userController; }
         }
 
 
 
         public BoardPackage.BoardController BoardController
         {
-            get { return this.BoardControl; }
+            get { return _boardController; }
         }
 
 
 
         public UserPackage.User Login(string email, string password) //done++++++++++++++++++++++++++++++++++++++
         {
-            if (CurrentUse != null) throw new AccessViolationException("There is already LoggedIn User. LogOut to switch for another User.");
-            this.CurrentUse = UserControl.Login(email, password);
-            return CurrentUse;
+            if (_currentUser != null) throw new AccessViolationException("There is already LoggedIn User. LogOut to switch for another User.");
+            _currentUser = _userController.Login(email, password);
+            return _currentUser;
         }
+
+
+        public void Logout(string email) //done++++++++++++++++++++++++++++++++++++++
+        {
+            if (_currentUser == null) throw new AccessViolationException("There is no logged in users.");
+            _userController.Logout(email);
+            _currentUser = null;
+        }
+
+
 
 
 
         public bool UserValidation(string email) //done++++++++++++++++++++++++++++++++++++++
         {
-            if (CurrentUse == null) return false;
-            return CurrentUse.email.Equals(email);
+            if (_currentUser == null) return false;
+            return _currentUser.email.Equals(email);
         }
     }
 }
