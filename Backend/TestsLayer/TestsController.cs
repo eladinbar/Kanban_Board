@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Principal;
+using System.Security.AccessControl;
 
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
@@ -14,8 +16,31 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            Console.WriteLine(Path.GetFullPath(@"..\..\") + "data\\");
-            
+            DirectoryInfo dir1 = new DirectoryInfo( Path.GetFullPath(@"..\..\") + "data\\");
+            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
+
+            //AccessControlType accessControlType = AccessControlType.Allow;
+            //FileSystemRights fileSystemRights = FileSystemRights.FullControl;
+            //IdentityReference identityReference = new SecurityIdentifier()
+
+            //new System.Security.AccessControl.AccessControlSections()
+            //System.Security.AccessControl.AccessControlSections accSec;
+            //System.Security.AccessControl.DirectorySecurity directorySecurity = dir1.GetAccessControl();
+
+            //System.Security.AccessControl.FileSystemAccessRule rule = new System.Security.AccessControl.FileSystemAccessRule(, fileSystemRights, accessControlType);
+            //directorySecurity.AddAccessRule()
+            //System.Security.AccessControl.DirectorySecurity dirSec = new System.Security.AccessControl.DirectorySecurity(dir1.ToString(),
+            //Directory.SetAccessControl(dir1.ToString(), );
+            //DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Boards\\");
+            //dir1.Attributes = FileAttributes.Normal;
+            //dir1.Attributes = FileAttributes.Normal;
+            //foreach (DirectoryInfo dir in dir1.GetDirectories()) dir.Attributes = FileAttributes.Normal;
+            //File.SetAttributes(dir2.ToString(), FileAttributes.Normal);
+            if (dir2.Exists) File.Delete(dir2.ToString());
+            //if (dir2.Exists) File.Delete(dir2.ToString());
+
+
+
             //declaring random users
             UserForTestCreator userForTestCreator = new UserForTestCreator(5);
             List<ServiceLayer.User> randomUsers = userForTestCreator._users;
@@ -45,10 +70,10 @@ namespace IntroSE.Kanban.Backend.TestsLayer
                 regTest.AllGood(tempUser, uniPassword);
 
             
+
             //Login Test - first login
             LoginTest loginTest = new LoginTest(service);
             loginTest.AllGood(randomUsers.ElementAt(0), uniPassword);
-
 
 
 
