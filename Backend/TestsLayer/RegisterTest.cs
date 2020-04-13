@@ -60,5 +60,16 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
 
         }
+
+        public void NonAcceptableEmail(string nonAcceptableEmail, string password)
+        {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("RegisterTest - NonAcceptableEmail().");
+            Console.WriteLine("Input: new user data with non acceptable email.");
+            Console.WriteLine("Expected: failed - email isnt right.");
+            Console.WriteLine("Runtime outcome: " + _service.Register(nonAcceptableEmail, password, nonAcceptableEmail).ErrorMessage);
+            Console.WriteLine("---------------------------------------------------------------");
+
+        }
     }
 }

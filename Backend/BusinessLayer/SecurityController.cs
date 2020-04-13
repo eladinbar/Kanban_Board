@@ -47,6 +47,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public void Logout(string email) //done++++++++++++++++++++++++++++++++++++++
         {
             if (_currentUser == null) throw new AccessViolationException("There is no logged in users.");
+            if (!_currentUser.email.Equals(email)) throw new AccessViolationException("Logout failed: User "+email+" is not logged in.");
             _userController.Logout(email);
             _currentUser = null;
         }

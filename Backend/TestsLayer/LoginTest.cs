@@ -21,7 +21,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("LoginTest - AllGood().");
             Console.WriteLine("Input: proper existing user data.");
             Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.Login(user.Email, password).ErrorMessage);
+            Console.WriteLine("Runtime outcome: User "+user.Email+" loggedIn. System message: " + _service.Login(user.Email, password).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
