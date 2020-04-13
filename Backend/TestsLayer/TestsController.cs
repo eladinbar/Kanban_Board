@@ -51,10 +51,22 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             ldTest.LoadData(service);
             ldTest.LoadData(service);
 
+
             //Register tests - random users registration
+            
+            
             RegisterTest regTest = new RegisterTest(service);
+            regTest.BadPassword(randomUsers.ElementAt(0), "12345");
+            regTest.BadPassword(randomUsers.ElementAt(0), "123abc");
+            regTest.BadPassword(randomUsers.ElementAt(0), "123abcс");
+            regTest.BadPassword(randomUsers.ElementAt(0), "!@#$%^Abc1");
+
+            
+
+
             foreach (ServiceLayer.User tempUser in randomUsers)
                 regTest.AllGood(tempUser, uniPassword);
+
 
             
 
