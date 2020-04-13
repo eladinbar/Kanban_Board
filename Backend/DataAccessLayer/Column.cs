@@ -10,6 +10,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class Column : DalObject<Column>
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         public string Name { get; }
         public int Limit { get; }
 

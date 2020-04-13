@@ -8,6 +8,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class SecurityController
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         public UserPackage.UserController UserController { get; }
         public BoardPackage.BoardController BoardController { get; }
         private UserPackage.User CurrentUser;

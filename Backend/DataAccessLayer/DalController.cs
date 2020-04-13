@@ -10,6 +10,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class DalController
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         public string BASE_PATH { get; }
 
         public DalController () {

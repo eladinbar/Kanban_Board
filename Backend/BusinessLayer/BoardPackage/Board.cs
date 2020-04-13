@@ -9,6 +9,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class Board : PersistedObject<DataAccessLayer.Board>
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         public List<Column> Columns { get; }
         public string UserEmail { get; }
         public int TaskCounter { get; set; }
