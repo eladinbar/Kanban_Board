@@ -102,8 +102,10 @@
     <Compile Include="TestsLayer\LoadDataTest.cs" />
     <Compile Include="TestsLayer\LoginTest.cs" />
     <Compile Include="TestsLayer\RegisterTest.cs" />
+    <Compile Include="TestsLayer\TaskForTestCreator.cs" />
     <Compile Include="TestsLayer\TaskInvolvedTests.cs" />
     <Compile Include="TestsLayer\TestsController.cs" />
+    <Compile Include="TestsLayer\UserForTestCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
