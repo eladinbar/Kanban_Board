@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
         static void Main(string[] args)
         {
-            log.Debug("start test");
+            log.Debug("Bigin Tasting");
             Stopwatch timer = new Stopwatch();
             timer.Start();
 

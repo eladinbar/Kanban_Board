@@ -15,15 +15,22 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public BoardService(BusinessLayer.SecurityController sc)
         {
+            log.Debug("BoardService Created");
             SecurityController = sc;
         }
 
 
         public Response<Board> GetBoard(string email) //done+++++++++++++++++++++++++++++++++++++++++++
         {
-            if (!SecurityController.UserValidation(email)) return new Response<Board>("Invailid current user.");
+            if (!SecurityController.UserValidation(email))
+            {
+                Response<Board> resp = new Response<Board>("Invailid current user.");
+                log.Error(resp.ErrorMessage);
+                return resp;
+            }
             List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
             Board tempStructBoard = new Board(tempColumnNames);
+            log.Info("Board Reached Service Layer Seccessfully");
             return new Response<Board>(tempStructBoard);
         }
 

@@ -15,13 +15,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public UserService(BusinessLayer.SecurityController sc)
         {
             _securityController = sc;
+            log.Debug("UserService Created");
         }
 
 
 
         public BusinessLayer.SecurityController SecurityController
         {
-            get { return _securityController; }
+            get
+            {
+                log.Debug("SecurityController getter was called");
+                return _securityController;
+            }
         }
 
 
@@ -32,11 +37,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 _securityController.UserController.Register(email, password, nickname);
                 _securityController.BoardController.AddNewBoard(email);
-                return new Response("User "+nickname+" has been registered successfully.");
+                
+                Response r = new Response("User "+nickname+" has been registered successfully.");
+                log.Info(r.ErrorMessage);
+                return r;
             }
             catch (Exception ex)
             {
                 Response resp = new Response(ex.Message);
+                log.Warn(ex.Message, ex);
                 return resp;
             }
         }
@@ -49,11 +58,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
-                return new Response<User>(tempStructUser);        
+                Response<User> r = new Response<User>(tempStructUser);
+                log.Info("Seccesfull login");
+                return r;
             }
             catch (Exception ex)
             {
                 Response<User> resp = new Response<User>(ex.Message);
+                log.Error(ex.Message, ex);
                 return resp;
             }
         }
@@ -64,12 +76,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-               // _securityController.Logout(email);
-                return new Response("User " + email + " logged out.");
+                _securityController.Logout(email);
+                
+                Response r = new Response("User " + email + " logged out.");
+                log.Info(r.ErrorMessage);
+                return r;
+                
             }
             catch(Exception ex)
             {
-                return new Response(ex.Message);
+                Response r = new Response(ex.Message);
+                log.Error(r.ErrorMessage, ex);
+                return r;
             }
         }
 
@@ -80,11 +98,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 _securityController.UserController.ChangePassword(email, oldPassword, newPassword);
-                return new Response("Password successfully changed.");
+                Response resp = new Response("Password successfully changed.");
+                log.Info(resp.ErrorMessage);
+                return resp;
             }
             catch (Exception ex)
             {
-                return new Response(ex.Message);
+                Response resp = new Response(ex.Message);
+                log.Error(resp.ErrorMessage,ex);
+                return resp;
             }
         }
     }
