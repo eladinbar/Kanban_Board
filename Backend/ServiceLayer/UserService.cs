@@ -46,7 +46,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
-                User tempStructUser = new User(tempUser.email,tempUser.nickname);
+                User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
                 return new Response<User>(tempStructUser);        
             }
             catch (Exception ex)
