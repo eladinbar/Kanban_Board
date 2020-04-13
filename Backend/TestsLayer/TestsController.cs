@@ -88,26 +88,36 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
             //GetBoard tests
             GetBoardTest getBoardTest = new GetBoardTest(service);
-            getBoardTest.AllGood(randomUsers.ElementAt(1));
+            getBoardTest.AllGood(randomUsers.ElementAt(0));
             getBoardTest.NonExistingEmail(new ServiceLayer.User("nonexistingemail@mashu.com", "123"));
             getBoardTest.NotLoggedInUser(new ServiceLayer.User("nonexistingemail@mashu.com", "123"));
 
-            //TaskInvolvedTests
-            TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests(service);
-            int i = 0;
-            foreach(ServiceLayer.User tempUser in randomUsers)
-            {
-                taskInvolvedTests.AddTaskAllGood(tempUser, randomTasks.ElementAt(i));
-                i++;
-            }
-           
 
             //ColumnInvolvedTests
             ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests(service);
+            columnInvolvedTests.GetColumnByNameAllGood(randomUsers.ElementAt(0), "Done");
+            columnInvolvedTests.GetColumnByNonExistName(randomUsers.ElementAt(0), "Achiya");
+            columnInvolvedTests.GetColumnByOrdinalAllGood(randomUsers.ElementAt(0), 2);
+            columnInvolvedTests.GetColumnByNonExistOrdinal(randomUsers.ElementAt(0), 45);
+            columnInvolvedTests.LimitColumnAllGood(randomUsers.ElementAt(0), 0, 23);
+            columnInvolvedTests.LimitColumnBadColumnOrdinal(randomUsers.ElementAt(0), 8, 67);
+
+            //TaskInvolvedTests
+            TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests(service);
+            foreach (ServiceLayer.Task tempTask in randomTasks)
+                taskInvolvedTests.AddTaskAllGood(randomUsers.ElementAt(0), tempTask);
+            columnInvolvedTests.LimitColumnAllGood(randomUsers.ElementAt(0), 0, 5);
+            columnInvolvedTests.LimitColumnLesserColumnLimit(randomUsers.ElementAt(0), 0, 3);
+            taskInvolvedTests.AddTaskOverColumnLimit(randomUsers.ElementAt(0), randomTasks.ElementAt(0));
 
 
 
-            
+
+
+
+
+
+
 
 
 
