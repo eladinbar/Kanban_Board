@@ -15,14 +15,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             _securityController = sc;
         }
 
-
-
         public BusinessLayer.SecurityController SecurityController
         {
             get { return _securityController; }
         }
-
-
 
         public Response Register(string email, string password, string nickname) //done++++++++++++++++++++++
         {
@@ -45,7 +41,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
-                User tempStructUser = new User(tempUser.email,tempUser.nickname);
+                User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
                 return new Response<User>(tempStructUser);        
             }
             catch (Exception ex)

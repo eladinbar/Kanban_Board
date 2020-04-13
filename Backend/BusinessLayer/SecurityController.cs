@@ -8,47 +8,29 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class SecurityController
     {
-        private UserPackage.UserController UserControl;
-        private BoardPackage.BoardController BoardControl;
-        private UserPackage.User CurrentUse;
+        public UserPackage.UserController UserController { get; }
+        public BoardPackage.BoardController BoardController { get; }
+        private UserPackage.User CurrentUser;
 
 
         public SecurityController()
         {
-            UserControl = new UserPackage.UserController();
-            BoardControl = new BoardPackage.BoardController();
-            this.CurrentUse = null;
+            UserController = new UserPackage.UserController();
+            BoardController = new BoardPackage.BoardController();
+            this.CurrentUser = null;
         }
-
-
-
-        public UserPackage.UserController UserController 
-        {
-            get { return this.UserControl; }
-        }
-
-
-
-        public BoardPackage.BoardController BoardController
-        {
-            get { return this.BoardControl; }
-        }
-
-
 
         public UserPackage.User Login(string email, string password) //done++++++++++++++++++++++++++++++++++++++
         {
-            if (CurrentUse != null) throw new AccessViolationException("There is already LoggedIn User. LogOut to switch for another User.");
-            this.CurrentUse = UserControl.Login(email, password);
-            return CurrentUse;
+            if (CurrentUser != null) throw new AccessViolationException("There is already LoggedIn User. LogOut to switch for another User.");
+            this.CurrentUser = UserController.Login(email, password);
+            return CurrentUser;
         }
-
-
 
         public bool UserValidation(string email) //done++++++++++++++++++++++++++++++++++++++
         {
-            if (CurrentUse == null) return false;
-            return CurrentUse.email.Equals(email);
+            if (CurrentUser == null) return false;
+            return CurrentUser.Email.Equals(email);
         }
     }
 }

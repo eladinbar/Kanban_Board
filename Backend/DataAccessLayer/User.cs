@@ -10,15 +10,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class User : DalObject<User>
     {
-        private readonly string _email;
-        private readonly string _password;
-        private readonly string _nickname;
+        public string Email { get; }
+        public string Password { get; }
+        public string Nickname { get; }
 
         public User(string email, string password, string nickname)
         {
-            _email = email;
-            _password = password;
-            _nickname = nickname;
+            Email = email;
+            Password = password;
+            Nickname = nickname;
         }
 
         public User() { }
@@ -32,8 +32,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         //getters
-        public string Email { get; }
-        public string Password { get; }
-        public string Nickname { get; }
+        
     }
 }

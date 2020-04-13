@@ -9,23 +9,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class Column : PersistedObject<DataAccessLayer.Column>
     {
-        private string _name;
-        private int _limit;
-        private List<Task> _tasks;
+        public string Name { get; }
+        public int Limit { get; private set; }
+        public List<Task> Tasks { get; }
 
         public Column(string name)
         {
-            _name = name;
-            _limit = Int32.MaxValue;
-            _tasks = new List<Task>();
+            Name = name;
+            Limit = Int32.MaxValue;
+            Tasks = new List<Task>();
 
         }
 
         public Column(string name, List<Task> tasks, int limit)
         {
-            _name = name;
-            _limit = limit;
-            _tasks = tasks;
+            Name = name;
+            Limit = limit;
+            Tasks = tasks;
 
         }
 
@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else if (limit > Tasks.Count)
                 throw new ArgumentOutOfRangeException("Number of tasks is more then the desired limit");
             else
-                _limit = limit;
+                Limit = limit;
         }
 
         public void InsertTask(Task t)
@@ -85,12 +85,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
                 return false;
         }
-        
-        //getters
-        public string Name { get;}
-        public int Limit { get; }
-        public List<Task> Tasks { get; }
-
-
     }
 }
