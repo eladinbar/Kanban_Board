@@ -64,7 +64,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                _securityController.Logout(email);
+               // _securityController.Logout(email);
                 return new Response("User " + email + " logged out.");
             }
             catch(Exception ex)
