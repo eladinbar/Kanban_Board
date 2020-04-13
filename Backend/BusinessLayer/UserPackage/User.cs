@@ -9,6 +9,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
     internal class User : PersistedObject<DataAccessLayer.User>
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private string Nickname;
         private string Email;
         private string Password;

@@ -8,6 +8,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     class UserService
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private BusinessLayer.SecurityController _securityController;
 
         public UserService(BusinessLayer.SecurityController sc)

@@ -5,6 +5,8 @@
     ///<typeparam name="T">The type of the returned value of the function, stored by the list.</typeparam>
     public class Response<T> : Response
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         public readonly T Value;
         internal Response(string msg) : base(msg) { }
         internal Response(T value) : base()

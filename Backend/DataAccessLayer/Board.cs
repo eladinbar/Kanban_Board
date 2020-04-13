@@ -10,6 +10,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class Board : DalObject<Board>
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private readonly string _userEmail;
         private readonly int _taskCounter;
         private readonly List<Column> _columns;

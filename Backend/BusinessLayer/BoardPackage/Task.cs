@@ -9,6 +9,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class Task : PersistedObject<DataAccessLayer.Task>
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private int _id;
         private string _title;
         private string _description;

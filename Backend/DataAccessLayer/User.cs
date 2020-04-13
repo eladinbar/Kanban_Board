@@ -10,6 +10,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class User : DalObject<User>
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private readonly string _email;
         private readonly string _password;
         private readonly string _nickname;

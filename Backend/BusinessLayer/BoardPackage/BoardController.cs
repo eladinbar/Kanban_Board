@@ -10,6 +10,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class BoardController
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private Dictionary<String, Board> _boards;
         
         public BoardController()

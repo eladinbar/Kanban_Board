@@ -8,6 +8,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class Task : DalObject<Task>
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private readonly int _id;
         private readonly string _title;
         private readonly string _description;

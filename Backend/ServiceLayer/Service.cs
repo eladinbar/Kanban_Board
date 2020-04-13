@@ -13,6 +13,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private BusinessLayer.SecurityController _securityController;
         private BoardService _boardService;
         private UserService _userService;
