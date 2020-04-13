@@ -16,21 +16,43 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public DalController () {
             BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
+            log.Info("DalController created");
         }
 
         public void WriteToFile (string fileName, string content, string path) {
-            File.WriteAllText(BASE_PATH + path + fileName + ".json", content);
+            try
+            {
+                File.WriteAllText(BASE_PATH + path + fileName + ".json", content);
+            }catch(Exception ex)
+            {
+                log.Fatal(ex);
+            }
         }
 
         public string ReadFromFile (string fileName, string path) {
-            return File.ReadAllText(BASE_PATH + path + fileName);
+            try
+            {
+                string fromMemory = File.ReadAllText(BASE_PATH + path + fileName);
+                return fromMemory;
+            }catch(Exception ex)
+            {
+                log.Fatal(ex);
+                return "";
+            }
         }
 
         public void RemoveFromFile (string fileName, string path) {
-            File.Delete(BASE_PATH + path + fileName + ".json");
+            try
+            {
+                File.Delete(BASE_PATH + path + fileName + ".json");
+            }catch(Exception ex)
+            {
+                log.Fatal(ex);
+            }
         }
 
         public List<User> LoadAllUsers() {
+            log.Debug("Loading all users");
             List<User> users = new List<User>();
             DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Users\\");
             if (dir.Exists) //Checks that the directory exists and loads all user data from it
@@ -46,6 +68,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         public List<Board> LoadAllBoards() {
+            log.Debug("Loading all Boards");
             List<Board> boards = new List<Board>();
             DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\");
             if (dir.Exists) {
@@ -61,6 +84,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         private List<Column> LoadAllColumns(string boardName)
         {
+            log.Debug("Loading all columns of " + boardName);
             List<Column> columns = new List<Column>();
             DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName + "\\");
             if (dir.Exists)
@@ -77,6 +101,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         private List<Task> LoadAllTasks (string boardName, string columnName) {
+            log.Debug("Loading all tasks in " + columnName + " of Board" + boardName);
             List<Task> tasks = new List<Task>();
             DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName + "\\" + columnName + "\\");
             if (dir.Exists)
