@@ -1,5 +1,7 @@
 ﻿using System;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
@@ -13,7 +15,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log = LogHelper.getLogger();
 
         private BusinessLayer.SecurityController _securityController;
         private BoardService _boardService;
@@ -24,6 +26,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
+            log.Debug("crates service");
             _securityController = null;
         }
 

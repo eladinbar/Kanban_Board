@@ -8,12 +8,16 @@ using System.IO;
 using System.Security.Principal;
 using System.Security.AccessControl;
 
+
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
     class TestsController
     {
-      static void Main(string[] args)
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
+        static void Main(string[] args)
         {
+            log.Debug("start test");
             Stopwatch timer = new Stopwatch();
             timer.Start();
 

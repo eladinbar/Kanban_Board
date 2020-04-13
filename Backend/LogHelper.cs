@@ -10,8 +10,6 @@ namespace IntroSE.Kanban.Backend
 {
     public class LogHelper
     {
-        public static string LOG_PATH = Path.GetFullPath(@"..\..\") + "logs\\LogFile.txt";
-
         public static log4net.ILog getLogger([CallerFilePath]string filename = "")
         {
             return log4net.LogManager.GetLogger(filename);
