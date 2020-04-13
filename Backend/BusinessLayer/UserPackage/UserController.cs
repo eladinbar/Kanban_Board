@@ -26,6 +26,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
 
         public void Register(string email, string password, string nickname) {
+            log.Debug("Register Attempt");
             if (!Users.ContainsKey(email)) {
                ValidatePassword(password);
                ValidateEmail(email);
@@ -38,10 +39,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
 
         public User Login (string email, string password) {
+            log.Warn("Login Attempt with " + email);
             if (!Users.ContainsKey(email))
+            {
+                log.Error("not registered email login attempt");
                 throw new ArgumentException(email + " does not exist in the database, please register and try again.");
+            }
             else if (!Users[email].Password.Equals(password))
+            {
+                log.Warn("Login attempt with wrong Password");
                 throw new ArgumentException("Incorrect password. Please try again.");
+            }
             else
                 Users[email].Login();
             return Users[email];
