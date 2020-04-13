@@ -33,16 +33,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData() 
         {
+            log.Debug("bigin loding data");
             if (_securityController != null) return new Response("The data is already loaded.");
+            
             try
             {
                 _securityController = new BusinessLayer.SecurityController();
                 _boardService = new BoardService(_securityController);
                 _userService = new UserService(_securityController);
+                log.Info("seccessfully loaded data");
                 return new Response("The data was loaded successfully.");
             }
             catch (Exception ex)
             {
+                log.Warn(ex.Message, ex);
                 return new Response(ex.Message);
             }
         }
