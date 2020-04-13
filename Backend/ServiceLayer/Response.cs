@@ -5,6 +5,8 @@
     ///Otherwise, <c>ErrorOccured = false</c> and <c>ErrorMessage = null</c>.</summary>
     public class Response
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         public readonly string ErrorMessage;
         public bool ErrorOccured { get => ErrorMessage != null; }
         internal Response() { }

@@ -11,6 +11,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
     class UserController
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private Dictionary<string, User> Users;
 
         public UserController() {

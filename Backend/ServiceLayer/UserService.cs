@@ -8,6 +8,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     class UserService
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         private BusinessLayer.SecurityController _securityController;
 
         public UserService(BusinessLayer.SecurityController sc)
@@ -62,7 +64,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                _securityController.Logout(email);
+               // _securityController.Logout(email);
                 return new Response("User " + email + " logged out.");
             }
             catch(Exception ex)

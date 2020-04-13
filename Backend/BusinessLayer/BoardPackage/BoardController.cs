@@ -10,12 +10,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class BoardController
     {
-        private Dictionary<String, Board> Boards;
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
+        private Dictionary<String, Board> _boards;
         
         public BoardController()
         {
             DalController dalC = new DalController();
-            Boards = new Dictionary<string, Board>();
+            _boards = new Dictionary<string, Board>();
             List<DataAccessLayer.Board> DALboards = dalC.LoadAllBoards();
             foreach (DataAccessLayer.Board DALboard in DALboards) {
                 List<Column> columns = new List<Column>();
@@ -26,14 +28,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     }
                     columns.Add(new Column(DALcolumn.Name, tasks, DALcolumn.Limit));
                 }
-                Boards.Add(DALboard.UserEmail, new Board(DALboard.UserEmail, DALboard.TaskCounter, columns));
+                _boards.Add(DALboard.UserEmail, new Board(DALboard.UserEmail, DALboard.TaskCounter, columns));
             }
         }
               
         public Board GetBoard(string email)
         {
             Board tempBoard;
-            if (Boards.TryGetValue(email, out tempBoard))
+            if (_boards.TryGetValue(email, out tempBoard))
                 return tempBoard;
             else
                 throw new ArgumentException("board not exist with this email");
@@ -119,7 +121,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         public void AddNewBoard(string email)
         {
-            Boards.Add(email, new Board(email));
+            _boards.Add(email, new Board(email));
         }
+
+      
+       
+
+       
+
     }
 }
