@@ -60,7 +60,16 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             regTest.BadPassword(randomUsers.ElementAt(0), "123abc");
             regTest.BadPassword(randomUsers.ElementAt(0), "123abcс");
             regTest.BadPassword(randomUsers.ElementAt(0), "!@#$%^Abc1");
-                       
+            regTest.NonAcceptableEmail("ads@@mashu.com", uniPassword);
+            regTest.NonAcceptableEmail("ads@mashucom", uniPassword);
+            regTest.NonAcceptableEmail("ads@mashu.", uniPassword);
+            regTest.NonAcceptableEmail("adsmashu.com", uniPassword);
+            regTest.NonAcceptableEmail("@mashu.com", uniPassword);
+
+
+
+
+
             foreach (ServiceLayer.User tempUser in randomUsers)
                 regTest.AllGood(tempUser, uniPassword);
             
