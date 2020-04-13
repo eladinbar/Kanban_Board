@@ -24,6 +24,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         public void Register(string email, string password, string nickname) {
             if (!Users.ContainsKey(email)) {
+               ValidatePassword(password);
+               ValidateEmail(email);
                User newUser = new User(email, password, nickname);
                Users.Add(email, newUser);
                newUser.Save("Users\\");
