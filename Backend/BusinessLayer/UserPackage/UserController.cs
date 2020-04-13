@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             List<DataAccessLayer.User> DALusers = dalC.LoadAllUsers();
             foreach (DataAccessLayer.User DALuser in DALusers) {
                 User savedUser = new User(DALuser.Email, DALuser.Password, DALuser.Nickname);
-                Users.Add(savedUser.email, savedUser);
+                Users.Add(savedUser.Email, savedUser);
             }
         }
 
@@ -38,7 +38,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public User Login (string email, string password) {
             if (!Users.ContainsKey(email))
                 throw new ArgumentException(email + " does not exist in the database, please register and try again.");
-            else if (!Users[email].password.Equals(password))
+            else if (!Users[email].Password.Equals(password))
                 throw new ArgumentException("Incorrect password. Please try again.");
             else
                 Users[email].Login();
@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
 
         public void ChangePassword (string email, string oldPassword, string newPassword) {
-            if (Users[email].password.Equals(oldPassword)) {
+            if (Users[email].Password.Equals(oldPassword)) {
                 ValidatePassword(newPassword);
                 Users[email].ChangePassword(newPassword);
                 Users[email].Save("Users\\");

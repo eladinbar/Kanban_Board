@@ -9,46 +9,46 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class Task : PersistedObject<DataAccessLayer.Task>
     {
-        private int _id;
-        private string _title;
-        private string _description;
-        private DateTime _creationTime;
-        private DateTime _dueDate;
-        private DateTime _lastChangedDate;
+        public int Id { get; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public DateTime CreationTime { get; }
+        public DateTime DueDate { get; private set; }
+        public DateTime LastChangedDate { get; private set; }
 
         public Task(string title, string description, DateTime dueDate, int id)
         {
             if (title.Length > 0 && title.Length <= 50)
-                _title = title;
+                Title = title;
             else
                 throw new ArgumentOutOfRangeException("title can not exceed 50 charecters");
             if (description.Length <= 300)
-                _description = description;
+                Description = description;
             else
                 throw new ArgumentOutOfRangeException("description can not exceed 300 charecters");
 
-            _dueDate = dueDate;
-            _creationTime = DateTime.Now;
-            _lastChangedDate = DateTime.Now;
-            _id = id;
+            DueDate = dueDate;
+            CreationTime = DateTime.Now;
+            LastChangedDate = DateTime.Now;
+            Id = id;
 
         }
 
         internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate) {
-            _title = title;
-            _description = description;
-            _dueDate = dueDate;
-            _id = id;
-            _creationTime = creationTime;
-            _lastChangedDate = lastChangedDate;
+            Title = title;
+            Description = description;
+            DueDate = dueDate;
+            Id = id;
+            CreationTime = creationTime;
+            LastChangedDate = lastChangedDate;
         }
 
         public void UpdateTaskTitle(string title)
         {
             if (title.Length > 0 && title.Length <= 50)
             {
-                _title = title;
-                _lastChangedDate = new DateTime().ToLocalTime();
+                Title = title;
+                LastChangedDate = new DateTime().ToLocalTime();
             }
             else
                 throw new ArgumentException("title can not exceed 50 charecters");
@@ -59,8 +59,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             if (description.Length <= 300)
             {
-                _description = description;
-                _lastChangedDate = new DateTime().ToLocalTime();
+                Description = description;
+                LastChangedDate = new DateTime().ToLocalTime();
             }
             else
                 throw new ArgumentException("description can not exceed 300 charecters");
@@ -73,8 +73,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new ArgumentException("Due date cannot be set to past time");
             else
             {
-                _dueDate = duedate;
-                _lastChangedDate = new DateTime().ToLocalTime();
+                DueDate = duedate;
+                LastChangedDate = new DateTime().ToLocalTime();
             }
         }
 
@@ -92,13 +92,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             ToDalObject().Delete(Id + "", path);
         }
-
-        //getters
-        public int Id { get;}
-        public string Title { get; }
-        public string Description { get; }
-        public DateTime DueDate { get; }
-        public DateTime CreationTime { get; }
-        public DateTime LastChangedDate { get; }
     }
 }
