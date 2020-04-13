@@ -60,19 +60,45 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             regTest.BadPassword(randomUsers.ElementAt(0), "123abc");
             regTest.BadPassword(randomUsers.ElementAt(0), "123abcс");
             regTest.BadPassword(randomUsers.ElementAt(0), "!@#$%^Abc1");
-
-            
-
-
+                       
             foreach (ServiceLayer.User tempUser in randomUsers)
                 regTest.AllGood(tempUser, uniPassword);
+            
+            //Login Tests
+            LoginTest loginTest = new LoginTest(service);
+            loginTest.IncorrectPassword(randomUsers.ElementAt(0), "1234Abcd");
+            loginTest.IncorrectEmail(new ServiceLayer.User("123", "123"), uniPassword);
+            loginTest.AllGood(randomUsers.ElementAt(0), uniPassword);
+            loginTest.AlreadyLoggedIn(randomUsers.ElementAt(0), uniPassword);
+            loginTest.LogoutOfLoggedInUser(randomUsers.ElementAt(0));
+            loginTest.AllGood(randomUsers.ElementAt(0),uniPassword);
+            loginTest.LogoutOfOtherUser(randomUsers.ElementAt(1));
+            loginTest.AllGood(randomUsers.ElementAt(0), uniPassword);
+
+
+
+            //GetBoard tests
+            GetBoardTest getBoardTest = new GetBoardTest(service);
+            getBoardTest.AllGood(randomUsers.ElementAt(1));
+            getBoardTest.NonExistingEmail(new ServiceLayer.User("nonexistingemail@mashu.com", "123"));
+            getBoardTest.NotLoggedInUser(new ServiceLayer.User("nonexistingemail@mashu.com", "123"));
+
+            //TaskInvolvedTests
+            TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests(service);
+            int i = 0;
+            foreach(ServiceLayer.User tempUser in randomUsers)
+            {
+                taskInvolvedTests.AddTaskAllGood(tempUser, randomTasks.ElementAt(i));
+                i++;
+            }
+           
+
+            //ColumnInvolvedTests
+            ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests(service);
+
 
 
             
-
-            //Login Test - first login
-            LoginTest loginTest = new LoginTest(service);
-            loginTest.AllGood(randomUsers.ElementAt(0), uniPassword);
 
 
 
