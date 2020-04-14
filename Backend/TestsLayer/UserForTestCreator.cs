@@ -8,6 +8,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 {
     class UserForTestCreator
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
         public List<ServiceLayer.User> _users { get; }
 
         public UserForTestCreator(int numOfUsers)
@@ -25,7 +26,8 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
         public void PrintUsers()
         {
-            Console.WriteLine("Current list of users: ");
+            log.Debug("Current list of users:");
+            //Console.WriteLine("Current list of users: ");
             int i = 1;
             foreach (ServiceLayer.User tempUser in _users)
             {
