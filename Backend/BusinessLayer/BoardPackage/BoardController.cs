@@ -102,15 +102,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             if (b.GetColumn(columnOrdinal).Name.Equals("Done"))
+            {
+                log.Error("attempt to advance task in Done column");
                 throw new ArgumentOutOfRangeException("cannot advance task at Done Column");
+            }
+            else if (!b.GetColumn(columnOrdinal + 1).CheckLimit())
+            {
+                log.Error("attempt to advance task to a full column");
+                throw new ArgumentOutOfRangeException("Next column is full");
+            }
             else
             {
                 Column c = b.GetColumn(columnOrdinal);
                 Task toAdvance = c.RemoveTask(taskId);
-                Column targetColumn = b.GetColumn(columnOrdinal + 1); 
+                Column targetColumn = b.GetColumn(columnOrdinal + 1);
                 targetColumn.InsertTask(toAdvance);
                 toAdvance.Save("Boards\\" + email + "\\" + targetColumn.Name + "\\");
                 toAdvance.Delete(toAdvance.Id + "", "Boards\\" + email + "\\" + c.Name + "\\");
+                log.Debug("task " + taskId + " was advanced");
             }
         }
 
@@ -118,14 +127,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Column c = GetColumn(email, "Backlog");
             if (!c.CheckLimit())
+            {
+                log.Error("attemp to add task when backlog is full");
                 throw new Exception("backlog column is full");
-
+            }
             int taskCounter = GetBoard(email).TaskCounter;
             Task newTask = new Task(title, description, dueDate, taskCounter);
             taskCounter++;
             
             c.InsertTask(newTask);
             newTask.Save("Boards\\" + email + "\\" + c.Name + "\\");
+            log.Debug("new task was added to Backlog Column");
             return newTask;            
         }
 
@@ -134,6 +146,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
             toUpdate.UpdateTaskTitle(newTitle);
             toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+            log.Debug("Task title was updated");
         }
 
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription)
@@ -141,6 +154,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
             toUpdate.UpdateTaskDescription(newDescription);
             toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+            log.Debug("Task description was updated");
         }
 
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
@@ -148,11 +162,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
             toUpdate.UpdateTaskDuedate(newDueDate);
             toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+            log.Debug("Task doudate was updated");
         }
 
         public void AddNewBoard(string email)
         {
             _boards.Add(email, new Board(email));
+            log.Info("New board was added with kay " + email);
         }
 
       

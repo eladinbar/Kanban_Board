@@ -40,6 +40,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
 
         public void Save(string path) {
+            log.Info("User.save was called");
             ToDalObject().Save(path);
         }
     }

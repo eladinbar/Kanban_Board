@@ -23,6 +23,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Columns.Add(new Column("Backlog"));
             Columns.Add(new Column("In Prograss"));
             Columns.Add(new Column("Done"));
+            log.Info("new Board Created");
         }
 
         public Board(string email, int taskCounter, List<Column> columns)
@@ -30,18 +31,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             UserEmail = email;
             TaskCounter = taskCounter;
             Columns = columns;
+            log.Info("load - Board " + email + "was loaded from memory");
         }
 
         public Column GetColumn(string columnName)
         {
+            log.Debug(UserEmail + ": returned column " + columnName);
             return Columns.Find(x => x.Name.Equals(columnName));
         }
 
         public Column GetColumn(int columnOrdinal)
         {
             if (columnOrdinal > Columns.Count)
+            {
+                log.Warn("columnOrdinal was out of range");
                 throw new ArgumentOutOfRangeException("Column index out of range");
-            
+            }
+            log.Debug(UserEmail + ": returned column no." + columnOrdinal);
                return Columns[columnOrdinal];
         }
 
@@ -52,16 +58,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 columnNames.Add(c.Name);
             }
+            log.Debug("Returned column's names");
             return columnNames;
         }
 
         public void Save(string path)
         {
+            log.Info("Board.save was called");
             ToDalObject().Save(path);         
         }
 
         public DataAccessLayer.Board ToDalObject()
         {
+            log.Debug("Creating DalObject<Board>");
             List<DataAccessLayer.Column> dalColumns = new List<DataAccessLayer.Column>();
             foreach(Column c in Columns)
             {

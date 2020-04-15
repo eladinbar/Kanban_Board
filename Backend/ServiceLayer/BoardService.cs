@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
             Board tempStructBoard = new Board(tempColumnNames);
-            log.Info("Board Reached Service Layer Seccessfully");
+            log.Debug("Board Reached Service Layer Seccessfully");
             return new Response<Board>(tempStructBoard);
         }
 
@@ -38,14 +38,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit) //done+++++++++++++++++++++++++++++++++++++++++++
         {
-            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email))
+            {
+                Response resp = new Response("Invalid current user.");
+                log.Error(resp.ErrorMessage);
+                return resp;
+            }
             try
             {
                 SecurityController.BoardController.LimitColumnTask(email, columnOrdinal, limit);
+                log.Info("Column limit has been updated successfully.");
                 return new Response("Column limit has been updated successfully.");
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message, ex);
                 return new Response(ex.Message);
             }
 
@@ -60,10 +67,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate);
                 Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime, title, description, dueDate);
+                log.Info("Task added seccessfully.");
                 return new Response<Task>(tempStructTask, "Task has been added successfully.");
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message, ex);
                 return new Response<Task>(ex.Message);
             }
         }
@@ -76,10 +85,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
+                log.Info("Task doudate updated seccessfully.");
                 return new Response("Task due date has benn updated successfully.");
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message, ex);
                 return new Response(ex.Message);
             }
         }
@@ -92,10 +103,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle);
+                log.Info("Task title updated seccessfully.");
                 return new Response("Task title has been updated successfully");
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message,ex);
                 return new Response(ex.Message);
             }
         }
@@ -108,10 +121,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
+                log.Info("Task description updated seccessfully.");
                 return new Response("Task description has been updated successfully");
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message, ex);
                 return new Response(ex.Message);
             }
         }
@@ -124,10 +139,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.AdvanceTask(email, columnOrdinal, taskId);
+                log.Info("Task Advanced to column" + columnOrdinal+1);
                 return new Response("Task has been advanced successfully");
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message, ex);
                 return new Response(ex.Message);
             }
         }
@@ -157,10 +174,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //declaring struct Column with ReadOnlyCollection of struct Tasks
                 Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
 
+                log.Debug("Desired Column Reached Service Layer");
                 return new Response<Column>(tempStructColumn);
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message, ex);
                 return new Response<Column>(ex.Message);
             }
         }
@@ -184,10 +203,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 IReadOnlyCollection<Task> tempReadOnlyStructTaskList = new ReadOnlyCollection<Task>(structTaskList);
 
                 Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
+                log.Debug("Desired Column Reached Service Layer");
                 return new Response<Column>(tempStructColumn);
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message, ex);
                 return new Response<Column>(ex.Message);
             }
         }
