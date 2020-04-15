@@ -46,7 +46,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             LastChangedDate = lastChangedDate.ToLocalTime();
             log.Info("Task " + id + " was Loaded from memory");
         }
-
+        /// <summary>
+        /// changes the task title.
+        /// </summary>
+        /// <param name="title">the new title of the task</param>
+        /// <exception cref="ArgumentException">Trown if the new title is empty or more th 50 charecters</exception>
         public void UpdateTaskTitle(string title)
         {
             if (title.Length > 0 && title.Length <= 50)
@@ -55,10 +59,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 LastChangedDate = DateTime.Now.ToLocalTime();
             }
             else
-                throw new ArgumentException("title can not exceed 50 charecters");
+                throw new ArgumentException("title can not exceed 50 charecters or be empty");
         }
        
-
+        /// <summary>
+        /// changes the task description
+        /// </summary>
+        /// <param name="description">the new description of the task</param>
+        /// <exception cref="ArgumentException">Thrown when description is more then 300 characters</exception>
         public void UpdateTaskDescription(string description)
         {
             if (description.Length <= 300)
@@ -70,7 +78,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 throw new ArgumentException("description can not exceed 300 charecters");
         }
       
-              
+        /// <summary>
+        /// changes the task duedate to a new one
+        /// </summary>
+        /// <param name="duedate">The new duedate.</param>
+        /// <exception cref="ArgumentException">Thrown when the new duedate is erlier then the current time of the change.</exception>
         public void UpdateTaskDuedate(DateTime duedate)
         {
             if (duedate.CompareTo(DateTime.Now) < 0)
@@ -81,19 +93,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 LastChangedDate = DateTime.Now.ToLocalTime();
             }
         }
-
+        ///>inheritdoc/>
         public DataAccessLayer.Task ToDalObject()
         {
             return new DataAccessLayer.Task(Id, Title, Description, CreationTime, DueDate, LastChangedDate);
         }
 
+        ///>inheritdoc/>
         public void Save(string path)
         {
             ToDalObject().Save(path);
             log.Info("Task.save was called");
         }
 
-        public void Delete(string fileName, string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
+        /// <summary>
+        /// prevents foe double saving the same task
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="path"></param>
+        internal void Delete(string fileName, string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
         {
             ToDalObject().Delete(Id + "", path);
             log.Info("Task " + Id + "deleted");

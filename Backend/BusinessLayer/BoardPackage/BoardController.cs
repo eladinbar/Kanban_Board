@@ -59,7 +59,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="email">the email of the user that the board belong.</param>
         /// <param name="columnName">The name of the column in the board.</param>
-        /// <returns>return Column with the spesified name in the board with the key email.</returns>
+        /// <returns>
+        /// return Column with the spesified name in the board with the key email.
+        /// </returns>
         public Column GetColumn(string email, string columnName)
         {
             Board newBoard = GetBoard(email);
@@ -70,7 +72,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="email">the email of the user that the board belong.</param>
         /// <param name="columnOrdinal">the column number of the board.</param>
-        /// <returns>return Column with the spesified columnOrdinal in the board with the key email.</returns>
+        /// <returns>
+        /// return Column with the spesified columnOrdinal in the board with the key email.
+        /// </returns>
         public Column GetColumn(string email, int columnOrdinal)
         {
             Board b = GetBoard(email);
@@ -88,14 +92,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             Column c = b.GetColumn(columnOrdinal);
-            if (limit > 0)
-            {
-                c.LimitColumnTasks(limit);
-                c.Save("Boards\\" + email + "\\");
-            }
-
-            else
-                throw new ArgumentException("limit must be a natural non zero number");
+            c.LimitColumnTasks(limit);
+            c.Save("Boards\\" + email + "\\");
+           
         }
         /// <summary>
         /// Advence a task from specified column to the next one.
