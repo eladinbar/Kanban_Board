@@ -86,6 +86,7 @@
     <Compile Include="DataAccessLayer\DalObject.cs" />
     <Compile Include="DataAccessLayer\Task.cs" />
     <Compile Include="DataAccessLayer\User.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="ServiceLayer\BoardService.cs" />
     <Compile Include="ServiceLayer\Response.cs" />
     <Compile Include="ServiceLayer\ResponseT.cs" />
