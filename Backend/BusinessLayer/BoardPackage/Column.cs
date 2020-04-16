@@ -46,7 +46,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Error("Attempt to set limit to 0");
                 throw new ArgumentOutOfRangeException("Cannot use negative number to limit number of tasks");
             }
-            else if (limit > Tasks.Count)
+            else if (limit < Tasks.Count)
             {
                 log.Error("number of tasks in the column was greater then limit set attempt");
                 throw new ArgumentOutOfRangeException("Number of tasks is more then the desired limit");

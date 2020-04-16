@@ -67,6 +67,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             List<ServiceLayer.Task> _randomTasks = taskForTestCreator._tasks;
             _service.AddTask(_currentUser.Email, _randomTasks.ElementAt(0).Title, _randomTasks.ElementAt(0).Description, _randomTasks.ElementAt(0).DueDate);
             _service.AddTask(_currentUser.Email, _randomTasks.ElementAt(1).Title, _randomTasks.ElementAt(1).Description, _randomTasks.ElementAt(1).DueDate);
+            _service.AddTask(_currentUser.Email, _randomTasks.ElementAt(2).Title, _randomTasks.ElementAt(2).Description, _randomTasks.ElementAt(2).DueDate);
             Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, 0, 1).ErrorMessage);
             _service.LimitColumnTasks(_currentUser.Email, 0, 10); //reseting the limit to 10
             Console.WriteLine("End of the test: current limit was resetted back to 10.");

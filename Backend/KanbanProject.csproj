@@ -50,6 +50,9 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -102,6 +105,7 @@
     <Compile Include="DataAccessLayer\DalObject.cs" />
     <Compile Include="DataAccessLayer\Task.cs" />
     <Compile Include="DataAccessLayer\User.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="ServiceLayer\BoardService.cs" />
     <Compile Include="ServiceLayer\Response.cs" />
     <Compile Include="ServiceLayer\ResponseT.cs" />
@@ -116,11 +120,11 @@
     <Compile Include="TestsLayer\ColumnInvolvedTests.cs" />
     <Compile Include="TestsLayer\GetBoardTest.cs" />
     <Compile Include="TestsLayer\LoadDataTest.cs" />
-    <Compile Include="TestsLayer\UserTests.cs" />
     <Compile Include="TestsLayer\TaskForTestCreator.cs" />
+    <Compile Include="TestsLayer\UserForTestCreator.cs" />
+    <Compile Include="TestsLayer\UserTests.cs" />
     <Compile Include="TestsLayer\TaskInvolvedTests.cs" />
     <Compile Include="TestsLayer\TestsController.cs" />
-    <Compile Include="TestsLayer\UserForTestCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -139,6 +143,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

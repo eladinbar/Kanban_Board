@@ -10,11 +10,12 @@
 *.userosscache
 *.sln.docstates
 **/.idea
-[Dd}ata/
+[Dd]ata/
 
 #KanbanTests solution and UnitTest:
 KanbanTests/
 UnitTestProject1/
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
