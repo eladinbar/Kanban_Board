@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             _randomTasks = new TaskForTestCreator(10)._tasks;
             _service = new ServiceLayer.Service();
             _service.LoadData();
-            _currentUser = new ServiceLayer.User("currentUser@ColumnInvolvedTests.com", "currentUser@ColumnInvolvedTests");
+            _currentUser = new ServiceLayer.User("currentUser@TaskInvolvedTeasts.com", "currentUser@TaskInvolvedTeasts.com");
             _service.Register(_currentUser.Email, "123Abc", _currentUser.Nickname);
             _service.Login(_currentUser.Email, "123Abc");
         }
@@ -56,8 +56,8 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("Input: proper new task details with existing email.");
             Console.WriteLine("Runtime outcome: ");
             foreach (ServiceLayer.Task tempTask in _randomTasks)
-                Console.WriteLine(_service.AddTask(_currentUser.Email, _randomTasks.ElementAt(0).Title,
-                    _randomTasks.ElementAt(0).Description, _randomTasks.ElementAt(0).DueDate).ErrorMessage);
+                Console.WriteLine(_service.AddTask(_currentUser.Email, tempTask.Title,
+                    tempTask.Description, tempTask.DueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -71,8 +71,8 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             int i = 1;
             foreach (ServiceLayer.Task tempTask in _randomTasks)
             {
-                Console.WriteLine(_service.AddTask(_currentUser.Email, "OverColumnLimit" + _randomTasks.ElementAt(0).Title + "#" + i,
-                    _randomTasks.ElementAt(0).Description, _randomTasks.ElementAt(0).DueDate).ErrorMessage);
+                Console.WriteLine(_service.AddTask(_currentUser.Email, "OverColumnLimit" + tempTask.Title + "#" + i,
+                    tempTask.Description, tempTask.DueDate).ErrorMessage);
                 i++;
             }
             Console.WriteLine("---------------------------------------------------------------");
@@ -87,7 +87,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("UpdateTaskDueDateTest");
             Console.WriteLine("Input: proper details.");
             DateTime newDueDate = new DateTime(2035, 7, 24);
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(_currentUser.Email, 0, _randomTasks.ElementAt(0).Id, newDueDate).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(_currentUser.Email, 0, 1, newDueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -97,7 +97,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("UpdateTaskDueDateNonExistOrdinalTest");
             Console.WriteLine("Input: proper details except columnOrdinal.");
             DateTime newDueDate = new DateTime(2035, 7, 24);
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(_currentUser.Email, int.MaxValue, _randomTasks.ElementAt(0).Id, newDueDate).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(_currentUser.Email, int.MaxValue,1, newDueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -105,9 +105,9 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         {
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("UpdateTaskDueDateBadOrdinalTest");
-            Console.WriteLine("Input: proper details except columnOrdinal - task exists bit in different column.");
+            Console.WriteLine("Input: proper details except columnOrdinal - task exists but in different column.");
             DateTime newDueDate = new DateTime(2035, 7, 24);
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(_currentUser.Email, 2, _randomTasks.ElementAt(0).Id, newDueDate).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(_currentUser.Email, 2, 1, newDueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -119,7 +119,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("UpdateTaskTitleTest");
             Console.WriteLine("Input: proper task details.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskTitle(_currentUser.Email, 0, _randomTasks.ElementAt(0).Id, "UpdateTaskTitleTest").ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskTitle(_currentUser.Email, 0,1, "UpdateTaskTitleTest").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -130,7 +130,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("UpdateTaskDescriptioneTest");
             Console.WriteLine("Input: proper task details.");
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDescription(_currentUser.Email, 0, _randomTasks.ElementAt(0).Id, "UpdateTaskDescriptioneTest").ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDescription(_currentUser.Email, 0,1, "UpdateTaskDescriptioneTest").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -141,7 +141,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("AdvanceTaskTest");
             Console.WriteLine("Input: proper task details.");
-            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(_currentUser.Email, 0, _randomTasks.ElementAt(0).Id).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(_currentUser.Email, 0, 1).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -150,8 +150,8 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("AdvanceTaskDoneColumnTest");
             Console.WriteLine("Input: proper task details with 'done' column ordinal.");
-            _service.AdvanceTask(_currentUser.Email, 1, _randomTasks.ElementAt(0).Id);
-            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(_currentUser.Email, 2, _randomTasks.ElementAt(0).Id).ErrorMessage);
+            _service.AdvanceTask(_currentUser.Email, 1, 1);
+            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(_currentUser.Email, 2,1).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 

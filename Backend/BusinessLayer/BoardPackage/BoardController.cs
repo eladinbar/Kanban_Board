@@ -150,10 +150,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Error("attemp to add task when backlog is full");
                 throw new Exception("backlog column is full");
             }
-            int taskCounter = GetBoard(email).TaskCounter;
-            Task newTask = new Task(title, description, dueDate, taskCounter);
-            taskCounter++;
-            
+            Task newTask = new Task(title, description, dueDate, GetBoard(email).TaskCounter);
+            GetBoard(email).TaskCounter = GetBoard(email).TaskCounter + 1;
+
+
             c.InsertTask(newTask);
             newTask.Save("Boards\\" + email + "\\" + c.Name + "\\");
             log.Debug("new task was added to Backlog Column");
