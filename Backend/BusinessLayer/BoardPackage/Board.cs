@@ -9,25 +9,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     public class Board : PersistedObject<DataAccessLayer.Board>
     {
-        private List<Column> _columns;
-        private string _userEmail;
-        private int _taskCounter;
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
+        public List<Column> Columns { get; }
+        public string UserEmail { get; }
+        public int TaskCounter { get; set; }
 
         public Board(string email)
         {
-            _userEmail = email;
-            _taskCounter = 1;
-            _columns = new List<Column>();
-            _columns.Add(new Column("Backlog"));
-            _columns.Add(new Column("In Prograss"));
-            _columns.Add(new Column("Done"));
+            UserEmail = email;
+            TaskCounter = 1;
+            Columns = new List<Column>();
+            Columns.Add(new Column("Backlog"));
+            Columns.Add(new Column("In Prograss"));
+            Columns.Add(new Column("Done"));
         }
 
         public Board(string email, int taskCounter, List<Column> columns)
         {
-            _userEmail = email;
-            _taskCounter = taskCounter;
-            _columns = columns;
+            UserEmail = email;
+            TaskCounter = taskCounter;
+            Columns = columns;
         }
 
         public Column GetColumn(string columnName)
@@ -46,7 +48,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public List<string> getColumnNames()
         {
             List<string> columnNames = new List<string>();
-            foreach(Column c in _columns)
+            foreach(Column c in Columns)
             {
                 columnNames.Add(c.Name);
             }
@@ -65,11 +67,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 dalColumns.Add(c.ToDalObject());
             }
-            return new DataAccessLayer.Board(_userEmail, TaskCounter, dalColumns);
+            return new DataAccessLayer.Board(UserEmail, TaskCounter, dalColumns);
         }
 
-        public List<Column> Columns { get; }
-        public int TaskCounter { get; set; }
+
     }
 
 }

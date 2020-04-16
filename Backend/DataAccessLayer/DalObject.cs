@@ -9,8 +9,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public abstract class DalObject<T> where T:DalObject<T>
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
         public string ToJson() {
-            return JsonSerializer.Serialize(this); //Returns the T instance in Json (string) form
+            return JsonSerializer.Serialize(((T)this)); //Returns the T instance in Json (string) form
         }
 
         public T FromJson(string json) {

@@ -10,15 +10,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class Column : DalObject<Column>
     {
-        private readonly string _name;
-        private readonly int _limit;
-        private List<Task> _tasks;
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
+        public string Name { get; }
+        public int Limit { get; }
+
+        [JsonIgnore] //List is retrieved using the individual <Task>.json files
+        public List<Task> Tasks { get; }
 
         public Column(string name, int limit, List<Task> tasks)
         {
-            _name = name;
-            _limit = limit;
-            _tasks = tasks;
+            Name = name;
+            Limit = limit;
+            Tasks = tasks;
         }
 
         public Column() { }
@@ -30,12 +34,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 dir.Create();
             dc.WriteToFile(this.Name, ToJson(), path);
         }
-
-        //getters
-        public string Name { get; }
-        public int Limit { get; }
-
-        [JsonIgnore] //List is retrieved using the individual <Task>.json files
-        public List<Task> Tasks { get; }
     }
 }

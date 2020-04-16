@@ -10,17 +10,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class User : DalObject<User>
     {
-        //private readonly string _email; 
-        public string Email { get; private set; }
-        private readonly string _password;
-        private readonly string _nickname;
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+        public string Email { get; }
+        public string Password { get; }
+        public string Nickname { get; }
 
         public User(string email, string password, string nickname)
         {
-            //_email = email;
             Email = email;
-            _password = password;
-            _nickname = nickname;
+            Password = password;
+            Nickname = nickname;
         }
 
         public User() { }
@@ -34,8 +33,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         //getters
-        //public string Email { get { return _email; } }
-        public string Password { get { return _password; } }
-        public string Nickname { get { return _nickname; } }
+        
     }
 }

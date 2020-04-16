@@ -9,18 +9,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     class BoardService
     {
-        private BusinessLayer.SecurityController _securityController;
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
+        private BusinessLayer.SecurityController SecurityController;
 
         public BoardService(BusinessLayer.SecurityController sc)
         {
-            _securityController = sc;
+            SecurityController = sc;
         }
 
 
         public Response<Board> GetBoard(string email) //done+++++++++++++++++++++++++++++++++++++++++++
         {
-            if (!_securityController.UserValidation(email)) return new Response<Board>("Invailid current user.");
-            List<string> tempColumnNames = _securityController.BoardController.GetBoard(email).getColumnNames();
+            if (!SecurityController.UserValidation(email)) return new Response<Board>("Invailid current user.");
+            List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
             Board tempStructBoard = new Board(tempColumnNames);
             return new Response<Board>(tempStructBoard);
         }
@@ -29,10 +31,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit) //done+++++++++++++++++++++++++++++++++++++++++++
         {
-            if (!_securityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                _securityController.BoardController.LimitColumnTask(email, columnOrdinal, limit);
+                SecurityController.BoardController.LimitColumnTask(email, columnOrdinal, limit);
                 return new Response("Column limit has been updated successfully.");
             }
             catch (Exception ex)
@@ -46,10 +48,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate) //done++++++++++++++++++++++++++++++++++++++
         {
-            if (!_securityController.UserValidation(email)) return new Response<Task>("Invalid current user.");
+            if (!SecurityController.UserValidation(email)) return new Response<Task>("Invalid current user.");
             try
             {
-                BusinessLayer.BoardPackage.Task tempTask = _securityController.BoardController.AddTask(email, title, description, dueDate);
+                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate);
                 Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime, title, description, dueDate);
                 return new Response<Task>(tempStructTask, "Task has been added successfully.");
             }
@@ -63,10 +65,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate) //done++++++++++++++++++++++++++++++++++++++
         {
-            if (!_securityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                _securityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
+                SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
                 return new Response("Task due date has benn updated successfully.");
             }
             catch (Exception ex)
@@ -79,10 +81,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle) //done++++++++++++++++++++++++++++++++++++++
         {
-            if (!_securityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                _securityController.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle);
+                SecurityController.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle);
                 return new Response("Task title has been updated successfully");
             }
             catch (Exception ex)
@@ -95,10 +97,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription) //done+++++++++++++++++++++++++++++
         {
-            if (!_securityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                _securityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
+                SecurityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
                 return new Response("Task description has been updated successfully");
             }
             catch (Exception ex)
@@ -111,10 +113,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response AdvanceTask(string email, int columnOrdinal, int taskId) //done+++++++++++++++++++++++++++++
         {
-            if (!_securityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                _securityController.BoardController.AdvanceTask(email, columnOrdinal, taskId);
+                SecurityController.BoardController.AdvanceTask(email, columnOrdinal, taskId);
                 return new Response("Task has been advanced successfully");
             }
             catch (Exception ex)
@@ -127,11 +129,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Column> GetColumn(string email, string columnName) ///done++++++++++++++++++++++++++++++++++++++
         {
-            if (!_securityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
+            if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
             try
             {
                 //declaring BL column by receiving existing column from BL.BoardPackage
-                BusinessLayer.BoardPackage.Column tempColumn = _securityController.BoardController.GetColumn(email, columnName);
+                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.GetColumn(email, columnName);
                 //declaring List of BL.Tasks by receiving it from 'tempColumn'
                 List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.Tasks;
 
@@ -161,10 +163,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> GetColumn(string email, int columnOrdinal) //done++++++++++++++++++++++++++++++++++++++
         {
             //this method replicates GetColumn(string email, string columnName), with only difference of calling BL.BC.GetColumn() with columnOrdinal.
-            if (!_securityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
+            if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
             try
             {
-                BusinessLayer.BoardPackage.Column tempColumn = _securityController.BoardController.GetColumn(email, columnOrdinal);
+                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.GetColumn(email, columnOrdinal);
                 List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.Tasks;
 
                 List<Task> structTaskList = new List<Task>();

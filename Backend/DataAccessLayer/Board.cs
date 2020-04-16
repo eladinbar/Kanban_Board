@@ -10,15 +10,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class Board : DalObject<Board>
     {
-        private readonly string _userEmail;
-        private readonly int _taskCounter;
-        private readonly List<Column> _columns;
+        private static readonly log4net.ILog log = LogHelper.getLogger();
+
+        public string UserEmail { get; }
+        public int TaskCounter { get; }
+
+        [JsonIgnore] //List is retrieved using the individual <Column>.json files
+        public List<Column> Columns { get; private set; }
 
         public Board(string email, int taskCounter, List<Column> columns)
         {
-            _userEmail = email;
-            _taskCounter = taskCounter;
-            _columns = columns;
+            UserEmail = email;
+            TaskCounter = taskCounter;
+            Columns = columns;
         }
 
         public Board() { }
@@ -33,12 +37,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             dir = new DirectoryInfo(dir + this.UserEmail);
             dir.Create();
         }
-
-        //getters
-        public string UserEmail { get; }
-        public int TaskCounter { get; }
-
-        [JsonIgnore] //List is retrieved using the individual <Column>.json files
-        public List<Column> Columns { get; }
     }
 }

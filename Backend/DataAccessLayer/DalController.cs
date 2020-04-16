@@ -10,11 +10,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class DalController
     {
-        private readonly string _BASE_PATH;
+        private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        public DalController()
-        {
-            _BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
+        public string BASE_PATH { get; }
+
+        public DalController () {
+            BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
         }
 
         public void WriteToFile (string fileName, string content, string path) {
@@ -91,6 +92,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         //getter
-        public string BASE_PATH { get { return _BASE_PATH; } }
+
     }
 }
