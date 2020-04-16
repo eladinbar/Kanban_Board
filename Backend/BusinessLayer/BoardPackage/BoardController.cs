@@ -125,8 +125,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column targetColumn = b.GetColumn(columnOrdinal + 1);
                 targetColumn.InsertTask(toAdvance);
                 toAdvance.Save("Boards\\" + email + "\\" + targetColumn.Name + "\\");
-                toAdvance.Delete(toAdvance.Id + "", "Boards\\" + email + "\\" + c.Name + "\\");
-                log.Debug("task " + taskId + " was advanced");
+                toAdvance.Delete(toAdvance.Id + "-" + toAdvance.Title, "Boards\\" + email + "\\" + c.Name + "\\");
+                log.Debug("task " + taskId + "-" + toAdvance.Title + " was advanced");
             }
         }
         /// <summary>
@@ -169,6 +169,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
         {
             Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
+            toUpdate.Delete(toUpdate.Id + "-" + toUpdate.Title, "Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
             toUpdate.UpdateTaskTitle(newTitle);
             toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
             log.Debug("Task title was updated");

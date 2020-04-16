@@ -113,8 +113,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="path"></param>
         internal void Delete(string fileName, string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
         {
-            ToDalObject().Delete(Id + "", path);
-            log.Info("Task " + Id + "deleted");
+            ToDalObject().Delete(fileName, path);
+            log.Info("Task " + Id + "-" + Title + "deleted");
         }
     }
 }
