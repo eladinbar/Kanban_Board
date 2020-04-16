@@ -29,10 +29,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="path">The path the object will be saved to.</param>
         public override void Save(string path) {
             DalController dc = new DalController();
-            DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + "Users\\");
+            DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + path);
             if (!dir.Exists) 
                 dir.Create();
-            dc.WriteToFile(Email, ToJson(), "Users\\");
+            dc.WriteToFile(Email, ToJson(), path);
         }
         
     }

@@ -34,10 +34,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public override void Save(string path)
         {
             DalController dc = new DalController();
-            DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + "Boards\\");
+            DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + path);
             if (!dir.Exists)
                 dir.Create();
-            dc.WriteToFile(this.UserEmail, ToJson(), "Boards\\");
+            dc.WriteToFile(this.UserEmail, ToJson(), path);
             dir = new DirectoryInfo(dir + this.UserEmail);
             dir.Create();
         }
