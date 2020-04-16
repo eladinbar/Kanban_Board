@@ -26,6 +26,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
+
             log.Info("Crates service Object");
             _securityController = null;
         }
