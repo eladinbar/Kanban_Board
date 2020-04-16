@@ -3,90 +3,111 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
     class ColumnInvolvedTests
     {
         private ServiceLayer.Service _service;
+        private ServiceLayer.User _currentUser;
 
-        public ColumnInvolvedTests(ServiceLayer.Service srv)
+        public ColumnInvolvedTests()
         {
-            _service = srv;
+            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
+            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
+            if (dir2.Exists)
+            {
+                dir1.Delete(true);
+            }
+
+            _service = new ServiceLayer.Service();
+            _service.LoadData();
+            _currentUser = new ServiceLayer.User("currentUser@ColumnInvolvedTests.com", "currentUser@ColumnInvolvedTests");
+            _service.Register(_currentUser.Email, "123Abc", _currentUser.Nickname);
+            _service.Login(_currentUser.Email, "123Abc");
         }
 
+        public void RunAllTests()
+        {
+            this.LimitColumn();
+            this.LimitColumnBadColumnOrdinal();
+            this.LimitLesserThanTaskNum();
 
-        //LimitColumn
-        public void LimitColumnAllGood(ServiceLayer.User user, int columnOrdinal, int columnLimit)
+            this.GetColumnByName();
+            this.GetColumnByOrdinal();
+            this.GetColumnByNonExistName();
+            this.GetColumnByNonExistOrdinal();
+        }
+
+        public void LimitColumn()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("ColumnInvolvedTests - LimitColumnAllGood().");
+            Console.WriteLine("LimitColumnTest");
             Console.WriteLine("Input: proper data.");
-            Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(user.Email, columnOrdinal, columnLimit).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, 10, 1).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void LimitColumnBadColumnOrdinal(ServiceLayer.User user, int badColumnOrdinal, int columnLimit)
+        public void LimitColumnBadColumnOrdinal()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("ColumnInvolvedTests - LimitColumnBadColumnOrdinal().");
+            Console.WriteLine("LimitColumnBadColumnOrdinalTest");
             Console.WriteLine("Input: data with non existing column ordinal.");
-            Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(user.Email, badColumnOrdinal, columnLimit).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, int.MaxValue, 1).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void LimitColumnLesserColumnLimit(ServiceLayer.User user, int columnOrdinal, int lesserColumnLimit)
+        public void LimitLesserThanTaskNum()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("ColumnInvolvedTests - LimitColumnLesserColumnLimit().");
-            Console.WriteLine("Input: data with lesser column limit than current limit.");
-            Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(user.Email, columnOrdinal, lesserColumnLimit).ErrorMessage);
+            Console.WriteLine("LimitLesserThanTaskNumTest");
+            Console.WriteLine("Input: data with smaller column limit than current number of tasks in that column.");
+            TaskForTestCreator taskForTestCreator = new TaskForTestCreator(4);
+            List<ServiceLayer.Task> _randomTasks = taskForTestCreator._tasks;
+            _service.AddTask(_currentUser.Email, _randomTasks.ElementAt(0).Title, _randomTasks.ElementAt(0).Description, _randomTasks.ElementAt(0).DueDate);
+            _service.AddTask(_currentUser.Email, _randomTasks.ElementAt(1).Title, _randomTasks.ElementAt(1).Description, _randomTasks.ElementAt(1).DueDate);
+            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, 0, 1).ErrorMessage);
+            _service.LimitColumnTasks(_currentUser.Email, 0, 10); //reseting the limit to 10
+            Console.WriteLine("End of the test: current limit was resetted back to 10.");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        //GetColumnByName
-        public void GetColumnByNameAllGood(ServiceLayer.User user, string columnName)
+
+        public void GetColumnByName()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("ColumnInvolvedTests - GetColumnByNameAllGood().");
+            Console.WriteLine("GetColumnByNameTest");
             Console.WriteLine("Input: proper data.");
-            Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.GetColumn(user.Email, columnName).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.GetColumn(_currentUser.Email, "Done").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void GetColumnByNonExistName(ServiceLayer.User user, string badColumnName)
+        public void GetColumnByNonExistName()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("ColumnInvolvedTests - GetColumnByNonExistName().");
+            Console.WriteLine("GetColumnByNonExistNameTest");
             Console.WriteLine("Input: non existing column name.");
-            Console.WriteLine("Expected: failed - column with that name doesnt exist.");
-            Console.WriteLine("Runtime outcome: " + _service.GetColumn(user.Email, badColumnName).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.GetColumn(_currentUser.Email, "NonExistingNameOfColumn").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
 
-        //GetColumnByOrdinal
-        public void GetColumnByOrdinalAllGood(ServiceLayer.User user, int badColumnOrdinal)
+        public void GetColumnByOrdinal()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("ColumnInvolvedTests - GetColumnByOrdinalAllGood().");
+            Console.WriteLine("GetColumnByOrdinalTest");
             Console.WriteLine("Input: proper data.");
-            Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.GetColumn(user.Email, badColumnOrdinal).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.GetColumn(_currentUser.Email, 2).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void GetColumnByNonExistOrdinal(ServiceLayer.User user, int badColumnOrdinal)
+        public void GetColumnByNonExistOrdinal()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("ColumnInvolvedTests - GetColumnByNonExistOrdinal().");
-            Console.WriteLine("Input: non existing column name.");
-            Console.WriteLine("Expected: failed - column with that ordinal doesnt exist.");
-            Console.WriteLine("Runtime outcome: " + _service.GetColumn(user.Email, badColumnOrdinal).ErrorMessage);
+            Console.WriteLine("GetColumnByNonExistOrdinalTest");
+            Console.WriteLine("Input: non existing column ordinal.");
+            Console.WriteLine("Runtime outcome: " + _service.GetColumn(_currentUser.Email, int.MaxValue).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 

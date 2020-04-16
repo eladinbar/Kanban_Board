@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+
 
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
@@ -14,7 +16,15 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
         public UserTests(int numOfDemandedUsers)
         {
+            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
+            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
+            if (dir2.Exists)
+            {
+                dir1.Delete(true);
+            }
+
             _service = new ServiceLayer.Service();
+            _service.LoadData();
             _randomUsers = new UserForTestCreator(numOfDemandedUsers)._users;
             _uniPassword = "123Abc";
         }
@@ -89,7 +99,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("LoginTest");
             Console.WriteLine("Input: proper existing user data.");
-            Console.WriteLine("Runtime outcome: " + _service.Login(_randomUsers.ElementAt(0).Email, _uniPassword).ErrorMessage);
+            Console.WriteLine("Runtime outcome(succeed if empty): " + _service.Login(_randomUsers.ElementAt(0).Email, _uniPassword).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 

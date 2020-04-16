@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
@@ -12,10 +13,17 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         private ServiceLayer.User _currentUser;
         private string _uniPassword;
 
-        public GetBoardTest(ServiceLayer.Service srv)
+        public GetBoardTest()
         {
+            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
+            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
+            if (dir2.Exists)
+            {
+                dir1.Delete(true);
+            }
 
             _service = new ServiceLayer.Service();
+            _service.LoadData();
             _currentUser = new ServiceLayer.User("currentUser@GetBoardTest.com", "currentUser@GetBoardTest");
             _uniPassword = "123Abc";
             _service.Register(_currentUser.Email, _uniPassword, _currentUser.Nickname);
@@ -23,7 +31,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         }
 
         public void RunAllTests()
-        {
+        {        
             this.GetBoard();
             this.GetBoardOfNotLoggedInUser();
             this.GetBoardWithNonExistingEmail();

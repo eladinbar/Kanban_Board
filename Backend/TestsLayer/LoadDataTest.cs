@@ -3,40 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
     class LoadDataTest
     {
-        private Boolean _dataLoaded;
         ServiceLayer.Service _service;
 
         public LoadDataTest()
         {
-            _dataLoaded = false;
+            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
+            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
+            if (dir2.Exists)
+            {
+                dir1.Delete(true);
+            }
+
             _service = new ServiceLayer.Service();
 
         }
 
-        public void LoadData()
+        public void RunTest()
         {
-            _dataLoaded = true;
-            if (!_dataLoaded)
-            {
-                _dataLoaded = true;
-                Console.WriteLine("---------------------------------------------------------------");
-                Console.WriteLine("LoadDataTest - Data loaded for the first time.");
-                Console.WriteLine("Input: no input necessary.");
-                Console.WriteLine("Expected: succeed - data loaded successfully.");
-                Console.WriteLine("Runtime outcome: " + _service.LoadData().ErrorMessage);
-                Console.WriteLine("---------------------------------------------------------------");
-            }
-            else
+            for (int i = 1; i < 4; i++)
             {
                 Console.WriteLine("---------------------------------------------------------------");
-                Console.WriteLine("LoadDataTest - Data loaded not for the first time.");
+                Console.WriteLine("LoadDataTest #"+i);
                 Console.WriteLine("Input: no input necessary.");
-                Console.WriteLine("Expected: failed - data is already loaded.");
                 Console.WriteLine("Runtime outcome: " + _service.LoadData().ErrorMessage);
                 Console.WriteLine("---------------------------------------------------------------");
             }
