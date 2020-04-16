@@ -32,7 +32,19 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
         public void RunAllTests()
         {
-            this.LimitColumn();
+            this.AddTasks();
+            this.AddTaskOverColumnLimit();
+
+            this.UpdateTaskDueDate();
+            this.UpdateTaskDueDateBadOrdinal();
+            this.UpdateTaskDueDateNonExistOrdinal();
+
+            this.UpdateTaskTitle();
+            this.UpdateTaskDescription();
+
+            this.AdvanceTask();
+            this.AdvanceTaskDoneColumn();
+            this.AdvanceTaskIdNotExist();
         }
 
 
@@ -113,7 +125,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
 
         //UpdateTaskDescription
-        public void UpdateTaskDescriptione()
+        public void UpdateTaskDescription()
         {
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("UpdateTaskDescriptioneTest");
@@ -124,10 +136,10 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
 
         //AdvanceTask
-        public void AdvanceTaskAllGood()
+        public void AdvanceTask()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("AdvanceTaskAllGoodTest");
+            Console.WriteLine("AdvanceTaskTest");
             Console.WriteLine("Input: proper task details.");
             Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(_currentUser.Email, 0, _randomTasks.ElementAt(0).Id).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
@@ -136,20 +148,19 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         public void AdvanceTaskDoneColumn()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("TaskInvolvedTests - AdvanceTaskDoneColumn().");
+            Console.WriteLine("AdvanceTaskDoneColumnTest");
             Console.WriteLine("Input: proper task details with 'done' column ordinal.");
-            Console.WriteLine("Expected: failed - can't advance a task from 'done' column.");
-            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(user.Email, doneColumnOrdinal, task.Id).ErrorMessage);
+            _service.AdvanceTask(_currentUser.Email, 1, _randomTasks.ElementAt(0).Id);
+            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(_currentUser.Email, 2, _randomTasks.ElementAt(0).Id).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
         public void AdvanceTaskIdNotExist()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("TaskInvolvedTests - AdvanceTaskIdNotExist().");
+            Console.WriteLine("AdvanceTaskIdNotExistTest");
             Console.WriteLine("Input: non existing task id.");
-            Console.WriteLine("Expected: failed - task doesn't exist.");
-            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(user.Email, columnOrdinal, task.Id).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(_currentUser.Email, 0, -34543543).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }
