@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 **/.idea
+[Dd}ata/
 
 #KanbanTests solution and UnitTest:
 KanbanTests/
