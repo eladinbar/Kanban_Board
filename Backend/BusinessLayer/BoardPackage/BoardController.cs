@@ -16,12 +16,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private Dictionary<String, Board> _boards;
+        private Dictionary<String, Board> Boards;
         
         public BoardController()
         {
             DalController dalC = new DalController();
-            _boards = new Dictionary<string, Board>();
+            Boards = new Dictionary<string, Board>();
             List<DataAccessLayer.Board> DALboards = dalC.LoadAllBoards();
             foreach (DataAccessLayer.Board DALboard in DALboards) {
                 List<Column> columns = new List<Column>();
@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     }
                     columns.Add(new Column(DALcolumn.Name, tasks, DALcolumn.Limit));
                 }
-                _boards.Add(DALboard.UserEmail, new Board(DALboard.UserEmail, DALboard.TaskCounter, columns));
+                Boards.Add(DALboard.UserEmail, new Board(DALboard.UserEmail, DALboard.TaskCounter, columns));
             }
         }
          
@@ -49,7 +49,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Board GetBoard(string email)
         {
             Board tempBoard;
-            if (_boards.TryGetValue(email, out tempBoard))
+            if (Boards.TryGetValue(email, out tempBoard))
                 return tempBoard;
             else
                 throw new ArgumentException("board not exist with this email");
@@ -210,14 +210,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">the email of the user that the board belong.</param>
         public void AddNewBoard(string email)
         {
-            _boards.Add(email, new Board(email));
+            Board newBoard = new Board(email);
+            Boards.Add(email, newBoard);
+            newBoard.Save("Boards\\");
             log.Info("New board was added with kay " + email);
         }
-
-      
-       
-
-       
-
     }
 }

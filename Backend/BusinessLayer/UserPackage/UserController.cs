@@ -55,7 +55,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <param name="email">The email address of the user to login.</param>
         /// <param name="password">The password of the user to login.</param>
         /// <returns>The User object that logged into the system.</returns>
-        /// <exception cref="ArgumentException">Thrown when the e-mail address given is already taken by another user.</exception>
+        /// <exception cref="ArgumentException">Thrown when the e-mail address given is already taken by another user or when the password is incorrect.</exception>
         public User Login (string email, string password) {
             log.Warn("Login Attempt with " + email);
             if (!Users.ContainsKey(email))

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
@@ -11,9 +10,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     public class User : DalObject<User>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
-        public string Email { get; }
-        public string Password { get; }
-        public string Nickname { get; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Nickname { get; set; }
 
         public User(string email, string password, string nickname)
         {
@@ -22,7 +21,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             Nickname = nickname;
         }
 
-        public User() { }
+        public User() { Email = null; Password = null; Nickname = null; }
 
         /// <summary>
         /// The method in the DataAccessLayer to save an object to the persistent layer.
