@@ -10,12 +10,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        public int Id { get; }
-        public string Title { get; }
-        public string Description { get; }
-        public DateTime DueDate { get; }
-        public DateTime CreationTime { get; }
-        public DateTime LastChangedDate { get; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime DueDate { get; set; }
+        public DateTime CreationTime { get; set; }
+        public DateTime LastChangedDate { get; set; }
 
         public Task(int id, string title, string description, DateTime creationTime, DateTime dueDate, DateTime lastChangedDate)
         {

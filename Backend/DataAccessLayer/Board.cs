@@ -12,8 +12,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        public string UserEmail { get; }
-        public int TaskCounter { get; }
+        public string UserEmail { get; set; }
+        public int TaskCounter { get; set; }
 
         [JsonIgnore] //List is retrieved using the individual <Column>.json files
         public List<Column> Columns { get; private set; }
