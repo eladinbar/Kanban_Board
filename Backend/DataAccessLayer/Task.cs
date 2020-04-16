@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + path);
             if (!dir.Exists)
                 dir.Create();
-            dc.WriteToFile(this.Id + "", ToJson(), path);
+            dc.WriteToFile(this.Id + "-" + this.Title, ToJson(), path);
         }
 
         /// <summary>
