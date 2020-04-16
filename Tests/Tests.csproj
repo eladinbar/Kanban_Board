@@ -52,8 +52,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColumnInvolvedTests.cs" />
+    <None Include="ColumnInvolvedTests.cs" />
+    <Compile Include="LoadDataTest.cs" />
+    <None Include="LoginTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestsController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

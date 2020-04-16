@@ -9,39 +9,52 @@ namespace IntroSE.Kanban.Backend.TestsLayer
     class GetBoardTest
     {
         private ServiceLayer.Service _service;
+        private ServiceLayer.User _currentUser;
+        private string _uniPassword;
 
         public GetBoardTest(ServiceLayer.Service srv)
         {
-            _service = srv;
+
+            _service = new ServiceLayer.Service();
+            _currentUser = new ServiceLayer.User("currentUser@GetBoardTest.com", "currentUser@GetBoardTest");
+            _uniPassword = "123Abc";
+            _service.Register(_currentUser.Email, _uniPassword, _currentUser.Nickname);
+            _service.Login(_currentUser.Email, _uniPassword);
         }
 
-        public void AllGood(ServiceLayer.User user)
+        public void RunAllTests()
+        {
+            this.GetBoard();
+            this.GetBoardOfNotLoggedInUser();
+            this.GetBoardWithNonExistingEmail();
+        }
+
+        public void GetBoard()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("GetBoardTest - AllGood().");
+            Console.WriteLine("GetBoardTest");
             Console.WriteLine("Input: proper user's email.");
-            Console.WriteLine("Expected: succeed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.GetBoard(_currentUser.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void NonExistingEmail(ServiceLayer.User user)
+        public void GetBoardWithNonExistingEmail()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("GetBoardTest - NonExistingEmail().");
+            Console.WriteLine("GetBoardWithNonExistingEmailTest");
             Console.WriteLine("Input: non existing email.");
-            Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.GetBoard("nonExistingEmail@GetBoardWithNonExistingEmailMethod.com").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void NotLoggedInUser(ServiceLayer.User user)
+        public void GetBoardOfNotLoggedInUser()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("GetBoardTest - NotLoggedInUser().");
+            Console.WriteLine("GetBoardOfNotLoggedInUserTest");
             Console.WriteLine("Input: not logged in user's email.");
-            Console.WriteLine("Expected: failed - proper response.");
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard(user.Email).ErrorMessage);
+            ServiceLayer.User tempUser = new ServiceLayer.User("notLoggedInEmail@GetBoardOfNotLoggedInUserMethod.com", "tempGetBoardOfNotLoggedInUserNickName");
+            _service.Register(tempUser.Email, _uniPassword, tempUser.Nickname);
+            Console.WriteLine("Runtime outcome: " + _service.GetBoard(tempUser.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }

@@ -24,91 +24,45 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             {
                 dir1.Delete(true);
             }
-            
 
-
-
-            //declaring random users
-            UserForTestCreator userForTestCreator = new UserForTestCreator(5);
-            List<ServiceLayer.User> randomUsers = userForTestCreator._users;
-            userForTestCreator.PrintUsers();
-
-            string uniPassword = "abC123";
+            //delete data directory before and after each test
 
             //declaring random tasks
             TaskForTestCreator taskForTestCreator = new TaskForTestCreator(5);
             List<ServiceLayer.Task> randomTasks = taskForTestCreator._tasks;
             taskForTestCreator.PrintTasks();
 
-
-            //declaring new Service.cs appearance.
-            ServiceLayer.Service service = new ServiceLayer.Service();
-
-
             //LoadData tests
-            LoadDataTest ldTest = new LoadDataTest();
-            ldTest.LoadData(service);
-            ldTest.LoadData(service);
-            ldTest.LoadData(service);
 
 
-            //Register tests - random users registration
-            
-            
-            RegisterTest regTest = new RegisterTest(service);
-            regTest.BadPassword(randomUsers.ElementAt(0), "12345");
-            regTest.BadPassword(randomUsers.ElementAt(0), "123abc");
-            regTest.BadPassword(randomUsers.ElementAt(0), "123abcс");
-            regTest.BadPassword(randomUsers.ElementAt(0), "!@#$%^Abc1");
-            regTest.NonAcceptableEmail("ads@@mashu.com", uniPassword);
-            regTest.NonAcceptableEmail("ads@mashucom", uniPassword);
-            regTest.NonAcceptableEmail("ads@mashu.", uniPassword);
-            regTest.NonAcceptableEmail("adsmashu.com", uniPassword);
-            regTest.NonAcceptableEmail("@mashu.com", uniPassword);
-
-
-
-
-
-            foreach (ServiceLayer.User tempUser in randomUsers)
-                regTest.AllGood(tempUser, uniPassword);
-            
-            //Login Tests
-            LoginTest loginTest = new LoginTest(service);
-            loginTest.IncorrectPassword(randomUsers.ElementAt(0), "1234Abcd");
-            loginTest.IncorrectEmail(new ServiceLayer.User("123", "123"), uniPassword);
-            loginTest.AllGood(randomUsers.ElementAt(0), uniPassword);
-            loginTest.AlreadyLoggedIn(randomUsers.ElementAt(0), uniPassword);
-            loginTest.LogoutOfLoggedInUser(randomUsers.ElementAt(0));
-            loginTest.AllGood(randomUsers.ElementAt(0),uniPassword);
-            loginTest.LogoutOfOtherUser(randomUsers.ElementAt(1));
-            loginTest.AllGood(randomUsers.ElementAt(0), uniPassword);
-
+            //Register and Login tests                      
+            UserTests userTests = new UserTests(7);
+            userTests.RunAllTests();
 
 
             //GetBoard tests
-            GetBoardTest getBoardTest = new GetBoardTest(service);
-            getBoardTest.AllGood(randomUsers.ElementAt(0));
-            getBoardTest.NonExistingEmail(new ServiceLayer.User("nonexistingemail@mashu.com", "123"));
-            getBoardTest.NotLoggedInUser(new ServiceLayer.User("nonexistingemail@mashu.com", "123"));
+            //GetBoardTest getBoardTest = new GetBoardTest(service);
+            //getBoardTest.AllGood(randomUsers.ElementAt(0));
+            //getBoardTest.NonExistingEmail(new ServiceLayer.User("nonexistingemail@mashu.com", "123"));
+            //getBoardTest.NotLoggedInUser(new ServiceLayer.User("nonexistingemail@mashu.com", "123"));
 
 
             //ColumnInvolvedTests
-            ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests(service);
-            columnInvolvedTests.GetColumnByNameAllGood(randomUsers.ElementAt(0), "Done");
-            columnInvolvedTests.GetColumnByNonExistName(randomUsers.ElementAt(0), "Achiya");
-            columnInvolvedTests.GetColumnByOrdinalAllGood(randomUsers.ElementAt(0), 2);
-            columnInvolvedTests.GetColumnByNonExistOrdinal(randomUsers.ElementAt(0), 45);
-            columnInvolvedTests.LimitColumnAllGood(randomUsers.ElementAt(0), 0, 23);
-            columnInvolvedTests.LimitColumnBadColumnOrdinal(randomUsers.ElementAt(0), 8, 67);
+            //ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests(service);
+            //columnInvolvedTests.GetColumnByNameAllGood(randomUsers.ElementAt(0), "Done");
+            //columnInvolvedTests.GetColumnByNonExistName(randomUsers.ElementAt(0), "Achiya");
+            //columnInvolvedTests.GetColumnByOrdinalAllGood(randomUsers.ElementAt(0), 2);
+            //columnInvolvedTests.GetColumnByNonExistOrdinal(randomUsers.ElementAt(0), 45);
+            //columnInvolvedTests.LimitColumnAllGood(randomUsers.ElementAt(0), 0, 23);
+            //columnInvolvedTests.LimitColumnBadColumnOrdinal(randomUsers.ElementAt(0), 8, 67);
 
             //TaskInvolvedTests
-            TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests(service);
-            foreach (ServiceLayer.Task tempTask in randomTasks)
-                taskInvolvedTests.AddTaskAllGood(randomUsers.ElementAt(0), tempTask);
-            columnInvolvedTests.LimitColumnAllGood(randomUsers.ElementAt(0), 0, 5);
-            columnInvolvedTests.LimitColumnLesserColumnLimit(randomUsers.ElementAt(0), 0, 3);
-            taskInvolvedTests.AddTaskOverColumnLimit(randomUsers.ElementAt(0), randomTasks.ElementAt(0));
+            //TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests(service);
+            //foreach (ServiceLayer.Task tempTask in randomTasks)
+              //  taskInvolvedTests.AddTaskAllGood(randomUsers.ElementAt(0), tempTask);
+            //columnInvolvedTests.LimitColumnAllGood(randomUsers.ElementAt(0), 0, 5);
+            //columnInvolvedTests.LimitColumnLesserColumnLimit(randomUsers.ElementAt(0), 0, 3);
+            //taskInvolvedTests.AddTaskOverColumnLimit(randomUsers.ElementAt(0), randomTasks.ElementAt(0));
 
 
 

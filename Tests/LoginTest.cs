@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend;
 
-namespace IntroSE.Kanban.Backend.TestsLayer
+namespace Tests
 {
+    [TestClass]
     class LoginTest
     {
         private ServiceLayer.Service _service;
@@ -15,6 +18,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             _service = srv;
         }
 
+        [TestMethod]
         public void AllGood(ServiceLayer.User user, string password)
         {
             Console.WriteLine("---------------------------------------------------------------");
@@ -25,7 +29,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-
+        [TestMethod]
         public void IncorrectPassword(ServiceLayer.User user, string incorrectPassword)
         {
             Console.WriteLine("---------------------------------------------------------------");
@@ -36,7 +40,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-
+        [TestMethod]
         public void IncorrectEmail(ServiceLayer.User user, string password)
         {
             Console.WriteLine("---------------------------------------------------------------");
@@ -47,7 +51,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-
+        [TestMethod]
         public void AlreadyLoggedIn(ServiceLayer.User user, string password)
         {
             Console.WriteLine("---------------------------------------------------------------");
@@ -58,6 +62,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
         }
 
+        [TestMethod]
         public void LogoutOfLoggedInUser(ServiceLayer.User user)
         {
             Console.WriteLine("---------------------------------------------------------------");
@@ -68,6 +73,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
         }
 
+        [TestMethod]
         public void LogoutOfOtherUser(ServiceLayer.User user)
         {
             Console.WriteLine("---------------------------------------------------------------");

@@ -20,6 +20,10 @@ IntroSE.Kanban.Backend
         {
             _service = srv;
         }
+        public ColumnInvolvedTests()
+        {
+
+        }
 
         [TestMethod]
         public void LimitColumnAllGood(IntroSE.Kanban.Backend.ServiceLayer.User user, int columnOrdinal, int columnLimit)
