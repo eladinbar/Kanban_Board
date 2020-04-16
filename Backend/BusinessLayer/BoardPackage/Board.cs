@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
 
     /// <summary>
-    ///represent the Kanban Board
+    ///Represents the Kanban Board
     /// </summary>
     public class Board : PersistedObject<DataAccessLayer.Board>
     {
@@ -24,10 +25,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             UserEmail = email;
             TaskCounter = 1;
             Columns = new List<Column>();
-            Columns.Add(new Column("Backlog"));
-            Columns.Add(new Column("In Prograss"));
-            Columns.Add(new Column("Done"));
-            log.Info("new Board Created");
+            Columns.Add(newColumn("Backlog"));
+            Columns.Add(newColumn("In Progress"));
+            Columns.Add(newColumn("Done"));
+            log.Info("New board created");
         }
 
         public Board(string email, int taskCounter, List<Column> columns)
@@ -36,6 +37,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             TaskCounter = taskCounter;
             Columns = columns;
             log.Info("load - Board " + email + "was loaded from memory");
+        }
+
+        /// <summary>
+        /// Creates a new Column and returns it.
+        /// </summary>
+        /// <param name="name">The name of the column to be created.</param>
+        /// <returns>Returns the created Column</returns>
+        private Column newColumn(string name) {
+            Column newColumn = new Column(name);
+            Columns.Add(newColumn);
+            newColumn.Save("Boards\\" + UserEmail + "\\");
+            return newColumn;
         }
 
         /// <summary>

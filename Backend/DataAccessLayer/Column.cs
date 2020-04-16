@@ -36,7 +36,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + path);
             if (!dir.Exists)
                 dir.Create();
-            dc.WriteToFile(this.Name, ToJson(), path);
+            if (!File.Exists(dir + this.Name))
+                dc.WriteToFile(this.Name, ToJson(), path);
         }
     }
 }
