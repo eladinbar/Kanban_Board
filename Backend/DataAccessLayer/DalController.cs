@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
+    /// <summary>
+    /// The DalController governs all data access activity.
+    /// </summary>
     class DalController
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
@@ -19,38 +22,59 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             log.Info("DalController created");
         }
 
+        /// <summary>
+        /// Writes a a file containing string content to a specific path on the disk.
+        /// </summary>
+        /// <param name="fileName">The name the file will be saved with.</param>
+        /// <param name="content">The content the file will contain when writing to the disk.</param>
+        /// <param name="path">The path the file will be written to.</param>
         public void WriteToFile (string fileName, string content, string path) {
             try
             {
                 File.WriteAllText(BASE_PATH + path + fileName + ".json", content);
-            }catch(Exception ex)
+            } catch(Exception ex)
             {
                 log.Fatal(ex);
             }
         }
 
+        /// <summary>
+        /// Reads a file from a specific path on the disk.
+        /// </summary>
+        /// <param name="fileName">The name of the file to read from the disk.</param>
+        /// <param name="path">The path the file will be read from.</param>
+        /// <returns>Returns the string representing the text written in the file.</returns>
         public string ReadFromFile (string fileName, string path) {
             try
             {
                 string fromMemory = File.ReadAllText(BASE_PATH + path + fileName);
                 return fromMemory;
-            }catch(Exception ex)
+            } catch(Exception ex)
             {
                 log.Fatal(ex);
                 return "";
             }
         }
 
+        /// <summary>
+        /// Removes a file from a specific path from the disk.
+        /// </summary>
+        /// <param name="fileName">The name the file to be removed.</param>
+        /// <param name="path">The path the file will be removed from.</param>
         public void RemoveFromFile (string fileName, string path) {
             try
             {
                 File.Delete(BASE_PATH + path + fileName + ".json");
-            }catch(Exception ex)
+            } catch(Exception ex)
             {
                 log.Fatal(ex);
             }
         }
 
+        /// <summary>
+        /// Loads all user data previously saved on the disk.
+        /// </summary>
+        /// <returns>Returns a DataAccessLayer List of all the users that were saved to the disk.</returns>
         public List<User> LoadAllUsers() {
             log.Debug("Loading all users");
             List<User> users = new List<User>();
@@ -67,6 +91,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return users;
         }
 
+        /// <summary>
+        /// Loads all board data previously saved on the disk.
+        /// </summary>
+        /// <returns>Returns a DataAccessLayer List of all the boards that were saved to the disk.</returns>
         public List<Board> LoadAllBoards() {
             log.Debug("Loading all Boards");
             List<Board> boards = new List<Board>();
@@ -82,6 +110,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return boards;
         }
 
+        /// <summary>
+        /// Loads all column data previously saved on the disk.
+        /// </summary>
+        /// <returns>Returns a DataAccessLayer List of all the columns that were saved to the disk.</returns>
         private List<Column> LoadAllColumns(string boardName)
         {
             log.Debug("Loading all columns of " + boardName);
@@ -100,6 +132,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return columns;
         }
 
+        /// <summary>
+        /// Loads all user data previously saved on the disk.
+        /// </summary>
+        /// <returns>Returns a DataAccessLayer List of all the tasks that were saved to the disk.</returns>
         private List<Task> LoadAllTasks (string boardName, string columnName) {
             log.Debug("Loading all tasks in " + columnName + " of Board" + boardName);
             List<Task> tasks = new List<Task>();
@@ -115,8 +151,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             return tasks;
         }
-
-        //getter
-
     }
 }

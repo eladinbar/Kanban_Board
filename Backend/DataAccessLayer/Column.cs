@@ -27,6 +27,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public Column() { }
 
+        /// <summary>
+        /// The method in the DataAccessLayer to save an object to the persistent layer.
+        /// </summary>
+        /// <param name="path">The path the object will be saved to.</param>
         public override void Save(string path) {
             DalController dc = new DalController();
             DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + path);
