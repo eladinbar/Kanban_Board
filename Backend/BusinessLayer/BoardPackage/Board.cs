@@ -55,7 +55,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <returns></returns>
         public Column GetColumn(int columnOrdinal)
         {
-            if (columnOrdinal > Columns.Count)
+            if (columnOrdinal >= Columns.Count || columnOrdinal<0)
             {
                 log.Warn("columnOrdinal was out of range");
                 throw new ArgumentOutOfRangeException("Column index out of range");
