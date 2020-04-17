@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             this.UpdateTaskDescription();
 
             this.AdvanceTask();
-            this.AdvanceTaskDoneColumn();
+            this.AdvanceOrEditTaskDoneColumn();
             this.AdvanceTaskIdNotExist();
         }
 
@@ -145,13 +145,14 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void AdvanceTaskDoneColumn()
+        public void AdvanceOrEditTaskDoneColumn()
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("AdvanceTaskDoneColumnTest");
+            Console.WriteLine("AdvanceOrEditTaskDoneColumn");
             Console.WriteLine("Input: proper task details with 'done' column ordinal.");
             _service.AdvanceTask(_currentUser.Email, 1, 1);
-            Console.WriteLine("Runtime outcome: " + _service.AdvanceTask(_currentUser.Email, 2,1).ErrorMessage);
+            Console.WriteLine("Runtime outcome for advancing: " + _service.AdvanceTask(_currentUser.Email, 2,1).ErrorMessage);
+            Console.WriteLine("Runtime outcome for editing: " + _service.UpdateTaskDescription(_currentUser.Email, 2, 1, "if you see this in description - it's bad").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 

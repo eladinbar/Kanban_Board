@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
+    /// <summary>
+    ///The servicve for perfoming User-account actions.
+    /// </summary>
     class UserService
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private BusinessLayer.SecurityController _securityController;
+        public BusinessLayer.SecurityController _securityController;
 
+        /// <summary>
+        /// Public constructor. 
+        /// <param name="sc">Current SecurityController class .</param>
+        /// </summary>
         public UserService(BusinessLayer.SecurityController sc)
         {
             _securityController = sc;
@@ -19,7 +26,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-
+        /// <summary>
+        /// Security Controller getter. 
+        /// </summary>
+        /// <returns>Current SecurityController initialization.</returns>
         public BusinessLayer.SecurityController SecurityController
         {
             get
@@ -30,8 +40,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-
-        public Response Register(string email, string password, string nickname) //add a method of creating a new Board of a new User
+        /// <summary>
+        /// Allows to perform a registration. New Kanban board is created for a new user.
+        /// </summary>
+        /// <param name="email">New user's email for registration.</param>
+        /// <param name="password">New user's proper password for registration.</param>
+        /// <param name="nickname">New user's nickname for registration.</param>
+        /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
+        public Response Register(string email, string password, string nickname) 
         {
             try
             {
@@ -52,7 +68,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response<User> Login (string email, string password) //done+++++++++++++++++++++++++++++++++++++++
+        /// <summary>
+        /// Allows to perform a validated Login action.
+        /// </summary>
+        /// <param name="email">User's email to login with.</param>
+        /// <param name="password">User's password to login with.</param>
+        /// <returns>A Response<ServiceLayer.User> object. The response should contain a error message in case of an error.</returns>
+        public Response<User> Login (string email, string password) 
         {
             try
             {
@@ -72,7 +94,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response Logout(string email) //done+++++++++++++++++++++
+        /// <summary>
+        /// Allows to perform a Logout action.
+        /// </summary>
+        /// <param name="email">Currently logged in user's email.</param>
+        /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
+        public Response Logout(string email) 
         {
             try
             {
@@ -93,7 +120,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response ChangePassword (string email, string oldPassword, string newPassword) //done++++++++++++++++++++++++++
+        /// <summary>
+        /// Allows to change the password of an user.
+        /// </summary>
+        /// <param name="email">An existing user's email.</param>
+        /// <param name="oldPassword">An existing user's old password.</param>
+        /// <param name="newPassword">An existing user's new password.</param>\
+        /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
+        public Response ChangePassword (string email, string oldPassword, string newPassword) 
         {
             try
             {
