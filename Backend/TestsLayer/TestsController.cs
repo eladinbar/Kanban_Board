@@ -16,8 +16,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
-
-
+            
             //LoadData tests
             LoadDataTest loadDataTest = new LoadDataTest();
             loadDataTest.RunTest();
@@ -43,7 +42,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
             timer.Stop();
             Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
-
+            
             Console.ForegroundColor = ConsoleColor.Red;
 
             Console.WriteLine("**********************************************************************");

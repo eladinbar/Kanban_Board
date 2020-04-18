@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
             Board tempStructBoard = new Board(tempColumnNames);
-            log.Debug("Board Reached Service Layer successfully");
+            log.Debug("Board reached service layer successfully");
             return new Response<Board>(tempStructBoard);
         }
 

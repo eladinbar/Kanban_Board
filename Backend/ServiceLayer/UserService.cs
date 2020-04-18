@@ -81,7 +81,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
                 Response<User> r = new Response<User>(tempStructUser);
-                log.Info("Seccesfull login action.");
+                log.Info("Succesful login action.");
                 return r;
             }
             catch (Exception ex)
@@ -129,6 +129,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
         public Response ChangePassword (string email, string oldPassword, string newPassword) 
         {
+            //this method doesn't perform user validation for administrative needs.
             try
             {
                 _securityController.UserController.ChangePassword(email, oldPassword, newPassword);
