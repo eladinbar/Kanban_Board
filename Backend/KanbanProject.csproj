@@ -120,6 +120,7 @@
     <Compile Include="TestsLayer\ColumnInvolvedTests.cs" />
     <Compile Include="TestsLayer\GetBoardTest.cs" />
     <Compile Include="TestsLayer\LoadDataTest.cs" />
+    <Compile Include="TestsLayer\NormalUsageStateTest.cs" />
     <Compile Include="TestsLayer\TaskForTestCreator.cs" />
     <Compile Include="TestsLayer\UserForTestCreator.cs" />
     <Compile Include="TestsLayer\UserTests.cs" />

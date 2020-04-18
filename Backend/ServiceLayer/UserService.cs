@@ -22,7 +22,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public UserService(BusinessLayer.SecurityController sc)
         {
             _securityController = sc;
-            log.Debug("UserService Created");
+            log.Debug("UserService has been created.");
         }
 
 
@@ -34,7 +34,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             get
             {
-                log.Debug("SecurityController getter was called");
+                log.Debug("SecurityController getter was called.");
                 return _securityController;
             }
         }
@@ -81,7 +81,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
                 Response<User> r = new Response<User>(tempStructUser);
-                log.Info("Seccesfull login");
+                log.Info("Seccesfull login action.");
                 return r;
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 _securityController.UserController.ChangePassword(email, oldPassword, newPassword);
-                Response resp = new Response("Password successfully changed.");
+                Response resp = new Response("Password has been changed successfully.");
                 log.Info(resp.ErrorMessage);
                 return resp;
             }

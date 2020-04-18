@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 {
     class TestsController
     {
-      static void Main(string[] args)
+        static void Main(string[] args)
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -43,7 +43,46 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
             timer.Stop();
             Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
-            Console.ReadKey();
-        }        
+
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine("**********************************************************************");
+            Console.WriteLine("**********************************************************************");
+            Console.WriteLine("**********************************************************************");
+            Console.WriteLine("**********************************************************************");
+            Console.WriteLine("Normal usage state test starts here.");
+
+            timer.Restart();
+
+            NormalUsageStateTest normalUsageStateTest = new NormalUsageStateTest();
+            normalUsageStateTest.RunTheTest();
+
+            timer.Stop();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
+
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.Write("do you want to clear the 'data' folder? (y/n):");
+            string choice = Console.ReadLine();
+            if (choice == "y")
+            {
+                DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
+                DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
+                if (dir2.Exists)
+                {
+                    dir1.Delete(true);
+                }
+                Console.Write("'data' folder was deleted. Thank you for using Tests. Press any key to close the console....");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Write("Thank you for using Tests. Press any key to close the console....");
+                Console.ReadKey();
+            }
+        }
     }
 }

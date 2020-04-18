@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
             Board tempStructBoard = new Board(tempColumnNames);
-            log.Debug("Board Reached Service Layer Seccessfully");
+            log.Debug("Board Reached Service Layer successfully");
             return new Response<Board>(tempStructBoard);
         }
 
@@ -172,7 +172,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
-                log.Info("Task description updated seccessfully.");
+                log.Info("Task description has been updated seccessfully.");
                 return new Response("Task description has been updated successfully");
             }
             catch (Exception ex)
@@ -198,7 +198,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.AdvanceTask(email, columnOrdinal, taskId);
-                log.Info("Task Advanced to column" + columnOrdinal+1);
+                log.Info("Task has been advanced to the column #" + columnOrdinal+1);
                 return new Response("Task has been advanced successfully");
             }
             catch (Exception ex)
@@ -239,7 +239,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //declaring struct Column with ReadOnlyCollection of struct Tasks
                 Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
 
-                log.Debug("Desired Column Reached Service Layer");
+                log.Debug("Required column has reached the Service Layer");
                 return new Response<Column>(tempStructColumn);
             }
             catch (Exception ex)
@@ -274,7 +274,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 IReadOnlyCollection<Task> tempReadOnlyStructTaskList = new ReadOnlyCollection<Task>(structTaskList);
 
                 Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
-                log.Debug("Desired Column Reached Service Layer");
+                log.Debug("Required column has reached the Service Layer");
                 return new Response<Column>(tempStructColumn);
             }
             catch (Exception ex)

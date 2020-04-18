@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A BussinesLayer.UserPackage.User object.</returns>
         public UserPackage.User Login(string email, string password) 
         {
-            if (CurrentUser != null) throw new AccessViolationException("There is already LoggedIn User. LogOut to switch for another User.");
+            if (CurrentUser != null) throw new AccessViolationException("There is already logged in User. LogOut to switch for another User.");
             CurrentUser = UserController.Login(email, password);
             return CurrentUser;
         }
@@ -49,7 +49,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// Alternatively thrown if "email" parameter doesn't match current logged in user's email.</exception>
         public void Logout(string email) 
         {
-            if (CurrentUser == null) throw new AccessViolationException("There is no logged in users.");
+            if (CurrentUser == null) throw new AccessViolationException("There is no logged in Users.");
             if (!CurrentUser.Email.Equals(email)) throw new AccessViolationException("Logout failed: User "+email+" is not logged in.");
             UserController.Logout(email);
             CurrentUser = null;
