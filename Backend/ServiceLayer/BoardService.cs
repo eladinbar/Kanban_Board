@@ -7,12 +7,19 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
+    /// <summary>
+    ///The servicve for perfoming Board-involved actions.
+    /// </summary>
     class BoardService
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
         private BusinessLayer.SecurityController SecurityController;
 
+        /// <summary>
+        /// Public constructor. 
+        /// <param name="sc">Current SecurityController object.</param>
+        /// </summary>
         public BoardService(BusinessLayer.SecurityController sc)
         {
             log.Debug("BoardService Created");
@@ -20,7 +27,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-        public Response<Board> GetBoard(string email) //done+++++++++++++++++++++++++++++++++++++++++++
+        /// <summary>
+        /// Allows to reach current logged in user's kanban board, for performing required actions on it.
+        /// </summary>
+        /// <param name="email">User's email to receive its board.</param>
+        /// <returns>A Response<ServiceLayer.Board> object. The response should contain an error message in case of an error.</returns>
+        public Response<Board> GetBoard(string email) 
         {
             if (!SecurityController.UserValidation(email))
             {
@@ -36,7 +48,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response LimitColumnTasks(string email, int columnOrdinal, int limit) //done+++++++++++++++++++++++++++++++++++++++++++
+        /// <summary>
+        /// Limits the maximum number of tasks in the requested column.
+        /// </summary>
+        /// <param name="email">The email of the user that the board belongs to.</param>
+        /// <param name="columnOrdinal">The column number in the board.</param>
+        /// <param name="limit">The number of maximum tasks that the column should hold.</param>
+        /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
+        public Response LimitColumnTasks(string email, int columnOrdinal, int limit) 
         {
             if (!SecurityController.UserValidation(email))
             {
@@ -60,7 +79,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response<Task> AddTask(string email, string title, string description, DateTime dueDate) //done++++++++++++++++++++++++++++++++++++++
+        /// <summary>
+        /// Adds a new task to the "Backlog" column.
+        /// </summary>
+        /// <param name="email">The email of the user that the task belongs to.</param>
+        /// <param name="title">New task title.</param>
+        /// <param name="description">New task description - body of the task.</param>
+        /// <param name="dueDate">New task due date.</param>
+        /// <returns>A Response<ServiceLayer.Task> object. The response should contain an error message in case of an error.</returns>
+        public Response<Task> AddTask(string email, string title, string description, DateTime dueDate) 
         {
             if (!SecurityController.UserValidation(email)) return new Response<Task>("Invalid current user.");
             try
@@ -79,7 +106,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate) //done++++++++++++++++++++++++++++++++++++++
+        /// <summary>
+        /// Updates a requested task due date.
+        /// </summary>
+        /// <param name="email">The email of the user that the task belongs to.</param>
+        /// <param name="columnOrdinal">A number of the column the task belongs to.</param>
+        /// <param name="taskId">A requested task ID.</param>
+        /// <param name="newDueDate">New due date of the requested task.</param>
+        /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
+        public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate) 
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
@@ -97,7 +132,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle) //done++++++++++++++++++++++++++++++++++++++
+        /// <summary>
+        /// Updates a requested task title.
+        /// </summary>
+        /// <param name="email">The email of the user that the task belongs to.</param>
+        /// <param name="columnOrdinal">A number of the column the task belongs to.</param>
+        /// <param name="taskId">A requested task ID.</param>
+        /// <param name="newTitle">New title for the requested task.</param>
+        /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
+        public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
@@ -115,7 +158,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription) //done+++++++++++++++++++++++++++++
+        /// <summary>
+        /// Updates a requested task description.
+        /// </summary>
+        /// <param name="email">The email of the user that the task belongs to.</param>
+        /// <param name="columnOrdinal">A number of the column the task belongs to.</param>
+        /// <param name="taskId">A requested task ID.</param>
+        /// <param name="newDescription">New description(body) for the requested task.</param>
+        /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
+        public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription) 
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
@@ -133,7 +184,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response AdvanceTask(string email, int columnOrdinal, int taskId) //done+++++++++++++++++++++++++++++
+        /// <summary>
+        /// Advances the requested task to the next column.
+        /// Task can't be advanced further than the "Done" column.
+        /// </summary>
+        /// <param name="email">The email of the user that the task belongs to.</param>
+        /// <param name="columnOrdinal">A number of the column the task belongs to.</param>
+        /// <param name="taskId">A requested task ID.</param>
+        /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
+        public Response AdvanceTask(string email, int columnOrdinal, int taskId) 
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
@@ -151,7 +210,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response<Column> GetColumn(string email, string columnName) ///done++++++++++++++++++++++++++++++++++++++
+        /// <summary>
+        /// Allows to reach current logged in user's requested column, for performing required actions on it.
+        /// </summary>
+        /// <param name="email">User's email to receive its board with the requested column.</param>
+        /// <param name="columnName">Requested column name.</param>
+        /// <returns>A Response<ServiceLayer.Column> object. The response should contain an error message in case of an error.</returns>
+        public Response<Column> GetColumn(string email, string columnName) 
         {
             if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
             try
@@ -186,7 +251,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
 
 
-        public Response<Column> GetColumn(string email, int columnOrdinal) //done++++++++++++++++++++++++++++++++++++++
+        /// <summary>
+        /// Allows to reach current logged in user's requested column, for performing required actions on it.
+        /// </summary>
+        /// <param name="email">User's email to receive its board with the requested column.</param>
+        /// <param name="columnOrdinal">Requested column ordinal.</param>
+        /// <returns>A Response<ServiceLayer.Column> object. The response should contain an error message in case of an error.</returns>
+        public Response<Column> GetColumn(string email, int columnOrdinal) 
         {
             //this method replicates GetColumn(string email, string columnName), with only difference of calling BL.BC.GetColumn() with columnOrdinal.
             if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user.");

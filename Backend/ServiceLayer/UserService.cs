@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         /// <summary>
         /// Public constructor. 
-        /// <param name="sc">Current SecurityController class .</param>
+        /// <param name="sc">Current SecurityController object .</param>
         /// </summary>
         public UserService(BusinessLayer.SecurityController sc)
         {
