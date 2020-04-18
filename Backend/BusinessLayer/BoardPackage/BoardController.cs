@@ -153,10 +153,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Task newTask = new Task(title, description, dueDate, GetBoard(email).TaskCounter);
             GetBoard(email).TaskCounter = GetBoard(email).TaskCounter + 1;
 
-
             c.InsertTask(newTask);
             newTask.Save("Boards\\" + email + "\\" + c.Name + "\\");
             log.Debug("new task was added to Backlog Column");
+
+            GetBoard(email).Save("Boards\\");
+
             return newTask;            
         }
         /// <summary>

@@ -14,6 +14,26 @@ namespace IntroSE.Kanban.Backend.TestsLayer
     {
         static void Main(string[] args)
         {
+
+            //Console.Write("Do you want to perform a restart of the program? (y/n)");
+            //string choice2 = Console.ReadLine();
+            //if (choice2 == "y")
+            //{
+            //    ServiceLayer.Service service = new ServiceLayer.Service();
+            //    service.LoadData();
+            //    service.Login("currentUser@TaskInvolvedTeasts.com", "123Abc");
+            //    Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTeasts.com", "Backlog").Value.Tasks.ElementAt(0));
+            //    Console.ReadKey();
+            //}
+            //else
+            //{
+            //    Console.WriteLine("press any key to exit the console...");
+            //    Console.ReadKey();
+            //}
+
+
+            //System.Environment.Exit(0);
+
             Stopwatch timer = new Stopwatch();
             timer.Start();
             
@@ -43,24 +63,24 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             timer.Stop();
             Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
             
-            Console.ForegroundColor = ConsoleColor.Red;
+            //Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.WriteLine("**********************************************************************");
-            Console.WriteLine("**********************************************************************");
-            Console.WriteLine("**********************************************************************");
-            Console.WriteLine("**********************************************************************");
-            Console.WriteLine("Normal usage state test starts here.");
+            //Console.WriteLine("**********************************************************************");
+            //Console.WriteLine("**********************************************************************");
+            //Console.WriteLine("**********************************************************************");
+            //Console.WriteLine("**********************************************************************");
+            //Console.WriteLine("Normal usage state test starts here.");
 
-            timer.Restart();
+            //timer.Restart();
 
-            NormalUsageStateTest normalUsageStateTest = new NormalUsageStateTest();
-            normalUsageStateTest.RunTheTest();
+            //NormalUsageStateTest normalUsageStateTest = new NormalUsageStateTest();
+            //normalUsageStateTest.RunTheTest();
 
-            timer.Stop();
+            //timer.Stop();
 
-            Console.ForegroundColor = ConsoleColor.Green;
+            //Console.ForegroundColor = ConsoleColor.Green;
 
-            Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
+            //Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
 
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -74,14 +94,15 @@ namespace IntroSE.Kanban.Backend.TestsLayer
                 {
                     dir1.Delete(true);
                 }
-                Console.Write("'data' folder was deleted. Thank you for using Tests. Press any key to close the console....");
+                Console.Write("'data' folder was deleted. Thank you for using Tests.");
                 Console.ReadKey();
             }
             else
             {
-                Console.Write("Thank you for using Tests. Press any key to close the console....");
                 Console.ReadKey();
             }
+
+
         }
     }
 }

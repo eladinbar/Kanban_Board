@@ -24,5 +24,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.LastChangedDate = creationTime;
         }
         // You can add code here
+
     }
 }

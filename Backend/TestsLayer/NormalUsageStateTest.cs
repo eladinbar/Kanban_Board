@@ -115,16 +115,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
                     counter++;
                 }
             }
-
-            /*
-             * 1 = Register();
-             * 2, 8, 16 = Login();
-             * 3 = Logout();
-             * 4, 9, 14, 15 , 17 = AddAllTasks();
-             * 5, 10, 11, 12 = AdvanceTask();
-             * 6, 13 = EditTask();
-             * 7  = LimitColumn();
-             */
+                        
         }
 
 

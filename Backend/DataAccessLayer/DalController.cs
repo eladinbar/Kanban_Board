@@ -118,13 +118,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             log.Debug("Loading all columns of " + boardName);
             List<Column> columns = new List<Column>();
-            DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName + "\\");
+            DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName.Substring(0, boardName.Length - 5) + "\\");
             if (dir.Exists)
             {
                 foreach (FileInfo column in dir.GetFiles("*.json"))
                 {
                     Column savedColumn = new Column();
-                    savedColumn = savedColumn.FromJson(ReadFromFile(column.Name, "Boards\\" + boardName));
+                    savedColumn = savedColumn.FromJson(ReadFromFile(column.Name, "Boards\\" + boardName.Substring(0, boardName.Length - 5)+"\\"));
                     savedColumn = new Column(savedColumn.Name, savedColumn.Limit, LoadAllTasks(boardName, column.Name));
                     columns.Add(savedColumn);
                 }
@@ -139,13 +139,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private List<Task> LoadAllTasks (string boardName, string columnName) {
             log.Debug("Loading all tasks in " + columnName + " of Board" + boardName);
             List<Task> tasks = new List<Task>();
-            DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName + "\\" + columnName + "\\");
+            DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName.Substring(0, boardName.Length - 5) + "\\" + columnName.Substring(0, columnName.Length - 5) + "\\");
             if (dir.Exists)
             {
                 foreach (FileInfo task in dir.GetFiles("*.json"))
                 {
                     Task savedTask = new Task();
-                    savedTask = savedTask.FromJson(ReadFromFile(task.Name, "Boards\\" + boardName + "\\" + columnName + "\\"));
+                    savedTask = savedTask.FromJson(ReadFromFile(task.Name, "Boards\\" + boardName.Substring(0, boardName.Length - 5) + "\\" + columnName.Substring(0, columnName.Length - 5) + "\\"));
                     tasks.Add(savedTask);
                 }
             }
