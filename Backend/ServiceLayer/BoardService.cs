@@ -120,7 +120,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
-                log.Info("Task doudate updated seccessfully.");
+                log.Info("Task due date was updated seccessfully.");
                 return new Response("Task due date has benn updated successfully.");
             }
             catch (Exception ex)
