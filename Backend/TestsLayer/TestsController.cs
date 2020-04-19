@@ -83,7 +83,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
             //Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
 
-            Console.ForegroundColor = ConsoleColor.White;
+            //Console.ForegroundColor = ConsoleColor.White;
 
             Console.Write("do you want to clear the 'data' folder? (y/n):");
             string choice = Console.ReadLine();
