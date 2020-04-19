@@ -170,11 +170,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">the new title to insert</param>
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
         {
-            Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
-            toUpdate.Delete(toUpdate.Id + "-" + toUpdate.Title, "Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
-            toUpdate.UpdateTaskTitle(newTitle);
-            toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
-            log.Debug("Task title was updated");
+            Column c = GetColumn(email, columnOrdinal);
+            if (!c.Name.Equals("Done"))
+            {
+                Task toUpdate = c.GetTask(taskId);
+                toUpdate.Delete(toUpdate.Id + "-" + toUpdate.Title, "Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+                toUpdate.UpdateTaskTitle(newTitle);
+                toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+                log.Debug("Task title was updated");
+            }
+            else
+                throw new ArgumentException("Tasks cannot be edited in 'Done' column");
         }
 
         /// <summary>
@@ -186,10 +192,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">the new desctiption to insert</param>
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription)
         {
-            Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
-            toUpdate.UpdateTaskDescription(newDescription);
-            toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
-            log.Debug("Task description was updated");
+            Column c = GetColumn(email, columnOrdinal);
+            if (!c.Name.Equals("Done"))
+            {
+                Task toUpdate = c.GetTask(taskId);
+                toUpdate.UpdateTaskDescription(newDescription);
+                toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+                log.Debug("Task description was updated");
+            }
+            else
+                throw new ArgumentException("Tasks cannot be edited in 'Done' column");
         }
 
         /// <summary>
@@ -201,10 +213,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">the new duedate to insert</param>
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
         {
-            Task toUpdate = GetColumn(email, columnOrdinal).GetTask(taskId);
-            toUpdate.UpdateTaskDuedate(newDueDate);
-            toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
-            log.Debug("Task doudate was updated");
+            Column c = GetColumn(email, columnOrdinal);
+            if (!c.Name.Equals("Done"))
+            {
+                Task toUpdate = c.GetTask(taskId);
+                toUpdate.UpdateTaskDuedate(newDueDate);
+                toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
+                log.Debug("Task doudate was updated");
+            }
+            else
+                throw new ArgumentException("Tasks cannot be edited in 'Done' column");
         }
 
         /// <summary>

@@ -104,7 +104,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (Tasks.Exists(x => x.Id == taskId))
                 return Tasks.Find(x => x.Id == taskId);
             else
-                return null;
+                throw new ArgumentException("Task #"+taskId+" does not exist in column");
         }
         ///>inheritdoc/>
         public DataAccessLayer.Column ToDalObject()
