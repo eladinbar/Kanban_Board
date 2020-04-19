@@ -57,8 +57,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <returns></returns>
         public Column GetColumn(string columnName)
         {
-            log.Debug(UserEmail + ": returned column " + columnName);
-            return Columns.Find(x => x.Name.Equals(columnName));
+            if (Columns.Exists(c => c.Name.Equals(columnName)))
+            {
+                log.Debug(UserEmail + ": returned column " + columnName);
+                return Columns.Find(x => x.Name.Equals(columnName));
+            }
+            else
+                throw new ArgumentException("'" + columnName + "' does not exist.");
         }
         /// <summary>
         /// get the column the the specified Index
@@ -90,6 +95,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             log.Debug("Returned column's names");
             return columnNames;
+        }
+
+        internal bool TaskIdExistenceCheck(int id)
+        {
+            return id <= TaskCounter & id >= 1;
         }
 
         ///<inheretdoc/>
