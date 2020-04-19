@@ -179,6 +179,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
                 log.Debug("Task title was updated");
             }
+            else
+                throw new ArgumentException("Tasks cannot be edited in 'Done' column");
         }
 
         /// <summary>
@@ -198,6 +200,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
                 log.Debug("Task description was updated");
             }
+            else
+                throw new ArgumentException("Tasks cannot be edited in 'Done' column");
         }
 
         /// <summary>
@@ -217,6 +221,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 toUpdate.Save("Boards\\" + email + "\\" + GetColumn(email, columnOrdinal).Name + "\\");
                 log.Debug("Task doudate was updated");
             }
+            else
+                throw new ArgumentException("Tasks cannot be edited in 'Done' column");
         }
 
         /// <summary>
