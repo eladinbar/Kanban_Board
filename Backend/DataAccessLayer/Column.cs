@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    public class Column : DalObject<Column>
+    internal class Column : DalObject<Column>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

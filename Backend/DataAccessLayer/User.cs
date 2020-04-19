@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    public class User : DalObject<User>
+    internal class User : DalObject<User>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
         public string Email { get; set; }

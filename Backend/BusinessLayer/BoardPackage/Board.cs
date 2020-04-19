@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     /// <summary>
     ///Represents the Kanban Board
     /// </summary>
-    public class Board : PersistedObject<DataAccessLayer.Board>
+    internal class Board : PersistedObject<DataAccessLayer.Board>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

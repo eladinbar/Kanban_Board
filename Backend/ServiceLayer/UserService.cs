@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// <summary>
     ///The servicve for perfoming User-account actions.
     /// </summary>
-    class UserService
+    internal class UserService
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

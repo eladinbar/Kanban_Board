@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     /// <summary>
     ///Security class that performs major user validation tasks.
     /// </summary>
-    class SecurityController
+    internal class SecurityController
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

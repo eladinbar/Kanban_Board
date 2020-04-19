@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
     /// The UserController is the class that controls the functionality of the UserPackage.
     /// Contains the methods for adding and modifying the content of a user.
     /// </summary>
-    class UserController
+    internal class UserController
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

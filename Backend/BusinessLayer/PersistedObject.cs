@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
-    interface PersistedObject<T> where T : DalObject<T>
+    internal interface PersistedObject<T> where T : DalObject<T>
     {
         /// <summary>
         /// Transforms the object to his coresponding DalObject.

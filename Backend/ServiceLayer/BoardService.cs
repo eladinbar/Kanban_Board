@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// <summary>
     ///The servicve for perfoming Board-involved actions.
     /// </summary>
-    class BoardService
+    internal class BoardService
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

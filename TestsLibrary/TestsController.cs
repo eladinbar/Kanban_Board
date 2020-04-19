@@ -15,21 +15,21 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         static void Main(string[] args)
         {
 
-            Console.Write("Do you want to perform a restart of the program? (y/n)");
-            string choice2 = Console.ReadLine();
-            if (choice2 == "y")
-            {
-                ServiceLayer.Service service = new ServiceLayer.Service();
-                service.LoadData();
-                service.Login("currentUser@TaskInvolvedTeasts.com", "123Abc");
-                Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTeasts.com", "Backlog").Value.Tasks.ElementAt(0).CreationTime);
-                Console.ReadKey();
-            }
-            else
-            {
-                Console.WriteLine("press any key to exit the console...");
-                Console.ReadKey();
-            }
+            //Console.Write("Do you want to perform a restart of the program? (y/n)");
+            //string choice2 = Console.ReadLine();
+            //if (choice2 == "y")
+            //{
+            //    ServiceLayer.Service service = new ServiceLayer.Service();
+            //    service.LoadData();
+            //    service.Login("currentUser@TaskInvolvedTeasts.com", "123Abc");
+            //    Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTeasts.com", "Backlog").Value.Tasks.ElementAt(0));
+            //    Console.ReadKey();
+            //}
+            //else
+            //{
+            //    Console.WriteLine("press any key to exit the console...");
+            //    Console.ReadKey();
+            //}
 
 
             //System.Environment.Exit(0);

@@ -7,7 +7,7 @@ using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    public class Column : PersistedObject<DataAccessLayer.Column>
+    internal class Column : PersistedObject<DataAccessLayer.Column>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

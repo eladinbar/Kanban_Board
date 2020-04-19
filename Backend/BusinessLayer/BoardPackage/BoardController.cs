@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     /// The BoardController is the class that controls the functionality of the BoardPackage.
     /// Contains the methods for adding and modifying the content of a board.
     /// </summary>
-    public class BoardController
+    internal class BoardController
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

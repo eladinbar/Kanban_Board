@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     /// <summary>
     /// Represents all system objects in the simplest manner that will allow all relevant information to be persisted.
     /// </summary>
-    public abstract class DalObject<T> where T:DalObject<T>
+    internal abstract class DalObject<T> where T:DalObject<T>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 

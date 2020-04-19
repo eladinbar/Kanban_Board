@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     /// <summary>
     /// The DalController governs all data access activity.
     /// </summary>
-    class DalController
+    internal class DalController
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
