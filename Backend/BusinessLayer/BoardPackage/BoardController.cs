@@ -108,6 +108,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void AdvanceTask(string email, int columnOrdinal,int taskId)
         {
             Board b = GetBoard(email);
+            if (!b.TaskIdExistenceCheck(taskId))
+                throw new ArgumentException("Task does not exist.");
+
+
             if (b.GetColumn(columnOrdinal).Name.Equals("Done"))
             {
                 log.Error("attempt to advance task in Done column");
@@ -144,20 +148,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </exception>
         public Task AddTask(string email, string title, string description, DateTime dueDate)
         {
+            Board b = GetBoard(email);
             Column c = GetColumn(email, "Backlog");
             if (!c.CheckLimit())
             {
                 log.Error("attemp to add task when backlog is full");
                 throw new Exception("backlog column is full");
             }
-            GetBoard(email).TaskCounter = GetBoard(email).TaskCounter + 1;
-            Task newTask = new Task(title, description, dueDate, GetBoard(email).TaskCounter);
+            b.TaskCounter = GetBoard(email).TaskCounter + 1;
+            Task newTask = new Task(title, description, dueDate, b.TaskCounter);
             
             c.InsertTask(newTask);
             newTask.Save("Boards\\" + email + "\\" + c.Name + "\\");
             log.Debug("new task was added to Backlog Column");
 
-            GetBoard(email).Save("Boards\\");
+            b.Save("Boards\\");
 
             return newTask;            
         }
@@ -170,6 +175,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">the new title to insert</param>
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
         {
+            Board b = GetBoard(email);
+            if (!b.TaskIdExistenceCheck(taskId))
+                throw new ArgumentException("Task does not exist.");
+
             Column c = GetColumn(email, columnOrdinal);
             if (!c.Name.Equals("Done"))
             {
@@ -192,6 +201,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">the new desctiption to insert</param>
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription)
         {
+            Board b = GetBoard(email);
+            if (!b.TaskIdExistenceCheck(taskId))
+                throw new ArgumentException("Task does not exist.");
+
             Column c = GetColumn(email, columnOrdinal);
             if (!c.Name.Equals("Done"))
             {
@@ -213,6 +226,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">the new duedate to insert</param>
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
         {
+            Board b = GetBoard(email);
+            if (!b.TaskIdExistenceCheck(taskId))
+                throw new ArgumentException("Task does not exist.");
+
             Column c = GetColumn(email, columnOrdinal);
             if (!c.Name.Equals("Done"))
             {
