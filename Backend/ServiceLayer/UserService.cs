@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// Security Controller getter. 
         /// </summary>
         /// <returns>Current SecurityController initialization.</returns>
-        public BusinessLayer.SecurityController SecurityController
+        private BusinessLayer.SecurityController SecurityController
         {
             get
             {

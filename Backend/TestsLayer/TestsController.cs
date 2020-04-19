@@ -34,6 +34,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
             //System.Environment.Exit(0);
 
+
             Stopwatch timer = new Stopwatch();
             timer.Start();
             
