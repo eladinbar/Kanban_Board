@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend
             return log4net.LogManager.GetLogger(filename);
         }
 
-        public static void ChangeFilePath(string appenderName, string newFilename)
+        private static void ChangeFilePath(string appenderName, string newFilename)
         {
             log4net.Repository.ILoggerRepository repository = log4net.LogManager.GetRepository();
             foreach (log4net.Appender.IAppender appender in repository.GetAppenders())
