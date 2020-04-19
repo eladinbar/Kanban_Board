@@ -107,7 +107,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("UpdateTaskDueDateBadOrdinalTest");
             Console.WriteLine("Input: proper details except columnOrdinal - task exists but in different column.");
             DateTime newDueDate = new DateTime(2035, 7, 24);
-            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(_currentUser.Email, 2, 1, newDueDate).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.UpdateTaskDueDate(_currentUser.Email, 1, 1, newDueDate).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 

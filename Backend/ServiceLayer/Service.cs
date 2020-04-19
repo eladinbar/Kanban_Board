@@ -17,7 +17,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private BusinessLayer.SecurityController _securityController;
         private BoardService _boardService;
         private UserService _userService;
 
@@ -28,7 +27,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
 
             log.Info("Crates service Object");
-            _securityController = null;
+            _boardService = null;
+            _userService = null;
         }
 
         /// <summary>        
@@ -38,7 +38,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response LoadData() 
         {
             log.Debug("Attempting to load the program data.");
-            if (_securityController != null)
+            if (_userService != null)
             {
                 Response r = new Response("The data is already loaded.");
                 log.Warn(r.ErrorMessage);
@@ -46,7 +46,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             try
             {
-                _securityController = new BusinessLayer.SecurityController();
+                BusinessLayer.SecurityController _securityController = new BusinessLayer.SecurityController();
                 _boardService = new BoardService(_securityController);
                 _userService = new UserService(_securityController);
                 log.Info("The data was loaded successfully.");
@@ -69,7 +69,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string email, string password, string nickname)
         {
-              return _userService.Register(email, password, nickname);
+            if (email == null | password == null | nickname == null) return new Response("One of the parameters is not valid.");
+            return _userService.Register(email, password, nickname);
         }
 
         /// <summary>
@@ -80,7 +81,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-                return _userService.Login(email, password);
+            if (email == null | password == null) return new Response<User>("One of the parameters is not valid.");
+            return _userService.Login(email, password);
         }
 
         /// <summary>        
@@ -90,6 +92,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
+            if (email == null) return new Response("One of the parameters is not valid.");
             return _userService.Logout(email);
         }
 
@@ -100,6 +103,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public Response<Board> GetBoard(string email)
         {
+            if (email == null) return new Response<Board>("One of the parameters is not valid.");
             return _boardService.GetBoard(email);
         }
 
@@ -112,6 +116,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
+            if (email == null) return new Response("One of the parameters is not valid.");
             return _boardService.LimitColumnTasks(email,columnOrdinal,limit);
         }
 
@@ -125,6 +130,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
         {
+            if (email == null | title == null | description == null) return new Response<Task>("One of the parameters is not valid.");
             return _boardService.AddTask(email, title, description,dueDate);
         }
 
@@ -138,6 +144,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
+            if (email == null) return new Response("One of the parameters is not valid.");
             return _boardService.UpdateTaskDueDate(email, columnOrdinal,taskId, dueDate);
         }
 
@@ -151,6 +158,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
+            if (email == null | title == null) return new Response("One of the parameters is not valid.");
             return _boardService.UpdateTaskTitle(email, columnOrdinal, taskId, title);
         }
 
@@ -164,6 +172,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
         {
+            if (email == null | description == null) return new Response("One of the parameters is not valid.");
             return _boardService.UpdateTaskDescription(email, columnOrdinal, taskId, description);
         }
 
@@ -176,6 +185,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
+            if (email == null) return new Response("One of the parameters is not valid.");
             return _boardService.AdvanceTask(email, columnOrdinal, taskId);
         }
 
@@ -188,6 +198,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<Column> GetColumn(string email, string columnName)
         {
+            if (email == null | columnName == null) return new Response<Column>("One of the parameters is not valid.");
             return _boardService.GetColumn(email, columnName);
         }
 
@@ -201,6 +212,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
+            if (email == null) return new Response<Column>("One of the parameters is not valid.");
             return _boardService.GetColumn(email, columnOrdinal);
         }
     }
