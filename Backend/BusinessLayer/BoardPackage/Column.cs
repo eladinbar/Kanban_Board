@@ -49,7 +49,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else if (limit < Tasks.Count)
             {
                 log.Error("number of tasks in the column was greater then limit set attempt");
-                throw new ArgumentOutOfRangeException("Number of tasks is more then the desired limit");
+                throw new ArgumentOutOfRangeException("Number of tasks in the column is +" + Tasks.Count + ". Is more then the desired limit: "+ limit);
             }
             else
                 Limit = limit;

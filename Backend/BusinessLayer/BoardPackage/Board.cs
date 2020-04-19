@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Board(string email)
         {
             UserEmail = email;
-            TaskCounter = 1;
+            TaskCounter = 0;
             Columns = new List<Column>();
             Columns.Add(newColumn("Backlog"));
             Columns.Add(newColumn("In Progress"));
