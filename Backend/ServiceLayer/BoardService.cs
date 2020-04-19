@@ -40,10 +40,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Error(resp.ErrorMessage);
                 return resp;
             }
-            List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
-            Board tempStructBoard = new Board(tempColumnNames);
-            log.Debug("Board reached service layer successfully");
-            return new Response<Board>(tempStructBoard);
+            try
+            {
+                List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
+                Board tempStructBoard = new Board(tempColumnNames);
+                log.Debug("Board reached service layer successfully");
+                return new Response<Board>(tempStructBoard);
+            }
+            catch(Exception ex)
+            {
+                log.Error(ex.Message);
+                return new Response<Board>(ex.Message);
+            }
         }
 
 

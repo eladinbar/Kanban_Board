@@ -7,13 +7,20 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
 using System.Security.AccessControl;
+using log4net;
+using log4net.Config;
+
+
 
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
     class TestsController
     {
+
         static void Main(string[] args)
         {
+            
+            LogHelper.Setup();
 
             //Console.Write("Do you want to perform a restart of the program? (y/n)");
             //string choice2 = Console.ReadLine();
@@ -94,8 +101,8 @@ namespace IntroSE.Kanban.Backend.TestsLayer
                 if (dir2.Exists)
                 {
                     dir1.Delete(true);
+                    Console.Write("'data' folder was deleted. Thank you for using Tests.");
                 }
-                Console.Write("'data' folder was deleted. Thank you for using Tests.");
                 Console.ReadKey();
             }
             else

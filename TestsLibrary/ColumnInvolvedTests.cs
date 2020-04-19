@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("LimitColumnTest");
             Console.WriteLine("Input: proper data.");
-            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, 10, 1).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, 1, 10).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
