@@ -8,8 +8,6 @@ using System.IO;
 using System.Security.Principal;
 using System.Security.AccessControl;
 using log4net;
-using log4net.Config;
-
 
 
 namespace IntroSE.Kanban.Backend.TestsLayer
@@ -20,8 +18,6 @@ namespace IntroSE.Kanban.Backend.TestsLayer
         static void Main(string[] args)
         {
             
-            LogHelper.Setup();
-
             //Console.Write("Do you want to perform a restart of the program? (y/n)");
             //string choice2 = Console.ReadLine();
             //if (choice2 == "y")
