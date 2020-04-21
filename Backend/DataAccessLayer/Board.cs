@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
@@ -38,8 +34,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             if (!dir.Exists)
                 dir.Create();
             dc.WriteToFile(this.UserEmail, ToJson(), path);
-            //dir = new DirectoryInfo(dir + this.UserEmail);
-            //dir.Create();
         }
     }
 }

@@ -17,8 +17,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private BoardService _boardService;
-        private UserService _userService;
+        private BoardService BoardService;
+        private UserService UserService;
 
         /// <summary>
         /// Simple public constructor.
@@ -26,9 +26,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Service()
         {
 
-            log.Info("Crates service Object");
-            _boardService = null;
-            _userService = null;
+            log.Info("Creates a service object");
+            BoardService = null;
+            UserService = null;
         }
 
         /// <summary>        
@@ -38,7 +38,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response LoadData() 
         {
             log.Debug("Attempting to load the program data.");
-            if (_userService != null)
+            if (UserService != null)
             {
                 Response r = new Response("The data is already loaded.");
                 log.Warn(r.ErrorMessage);
@@ -47,8 +47,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.SecurityController _securityController = new BusinessLayer.SecurityController();
-                _boardService = new BoardService(_securityController);
-                _userService = new UserService(_securityController);
+                BoardService = new BoardService(_securityController);
+                UserService = new UserService(_securityController);
                 log.Info("The data was loaded successfully.");
                 return new Response("The data was loaded successfully.");
             }
@@ -70,7 +70,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response Register(string email, string password, string nickname)
         {
             if (email == null | password == null | nickname == null) return new Response("One of the parameters is not valid.");
-            return _userService.Register(email, password, nickname);
+            return UserService.Register(email, password, nickname);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<User> Login(string email, string password)
         {
             if (email == null | password == null) return new Response<User>("One of the parameters is not valid.");
-            return _userService.Login(email, password);
+            return UserService.Login(email, password);
         }
 
         /// <summary>        
@@ -93,7 +93,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response Logout(string email)
         {
             if (email == null) return new Response("One of the parameters is not valid.");
-            return _userService.Logout(email);
+            return UserService.Logout(email);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Board> GetBoard(string email)
         {
             if (email == null) return new Response<Board>("One of the parameters is not valid.");
-            return _boardService.GetBoard(email);
+            return BoardService.GetBoard(email);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
             if (email == null) return new Response("One of the parameters is not valid.");
-            return _boardService.LimitColumnTasks(email,columnOrdinal,limit);
+            return BoardService.LimitColumnTasks(email,columnOrdinal,limit);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
         {
             if (email == null | title == null | description == null) return new Response<Task>("One of the parameters is not valid.");
-            return _boardService.AddTask(email, title, description,dueDate);
+            return BoardService.AddTask(email, title, description,dueDate);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
             if (email == null) return new Response("One of the parameters is not valid.");
-            return _boardService.UpdateTaskDueDate(email, columnOrdinal,taskId, dueDate);
+            return BoardService.UpdateTaskDueDate(email, columnOrdinal,taskId, dueDate);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
             if (email == null | title == null) return new Response("One of the parameters is not valid.");
-            return _boardService.UpdateTaskTitle(email, columnOrdinal, taskId, title);
+            return BoardService.UpdateTaskTitle(email, columnOrdinal, taskId, title);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
         {
             if (email == null | description == null) return new Response("One of the parameters is not valid.");
-            return _boardService.UpdateTaskDescription(email, columnOrdinal, taskId, description);
+            return BoardService.UpdateTaskDescription(email, columnOrdinal, taskId, description);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
             if (email == null) return new Response("One of the parameters is not valid.");
-            return _boardService.AdvanceTask(email, columnOrdinal, taskId);
+            return BoardService.AdvanceTask(email, columnOrdinal, taskId);
         }
 
 
@@ -199,7 +199,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> GetColumn(string email, string columnName)
         {
             if (email == null | columnName == null) return new Response<Column>("One of the parameters is not valid.");
-            return _boardService.GetColumn(email, columnName);
+            return BoardService.GetColumn(email, columnName);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
             if (email == null) return new Response<Column>("One of the parameters is not valid.");
-            return _boardService.GetColumn(email, columnOrdinal);
+            return BoardService.GetColumn(email, columnOrdinal);
         }
     }
 }

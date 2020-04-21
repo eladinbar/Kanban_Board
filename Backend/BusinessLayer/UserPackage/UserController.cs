@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
@@ -19,6 +16,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 
         private Dictionary<string, User> Users;
 
+        /// <summary>
+        /// The user controller constructor. Initializes the 'Users' field by loading all existing data from memory, if no data exists, creates an empty dictionary.
+        /// </summary>
         public UserController() {
             Users = new Dictionary<string, User>();
             DalController dalC = new DalController();

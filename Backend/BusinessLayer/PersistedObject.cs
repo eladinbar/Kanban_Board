@@ -1,26 +1,19 @@
 ﻿using IntroSE.Kanban.Backend.DataAccessLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     internal interface PersistedObject<T> where T : DalObject<T>
     {
         /// <summary>
-        /// Transforms the object to his coresponding DalObject.
+        /// Transforms the object to its corresponding DalObject.
         /// </summary>
-        /// <returns>
-        /// return a DalObject
-        /// </returns>
+        /// <returns>return a DalObject</returns>
         T ToDalObject();
 
         /// <summary>
-        /// Saves to disk method
+        /// The method in the BusinessLayer to save an object to the persistent layer.
         /// </summary>
-        /// <param name="path">location to save</param>
+        /// <param name="path">The path the object will be saved to.</param>
         void Save(string path);
     }
 }

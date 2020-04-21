@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
@@ -18,16 +13,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public DateTime DueDate { get; private set; }
         public DateTime LastChangedDate { get; private set; }
 
+        /// <summary>
+        /// A public constructor that creates a new task and intializes all of its fields.
+        /// </summary>
+        /// <param name="title">The title the task will be created with.</param>
+        /// <param name="description">The description the task will be created with.</param>
+        /// <param name="dueDate">The date the task will be due on.</param>
+        /// <param name="id">The unique ID that will be associated with this task.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the title or description given are invalid.</exception>
         public Task(string title, string description, DateTime dueDate, int id)
         {
             if (title.Length > 0 && title.Length <= 50)
                 Title = title;
             else
-                throw new ArgumentOutOfRangeException("title can not be empty or exceed 50 charecters");
+                throw new ArgumentOutOfRangeException("The title cannot be empty or exceed 50 charecters");
             if (description.Length <= 300)
                 Description = description;
             else
-                throw new ArgumentOutOfRangeException("description can not exceed 300 charecters");
+                throw new ArgumentOutOfRangeException("The description can not exceed 300 charecters");
 
             DueDate = dueDate.ToLocalTime();
             CreationTime = DateTime.Now.ToLocalTime();
@@ -37,6 +40,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         }
 
+        /// <summary>
+        /// An internal constructor that initializes all of the required fields upon loading an exisiting task from memory.
+        /// </summary>
+        /// <param name="title">The title the task will be created with.</param>
+        /// <param name="description">The description the task will be created with.</param>
+        /// <param name="dueDate">The date the task will be due on.</param>
+        /// <param name="id">The unique ID that will be associated with this task.</param>
+        /// <param name="creationTime">The time in which this loaded task was created on.</param>
+        /// <param name="lastChangedDate">The last date this task was changed.</param>
         internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate) {
             Title = title;
             Description = description;
@@ -46,11 +58,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             LastChangedDate = lastChangedDate.ToLocalTime();
             log.Info("Task " + id + " was Loaded from memory");
         }
+
         /// <summary>
-        /// changes the task title.
+        /// Changes the task's title.
         /// </summary>
-        /// <param name="title">the new title of the task</param>
-        /// <exception cref="ArgumentException">Trown if the new title is empty or more th 50 charecters</exception>
+        /// <param name="title">The new title to be given to the task.</param>
+        /// <exception cref="ArgumentException">Thrown if the new title is empty or is more than 50 characters long.</exception>
         public void UpdateTaskTitle(string title)
         {
             if (title.Length > 0 && title.Length <= 50)
@@ -59,14 +72,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 LastChangedDate = DateTime.Now.ToLocalTime();
             }
             else
-                throw new ArgumentException("title can not exceed 50 charecters or be empty");
+                throw new ArgumentException("The title cannot be empty or exceed 50 characters");
         }
        
         /// <summary>
-        /// changes the task description
+        /// Changes the task's description.
         /// </summary>
-        /// <param name="description">the new description of the task</param>
-        /// <exception cref="ArgumentException">Thrown when description is more then 300 characters</exception>
+        /// <param name="description">The new description the task will be given.</param>
+        /// <exception cref="ArgumentException">Thrown when the description is more than 300 characters long.</exception>
         public void UpdateTaskDescription(string description)
         {
             if (description.Length <= 300)
@@ -75,14 +88,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 LastChangedDate = DateTime.Now.ToLocalTime();
             }
             else
-                throw new ArgumentException("description can not exceed 300 charecters");
+                throw new ArgumentException("The description can not exceed 300 charecters");
         }
       
         /// <summary>
-        /// changes the task duedate to a new one
+        /// Changes the task's due date to a new one.
         /// </summary>
-        /// <param name="duedate">The new duedate.</param>
-        /// <exception cref="ArgumentException">Thrown when the new duedate is erlier then the current time of the change.</exception>
+        /// <param name="duedate">The new due date for the task.</param>
+        /// <exception cref="ArgumentException">Thrown when the new due date is earlier than the current time.</exception>
         public void UpdateTaskDuedate(DateTime duedate)
         {
             if (duedate.CompareTo(DateTime.Now) < 0)
@@ -93,13 +106,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 LastChangedDate = DateTime.Now.ToLocalTime();
             }
         }
-        ///>inheritdoc/>
+
+        /// <summary>
+        /// Transforms the task to its corresponding DalObject.
+        /// </summary>
+        /// <returns>Returns a Data Access Layer Task.</returns>
         public DataAccessLayer.Task ToDalObject()
         {
             return new DataAccessLayer.Task(Id, Title, Description, CreationTime, DueDate, LastChangedDate);
         }
 
-        ///>inheritdoc/>
+        /// <summary>
+        /// The method in the BusinessLayer to save an object to the persistent layer.
+        /// </summary>
+        /// <param name="path">The path the object will be saved to.</param>
         public void Save(string path)
         {
             ToDalObject().Save(path);
@@ -107,11 +127,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
         /// <summary>
-        /// prevents foe double saving the same task
+        /// Removes a task from memory (used when a task is advanced to a new column).
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="path"></param>
-        internal void Delete(string fileName, string path) //Removes tasks appearing in multiple columns (occurs when advancing tasks)
+        /// <param name="fileName">The name the task will be saved with.</param>
+        /// <param name="path">The path the task will be saved to.</param>
+        internal void Delete(string fileName, string path)
         {
             ToDalObject().Delete(fileName, path);
             log.Info("Task " + Id + "-" + Title + "deleted");

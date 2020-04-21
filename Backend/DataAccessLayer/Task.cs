@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
@@ -38,8 +34,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             DalController dc = new DalController();
             DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + path);
-            //if (!dir.Exists)
-            //    dir.Create();
             dc.WriteToFile(this.Id + "-" + this.Title, ToJson(), path);
         }
 

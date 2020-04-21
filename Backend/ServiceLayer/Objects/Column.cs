@@ -18,9 +18,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Limit = limit;
         }
         // You can add code here
-        public string ToString()
-        {
-            return Name + " ,limit: " + Limit + " ,number of tasks: " + Tasks.Count;
-        }
     }
 }

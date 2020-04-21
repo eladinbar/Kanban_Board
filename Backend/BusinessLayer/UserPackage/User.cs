@@ -1,9 +1,4 @@
-﻿using IntroSE.Kanban.Backend.DataAccessLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
@@ -18,7 +13,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public string Email { get; }
         public string Password { get; private set; }
         public bool Logged_in { get; private set; }
-        
+
+        /// <summary>
+        /// A public constructor that creates a new user and initializes all of its fields.
+        /// </summary>
+        /// <param name="email">The email the user will be created with.</param>
+        /// <param name="password">The password that will be used to sign in the user.</param>
+        /// <param name="nickname">The nickname to be associated with this user.</param>
         public User (string email, string password, string nickname) {
             this.Email = email;
             this.Password = password;
@@ -50,9 +51,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <summary>
         /// Transforms the user to its corresponding DalObject.
         /// </summary>
-        /// <returns>
-        /// Returns a DataAccessLayer.User object.
-        /// </returns>
+        /// <returns>Returns a Data Access Layer User.</returns>
         public DataAccessLayer.User ToDalObject() {
             return new DataAccessLayer.User(this.Email, this.Password, this.Nickname);
         }

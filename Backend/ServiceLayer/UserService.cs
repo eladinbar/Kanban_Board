@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -13,18 +9,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        public BusinessLayer.SecurityController _securityController;
+        private BusinessLayer.SecurityController _securityController;
 
         /// <summary>
         /// Public constructor. 
-        /// <param name="sc">Current SecurityController object .</param>
+        /// <param name="securityController">Current SecurityController object.</param>
         /// </summary>
-        public UserService(BusinessLayer.SecurityController sc)
+        public UserService(BusinessLayer.SecurityController securityController)
         {
-            _securityController = sc;
+            _securityController = securityController;
             log.Debug("UserService has been created.");
         }
-
 
         /// <summary>
         /// Security Controller getter. 
@@ -39,9 +34,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-
         /// <summary>
-        /// Allows to perform a registration. New Kanban board is created for a new user.
+        /// Registers a new user to the system. A new kanban board is created for it.
         /// </summary>
         /// <param name="email">New user's email for registration.</param>
         /// <param name="password">New user's proper password for registration.</param>
@@ -54,7 +48,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 _securityController.UserController.Register(email, password, nickname);
                 _securityController.BoardController.AddNewBoard(email);
                 
-                Response r = new Response("User "+nickname+" has been registered successfully.");
+                Response r = new Response("User "+email+" has been registered successfully.");
                 log.Info(r.ErrorMessage);
                 return r;
             }
@@ -66,10 +60,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-
-
         /// <summary>
-        /// Allows to perform a validated Login action.
+        /// Performs a validated Login action.
         /// </summary>
         /// <param name="email">User's email to login with.</param>
         /// <param name="password">User's password to login with.</param>
@@ -81,7 +73,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
                 Response<User> r = new Response<User>(tempStructUser);
-                log.Info("Succesful login action.");
+                log.Info("Successful login action.");
                 return r;
             }
             catch (Exception ex)
@@ -92,10 +84,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-
-
         /// <summary>
-        /// Allows to perform a Logout action.
+        /// Perfroms a Logout action.
         /// </summary>
         /// <param name="email">Currently logged in user's email.</param>
         /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
@@ -118,10 +108,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
-
-
         /// <summary>
-        /// Allows to change the password of an user.
+        /// Allows to change the password of a user.
         /// </summary>
         /// <param name="email">An existing user's email.</param>
         /// <param name="oldPassword">An existing user's old password.</param>
@@ -129,11 +117,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
         public Response ChangePassword (string email, string oldPassword, string newPassword) 
         {
-            //this method doesn't perform user validation for administrative needs.
+            //This method doesn't perform user validation in the case of administrative purposes.
             try
             {
                 _securityController.UserController.ChangePassword(email, oldPassword, newPassword);
-                Response resp = new Response("Password has been changed successfully.");
+                Response resp = new Response("The password has been changed successfully.");
                 log.Info(resp.ErrorMessage);
                 return resp;
             }

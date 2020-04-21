@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     /// <summary>
-    ///Security class that performs major user validation tasks.
+    /// A security class that performs major user validation tasks.
     /// </summary>
     internal class SecurityController
     {
@@ -32,11 +28,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="email">User's email to Login with.</param>
         /// <param name="password">User's password to Login with.</param>
-        /// <exception cref="AccessViolationException">Thrown if there is already logged in user.</exception>
+        /// <exception cref="AccessViolationException">Thrown if there is a user logged in already.</exception>
         /// <returns>A BussinesLayer.UserPackage.User object.</returns>
         public UserPackage.User Login(string email, string password) 
         {
-            if (CurrentUser != null) throw new AccessViolationException("There is already logged in User. LogOut to switch for another User.");
+            if (CurrentUser != null) throw new AccessViolationException("There is a user logged into the system already. Please Logout to switch to another user.");
             CurrentUser = UserController.Login(email, password);
             return CurrentUser;
         }
@@ -46,11 +42,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="email">Currently logged in user's email.</param>
         /// <exception cref="AccessViolationException">Thrown if there is no logged in user.
-        /// Alternatively thrown if "email" parameter doesn't match current logged in user's email.</exception>
+        /// Alternatively thrown if the 'email' parameter doesn't match the current logged in user's email.</exception>
         public void Logout(string email) 
         {
-            if (CurrentUser == null) throw new AccessViolationException("There is no logged in Users.");
-            if (!CurrentUser.Email.Equals(email)) throw new AccessViolationException("Logout failed: User "+email+" is not logged in.");
+            if (CurrentUser == null) throw new AccessViolationException("There is no logged in user.");
+            if (!CurrentUser.Email.Equals(email)) throw new AccessViolationException("Logout failed: user "+email+" is not logged in.");
             UserController.Logout(email);
             CurrentUser = null;
         }
@@ -60,7 +56,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// Performs current user validation.
         /// </summary>
         /// <param name="email">User email to validate.</param>
-        /// <returns>Boolean: true - validation succeeded, false - validation unsucceeded.</returns>
+        /// <returns>Returns true if the user validation succeeded, otherwise returns false.</returns>
         public bool UserValidation(string email) 
         {
             if (CurrentUser == null) return false;
