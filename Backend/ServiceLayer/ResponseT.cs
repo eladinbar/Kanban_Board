@@ -10,11 +10,13 @@
         public readonly T Value;
         internal Response(string msg) : base(msg) { }
         internal Response(T value) : base()
-        {
+        {           
+            log.Debug("Response<"+Value.GetType()+"> was created.");
             this.Value = value;
         }
         internal Response(T value, string msg) : base(msg)
         {
+            log.Debug("Response<" + Value.GetType() + "> was created.");
             this.Value = value;
         }
     }
