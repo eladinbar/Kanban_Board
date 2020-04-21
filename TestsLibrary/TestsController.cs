@@ -17,21 +17,18 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
         static void Main(string[] args)
         {
-
-
+            
+            LogHelper.Setup();
 
             //Console.Write("Do you want to perform a restart of the program? (y/n)");
             //string choice2 = Console.ReadLine();
             //if (choice2 == "y")
             //{
-            ServiceLayer.Service service = new ServiceLayer.Service();
-            service.LoadData();
-            service.Login("3@mashu.com", "123Abc");
-            Response<Column> c1 = service.GetColumn("3@mashu.com", "Backlog");
-            Response<Column> c2 = service.GetColumn("3@mashu.com", 2);
-            Console.WriteLine(c1.Value.ToString());
-            Console.WriteLine(c2.Value.ToString());
-            Console.ReadKey();
+            //    ServiceLayer.Service service = new ServiceLayer.Service();
+            //    service.LoadData();
+            //    service.Login("currentUser@TaskInvolvedTeasts.com", "123Abc");
+            //    Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTeasts.com", "Backlog").Value.Tasks.ElementAt(0));
+            //    Console.ReadKey();
             //}
             //else
             //{
@@ -40,7 +37,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             //}
 
 
-            ////System.Environment.Exit(0);
+            //System.Environment.Exit(0);
 
             //Stopwatch timer = new Stopwatch();
             //timer.Start();
@@ -67,8 +64,8 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             //TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
             //taskInvolvedTests.RunAllTests();
 
-            //timer.Stop();
-            //Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
+            timer.Stop();
+            Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
 
             ////Console.ForegroundColor = ConsoleColor.Red;
 
