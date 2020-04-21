@@ -12,7 +12,6 @@
         internal Response() { }
         internal Response(string msg)
         {
-            log.Debug("Response was created.");
             this.ErrorMessage = msg;
         }
     }
