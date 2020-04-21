@@ -46,7 +46,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <returns>Returns the created Column</returns>
         private Column newColumn(string name) {
             Column newColumn = new Column(name);
-            newColumn.Save("Boards\\" + UserEmail + "\\");
+            newColumn.Save("Boards\\" + UserEmail + "\\" + Columns.Count + "-");
             return newColumn;
         }
 

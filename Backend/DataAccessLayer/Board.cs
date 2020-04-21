@@ -38,8 +38,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             if (!dir.Exists)
                 dir.Create();
             dc.WriteToFile(this.UserEmail, ToJson(), path);
-            dir = new DirectoryInfo(dir + this.UserEmail);
-            dir.Create();
+            //dir = new DirectoryInfo(dir + this.UserEmail);
+            //dir.Create();
         }
     }
 }

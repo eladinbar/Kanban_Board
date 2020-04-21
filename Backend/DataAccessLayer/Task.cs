@@ -38,8 +38,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             DalController dc = new DalController();
             DirectoryInfo dir = new DirectoryInfo(dc.BASE_PATH + path);
-            if (!dir.Exists)
-                dir.Create();
+            //if (!dir.Exists)
+            //    dir.Create();
             dc.WriteToFile(this.Id + "-" + this.Title, ToJson(), path);
         }
 

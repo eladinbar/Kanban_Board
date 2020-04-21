@@ -8,9 +8,7 @@ using System.IO;
 using System.Security.Principal;
 using System.Security.AccessControl;
 using log4net;
-using log4net.Config;
-
-
+using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.TestsLayer
 {
@@ -19,68 +17,66 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
         static void Main(string[] args)
         {
-            
-            //LogHelper.Setup();
-
-            Console.Write("Do you want to perform a restart of the program? (y/n)");
-            string choice2 = Console.ReadLine();
-            if (choice2 == "y")
-            {
-                ServiceLayer.Service service = new ServiceLayer.Service();
-                service.LoadData();
-                service.Login("currentUser@TaskInvolvedTeasts.com", "123Abc");
-                Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTeasts.com", "Backlog").Value.Tasks.ElementAt(0));
-                Console.ReadKey();
-            }
-            else
-            {
-                Console.WriteLine("press any key to exit the console...");
-                Console.ReadKey();
-            }
 
 
 
-
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-            
-            //LoadData tests
-            LoadDataTest loadDataTest = new LoadDataTest();
-            loadDataTest.RunTest();
-
-
-            //Register and Login tests                      
-            UserTests userTests = new UserTests(7);
-            userTests.RunAllTests();
-
-            //GetBoard tests
-            GetBoardTest getBoardTest = new GetBoardTest();
-            getBoardTest.RunAllTests();
-
-
-            //ColumnInvolvedTests
-            ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests();
-            columnInvolvedTests.RunAllTests();
+            //Console.Write("Do you want to perform a restart of the program? (y/n)");
+            //string choice2 = Console.ReadLine();
+            //if (choice2 == "y")
+            //{
+            ServiceLayer.Service service = new ServiceLayer.Service();
+            service.LoadData();
+            service.Login("3@mashu.com", "123Abc");
+            Response<Column> c1 = service.GetColumn("3@mashu.com", "Backlog");
+            Response<Column> c2 = service.GetColumn("3@mashu.com", 2);
+            Console.WriteLine(c1.Value.ToString());
+            Console.WriteLine(c2.Value.ToString());
+            Console.ReadKey();
+            //}
+            //else
+            //{
+            //    Console.WriteLine("press any key to exit the console...");
+            //    Console.ReadKey();
+            //}
 
 
-            //TaskInvolvedTests
-            TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
-            taskInvolvedTests.RunAllTests();
+            ////System.Environment.Exit(0);
 
-            timer.Stop();
-            Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
-            //Console.ReadKey();
+            //Stopwatch timer = new Stopwatch();
+            //timer.Start();
 
-            //System.Environment.Exit(0);
+            ////LoadData tests
+            ////LoadDataTest loadDataTest = new LoadDataTest();
+            ////loadDataTest.RunTest();
 
 
-            //Console.ForegroundColor = ConsoleColor.Red;
+            ////Register and Login tests                      
+            //UserTests userTests = new UserTests(7);
+            //userTests.RunAllTests();
 
-            //Console.WriteLine("**********************************************************************");
-            //Console.WriteLine("**********************************************************************");
-            //Console.WriteLine("**********************************************************************");
-            //Console.WriteLine("**********************************************************************");
-            //Console.WriteLine("Normal usage state test starts here.");
+            ////GetBoard tests
+            //GetBoardTest getBoardTest = new GetBoardTest();
+            //getBoardTest.RunAllTests();
+
+            ////ColumnInvolvedTests
+            //ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests();
+            //columnInvolvedTests.RunAllTests();
+
+
+            ////TaskInvolvedTests
+            //TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
+            //taskInvolvedTests.RunAllTests();
+
+            //timer.Stop();
+            //Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
+
+            ////Console.ForegroundColor = ConsoleColor.Red;
+
+            ////Console.WriteLine("**********************************************************************");
+            ////Console.WriteLine("**********************************************************************");
+            ////Console.WriteLine("**********************************************************************");
+            ////Console.WriteLine("**********************************************************************");
+            ////Console.WriteLine("Normal usage state test starts here.");
 
             //timer.Restart();
 
