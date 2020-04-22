@@ -24,7 +24,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
-
             log.Info("Creates a service object");
             BoardService = null;
             UserService = null;

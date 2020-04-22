@@ -27,7 +27,6 @@ namespace IntroSE.Kanban.Backend
       
         /// <summary>
         /// Sets up the RollingFileAppender to save the logs to the "Logs" folder in the original directory the program is using.
-        /// IntroSE.Kanban.Backend.dll
         /// </summary>
         /// <remarks>
         /// The logger saves a log file once per program execution.

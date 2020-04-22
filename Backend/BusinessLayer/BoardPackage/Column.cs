@@ -22,7 +22,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Limit = Int32.MaxValue;
             Tasks = new List<Task>();
             log.Info("New column " + name + "created");
-
         }
 
         /// <summary>
@@ -37,7 +36,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Limit = limit;
             Tasks = tasks;
             log.Debug("load - Board " + name + " was loaded from memory");
-
         }
 
         /// <summary>
