@@ -24,14 +24,14 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             //string choice2 = Console.ReadLine();
             //if (choice2 == "y")
             //{
-            ServiceLayer.Service service = new ServiceLayer.Service();
-            service.LoadData();
-            service.Login("3@mashu.com", "123Abc");
-            Response<Column> c1 = service.GetColumn("3@mashu.com", "Backlog");
-            Response<Column> c2 = service.GetColumn("3@mashu.com", 2);
-            Console.WriteLine(c1.Value.ToString());
-            Console.WriteLine(c2.Value.ToString());
-            Console.ReadKey();
+            //ServiceLayer.Service service = new ServiceLayer.Service();
+            //service.LoadData();
+            //service.Login("3@mashu.com", "123Abc");
+            //Response<Column> c1 = service.GetColumn("3@mashu.com", "Backlog");
+            //Response<Column> c2 = service.GetColumn("3@mashu.com", 2);
+            //Console.WriteLine(c1.Value.ToString());
+            //Console.WriteLine(c2.Value.ToString());
+            //Console.ReadKey();
             //}
             //else
             //{
@@ -42,33 +42,33 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
             ////System.Environment.Exit(0);
 
-            //Stopwatch timer = new Stopwatch();
-            //timer.Start();
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
 
-            ////LoadData tests
-            ////LoadDataTest loadDataTest = new LoadDataTest();
-            ////loadDataTest.RunTest();
-
-
-            ////Register and Login tests                      
-            //UserTests userTests = new UserTests(7);
-            //userTests.RunAllTests();
-
-            ////GetBoard tests
-            //GetBoardTest getBoardTest = new GetBoardTest();
-            //getBoardTest.RunAllTests();
-
-            ////ColumnInvolvedTests
-            //ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests();
-            //columnInvolvedTests.RunAllTests();
+            //LoadData tests
+            //LoadDataTest loadDataTest = new LoadDataTest();
+            //loadDataTest.RunTest();
 
 
-            ////TaskInvolvedTests
-            //TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
-            //taskInvolvedTests.RunAllTests();
+            //Register and Login tests                      
+            UserTests userTests = new UserTests(7);
+            userTests.RunAllTests();
 
-            //timer.Stop();
-            //Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
+            //GetBoard tests
+            GetBoardTest getBoardTest = new GetBoardTest();
+            getBoardTest.RunAllTests();
+
+            //ColumnInvolvedTests
+            ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests();
+            columnInvolvedTests.RunAllTests();
+
+
+            //TaskInvolvedTests
+            TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
+            taskInvolvedTests.RunAllTests();
+
+            timer.Stop();
+            Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
 
             ////Console.ForegroundColor = ConsoleColor.Red;
 
