@@ -51,7 +51,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             CurrentUser = null;
         }
 
-
         /// <summary>
         /// Performs current user validation.
         /// </summary>

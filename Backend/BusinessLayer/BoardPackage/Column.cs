@@ -61,6 +61,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
                 Limit = limit;
         }
+
         /// <summary>
         /// Inserts a task to this column.
         /// </summary>
@@ -132,6 +133,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             log.Info("Column.save was called");
             ToDalObject().Save(path);
         }
+
         /// <summary>
         /// Checks if the column is full.
         /// </summary>
@@ -143,6 +145,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
                 return false;
         }
-
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
-    ///The servicve for perfoming Board-involved actions.
+    ///The servicve for perfoming Board involved actions.
     /// </summary>
     internal class BoardService
     {

@@ -9,6 +9,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string Password { get; set; }
         public string Nickname { get; set; }
 
+        /// <summary>
+        /// Data Access Layer User constructor that receives all necessary Business Layer User parameters to ensure they are all saved properly.
+        /// </summary>
+        /// <param name="email">The user's email address.</param>
+        /// <param name="password">The user's current password.</param>
+        /// <param name="nickname">The user's chosen nickname.</param>
         public User(string email, string password, string nickname)
         {
             Email = email;
@@ -16,6 +22,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             Nickname = nickname;
         }
 
+        /// <summary>
+        /// Empty public constructor for use when loading .json files from memory.
+        /// </summary>
         public User() { Email = null; Password = null; Nickname = null; }
 
         /// <summary>

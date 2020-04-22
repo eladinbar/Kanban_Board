@@ -60,7 +60,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             log.Warn("Login Attempt with " + email);
             if (!Users.ContainsKey(email))
             {
-                log.Error("not registered email login attempt");
+                log.Error("Not registered user login attempt");
                 throw new ArgumentException(email + " does not exist in the database, please register and try again.");
             }
             else if (!Users[email].Password.Equals(password))

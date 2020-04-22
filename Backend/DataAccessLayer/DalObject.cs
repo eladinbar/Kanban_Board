@@ -20,6 +20,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <summary>
         /// The method to revert an object from Json back into its original T instance.
         /// </summary>
+        /// <param name="json">The string to deserialize.</param>
         /// <returns>Returns the Json string given back in T form.</returns>
         public T FromJson(string json) {
             return JsonSerializer.Deserialize<T>(json);

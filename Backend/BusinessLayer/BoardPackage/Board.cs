@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-
     /// <summary>
     /// Represents the Kanban Board
     /// </summary>
@@ -135,8 +134,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             return new DataAccessLayer.Board(UserEmail, TaskCounter, dalColumns);
         }
-
-
     }
-
 }

@@ -13,6 +13,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public string BASE_PATH { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DalController () {
             BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
             log.Debug("DalController created");
@@ -92,7 +95,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <returns>Returns a DataAccessLayer List of all the boards that were saved to the disk.</returns>
         public List<Board> LoadAllBoards() {
-            log.Debug("Loading all Boards");
+            log.Debug("Loading all boards");
             List<Board> boards = new List<Board>();
             DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\");
             if (dir.Exists) {
@@ -133,7 +136,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <returns>Returns a DataAccessLayer List of all the tasks that were saved to the disk.</returns>
         private List<Task> LoadAllTasks (string boardName, string columnName) {
-            log.Debug("Loading all tasks in " + columnName + " of Board" + boardName);
+            log.Debug("Loading all tasks in " + columnName + " of Board " + boardName);
             List<Task> tasks = new List<Task>();
             DirectoryInfo dir = new DirectoryInfo(BASE_PATH + "Boards\\" + boardName.Substring(0, boardName.Length - 5) + "\\" + columnName.Substring(0, columnName.Length - 5) + "\\");
             if (dir.Exists)

@@ -14,6 +14,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         [JsonIgnore] //List is retrieved using the individual <Column>.json files
         public List<Column> Columns { get; private set; }
 
+        /// <summary>
+        /// Data Access Layer Board constructor that receives all necessary Buisness Layer Board parameters to ensure they are all saved properly.
+        /// </summary>
+        /// <param name="email">The email address associated with this board.</param>
+        /// <param name="taskCounter">The amount of tasks currently contained by this board.</param>
+        /// <param name="columns">The list of this board's columns.</param>
         public Board(string email, int taskCounter, List<Column> columns)
         {
             UserEmail = email;
@@ -21,6 +27,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             Columns = columns;
         }
 
+        /// <summary>
+        /// Empty public constructor for use when loading .json files from memory.
+        /// </summary>
         public Board() { }
 
         /// <summary>
