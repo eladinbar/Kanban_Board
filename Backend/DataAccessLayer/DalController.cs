@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string BASE_PATH { get; }
 
         /// <summary>
-        /// 
+        /// Initializes the base path that the system will use to save files to.
         /// </summary>
         public DalController () {
             BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
