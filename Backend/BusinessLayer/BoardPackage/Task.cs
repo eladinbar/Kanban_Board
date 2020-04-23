@@ -27,16 +27,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Title = title;
             else
                 throw new ArgumentOutOfRangeException("The title cannot be empty or exceed 50 charecters");
-            if (description.Length <= 300)
+            if (description == null || description.Length <= 300)
                 Description = description;
             else
                 throw new ArgumentOutOfRangeException("The description can not exceed 300 charecters");
+            if (dueDate != null)
+                DueDate = dueDate.ToLocalTime();
+            else
+                throw new ArgumentNullException("DueDate is null.");
 
-            DueDate = dueDate.ToLocalTime();
             CreationTime = DateTime.Now.ToLocalTime();
             LastChangedDate = DateTime.Now.ToLocalTime();
             Id = id;
-            log.Info("New task was created with " + id + " ID");
+            log.Info("New task #" + id + " was created");
         }
 
         /// <summary>
@@ -81,7 +84,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <exception cref="ArgumentException">Thrown when the description is more than 300 characters long.</exception>
         public void UpdateTaskDescription(string description)
         {
-            if (description.Length <= 300)
+            if (description == null || description.Length <= 300)
             {
                 Description = description;
                 LastChangedDate = DateTime.Now.ToLocalTime();
@@ -97,8 +100,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <exception cref="ArgumentException">Thrown when the new due date is earlier than the current time.</exception>
         public void UpdateTaskDuedate(DateTime duedate)
         {
-            if (duedate.CompareTo(DateTime.Now) < 0)
-                throw new ArgumentException("Due date cannot be set to past time");
+            if (duedate == null)
+                throw new ArgumentNullException("Due date cannot be null.");
+            else if (duedate.CompareTo(DateTime.Now) < 0)
+                throw new ArgumentException("Due date cannot be set to past time.");
             else
             {
                 DueDate = duedate.ToLocalTime();
