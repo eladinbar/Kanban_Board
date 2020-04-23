@@ -24,5 +24,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.LastChangedDate = creationTime;
         }
         // You can add code here
+
+        public string ToString()
+        {
+            return "#" + Id +
+                "\nTitle: " + Title +
+                "\nDescription: " + Description +
+                "\nDue Date: " + DueDate +
+                "\nCreation Time: " + CreationTime +
+                "\nLast Changed Date: " + LastChangedDate;
+        }
     }
 }

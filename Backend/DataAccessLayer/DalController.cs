@@ -35,6 +35,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 log.Fatal(ex);
             }
+            finally
+            {
+                throw new Exception("something went wrong when trying to back up changes. please contact developers");
+            }
         }
 
         /// <summary>
@@ -52,6 +56,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 log.Fatal(ex);
                 return "";
+            }
+            finally
+            {
+                throw new Exception("something went wrong when trying to back up changes. please contact developers");
             }
         }
 
