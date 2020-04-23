@@ -123,7 +123,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <exception cref="ArgumentException">Thrown when the email address given doesn't fit the criteria.</exception>
         private void ValidateEmail (string email) {
             if (!Regex.IsMatch(email, @"[!-?A-~]+@[!--/-?A-~]+\.[!--/-?A-~]+") | email.Count(f => f == '@')!=1)
-                throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*");
+                throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*.");
         }
     }
 }
