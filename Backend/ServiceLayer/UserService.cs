@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
-                Response<User> r = new Response<User>(tempStructUser);
+                Response<User> r = new Response<User>(tempStructUser, tempStructUser.Nickname + " was logged in succesfully");
                 log.Info("Succesful login action.");
                 return r;
             }

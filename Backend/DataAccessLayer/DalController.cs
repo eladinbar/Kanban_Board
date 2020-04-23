@@ -18,7 +18,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string BASE_PATH { get; }
 
         public DalController () {
-            BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
+            //BASE_PATH = Path.GetFullPath(@"..\..\") + "data\\";
+            BASE_PATH = Directory.GetCurrentDirectory() + "\\data\\";
             log.Info("DalController created");
         }
 

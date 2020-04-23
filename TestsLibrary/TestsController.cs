@@ -24,14 +24,20 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             //string choice2 = Console.ReadLine();
             //if (choice2 == "y")
             //{
-            //ServiceLayer.Service service = new ServiceLayer.Service();
-            //service.LoadData();
-            //service.Login("3@mashu.com", "123Abc");
-            //Response<Column> c1 = service.GetColumn("3@mashu.com", "Backlog");
-            //Response<Column> c2 = service.GetColumn("3@mashu.com", 2);
-            //Console.WriteLine(c1.Value.ToString());
-            //Console.WriteLine(c2.Value.ToString());
-            //Console.ReadKey();
+            ServiceLayer.Service service = new ServiceLayer.Service();
+            Response d = service.LoadData();
+            Console.WriteLine(d.ErrorMessage);
+            Response<User> u = service.Login("3@mashu.com", "123Abc");
+            Console.WriteLine(u.ErrorMessage);
+            Console.ReadKey();
+            Response<Board> b = service.GetBoard("3@mashu.com");
+            Console.WriteLine(b.ErrorMessage);
+            Console.ReadKey();
+            Response<Column> c1 = service.GetColumn("3@mashu.com", "Backlog");
+            Response<Column> c2 = service.GetColumn("3@mashu.com", 2);
+            Console.WriteLine(c1.Value.ToString());
+            Console.WriteLine(c2.Value.ToString());
+            Console.ReadKey();
             //}
             //else
             //{

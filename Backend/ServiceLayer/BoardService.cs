@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
                 Board tempStructBoard = new Board(tempColumnNames);
                 log.Debug("Board reached service layer successfully");
-                return new Response<Board>(tempStructBoard);
+                return new Response<Board>(tempStructBoard,"'" + email + "' board was loaded succeessfully.");
             }
             catch(Exception ex)
             {
@@ -103,7 +103,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate);
                 Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime, title, description, dueDate);
                 log.Info("Task added seccessfully.");
-                return new Response<Task>(tempStructTask, "Task has been added successfully.");
+                return new Response<Task>(tempStructTask, "Task has been added successfully to '" + email + "' board.");
             }
             catch (Exception ex)
             {
@@ -129,7 +129,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
                 log.Info("Task due date was updated seccessfully.");
-                return new Response("Task due date has benn updated successfully.");
+                return new Response("Task #" + taskId + " due date has benn updated successfullyin " + GetColumn(email, columnOrdinal).Value.Name + "of '" + email + "' board.");
             }
             catch (Exception ex)
             {
@@ -155,7 +155,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle);
                 log.Info("Task title updated seccessfully.");
-                return new Response("Task title has been updated successfully");
+                return new Response("Task #" + taskId + " title has been updated successfullyin " + GetColumn(email, columnOrdinal).Value.Name + "of '" + email + "' board.");
             }
             catch (Exception ex)
             {
@@ -181,7 +181,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
                 log.Info("Task description has been updated seccessfully.");
-                return new Response("Task description has been updated successfully");
+                return new Response("Task #" + taskId + " description has been updated successfully in " + GetColumn(email, columnOrdinal).Value.Name + "of '" + email + "' board.");
             }
             catch (Exception ex)
             {
@@ -207,7 +207,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.BoardController.AdvanceTask(email, columnOrdinal, taskId);
                 log.Info("Task has been advanced to the column #" + columnOrdinal+1);
-                return new Response("Task has been advanced successfully");
+                return new Response("Task #" + taskId + " has been advanced successfully to " + GetColumn(email,columnOrdinal).Value.Name + ".");
             }
             catch (Exception ex)
             {
@@ -248,7 +248,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
 
                 log.Debug("Required column has reached the Service Layer");
-                return new Response<Column>(tempStructColumn);
+                return new Response<Column>(tempStructColumn, tempColumn.Name + " of " + email + "'s board.");
             }
             catch (Exception ex)
             {
@@ -283,7 +283,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
                 log.Debug("Required column has reached the Service Layer");
-                return new Response<Column>(tempStructColumn);
+                return new Response<Column>(tempStructColumn, tempColumn.Name + "with ordinal " + columnOrdinal + " of " + email + "'s board.");
             }
             catch (Exception ex)
             {
