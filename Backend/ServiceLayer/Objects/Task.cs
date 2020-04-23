@@ -25,14 +25,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
         // You can add code here
 
-        public string ToString()
+        public override string ToString()
         {
             return "#" + Id +
                 "\nTitle: " + Title +
                 "\nDescription: " + Description +
-                "\nDue Date: " + DueDate +
-                "\nCreation Time: " + CreationTime +
-                "\nLast Changed Date: " + LastChangedDate;
+                "\nDue Date: " + DueDate.ToLongDateString() +
+                "\nCreation Time: " + CreationTime.ToLongDateString() +
+                "\nLast Changed Date: " + LastChangedDate.ToLongDateString();
         }
     }
 }
