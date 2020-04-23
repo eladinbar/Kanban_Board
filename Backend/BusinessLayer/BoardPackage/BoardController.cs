@@ -120,7 +120,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 targetColumn.InsertTask(toAdvance);
                 toAdvance.Save("Boards\\" + email + "\\" + (columnOrdinal+1) +"-" + targetColumn.Name + "\\");
                 toAdvance.Delete(toAdvance.Id + "-" + toAdvance.Title, "Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
-                log.Debug("Task " + taskId + "-" + toAdvance.Title + " was advanced");
+                log.Debug("Task #" + taskId + "-" + toAdvance.Title + " was advanced");
             }
         }
 

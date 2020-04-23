@@ -197,7 +197,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> GetColumn(string email, string columnName)
         {
             if (email == null | columnName == null) return new Response<Column>("One of the parameters is not valid.");
-            return BoardService.GetColumn(email.ToLower(), columnName);
+            return BoardService.GetColumn(email.ToLower(), columnName.ToLower());
         }
 
         /// <summary>

@@ -199,7 +199,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.AdvanceTask(email.ToLower(), columnOrdinal, taskId);
-                log.Info("Task has been advanced to column #" + columnOrdinal+1);
+                log.Info("Task has been advanced to column #" + (columnOrdinal+1));
                 return new Response("Task #" + taskId + " has been advanced successfully to '" + GetColumn(email.ToLower(), columnOrdinal + 1).Value.Name + "'.");            }
             catch (Exception ex)
             {
