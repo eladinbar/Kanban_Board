@@ -87,6 +87,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             c.LimitColumnTasks(limit);
             c.Save("Boards\\" + email + "\\" + columnOrdinal + "-");
         }
+
         /// <summary>
         /// Advances a task from the specified column to the next one.
         /// </summary>
@@ -152,6 +153,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
             return newTask;            
         }
+
         /// <summary>
         /// Updates the title of the task with the given ID.
         /// </summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -25,7 +24,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
-
             log.Info("Creates a service object");
             BoardService = null;
             UserService = null;

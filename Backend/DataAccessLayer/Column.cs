@@ -14,6 +14,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         [JsonIgnore] //List is retrieved using the individual <Task>.json files
         public List<Task> Tasks { get; }
 
+        /// <summary>
+        /// Data Access Layer Column constructor that receives all necessary Business Layer Column parameters to ensure they are all saved properly.
+        /// </summary>
+        /// <param name="name">This column's name.</param>
+        /// <param name="limit">The maximum amount of tasks this column can contain.</param>
+        /// <param name="tasks">The list of this column's current tasks.</param>
         public Column(string name, int limit, List<Task> tasks)
         {
             Name = name;
@@ -21,6 +27,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             Tasks = tasks;
         }
 
+        /// <summary>
+        /// Empty public constructor for use when loading .json files from memory.
+        /// </summary>
         public Column() { }
 
         /// <summary>

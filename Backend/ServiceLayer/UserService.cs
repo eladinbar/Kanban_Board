@@ -3,50 +3,37 @@
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
-    ///The servicve for perfoming User-account actions.
+    /// The servicve for perfoming User related actions.
     /// </summary>
     internal class UserService
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private BusinessLayer.SecurityController _securityController;
+        private BusinessLayer.SecurityController SecurityController;
 
         /// <summary>
-        /// Public constructor. 
+        /// Public constructor.
         /// <param name="securityController">Current SecurityController object.</param>
         /// </summary>
         public UserService(BusinessLayer.SecurityController securityController)
         {
-            _securityController = securityController;
+            SecurityController = securityController;
             log.Debug("UserService has been created.");
         }
-
-        /// <summary>
-        /// Security Controller getter. 
-        /// </summary>
-        /// <returns>Current SecurityController initialization.</returns>
-        private BusinessLayer.SecurityController SecurityController
-        {
-            get
-            {
-                log.Debug("SecurityController getter was called.");
-                return _securityController;
-            }
-        }
-
+      
         /// <summary>
         /// Registers a new user to the system. A new kanban board is created for it.
         /// </summary>
         /// <param name="email">New user's email for registration.</param>
         /// <param name="password">New user's proper password for registration.</param>
         /// <param name="nickname">New user's nickname for registration.</param>
-        /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
+        /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
         public Response Register(string email, string password, string nickname) 
         {
             try
             {
-                _securityController.UserController.Register(email, password, nickname);
-                _securityController.BoardController.AddNewBoard(email);
+                SecurityController.UserController.Register(email, password, nickname);
+                SecurityController.BoardController.AddNewBoard(email);
                 
                 Response r = new Response("User "+email+" has been registered successfully.");
                 log.Info(r.ErrorMessage);
@@ -70,7 +57,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                BusinessLayer.UserPackage.User tempUser = _securityController.Login(email, password);
+                BusinessLayer.UserPackage.User tempUser = SecurityController.Login(email, password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
                 Response<User> r = new Response<User>(tempStructUser);
                 log.Info("Successful login action.");
@@ -93,12 +80,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                _securityController.Logout(email);
+                SecurityController.Logout(email);
                 
                 Response r = new Response("User " + email + " logged out.");
                 log.Info(r.ErrorMessage);
-                return r;
-                
+                return r;               
             }
             catch(Exception ex)
             {
@@ -120,7 +106,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             //This method doesn't perform user validation in the case of administrative purposes.
             try
             {
-                _securityController.UserController.ChangePassword(email, oldPassword, newPassword);
+                SecurityController.UserController.ChangePassword(email, oldPassword, newPassword);
                 Response resp = new Response("The password has been changed successfully.");
                 log.Info(resp.ErrorMessage);
                 return resp;

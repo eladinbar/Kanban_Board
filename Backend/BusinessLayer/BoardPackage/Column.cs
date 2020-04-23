@@ -22,7 +22,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Limit = Int32.MaxValue;
             Tasks = new List<Task>();
             log.Info("New column " + name + "created");
-
         }
 
         /// <summary>
@@ -37,7 +36,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Limit = limit;
             Tasks = tasks;
             log.Debug("load - Board " + name + " was loaded from memory");
-
         }
 
         /// <summary>
@@ -61,6 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
                 Limit = limit;
         }
+
         /// <summary>
         /// Inserts a task to this column.
         /// </summary>
@@ -132,6 +131,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             log.Info("Column.save was called");
             ToDalObject().Save(path);
         }
+
         /// <summary>
         /// Checks if the column is full.
         /// </summary>
@@ -143,6 +143,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
                 return false;
         }
-
     }
 }

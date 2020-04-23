@@ -20,23 +20,23 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             
             //LogHelper.Setup();
 
-            Console.Write("Do you want to perform a restart of the program with user currentUser@TaskInvolvedTeasts.com?");
-            Console.Write("(availavble only if the last tests performed were the regular tests): (y/n)");
+            //Console.Write("Do you want to perform a restart of the program with user currentUser@TaskInvolvedTeasts.com?");
+            //Console.Write("(availavble only if the last tests performed were the regular tests): (y/n)");
 
-            string choice2 = Console.ReadLine();
-            if (choice2 == "y")
-            {
-                ServiceLayer.Service service = new ServiceLayer.Service();
-                service.LoadData();
-                service.Login("currentUser@TaskInvolvedTeasts.com", "123Abc");
-                Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTeasts.com", "Backlog").Value.Tasks.ElementAt(0));
-                Console.ReadKey();
-            }
-            else
-            {
-                Console.WriteLine("press any key to exit the console...");
-                Console.ReadKey();
-            }
+            //string choice2 = Console.ReadLine();
+            //if (choice2 == "y")
+            //{
+            //    ServiceLayer.Service service = new ServiceLayer.Service();
+            //    service.LoadData();
+            //    service.Login("currentUser@TaskInvolvedTeasts.com", "123Abc");
+            //    Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTeasts.com", "Backlog").Value.Tasks.ElementAt(0));
+            //    Console.ReadKey();
+            //}
+            //else
+            //{
+            //    Console.WriteLine("press any key to exit the console...");
+            //    Console.ReadKey();
+            //}
 
 
             //System.Environment.Exit(0);
@@ -79,8 +79,8 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
             //timer.Restart();
 
-            //NormalUsageStateTest normalUsageStateTest = new NormalUsageStateTest();
-            //normalUsageStateTest.RunTheTest();
+            NormalUsageStateTest normalUsageStateTest = new NormalUsageStateTest();
+            normalUsageStateTest.RunTheTest();
 
             //timer.Stop();
 

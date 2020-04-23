@@ -37,7 +37,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             LastChangedDate = DateTime.Now.ToLocalTime();
             Id = id;
             log.Info("New task was created with " + id + " ID");
-
         }
 
         /// <summary>

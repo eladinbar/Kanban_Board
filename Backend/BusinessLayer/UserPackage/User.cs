@@ -1,9 +1,7 @@
-﻿
-
-namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
+﻿namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
     /// <summary>
-    ///Represents a user profile in the Kanban Board system.
+    /// Represents a user profile in the Kanban Board system.
     /// </summary>
     internal class User : PersistedObject<DataAccessLayer.User>
     {
