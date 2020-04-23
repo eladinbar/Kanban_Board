@@ -29,10 +29,10 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Response d = service.LoadData();
             Console.WriteLine(d.ErrorMessage);
             //registering
-            Response reg = service.Register("4@mashucom", "123Abc", "4");
-            Console.WriteLine(reg.ErrorMessage);
+            Response reg = service.Register("4..@mashu.com", "123Abc", "4");
+            Console.WriteLine(reg.ErrorOccured);
             Console.ReadKey();
-            Response reg2 = service.Register("4@mashucom", "123Abc", "4");
+            Response reg2 = service.Register("4@mas.hu.com", "123Abc", "4");
             Console.WriteLine(reg2.ErrorMessage);
             Console.ReadKey();
             //logging in

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Text.RegularExpressions;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
@@ -123,7 +122,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <param name="email">The email address the user intends to be indetified with.</param>
         /// <exception cref="ArgumentException">Thrown when the email address given doesn't fit the criteria.</exception>
         private void ValidateEmail (string email) {
-           MailAddress addr = new MailAddress(email);
+            if (!Regex.IsMatch(email, @"[!-?A-~]+@[!--/-?A-~]+\.[!--/-?A-~]+") | email.Count(f => f == '@')!=1)
+                throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*");
         }
     }
 }
