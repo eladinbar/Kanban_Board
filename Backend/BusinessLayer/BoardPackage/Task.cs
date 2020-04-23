@@ -27,10 +27,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Title = title;
             else
                 throw new ArgumentOutOfRangeException("The title cannot be empty or exceed 50 charecters");
-            if (description == null || description.Length <= 300)
+            if (description == null)
+                Description = "";
+            else if (description.Length <= 300)
                 Description = description;
             else
                 throw new ArgumentOutOfRangeException("The description can not exceed 300 charecters");
+
             if (dueDate != null)
                 DueDate = dueDate.ToLocalTime();
             else
