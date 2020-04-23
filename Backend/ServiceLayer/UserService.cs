@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 SecurityController.BoardController.AddNewBoard(email.ToLower());
                 
                 Response r = new Response();
-                log.Info(r.ErrorMessage);
+                log.Info("registered with " + email);
                 return r;
             }
             catch (Exception ex)
