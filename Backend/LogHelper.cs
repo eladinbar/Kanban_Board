@@ -8,7 +8,7 @@ namespace IntroSE.Kanban.Backend
     public class LogHelper
     {
         private static bool setted = false;
-        private static string BASE_PATH = Path.GetFullPath(@"..\..\") + "Logs\\logFile.txt";
+        private static string BASE_PATH = Directory.GetCurrentDirectory() + @"\Logs\logFile.txt";
 
         /// <summary>
         /// Gets the logger of log4net with the class file name to log in the logFile.

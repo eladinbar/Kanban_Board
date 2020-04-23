@@ -10,6 +10,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         public readonly string Email;
         public readonly string Nickname;
+
         internal User(string email, string nickname)
         {
             this.Email = email;
