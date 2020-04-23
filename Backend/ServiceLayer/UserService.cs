@@ -32,10 +32,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                SecurityController.UserController.Register(email, password, nickname);
-                SecurityController.BoardController.AddNewBoard(email);
+                SecurityController.UserController.Register(email.ToLower(), password, nickname);
+                SecurityController.BoardController.AddNewBoard(email.ToLower());
                 
-                Response r = new Response("User "+email+" has been registered successfully.");
+                Response r = new Response("User "+email.ToLower()+" has been registered successfully.");
                 log.Info(r.ErrorMessage);
                 return r;
             }
@@ -57,9 +57,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                BusinessLayer.UserPackage.User tempUser = SecurityController.Login(email, password);
+                BusinessLayer.UserPackage.User tempUser = SecurityController.Login(email.ToLower(), password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
-                Response<User> r = new Response<User>(tempStructUser);
+                Response<User> r = new Response<User>(tempStructUser, email.ToLower() + ", logged in successfully.");
                 log.Info("Successful login action.");
                 return r;
             }
@@ -80,9 +80,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                SecurityController.Logout(email);
+                SecurityController.Logout(email.ToLower());
                 
-                Response r = new Response("User " + email + " logged out.");
+                Response r = new Response("User " + email.ToLower() + " logged out.");
                 log.Info(r.ErrorMessage);
                 return r;               
             }
@@ -106,7 +106,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             //This method doesn't perform user validation in the case of administrative purposes.
             try
             {
-                SecurityController.UserController.ChangePassword(email, oldPassword, newPassword);
+                SecurityController.UserController.ChangePassword(email.ToLower(), oldPassword, newPassword);
                 Response resp = new Response("The password has been changed successfully.");
                 log.Info(resp.ErrorMessage);
                 return resp;

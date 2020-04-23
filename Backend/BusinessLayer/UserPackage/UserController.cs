@@ -101,14 +101,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <summary>
         /// Checks if a given password fits certain criteria:
         /// 1. Checks that the password length is within the appropriate bounds.
-        /// 2. Checks that the password consists of alphanumerical characters only.
-        /// 3. Checks if the password contains at least 1 digit, lowercase letter and uppercase letter
+        /// 2. Checks if the password contains at least 1 digit, lowercase letter and uppercase letter
         /// </summary>
         /// <param name="password">The password the user would like to use.</param>
         /// <exception cref="ArgumentException">Thrown when the password given doesn't fit the criteria.</exception>
         private void ValidatePassword (string password) {
             if (password.Length < 4 | password.Length > 20 ||
-            !Regex.IsMatch(password, "^[a-zA-Z0-9]*$") |
             !password.Any(char.IsDigit) | !password.Any(char.IsLower) | !password.Any(char.IsUpper))
                 throw new ArgumentException("A user password must be in length of 4 to 20 characters and must include at least one uppercase letter, one lowercase letter and a number.");
         }
@@ -119,12 +117,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// 2. The second part consists of the literal @ character.
         /// 3. The third part is the domain part - all characters to provide a domain name are available.
         /// 4. The fourth part is the dot character.
-        /// 5. The fifth and final part is the top level domain: allowed to consist of 2 to 18 characters and multiple parts.
+        /// 5. The fifth and final part is the top level domain: allowed to consist of 1 to 63 characters and multiple parts.
         /// </summary>
         /// <param name="email">The email address the user intends to be indetified with.</param>
         /// <exception cref="ArgumentException">Thrown when the email address given doesn't fit the criteria.</exception>
         private void ValidateEmail (string email) {
-            if (!Regex.IsMatch(email, @"[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,18}"))
+            if (!Regex.IsMatch(email, @"[!-?A-~]+@[!-?A-~]+\.[!-?A-~]+"))
                 throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*");
         }
     }

@@ -27,6 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="fileName">The name the file will be saved with.</param>
         /// <param name="content">The content the file will contain when writing to the disk.</param>
         /// <param name="path">The path the file will be written to.</param>
+        /// <exception cref="SystemException">Thrown when unable to access directory/file.</exception>
         public void WriteToFile (string fileName, string content, string path) {
             try
             {
@@ -34,10 +35,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             } catch(Exception ex)
             {
                 log.Fatal(ex);
-            }
-            finally
-            {
-                throw new Exception("something went wrong when trying to back up changes. please contact developers");
+                throw new Exception("Something went wrong when trying to back up changes. Please contact the developers.");
             }
         }
 
@@ -47,6 +45,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// <param name="fileName">The name of the file to read from the disk.</param>
         /// <param name="path">The path the file will be read from.</param>
         /// <returns>Returns the string representing the text written in the file.</returns>
+        /// <exception cref="SystemException">Thrown when unable to access directory/file.</exception>
         public string ReadFromFile (string fileName, string path) {
             try
             {
@@ -55,11 +54,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             } catch(Exception ex)
             {
                 log.Fatal(ex);
-                return "";
-            }
-            finally
-            {
-                throw new Exception("something went wrong when trying to back up changes. please contact developers");
+                throw new SystemException("Something went wrong when trying to back up changes. Please contact the developers.");
             }
         }
 
@@ -68,6 +63,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         /// </summary>
         /// <param name="fileName">The name the file to be removed.</param>
         /// <param name="path">The path the file will be removed from.</param>
+        /// <exception cref="SystemException">Thrown when unable to access directory/file.</exception>
         public void RemoveFromFile (string fileName, string path) {
             try
             {
@@ -75,6 +71,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             } catch(Exception ex)
             {
                 log.Fatal(ex);
+                throw new SystemException("Something went wrong when trying to back up changes. Please contact the developers.");
             }
         }
 

@@ -110,7 +110,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else if (!b.GetColumn(columnOrdinal + 1).CheckLimit())
             {
                 log.Error("Attempt to advance a task to a full column");
-                throw new ArgumentOutOfRangeException("The next column is full, please delete tasks or adjust the column limit accordingly and try again.");
+                throw new ArgumentOutOfRangeException("The next column: '" + b.GetColumn(columnOrdinal+1).Name + "' is full. Please change the column limit and try again.");
             }
             else
             {
@@ -176,10 +176,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 toUpdate.Delete(toUpdate.Id + "-" + toUpdate.Title, "Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
                 toUpdate.UpdateTaskTitle(newTitle);
                 toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
-                log.Debug("Task title was updated");
+                log.Debug("Task #" + taskId + " title was updated.");
             }
-            else
+            else {
+                log.Warn("Tasks cannot be edited in 'done' column.");
                 throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+            }
         }
 
         /// <summary>
@@ -203,10 +205,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDescription(newDescription);
                 toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
-                log.Debug("Task description was updated");
+                log.Debug("Task #" + taskId + " description was updated.");
             }
             else
+            {
+                log.Warn("Tasks cannot be edited in 'done' column.");
                 throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+            }
         }
 
         /// <summary>
@@ -230,10 +235,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDuedate(newDueDate);
                 toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
-                log.Debug("Task dueDate was updated");
+                log.Debug("Task #" + taskId + " dueDate was updated.");
             }
             else
+            {
+                log.Warn("Tasks cannot be edited in 'done' column.");
                 throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+            }
         }
 
         /// <summary>

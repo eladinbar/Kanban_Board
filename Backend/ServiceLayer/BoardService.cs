@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response<ServiceLayer.Board> object. The response should contain an error message in case of an error.</returns>
         public Response<Board> GetBoard(string email) 
         {
-            if (!SecurityController.UserValidation(email))
+            if (!SecurityController.UserValidation(email.ToLower()))
             {
                 Response<Board> resp = new Response<Board>("Invalid current user.");
                 log.Error(resp.ErrorMessage);
@@ -38,10 +38,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             try
             {
-                List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
+                List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email.ToLower()).getColumnNames();
                 Board tempStructBoard = new Board(tempColumnNames);
                 log.Debug("Board reached service layer successfully");
-                return new Response<Board>(tempStructBoard);
+                return new Response<Board>(tempStructBoard, "'" + email.ToLower() + "' board was loaded successfully.");
             }
             catch(Exception ex)
             {
@@ -59,7 +59,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit) 
         {
-            if (!SecurityController.UserValidation(email))
+            if (!SecurityController.UserValidation(email.ToLower()))
             {
                 Response resp = new Response("Invalid current user.");
                 log.Error(resp.ErrorMessage);
@@ -67,7 +67,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             try
             {
-                SecurityController.BoardController.LimitColumnTask(email, columnOrdinal, limit);
+                SecurityController.BoardController.LimitColumnTask(email.ToLower(), columnOrdinal, limit);
                 log.Info("Column limit has been updated successfully.");
                 return new Response("Column limit has been updated successfully.");
             }
@@ -76,7 +76,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Error(ex.Message, ex);
                 return new Response(ex.Message);
             }
-
         }
 
 
@@ -91,13 +90,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response<ServiceLayer.Task> object. The response should contain an error message in case of an error.</returns>
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate) 
         {
-            if (!SecurityController.UserValidation(email)) return new Response<Task>("Invalid current user.");
+            if (!SecurityController.UserValidation(email.ToLower())) return new Response<Task>("Invalid current user.");
             try
             {
-                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate);
+                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email.ToLower(), title, description, dueDate);
                 Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime, title, description, dueDate);
                 log.Info("Task added successfully.");
-                return new Response<Task>(tempStructTask, "Task has been added successfully.");
+                return new Response<Task>(tempStructTask, "Task has been added to '" + email.ToLower() + "' successfully.");
             }
             catch (Exception ex)
             {
@@ -118,12 +117,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate) 
         {
-            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email.ToLower())) return new Response("Invalid current user.");
             try
             {
-                SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
+                SecurityController.BoardController.UpdateTaskDueDate(email.ToLower(), columnOrdinal, taskId, newDueDate);
                 log.Info("Task due date was updated seccessfully.");
-                return new Response("Task due date has been updated successfully.");
+                return new Response("Task #" + taskId + " due date has been updated successfully in '" + GetColumn(email.ToLower(), columnOrdinal).Value.Name + "' of '" + email.ToLower() + "' board.");
             }
             catch (Exception ex)
             {
@@ -144,12 +143,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
         {
-            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email.ToLower())) return new Response("Invalid current user.");
             try
             {
-                SecurityController.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle);
+                SecurityController.BoardController.UpdateTaskTitle(email.ToLower(), columnOrdinal, taskId, newTitle);
                 log.Info("Task title updated successfully.");
-                return new Response("Task title has been updated successfully");
+                return new Response("Task #" + taskId + " title has been updated successfully in '" + GetColumn(email.ToLower(), columnOrdinal).Value.Name + "' of '" + email.ToLower() + "' board.");
             }
             catch (Exception ex)
             {
@@ -170,12 +169,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription) 
         {
-            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email.ToLower())) return new Response("Invalid current user.");
             try
             {
-                SecurityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
+                SecurityController.BoardController.UpdateTaskDescription(email.ToLower(), columnOrdinal, taskId, newDescription);
                 log.Info("Task description has been updated successfully.");
-                return new Response("Task description has been updated successfully");
+                return new Response("Task #" + taskId + " description has been updated successfully in '" + GetColumn(email.ToLower(), columnOrdinal).Value.Name + "' of '" + email.ToLower() + "' board.");
             }
             catch (Exception ex)
             {
@@ -196,13 +195,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
         public Response AdvanceTask(string email, int columnOrdinal, int taskId) 
         {
-            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
+            if (!SecurityController.UserValidation(email.ToLower())) return new Response("Invalid current user.");
             try
             {
-                SecurityController.BoardController.AdvanceTask(email, columnOrdinal, taskId);
+                SecurityController.BoardController.AdvanceTask(email.ToLower(), columnOrdinal, taskId);
                 log.Info("Task has been advanced to column #" + columnOrdinal+1);
-                return new Response("Task has been advanced successfully");
-            }
+                return new Response("Task #" + taskId + " has been advanced successfully to '" + GetColumn(email.ToLower(), columnOrdinal + 1).Value.Name + "'.");            }
             catch (Exception ex)
             {
                 log.Error(ex.Message, ex);
@@ -220,11 +218,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A Response<ServiceLayer.Column> object. The response should contain an error message in case of an error.</returns>
         public Response<Column> GetColumn(string email, string columnName) 
         {
-            if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
+            if (!SecurityController.UserValidation(email.ToLower())) return new Response<Column>("Invalid current user.");
             try
             {
                 //Declaring BL column by receiving existing column from BL.BoardPackage
-                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.GetColumn(email, columnName);
+                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.GetColumn(email.ToLower(), columnName);
                 //Declaring List of BL.Tasks by receiving it from 'tempColumn'
                 List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.Tasks;
 
@@ -262,10 +260,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> GetColumn(string email, int columnOrdinal) 
         {
             //This method replicates GetColumn(string email, string columnName), with the only difference being calling BL.BC.GetColumn() with columnOrdinal.
-            if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user.");
+            if (!SecurityController.UserValidation(email.ToLower())) return new Response<Column>("Invalid current user.");
             try
             {
-                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.GetColumn(email, columnOrdinal);
+                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.GetColumn(email.ToLower(), columnOrdinal);
                 List<BusinessLayer.BoardPackage.Task> tempColumnTaskCollection = tempColumn.Tasks;
 
                 List<Task> structTaskList = new List<Task>();
