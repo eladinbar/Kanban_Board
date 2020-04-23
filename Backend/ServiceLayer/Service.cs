@@ -48,7 +48,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 BoardService = new BoardService(_securityController);
                 UserService = new UserService(_securityController);
                 log.Info("The data was loaded successfully.");
-                return new Response("The data was loaded successfully.");
+                return new Response();
             }
             catch (Exception ex)
             {

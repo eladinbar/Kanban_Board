@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 SecurityController.UserController.Register(email.ToLower(), password, nickname);
                 SecurityController.BoardController.AddNewBoard(email.ToLower());
                 
-                Response r = new Response("User "+email.ToLower()+" has been registered successfully.");
+                Response r = new Response();
                 log.Info(r.ErrorMessage);
                 return r;
             }
@@ -59,7 +59,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 BusinessLayer.UserPackage.User tempUser = SecurityController.Login(email.ToLower(), password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
-                Response<User> r = new Response<User>(tempStructUser, email.ToLower() + ", logged in successfully.");
+                Response<User> r = new Response<User>(tempStructUser);
                 log.Info("Successful login action.");
                 return r;
             }
@@ -82,7 +82,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.Logout(email.ToLower());
                 
-                Response r = new Response("User " + email.ToLower() + " logged out.");
+                Response r = new Response();
                 log.Info(r.ErrorMessage);
                 return r;               
             }
@@ -107,7 +107,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.UserController.ChangePassword(email.ToLower(), oldPassword, newPassword);
-                Response resp = new Response("The password has been changed successfully.");
+                Response resp = new Response();
                 log.Info(resp.ErrorMessage);
                 return resp;
             }
