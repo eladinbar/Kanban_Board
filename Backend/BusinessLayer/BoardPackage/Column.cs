@@ -14,12 +14,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public string Name { get; }
         public int Limit { get; private set; }
         public List<Task> Tasks { get; }
+        private int NumberOfTasks;
 
         public Column(string name)
         {
             Name = name;
             Limit = Int32.MaxValue;
             Tasks = new List<Task>();
+            NumberOfTasks = Tasks.Count;
             log.Info("New column " + name + "created");
 
         }
@@ -29,6 +31,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Name = name;
             Limit = limit;
             Tasks = tasks;
+            NumberOfTasks = Tasks.Count;
             log.Debug("load - Board " + name + "was loaded from memory");
 
         }
@@ -64,9 +67,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         internal void InsertTask(Task t)
         {
             if (!CheckLimit())
-                throw new ArgumentOutOfRangeException(Name + " column is full");
+                throw new ArgumentOutOfRangeException(Name + " column is full.");
             else
                 Tasks.Add(t);
+            NumberOfTasks = Tasks.Count;
         }
 
         /// <summary>
@@ -83,12 +87,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (Tasks.Remove(toRemove))
             {
                 log.Debug("task " + id + " was removed from " + Name);
+                NumberOfTasks = Tasks.Count;
                 return toRemove;
             }
             else
             {
                 log.Error("Removal attempt to non existing task");
-                throw new ArgumentException("Task #" + id + " is not in " + Name);
+                throw new ArgumentException("Task #" + id + " is not in " + Name +".");
             }
         }
         
@@ -104,7 +109,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (Tasks.Exists(x => x.Id == taskId))
                 return Tasks.Find(x => x.Id == taskId);
             else
-                throw new ArgumentException("Task #"+taskId+" does not exist in '" + Name + "' column");
+                throw new ArgumentException("Task #"+taskId+" does not exist in '" + Name + "' column.");
         }
         ///>inheritdoc/>
         public DataAccessLayer.Column ToDalObject()

@@ -25,16 +25,52 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             //if (choice2 == "y")
             //{
             ServiceLayer.Service service = new ServiceLayer.Service();
+            //loading data
             Response d = service.LoadData();
             Console.WriteLine(d.ErrorMessage);
+            //registering
+            //Response reg = service.Register("3@mashu.com", "123Abc", "3");
+            //Console.WriteLine(reg.ErrorMessage);
+            //Console.ReadKey();
+            //logging in
             Response<User> u = service.Login("3@mashu.com", "123Abc");
             Console.WriteLine(u.ErrorMessage);
             Console.ReadKey();
+            //getting board
             Response<Board> b = service.GetBoard("3@mashu.com");
             Console.WriteLine(b.ErrorMessage);
             Console.ReadKey();
             Response<Column> c1 = service.GetColumn("3@mashu.com", "Backlog");
             Response<Column> c2 = service.GetColumn("3@mashu.com", 2);
+            //adding task
+            Response<ServiceLayer.Task> t1 = service.AddTask("3@mashu.com", "my title", "",new DateTime(2020,12,31));
+            Console.WriteLine(t1.ErrorMessage);
+            Console.WriteLine(t1.Value.ToString());
+            Console.ReadKey();
+            //advancing task to in progress
+            Response advance = service.AdvanceTask("3@mashu.com", 0, t1.Value.Id);
+            Console.WriteLine(advance.ErrorMessage);
+            Console.ReadKey();
+            // updating description
+            Response upDesc = service.UpdateTaskDescription("3@mashu.com", 1, t1.Value.Id, "description was updated");
+            Console.WriteLine(upDesc.ErrorMessage);
+            Console.ReadKey();
+            // updating duedate
+            Response upDuedate = service.UpdateTaskDueDate("3@mashu.com", 1, t1.Value.Id, new DateTime(2021,12,31));
+            Console.WriteLine(upDuedate.ErrorMessage);
+            Console.ReadKey();
+            // advancing to done
+            Response advance2 = service.AdvanceTask("3@mashu.com", 1, t1.Value.Id);
+            Console.WriteLine(advance2.ErrorMessage);
+            Console.ReadKey();
+            //trying to edit in done
+            Response update2 = service.UpdateTaskDescription("3@mashu.com", 2, t1.Value.Id, "description was updated");
+            Console.WriteLine(update2.ErrorMessage);
+            Console.ReadKey();
+            //trying to advance from done
+            Response advance3 = service.AdvanceTask("3@mashu.com", 2, t1.Value.Id);
+            Console.WriteLine(advance3.ErrorMessage);
+            Console.ReadKey();
             Console.WriteLine(c1.Value.ToString());
             Console.WriteLine(c2.Value.ToString());
             Console.ReadKey();
@@ -57,24 +93,24 @@ namespace IntroSE.Kanban.Backend.TestsLayer
 
 
             //Register and Login tests                      
-            UserTests userTests = new UserTests(7);
-            userTests.RunAllTests();
+            //UserTests userTests = new UserTests(7);
+            //userTests.RunAllTests();
 
-            //GetBoard tests
-            GetBoardTest getBoardTest = new GetBoardTest();
-            getBoardTest.RunAllTests();
+            ////GetBoard tests
+            //GetBoardTest getBoardTest = new GetBoardTest();
+            //getBoardTest.RunAllTests();
 
-            //ColumnInvolvedTests
-            ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests();
-            columnInvolvedTests.RunAllTests();
+            ////ColumnInvolvedTests
+            //ColumnInvolvedTests columnInvolvedTests = new ColumnInvolvedTests();
+            //columnInvolvedTests.RunAllTests();
 
 
-            //TaskInvolvedTests
-            TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
-            taskInvolvedTests.RunAllTests();
+            ////TaskInvolvedTests
+            //TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
+            //taskInvolvedTests.RunAllTests();
 
-            timer.Stop();
-            Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
+            //timer.Stop();
+            //Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
 
             ////Console.ForegroundColor = ConsoleColor.Red;
 

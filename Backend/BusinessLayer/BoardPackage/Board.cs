@@ -74,8 +74,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             if (columnOrdinal >= Columns.Count || columnOrdinal<0)
             {
-                log.Warn("columnOrdinal was out of range");
-                throw new ArgumentOutOfRangeException("Column index out of range");
+                log.Warn("columnOrdinal was out of range.");
+                throw new ArgumentOutOfRangeException("Column index out of range.");
             }
             log.Debug(UserEmail + ": returned column no." + columnOrdinal);
                return Columns[columnOrdinal];
@@ -93,7 +93,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 columnNames.Add(c.Name);
             }
-            log.Debug("Returned column's names");
+            log.Debug("Returned column's names.");
             return columnNames;
         }
 

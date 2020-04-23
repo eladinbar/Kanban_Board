@@ -129,7 +129,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
                 log.Info("Task due date was updated seccessfully.");
-                return new Response("Task #" + taskId + " due date has benn updated successfullyin " + GetColumn(email, columnOrdinal).Value.Name + "of '" + email + "' board.");
+                return new Response("Task #" + taskId + " due date has benn updated successfully in '" + GetColumn(email, columnOrdinal).Value.Name + "' of '" + email + "' board.");
             }
             catch (Exception ex)
             {
@@ -155,7 +155,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle);
                 log.Info("Task title updated seccessfully.");
-                return new Response("Task #" + taskId + " title has been updated successfullyin " + GetColumn(email, columnOrdinal).Value.Name + "of '" + email + "' board.");
+                return new Response("Task #" + taskId + " title has been updated successfullyin '" + GetColumn(email, columnOrdinal).Value.Name + "' of '" + email + "' board.");
             }
             catch (Exception ex)
             {
@@ -181,7 +181,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
                 log.Info("Task description has been updated seccessfully.");
-                return new Response("Task #" + taskId + " description has been updated successfully in " + GetColumn(email, columnOrdinal).Value.Name + "of '" + email + "' board.");
+                return new Response("Task #" + taskId + " description has been updated successfully in '" + GetColumn(email, columnOrdinal).Value.Name + "' of '" + email + "' board.");
             }
             catch (Exception ex)
             {
@@ -207,7 +207,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 SecurityController.BoardController.AdvanceTask(email, columnOrdinal, taskId);
                 log.Info("Task has been advanced to the column #" + columnOrdinal+1);
-                return new Response("Task #" + taskId + " has been advanced successfully to " + GetColumn(email,columnOrdinal).Value.Name + ".");
+                return new Response("Task #" + taskId + " has been advanced successfully to '" + GetColumn(email,columnOrdinal+1).Value.Name + "'.");
             }
             catch (Exception ex)
             {
@@ -248,7 +248,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
 
                 log.Debug("Required column has reached the Service Layer");
-                return new Response<Column>(tempStructColumn, tempColumn.Name + " of " + email + "'s board.");
+                return new Response<Column>(tempStructColumn, "'" + tempColumn.Name + "'" + " of " + email + "'s board.");
             }
             catch (Exception ex)
             {
@@ -283,7 +283,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
                 log.Debug("Required column has reached the Service Layer");
-                return new Response<Column>(tempStructColumn, tempColumn.Name + "with ordinal " + columnOrdinal + " of " + email + "'s board.");
+                return new Response<Column>(tempStructColumn,"'" + tempColumn.Name + "'" + "with ordinal " + columnOrdinal + " of " + email + "'s board.");
             }
             catch (Exception ex)
             {
