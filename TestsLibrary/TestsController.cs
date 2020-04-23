@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Response d = service.LoadData();
             Console.WriteLine(d.ErrorMessage);
             //registering
-            Response reg = service.Register("4@mashu.com", "123abcA111111111111111", "4");
+            Response reg = service.Register("4@mashucom", "123Abc", "4");
             Console.WriteLine(reg.ErrorMessage);
             Console.ReadKey();
             //logging in
@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Response<Board> b = service.GetBoard("3@mashu.com");
             Console.WriteLine(b.ErrorMessage);
             Console.ReadKey();
-            Response<Column> c1 = service.GetColumn("3@mashu.com", "Backlog");
+            Response<Column> c1 = service.GetColumn("3@mashu.com", "backlog");
             Response<Column> c2 = service.GetColumn("3@mashu.com", 2);
             //adding task
             Response<ServiceLayer.Task> t1 = service.AddTask("3@mashu.com", "my title", "",new DateTime(2020,12,31));
