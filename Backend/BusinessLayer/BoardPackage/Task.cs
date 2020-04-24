@@ -34,9 +34,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
                 throw new ArgumentOutOfRangeException("The description can not exceed 300 charecters");
 
-            if (dueDate == null)
-                throw new ArgumentNullException("Due date cannot be null.");
-            else if (dueDate.CompareTo(DateTime.Now) < 0)
+            if (dueDate.CompareTo(DateTime.Now) < 0)
                 throw new ArgumentException("Due date cannot be set to past time.");
             else
                 DueDate = dueDate.ToLocalTime();

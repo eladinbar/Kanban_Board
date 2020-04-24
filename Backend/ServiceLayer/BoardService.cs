@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate);
-                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime,dueDate, title, description);
+                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime,dueDate, title, tempTask.Description);
                 log.Info("Task added successfully.");
                 return new Response<Task>(tempStructTask);
             }
