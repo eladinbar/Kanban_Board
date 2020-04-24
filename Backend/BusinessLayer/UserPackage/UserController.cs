@@ -38,6 +38,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <exception cref="ArgumentException">Thrown when the e-mail address given is already taken by another user.</exception>
         public void Register(string email, string password, string nickname) {
             log.Debug("Register Attempt");
+            if (nickname.Length == 0)
+                throw new ArgumentException("Cannot register with an empty nickname, please try again.");
             if (!Users.ContainsKey(email)) {
                ValidatePassword(password);
                ValidateEmail(email);
