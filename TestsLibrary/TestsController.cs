@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.TestsLayer
            
             //adding task
             Response<ServiceLayer.Task> t1 = service.AddTask("3@mashu.com", "my title", "",new DateTime(2020,12,31));
-          
+            Response<ServiceLayer.Column> c1 = service.GetColumn("3@mashu.com", "backlog");
             Console.WriteLine(t1.Value.ToString());
             Console.ReadKey();
             //advancing task to in progress

@@ -115,7 +115,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
             if (email == null) return new Response("One of the parameters is not valid.");
-            return BoardService.LimitColumnTasks(email.ToLower(),columnOrdinal,limit);
+            return BoardService.LimitColumnTasks(email.ToLower(), columnOrdinal, limit);
         }
 
         /// <summary>

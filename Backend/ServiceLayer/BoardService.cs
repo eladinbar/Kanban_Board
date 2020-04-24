@@ -233,11 +233,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
                     structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description));
 
-                //Declaring ReadOnlyCollection by using its copying constructor with List of struct Users
-                IReadOnlyCollection<Task> tempReadOnlyStructTaskList = new ReadOnlyCollection<Task>(structTaskList);
-
                 //Declaring struct Column with ReadOnlyCollection of struct Tasks
-                Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
+                Column tempStructColumn = new Column(structTaskList, tempColumn.Name, tempColumn.Limit);
 
                 log.Debug("Required column has reached the Service Layer");
                 return new Response<Column>(tempStructColumn);
@@ -271,9 +268,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
                     structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description));
 
-                IReadOnlyCollection<Task> tempReadOnlyStructTaskList = new ReadOnlyCollection<Task>(structTaskList);
+                Column tempStructColumn = new Column(structTaskList, tempColumn.Name, tempColumn.Limit);
 
-                Column tempStructColumn = new Column(tempReadOnlyStructTaskList, tempColumn.Name, tempColumn.Limit);
                 log.Debug("Required column has reached the Service Layer");
                 return new Response<Column>(tempStructColumn);
             }
