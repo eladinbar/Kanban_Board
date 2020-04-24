@@ -32,8 +32,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                SecurityController.UserController.Register(email.ToLower(), password, nickname);
-                SecurityController.BoardController.AddNewBoard(email.ToLower());
+                SecurityController.UserController.Register(email, password, nickname);
+                SecurityController.BoardController.AddNewBoard(email);
                 
                 Response r = new Response();
                 log.Info("registered with " + email);
@@ -57,7 +57,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                BusinessLayer.UserPackage.User tempUser = SecurityController.Login(email.ToLower(), password);
+                BusinessLayer.UserPackage.User tempUser = SecurityController.Login(email, password);
                 User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
                 Response<User> r = new Response<User>(tempStructUser);
                 log.Info("Successful login action.");
@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             try
             {
-                SecurityController.Logout(email.ToLower());
+                SecurityController.Logout(email);
                 
                 Response r = new Response();
                 log.Info(r.ErrorMessage);
@@ -106,7 +106,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             //This method doesn't perform user validation in the case of administrative purposes.
             try
             {
-                SecurityController.UserController.ChangePassword(email.ToLower(), oldPassword, newPassword);
+                SecurityController.UserController.ChangePassword(email, oldPassword, newPassword);
                 Response resp = new Response();
                 log.Info(resp.ErrorMessage);
                 return resp;
