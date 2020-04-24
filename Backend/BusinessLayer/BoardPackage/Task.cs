@@ -73,7 +73,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <exception cref="ArgumentException">Thrown if the new title is empty or is more than 50 characters long.</exception>
         public void UpdateTaskTitle(string title)
         {
-            if (title.Length > 0 && title.Length <= 50)
+            if(title == null)
+            {
+                throw new ArgumentNullException("Title cannot be null.");
+            }
+            else if (title.Length > 0 && title.Length <= 50)
             {
                 Title = title;
                 LastChangedDate = DateTime.Now.ToLocalTime();
@@ -89,7 +93,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <exception cref="ArgumentException">Thrown when the description is more than 300 characters long.</exception>
         public void UpdateTaskDescription(string description)
         {
-            if (description == null || description.Length <= 300)
+            if (description == null)
+            {
+                Description = "";
+                LastChangedDate = DateTime.Now.ToLocalTime();
+            }
+            else if(description.Length <= 300)
             {
                 Description = description;
                 LastChangedDate = DateTime.Now.ToLocalTime();
