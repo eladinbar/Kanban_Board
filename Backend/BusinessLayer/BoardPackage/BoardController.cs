@@ -136,7 +136,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Task AddTask(string email, string title, string description, DateTime dueDate)
         {
             Board b = GetBoard(email);
-            Column c = GetColumn(email, "backlog");
+            Column c = GetColumn(email, 0);
             if (!c.CheckLimit())
             {
                 log.Error("Attempt to add a task when 'backlog' is full");
