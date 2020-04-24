@@ -45,18 +45,20 @@ namespace IntroSE.Kanban.Backend.TestsLayer
             Response<ServiceLayer.Column> c1 = service.GetColumn("3@mashu.com", "backlog");
             Console.WriteLine(t1.Value.ToString());
             Console.ReadKey();
+            Response upDesc = service.UpdateTaskDescription("3@mashu.com", 0, t1.Value.Id, "description was updated");
+
+            
+            // updating duedate
+            Response upDuedate = service.UpdateTaskDueDate("3@mashu.com", 0, t1.Value.Id, new DateTime(2021, 12, 31));
+            
+            Response upTitle = service.UpdateTaskTitle("3@mashu.com", 0, t1.Value.Id, "hi");
+
             //advancing task to in progress
             Response advance = service.AdvanceTask("3@mashu.com", 0, t1.Value.Id);
-          
+            Response<ServiceLayer.Column> c2 = service.GetColumn("3@mashu.com", "in progress");
             Console.ReadKey();
             // updating description
-            Response upDesc = service.UpdateTaskDescription("3@mashu.com", 1, t1.Value.Id, "description was updated");
-            
-            Console.ReadKey();
-            // updating duedate
-            Response upDuedate = service.UpdateTaskDueDate("3@mashu.com", 1, t1.Value.Id, new DateTime(2021,12,31));
-            
-            Console.ReadKey();
+           
             // advancing to done
             Response advance2 = service.AdvanceTask("3@mashu.com", 1, t1.Value.Id);
           

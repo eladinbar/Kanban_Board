@@ -173,7 +173,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (!c.Name.Equals("done"))
             {
                 Task toUpdate = c.GetTask(taskId);
-                //toUpdate.Delete(toUpdate.Id + "-" + toUpdate.Title, "Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+                toUpdate.Delete(toUpdate.Id + "-" + toUpdate.Title, "Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
                 toUpdate.UpdateTaskTitle(newTitle);
                 toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
                 log.Debug("Task #" + taskId + " title was updated.");
