@@ -1,6 +1,7 @@
 ﻿using IntroSE.Kanban.Backend.DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -124,8 +125,41 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <param name="email">The email address the user intends to be indetified with.</param>
         /// <exception cref="ArgumentException">Thrown when the email address given doesn't fit the criteria.</exception>
         private void ValidateEmail (string email) {
-            if (!Regex.IsMatch(email, @"[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,18}") | email.Count(f => f == '@')!=1)
-                throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*.");
+            
+                if (string.IsNullOrWhiteSpace(email))
+                    throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*.");
+                try
+                {
+                    // Normalize the domain
+                    email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
+                                          RegexOptions.None, TimeSpan.FromMilliseconds(200));
+
+                    // Examines the domain part of the email and normalizes it.
+                    string DomainMapper(Match match)
+                    {
+                        // Use IdnMapping class to convert Unicode domain names.
+                        var idn = new IdnMapping();
+
+                        // Pull out and process domain name (throws ArgumentException on invalid)
+                        var domainName = idn.GetAscii(match.Groups[2].Value);
+
+                        return match.Groups[1].Value + domainName;
+                    }
+                }
+                catch (RegexMatchTimeoutException e)
+                {
+                    throw e;
+                }
+                catch (ArgumentException e)
+                {
+                    throw e;
+                }
+
+                if (!Regex.IsMatch(email,
+                    @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+                    throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*.");
         }
     }
 }
