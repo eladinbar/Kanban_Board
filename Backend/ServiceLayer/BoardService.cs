@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate);
-                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime, title, description, dueDate);
+                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime,dueDate, title, description);
                 log.Info("Task added successfully.");
                 return new Response<Task>(tempStructTask);
             }
@@ -231,7 +231,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 //Converting BL.Tasks of 'tempColumnTaskCollection' into struct Users and adding them to 'structTaskList'
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
-                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.Title, tempTask.Description, tempTask.DueDate));
+                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description));
 
                 //Declaring ReadOnlyCollection by using its copying constructor with List of struct Users
                 IReadOnlyCollection<Task> tempReadOnlyStructTaskList = new ReadOnlyCollection<Task>(structTaskList);
@@ -269,7 +269,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 List<Task> structTaskList = new List<Task>();
 
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
-                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.Title, tempTask.Description, tempTask.DueDate));
+                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description));
 
                 IReadOnlyCollection<Task> tempReadOnlyStructTaskList = new ReadOnlyCollection<Task>(structTaskList);
 
