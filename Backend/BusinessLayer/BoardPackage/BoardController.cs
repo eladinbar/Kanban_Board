@@ -167,7 +167,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
-                throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
+                throw new ArgumentException("A task does not exist with the given task ID - " + taskId + " .");
 
             Column c = GetColumn(email, columnOrdinal);
             if (!c.Name.Equals("done"))
