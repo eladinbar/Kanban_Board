@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 SecurityController.BoardController.AddNewBoard(email);
                 
                 Response r = new Response();
-                log.Info("registered with " + email);
+                log.Info("Registered with " + email);
                 return r;
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="email">User's email to login with.</param>
         /// <param name="password">User's password to login with.</param>
-        /// <returns>A Response<ServiceLayer.User> object. The response should contain a error message in case of an error.</returns>
+        /// <returns>A Response<ServiceLayer.User> object. The response should contain an error message in case of an error.</returns>
         public Response<User> Login (string email, string password) 
         {
             try
@@ -75,7 +75,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// Perfroms a Logout action.
         /// </summary>
         /// <param name="email">Currently logged in user's email.</param>
-        /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
+        /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
         public Response Logout(string email) 
         {
             try
@@ -100,7 +100,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="email">An existing user's email.</param>
         /// <param name="oldPassword">An existing user's old password.</param>
         /// <param name="newPassword">An existing user's new password.</param>\
-        /// <returns>A Response object. The response should contain a error message in case of an error.</returns>
+        /// <returns>A Response object. The response should contain an error message in case of an error.</returns>
         public Response ChangePassword (string email, string oldPassword, string newPassword) 
         {
             //This method doesn't perform user validation in the case of administrative purposes.

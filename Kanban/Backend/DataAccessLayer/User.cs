@@ -37,7 +37,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             if (!dir.Exists) 
                 dir.Create();
             dc.WriteToFile(Email, ToJson(), path);
-        }
-        
+        }   
     }
 }
