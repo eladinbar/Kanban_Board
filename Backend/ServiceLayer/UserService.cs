@@ -3,7 +3,7 @@
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
-    /// The servicve for perfoming User related actions.
+    /// The service for perfoming User related actions.
     /// </summary>
     internal class UserService
     {
