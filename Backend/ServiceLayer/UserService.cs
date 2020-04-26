@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private BusinessLayer.SecurityController SecurityController;
 
         /// <summary>
-        /// Public constructor.
+        /// Public constructor. Initializes that User Service with the current SecurityController object.
         /// <param name="securityController">Current SecurityController object.</param>
         /// </summary>
         public UserService(BusinessLayer.SecurityController securityController)

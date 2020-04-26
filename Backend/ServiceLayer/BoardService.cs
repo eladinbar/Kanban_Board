@@ -14,13 +14,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private BusinessLayer.SecurityController SecurityController;
 
         /// <summary>
-        /// Public constructor. 
+        /// Public constructor. Initializes the Board Service with the current Security Controller object.
         /// <param name="sc">Current SecurityController object.</param>
         /// </summary>
         public BoardService(BusinessLayer.SecurityController sc)
         {
-            log.Debug("BoardService Created");
             SecurityController = sc;
+            log.Debug("BoardService Created");
         }
 
         /// <summary>
