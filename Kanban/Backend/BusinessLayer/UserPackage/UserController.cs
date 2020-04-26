@@ -115,45 +115,51 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         }
 
         /// <summary>
-        /// Checks if a given e-mail address fits certain criteria.
+        /// Checks if a given e-mail address fits certain criteria by dividing it into 5 parts:
+        /// 1. The local part - checks that the user inputs only alphanumerical characters and/or the "._-" characters.
+        /// 2. The second part consists of the literal @ character.
+        /// 3. The third part is the domain part - all characters to provide a domain name are available.
+        /// 4. The fourth part is the dot character.
+        /// 5. The fifth and final part is the top level domain: allowed to consist of 1 to 63 characters and multiple parts.
         /// </summary>
         /// <param name="email">The email address the user intends to be indetified with.</param>
         /// <exception cref="ArgumentException">Thrown when the email address given doesn't fit the criteria.</exception>
         private void ValidateEmail (string email) {
-            if (string.IsNullOrWhiteSpace(email))
-                throw new ArgumentException(email + " is invalid, please consult the following form *example@gmail.com*.");
-            try
-            {
-                // Normalize the domain
-                email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
-                                      RegexOptions.None, TimeSpan.FromMilliseconds(200));
-
-                // Examines the domain part of the email and normalizes it.
-                string DomainMapper(Match match)
+            
+                if (string.IsNullOrWhiteSpace(email))
+                    throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*.");
+                try
                 {
-                    // Use IdnMapping class to convert Unicode domain names.
-                    var idn = new IdnMapping();
+                    // Normalize the domain
+                    email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
+                                          RegexOptions.None, TimeSpan.FromMilliseconds(200));
 
-                    // Pull out and process domain name (throws ArgumentException on invalid)
-                    var domainName = idn.GetAscii(match.Groups[2].Value);
+                    // Examines the domain part of the email and normalizes it.
+                    string DomainMapper(Match match)
+                    {
+                        // Use IdnMapping class to convert Unicode domain names.
+                        var idn = new IdnMapping();
 
-                    return match.Groups[1].Value + domainName;
+                        // Pull out and process domain name (throws ArgumentException on invalid)
+                        var domainName = idn.GetAscii(match.Groups[2].Value);
+
+                        return match.Groups[1].Value + domainName;
+                    }
                 }
-            }
-            catch (RegexMatchTimeoutException e)
-            {
-                throw e;
-            }
-            catch (ArgumentException e)
-            {
-                throw e;
-            }
+                catch (RegexMatchTimeoutException e)
+                {
+                    throw e;
+                }
+                catch (ArgumentException e)
+                {
+                    throw e;
+                }
 
-            if (!Regex.IsMatch(email,
-                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
-                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
-                RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
-                throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*.");
+                if (!Regex.IsMatch(email,
+                    @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+                    throw new ArgumentException(email + " is invalid, please use only alphanumerical characters and consult the following form *example@gmail.com*.");
         }
     }
 }

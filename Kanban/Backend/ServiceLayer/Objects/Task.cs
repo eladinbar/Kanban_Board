@@ -19,5 +19,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Description = description;
         }
         // You can add code here
+    
+    
+        public override string ToString()
+        {
+            return "#" + Id +
+                "\nTitle: " + Title +
+                "\nDescription: " + Description +
+                "\nDue Date: " + DueDate.ToLongDateString() +
+                "\nCreation Time: " + CreationTime.ToLongDateString();
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
                 Board tempStructBoard = new Board(tempColumnNames);
-                log.Debug("Board reached the Service Layer successfully");
+                log.Debug("Board reached service layer successfully");
                 return new Response<Board>(tempStructBoard);
             }
             catch(Exception ex)
@@ -121,7 +121,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
-                log.Info("Task due date was updated successfully.");
+                log.Info("Task due date was updated seccessfully.");
                 return new Response();
             }
             catch (Exception ex)

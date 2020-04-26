@@ -140,7 +140,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (!c.CheckLimit())
             {
                 log.Error("Attempt to add a task when 'backlog' is full");
-                throw new Exception("The 'backlog' column is full, please adjust the column limit accordingly and try again.");
+                throw new Exception("The 'backlog' column is full, please delete tasks or adjust the column limit accordingly and try again.");
             }
            
             Task newTask = new Task(title, description, dueDate, b.TaskCounter+1);
@@ -253,7 +253,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Board newBoard = new Board(email);
             Boards.Add(email, newBoard);
             newBoard.Save("Boards\\");
-            log.Info("New board was added with key " + email);
+            log.Info("New board was added with kay " + email);
         }
     }
 }
