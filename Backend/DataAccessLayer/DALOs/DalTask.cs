@@ -9,6 +9,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 {
     internal class DalTask : DalObject
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
         public const string TaskIDColumnName = "ID";
         public const string TaskOrdinalColumnName = "Ordinal";
         public const string TaskTitleColumnName = "Title";

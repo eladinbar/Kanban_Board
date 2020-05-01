@@ -10,6 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 {
     internal class ColumnDalController : DalController
     {
+        private static readonly log4net.ILog log = LogHelper.getLogger();
         private const string ColumnTableName = "Columns";
 
         public ColumnDalController() : base(ColumnTableName) { }
@@ -20,9 +21,76 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return columnList;
         }
 
+        public bool Insert(DalColumn column)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"INSERT INTO {ColumnTableName} " +
+                        $"({DalColumn.EmailColumnName}, , {DalColumn.ColumnOrdinalColumnName}, {DalColumn.ColumnNameColumnName}, {DalColumn.ColumnLimitColumnName})" +
+                        $"VALUES (@emailVal, @ordinalVal, @nameVal, @limitVal);";
+
+                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", column.Email);
+                    SQLiteParameter nameParam = new SQLiteParameter(@"nameVal", column.Name);
+                    SQLiteParameter ordinalParam = new SQLiteParameter(@"ordinalVal", column.Ordinal);
+                    SQLiteParameter limitParam = new SQLiteParameter(@"limitVal", column.Limit);
+
+                    command.Parameters.Add(emailParam);
+                    command.Parameters.Add(nameParam);
+                    command.Parameters.Add(ordinalParam);
+                    command.Parameters.Add(limitParam);
+
+                    res = command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+            return res > 0;
+        }
+
+        public bool Delete(DalColumn column)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"DALETE FROM {ColumnTableName} WHERE email={column.Email} AND ordinal={column.Ordinal}"
+                };
+                try
+                {
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+            return res > 0;
+        }
+
         internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
         {
-            throw new NotImplementedException();
+            DalColumn result = new DalColumn(reader.GetString(0), (int)reader.GetValue(1), reader.GetString(2), (int)reader.GetValue(3));
+            return result;
         }
     }
 }
