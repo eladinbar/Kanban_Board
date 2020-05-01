@@ -1,0 +1,39 @@
+CREATE TABLE "Users" (
+	"email"	TEXT NOT NULL,
+	"Password"	TEXT NOT NULL,
+	"Nickname"	TEXT NOT NULL,
+	PRIMARY KEY("email")
+);
+
+CREATE TABLE "Boards" (
+	"email"	TEXT NOT NULL,
+	"TaskCounter"	INTEGER NOT NULL,
+	PRIMARY KEY("email")
+	FOREIGN KEY (email)
+		REFERENCES Users (email)
+);
+
+CREATE TABLE "Columns" (
+	"email"	TEXT NOT NULL,
+	"Ordinal"	INTEGER NOT NULL,
+	"Limit"	INTEGER NOT NULL,
+	PRIMARY KEY("email","Ordinal")
+	FOREIGN KEY (email)
+		REFERENCES Boards (email)
+);
+
+CREATE TABLE "Tasks" (
+	"email"	TEXT NOT NULL,
+	"Ordinal"	INTEGER NOT NULL,
+	"ID"	INTEGER NOT NULL,
+	"Title"	TEXT NOT NULL,
+	"Description"	TEXT,
+	"DueDate"	INTEGER NOT NULL,
+	"CreationDate"	INTEGER NOT NULL,
+	"LastChangedDate"	INTEGER NOT NULL,
+	PRIMARY KEY("email","Ordinal","Id")
+	FOREIGN KEY (email)
+		REFERENCES Columns (email)
+	FOREIGN KEY (Ordinal)
+		REFERENCES Columns (Ordinal)
+);
