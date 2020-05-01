@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private BusinessLayer.SecurityController SecurityController;
+        internal BusinessLayer.SecurityController SecurityController;
 
         /// <summary>
         /// Public constructor. Initializes that User Service with the current SecurityController object.
