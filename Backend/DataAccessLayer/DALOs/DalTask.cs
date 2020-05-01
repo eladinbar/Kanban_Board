@@ -20,17 +20,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         private int _taskId;
         public int TaskId { get => _taskId; set { _taskId = value; } }
         private int _ordinal;
-        public int Ordinal { get => _ordinal; set { _ordinal = value; } }
+        public int Ordinal { get => _ordinal; set { _ordinal = value; _controller.Update(Email, Ordinal, TaskId,TaskOrdinalColumnName, value); } }
         private string _title;
-        public string Title { get => _title; set { _title = value; } }
+        public string Title { get => _title; set { _title = value; _controller.Update(Email, Ordinal, TaskId, TaskTitleColumnName, value); } }
         private string _description;
-        public string Description { get => _description; set { _description = value; } }
+        public string Description { get => _description; set { _description = value; _controller.Update(Email, Ordinal, TaskId, TaskDescriptionColumnName, value); } }
         private string _dueDate;
-        public string DueDate { get => _dueDate; set { _dueDate = value; } }
+        public string DueDate { get => _dueDate; set { _dueDate = value; _controller.Update(Email, Ordinal, TaskId, TaskDueDateColumnName, value); } }
         private string _creationDate;
-        public string CreationDate { get => _creationDate; set { _creationDate = value; } }
+        public string CreationDate { get => _creationDate; set { _creationDate = value; _controller.Update(Email, Ordinal, TaskId, TaskCreationDateColumnName, value); } }
         private string _lastChangedDate;
-        public string LastChangedDate { get => _lastChangedDate; set { _lastChangedDate = value; } }
+        public string LastChangedDate { get => _lastChangedDate; set { _lastChangedDate = value; _controller.Update(Email, Ordinal, TaskId, TaskLastChangedDateColumnName, value); } }
 
         public DalTask(string email, int ordinal, int id, string title, string description, string dueDate, string creationDate, string lastChangedDate) : base(new TaskDalController())
         {

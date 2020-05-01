@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         public const string BoardTaskCountName = "TaskCounter";
 
         private int _taskCounter;
-        public int TaskCounter { get => _taskCounter; set{ _taskCounter = value;} }
+        public int TaskCounter { get => _taskCounter; set{ _taskCounter = value; _controller.Update(Email, BoardTaskCountName, value); } }
 
         public DalBoard(string email, int taskCounter) : base(new BoardDalController())
         {
