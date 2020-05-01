@@ -14,6 +14,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public TaskDalController(): base(TaskTableName) { }
 
+        public List<DalTask> SelectAllTasks(string email, int ordinal)
+        {
+            List<DalTask> taskList = Select(email,ordinal).Cast<DalTask>().ToList();
+            return taskList;
+        }
+
         internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
         {
             throw new NotImplementedException();

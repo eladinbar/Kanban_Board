@@ -14,6 +14,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public ColumnDalController() : base(ColumnTableName) { }
 
+        public List<DalColumn> SelectAllColumns(string email)
+        {
+            List<DalColumn> columnList = Select(email).Cast<DalColumn>().ToList();
+            return columnList;
+        }
+
         internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
         {
             throw new NotImplementedException();

@@ -16,8 +16,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public List<DalBoard> SelectAllBoards()
         {
-            List<DalBoard> userList = Select().Cast<DalBoard>().ToList();
-            return userList;
+            List<DalBoard> boardList = Select().Cast<DalBoard>().ToList();
+            return boardList;
         }
 
         internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
