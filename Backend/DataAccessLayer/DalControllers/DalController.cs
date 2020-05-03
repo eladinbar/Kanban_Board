@@ -168,7 +168,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res > 0;
         }
         //primery key update. accepts a single key parmeter
-        public bool Update(string email, string attribluteName, int attributeValue)
+        public bool Update(string email, string attribluteName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -201,7 +201,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res > 0;
         }
         //combine key of 2 keys update
-        public bool Update(string email, int ordinal, string attribluteName, string attributeValue)
+        public bool Update(string email, string name, string attribluteName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -209,14 +209,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} and Ordinal={ordinal}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} and Name={name}"
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
-                    log.Debug(("Executing update to data base with key {0} ordinal {1}",email, ordinal));
+                    log.Debug(("Executing update to data base with key {0} name {1}",email, name));
                     res = command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
@@ -234,7 +234,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res > 0;
         }
         //combine key of 2 keys update
-        public bool Update(string email, int ordinal, string attribluteName, int attributeValue)
+        public bool Update(string email, string name, string attribluteName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -242,14 +242,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} and Ordinal={ordinal}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} and Name={name}"
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
-                    log.Debug(("Executing update to data base with key {0} ordinal {1}", email, ordinal));
+                    log.Debug(("Executing update to data base with key {0} name {1}", email, name));
                     res = command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
@@ -267,7 +267,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res > 0;
         }
         //combine key of 3 keys update
-        public bool Update(string email, int ordinal, int taskID, string attribluteName, string attributeValue)
+        public bool Update(string email, string name, int taskID, string attribluteName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -275,14 +275,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} AND Ordinal={ordinal} AND ID={taskID}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} AND Name={name} AND ID={taskID}"
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
-                    log.Debug(("Executing update to data base with key {0} ordinal {1} ID {2}",email,ordinal,taskID));
+                    log.Debug(("Executing update to data base with key {0} name {1} ID {2}",email, name ,taskID));
                     res = command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
@@ -300,7 +300,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res > 0;
         }
         //combine key of 3 keys update
-        public bool Update(string email, int ordinal, int taskID, string attribluteName, int attributeValue)
+        public bool Update(string email, string name, int taskID, string attribluteName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -308,14 +308,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} AND Ordinal={ordinal} AND ID={taskID}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} AND Name={name} AND ID={taskID}"
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
-                    log.Debug(("Executing update to data base with key {0} ordinal {1} ID {2}", email, ordinal, taskID));
+                    log.Debug(("Executing update to data base with key {0} name {1} ID {2}", email, name, taskID));
                     res = command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)

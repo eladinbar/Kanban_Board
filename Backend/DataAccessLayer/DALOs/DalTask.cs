@@ -26,14 +26,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         public string Title { get => _title; set { _title = value; _controller.Update(Email, Ordinal, TaskId, TaskTitleColumnName, value); } }
         private string _description;
         public string Description { get => _description; set { _description = value; _controller.Update(Email, Ordinal, TaskId, TaskDescriptionColumnName, value); } }
-        private string _dueDate;
-        public string DueDate { get => _dueDate; set { _dueDate = value; _controller.Update(Email, Ordinal, TaskId, TaskDueDateColumnName, value); } }
-        private string _creationDate;
-        public string CreationDate { get => _creationDate; set { _creationDate = value; _controller.Update(Email, Ordinal, TaskId, TaskCreationDateColumnName, value); } }
-        private string _lastChangedDate;
-        public string LastChangedDate { get => _lastChangedDate; set { _lastChangedDate = value; _controller.Update(Email, Ordinal, TaskId, TaskLastChangedDateColumnName, value); } }
+        private DateTime _dueDate;
+        public DateTime DueDate { get => _dueDate; set { _dueDate = value; _controller.Update(Email, Ordinal, TaskId, TaskDueDateColumnName, value.Ticks); } }
+        private DateTime _creationDate;
+        public DateTime CreationDate { get => _creationDate; set { _creationDate = value; _controller.Update(Email, Ordinal, TaskId, TaskCreationDateColumnName, value.Ticks); } }
+        private DateTime _lastChangedDate;
+        public DateTime LastChangedDate { get => _lastChangedDate; set { _lastChangedDate = value; _controller.Update(Email, Ordinal, TaskId, TaskLastChangedDateColumnName, value.Ticks); } }
 
-        public DalTask(string email, int ordinal, int id, string title, string description, string dueDate, string creationDate, string lastChangedDate) : base(new TaskDalController())
+        public DalTask(string email, int ordinal, int id, string title, string description, DateTime dueDate, DateTime creationDate, DateTime lastChangedDate) : base(new TaskDalController())
         {
             Email = email;
             _ordinal = ordinal;

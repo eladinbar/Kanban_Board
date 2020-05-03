@@ -15,9 +15,10 @@ CREATE TABLE "Boards" (
 
 CREATE TABLE "Columns" (
 	"email"	TEXT NOT NULL,
+	"Name" TEXT NOT NULL,
 	"Ordinal"	INTEGER NOT NULL,
 	"Limit"	INTEGER NOT NULL,
-	PRIMARY KEY("email","Ordinal")
+	PRIMARY KEY("email","Name")
 	FOREIGN KEY (email)
 		REFERENCES Boards (email)
 );
@@ -34,4 +35,11 @@ CREATE TABLE "Tasks" (
 	FOREIGN KEY("email") REFERENCES "Columns"("email"),
 	FOREIGN KEY("ColumnName") REFERENCES "Columns"("Name"),
 	PRIMARY KEY("email","ColumnName","Id")
+);
+
+CREATE TABLE "Log" (
+
+
+
+
 );
