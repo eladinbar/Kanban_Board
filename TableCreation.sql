@@ -24,16 +24,14 @@ CREATE TABLE "Columns" (
 
 CREATE TABLE "Tasks" (
 	"email"	TEXT NOT NULL,
-	"Ordinal"	INTEGER NOT NULL,
-	"ID"	INTEGER NOT NULL,
+	"ColumnName"	TEXT NOT NULL,
+	"Id"	INTEGER NOT NULL,
 	"Title"	TEXT NOT NULL,
 	"Description"	TEXT,
 	"DueDate"	INTEGER NOT NULL,
 	"CreationDate"	INTEGER NOT NULL,
 	"LastChangedDate"	INTEGER NOT NULL,
-	PRIMARY KEY("email","Ordinal","Id")
-	FOREIGN KEY (email)
-		REFERENCES Columns (email)
-	FOREIGN KEY (Ordinal)
-		REFERENCES Columns (Ordinal)
+	FOREIGN KEY("email") REFERENCES "Columns"("email"),
+	FOREIGN KEY("ColumnName") REFERENCES "Columns"("Name"),
+	PRIMARY KEY("email","ColumnName","Id")
 );

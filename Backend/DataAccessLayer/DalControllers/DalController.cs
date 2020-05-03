@@ -105,7 +105,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"select from {_tableName} where email={email} and ordinal={ordinal}"
+                    CommandText = $"SELECT FROM {_tableName} WHERE email={email} and Ordinal={ordinal}"
                 };
                 SQLiteDataReader dataReader = null;
                 try
@@ -143,7 +143,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attribluteName}] = @{attribluteName} where email={email}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email}"
                 };
                 try
                 {
@@ -176,7 +176,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attribluteName}] = @{attribluteName} where email={email}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email}"
                 };
                 try
                 {
@@ -209,7 +209,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attribluteName}] = @{attribluteName} where email={email} and Ordinal={ordinal}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} and Ordinal={ordinal}"
                 };
                 try
                 {
@@ -242,7 +242,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attribluteName}] = @{attribluteName} where email={email} and Ordinal={ordinal}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} and Ordinal={ordinal}"
                 };
                 try
                 {
@@ -275,7 +275,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attribluteName}] = @{attribluteName} where email={email} and Ordinal={ordinal} and ID={taskID}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} AND Ordinal={ordinal} AND ID={taskID}"
                 };
                 try
                 {
@@ -308,7 +308,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attribluteName}] = @{attribluteName} where email={email} and Ordinal={ordinal} and ID={taskID}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} AND Ordinal={ordinal} AND ID={taskID}"
                 };
                 try
                 {

@@ -76,7 +76,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {TaskTableName} WHERE email={task.Email} AND ordinal={task.Ordinal} AND ID={task.TaskId}"
+                    CommandText = $"DALETE FROM {TaskTableName} WHERE email={task.Email} AND Ordinal={task.Ordinal} AND ID={task.TaskId}"
                 };
                 try
                 {
