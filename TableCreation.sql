@@ -16,7 +16,7 @@ CREATE TABLE "Boards" (
 CREATE TABLE "Columns" (
 	"email"	TEXT NOT NULL,
 	"Name" TEXT NOT NULL,
-	"Ordinal"	INTEGER NOT NULL,
+	"Ordinal"	INTEGER NOT NULL UNIQUE,
 	"Limit"	INTEGER NOT NULL,
 	PRIMARY KEY("email","Name")
 	FOREIGN KEY (email)
@@ -38,7 +38,14 @@ CREATE TABLE "Tasks" (
 );
 
 CREATE TABLE "Log" (
-
+	"LogId" INTEGER NOT NULL PRIMARY KEY,
+	"Date" TEXT NOT NULL,
+	"Level" TEXT NOT NULL,
+	"Type" TEXT NOT NULL,
+	"Method" TEXT NOT NULL,
+	"LineNo" INTEGER NOT NULL,
+	"Massage" TEXT NOT NULL,
+	"Exception" TEXT NOT NULL
 
 
 
