@@ -29,7 +29,12 @@ namespace IntroSE.Kanban.Backend
             return log4net.LogManager.GetLogger(filename);
         }
 
-
+        /// <summary>
+        /// sets up appenders for logging.
+        /// </summary>
+        /// <param name="appenders">
+        /// an array of appenders to setup basic configuration.
+        /// </param>
         public static void SetUp(params IAppender[] appenders)
         {
             //Sets the RollingFileAppender as the logger appender.
@@ -39,9 +44,8 @@ namespace IntroSE.Kanban.Backend
         /// <summary>
         /// Sets up the RollingFileAppender to save the logs to the "Logs" folder in the original directory the program is using.
         /// </summary>
-        /// 
         /// <returns>
-        /// return the rolling file appender
+        /// return the rolling file appender.
         /// </returns>
         /// <remarks>
         /// The logger saves a log file once per program execution.
@@ -49,20 +53,20 @@ namespace IntroSE.Kanban.Backend
         public static IAppender SetupRoliingFileAppender()        {            //Defines how we want to log to the LogFile.txt            PatternLayout patternLayout = new PatternLayout();            patternLayout.ConversionPattern = "%d{yyyy-MM-dd HH:mm:ss} %level - (%type: %method - %line)%newline %message%newline%exception";            patternLayout.ActivateOptions();            //Creates and defines a RollingFileAppender for file logging.            RollingFileAppender roller = new RollingFileAppender();            roller.AppendToFile = true;            roller.File = BASE_PATH;            roller.Layout = patternLayout;            roller.MaxSizeRollBackups = 20;            roller.MaximumFileSize = "10MB";            roller.RollingStyle = RollingFileAppender.RollingMode.Once;
             roller.StaticLogFileName = true;            roller.ActivateOptions();            return roller;        }
         /// <summary>
-        /// Sets up AdoNetAppender to SQLite Database with the following columns LogId, Date, Level, Type, Method, LineNo, Massage, Exception
+        /// Sets up AdoNetAppender to SQLite Database with the following columns (LogId, Date, Level, Type, Method, LineNo, Massage, Exception).
         /// </summary>
         /// <returns>
-        /// Returns the sqlite Appender
+        /// Returns the sqlite Appender.
         /// </returns>
         public static IAppender SetUpSQLiteAppender()
         {
+            //define the path to the database file
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanLoggerDB.db"));
             FileInfo fileDB = new FileInfo(path);
-            if (!fileDB.Exists)
-            {
-                CreateLoggerDB();
-            }
-
+            //creates the Database file if not exists
+            if (!fileDB.Exists)  CreateLoggerDB();
+            
+            //creates the appender
             AdoNetAppender appender = new AdoNetAppender
             {
                 ConnectionType = "System.Data.SQLite.SQLiteConnection, System.Data.SQLite",
@@ -71,51 +75,44 @@ namespace IntroSE.Kanban.Backend
                 $"Value  (@Date, @Level, @Type, @Method, @LineNo, @Massage, @Exception)"     
             };
 
+
+            //define all parameters to log in the data base
             AdoNetAppenderParameter dateParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@Date",
                 DbType = DbType.String,
                 Layout = new log4net.Layout.RawTimeStampLayout()
             };
-
             AdoNetAppenderParameter levelParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@Level",
                 DbType = DbType.String,
                 Layout = new Layout2RawLayoutAdapter(new PatternLayout("%level"))
             };
-
-
             AdoNetAppenderParameter typeParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@Type",
                 DbType = DbType.String,
                 Layout = new Layout2RawLayoutAdapter(new PatternLayout("%type"))
             };
-
-
             AdoNetAppenderParameter methodParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@Method",
                 DbType = DbType.String,
                 Layout = new Layout2RawLayoutAdapter(new PatternLayout("%method"))
             };
-
             AdoNetAppenderParameter lineNoParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@LineNo",
                 DbType = DbType.String,
                 Layout = new Layout2RawLayoutAdapter(new PatternLayout("%line"))
             };
-
-
             AdoNetAppenderParameter massageParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@Message",
                 DbType = DbType.String,
                 Layout = new Layout2RawLayoutAdapter(new PatternLayout("%massage"))
             };
-
             AdoNetAppenderParameter exceptionParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@Exception",
@@ -123,6 +120,7 @@ namespace IntroSE.Kanban.Backend
                 Layout = new Layout2RawLayoutAdapter(new PatternLayout("%exeption"))
             };
 
+            //adds the parameters to the appender
             appender.AddParameter(dateParam);
             appender.AddParameter(levelParam);
             appender.AddParameter(typeParam);
@@ -130,12 +128,17 @@ namespace IntroSE.Kanban.Backend
             appender.AddParameter(lineNoParam);
             appender.AddParameter(massageParam);
             appender.AddParameter(exceptionParam);
-
+            //after 20 log lines the appender writes to the Database
             appender.BufferSize = 20;
-            appender.ActivateOptions();
-                                          
+
+            //activates the appender settings that we added priviusly and return the appender.
+            appender.ActivateOptions();                                          
             return appender;
         }
+
+        /// <summary>
+        /// create a .db file to appender the log events to a SQLite Database
+        /// </summary>
         private static void CreateLoggerDB()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanLoggerDB.db"));
