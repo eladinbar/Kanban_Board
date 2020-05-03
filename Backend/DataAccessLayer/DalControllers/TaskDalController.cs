@@ -15,9 +15,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public TaskDalController(): base(TaskTableName) { }
 
-        public List<DalTask> SelectAllTasks(string email, int ordinal)
+        public List<DalTask> SelectAllTasks(string email, string columnName)
         {
-            List<DalTask> taskList = Select(email, ordinal).Cast<DalTask>().ToList();
+            List<DalTask> taskList = Select(email, columnName).Cast<DalTask>().ToList();
             return taskList;
         }
 

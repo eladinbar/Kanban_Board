@@ -97,7 +97,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return fromDB;
         }
         //email key and ordinal key select select
-        public List<DalObject> Select(string email, int ordinal)
+        public List<DalObject> Select(string email, string name)
         {
             List<DalObject> fromDB = new List<DalObject>();
             using (var connection = new SQLiteConnection(_connectionString))

@@ -18,6 +18,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public List<DalBoard> SelectAllBoards()
         {
             List<DalBoard> boardList = Select().Cast<DalBoard>().ToList();
+            ColumnDalController columnController = new ColumnDalController();
+            foreach(DalBoard b in boardList)
+            {
+                b.Columns = columnController.SelectAllColumns(b.Email);
+            }
             return boardList;
         }
 
@@ -97,9 +102,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 command.CommandText = $"CREATE TABLE {BoardTableName} (" +
                     $"{DalBoard.EmailColumnName} TEXT NOT NULL," +
                     $"{DalBoard.BoardTaskCountName} TEXT NOT NULL," +
-                    $"PRIMERY KEY({DalBoard.EmailColumnName})" +
+                    $"PRIMARY KEY({DalBoard.EmailColumnName})" +
                     $"FOREIGN KEY({DalBoard.EmailColumnName})" +
-                    $"  REFERANCE {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
+                    $"  REFERENCE {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
                     $");";
                 try
                 {

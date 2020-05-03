@@ -18,6 +18,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public List<DalColumn> SelectAllColumns(string email)
         {
             List<DalColumn> columnList = Select(email).Cast<DalColumn>().ToList();
+            TaskDalController taskController = new TaskDalController();
+            foreach(DalColumn c in columnList)
+            {
+                c.Tasks = taskController.SelectAllTasks(c.Email, c.Name);
+            }
+
             return columnList;
         }
 
@@ -102,10 +108,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalColumn.EmailColumnName} TEXT NOT NULL," +
                     $"{DalColumn.ColumnNameColumnName} TEXT NOT NULL," +
                     $"{DalColumn.ColumnOrdinalColumnName} INTEGER NOT NULL," +
-                    $"{DalColumn.ColumnLimitColumnName} INTEFER NOT NULL" +
-                    $"PRIMERY KEY({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
+                    $"{DalColumn.ColumnLimitColumnName} INTEGER NOT NULL" +
+                    $"PRIMARY KEY({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
                     $"FOREIGN KEY({DalColumn.EmailColumnName})" +
-                    $"  REFERANCE {BoardDalController.BoardTableName} ({DalColumn.EmailColumnName})" +                   
+                    $"  REFERENCE {BoardDalController.BoardTableName} ({DalColumn.EmailColumnName})" +                   
                     $");";
                 try
                 {
