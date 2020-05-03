@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
+
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
     /// <summary>
     /// Represents the Kanban Board
     /// </summary>
-    internal class Board : PersistedObject<DataAccessLayer.Board>
+    internal class Board
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
         public List<Column> Columns { get; }
         public string UserEmail { get; }
         public int TaskCounter { get; set; }
+        public DalBoard DalCopyBoard { get; private set; }
+
 
         /// <summary>
         /// A public constructor that creates a new board and initializes all of its fields.
@@ -26,6 +30,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Columns.Add(newColumn("backlog"));
             Columns.Add(newColumn("in progress"));
             Columns.Add(newColumn("done"));
+            DalCopyBoard = new DalBoard(email, TaskCounter);
             log.Info("New board created");
         }
 
@@ -35,11 +40,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="taskCounter">The amount of tasks that the board contains.</param>
         /// <param name="columns">The list of columns the board contains.</param>
-        internal Board(string email, int taskCounter, List<Column> columns)
+        internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard)
         {
             UserEmail = email;
             TaskCounter = taskCounter;
             Columns = columns;
+            DalCopyBoard = dalBoard;
             log.Info("load - Board " + email + " was loaded from memory");
         }
 
@@ -65,7 +71,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (Columns.Exists(c => c.Name.Equals(columnName)))
             {
                 log.Debug(UserEmail + ": returned column " + columnName);
-                return Columns.Find(x => x.Name.Equals(columnName));
+                return Columns.Find(c => c.Name.Equals(columnName));          
             }
             else
                 throw new ArgumentException("'" + columnName + "' column does not exist.");

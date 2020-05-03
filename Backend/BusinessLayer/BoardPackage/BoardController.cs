@@ -1,4 +1,5 @@
-﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
+using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 using System;
 using System.Collections.Generic;
 
@@ -14,34 +15,46 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         private Dictionary<String, Board> Boards;
 
+        //implement follownig methods:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public void DeleteData() { throw new NotImplementedException(); }
+        public void RemoveColumn() { throw new NotImplementedException(); }
+        public void AddColumn() { throw new NotImplementedException(); }
+        public void MoveColumnRight() { throw new NotImplementedException(); }
+        public void MoveColumnLeft() { throw new NotImplementedException(); }
+
+
         /// <summary>
         /// The board controller constructor. Initializes the 'Boards' field by loading all existing data from memory, if no data exists, creates an empty dictionary.
         /// </summary>
         public BoardController()
         {
-            DalController dalC = new DalController();
+            BoardDalController boardDalC = new BoardDalController();
             Boards = new Dictionary<string, Board>();
-            List<DataAccessLayer.Board> DALboards = dalC.LoadAllBoards();
-            foreach (DataAccessLayer.Board DALboard in DALboards) {
-                List<Column> columns = new List<Column>();
-                foreach (DataAccessLayer.Column DALcolumn in DALboard.Columns) {
-                    List<Task> tasks = new List<Task>();
-                    foreach (DataAccessLayer.Task DALtask in DALcolumn.Tasks) {
-                        tasks.Add(new Task(DALtask.Title, DALtask.Description, DALtask.DueDate, DALtask.Id, DALtask.CreationTime, DALtask.LastChangedDate));
+            List<DalBoard> dalBoards = boardDalC.SelectAllBoards();
+            foreach (DalBoard b in dalBoards)
+            {
+                List<Column> tempColumns = new List<Column>();
+                foreach (DalColumn c in b.Columnsl)
+                {
+                    List<Task> tempTasks = new List<Task>();
+                    foreach (DalTask t in c.Tasks)
+                    {
+                        tempTasks.Add(new Task(t.Title, t.Description, t.DueDate, t.TaskId, t.CreationDate, t.LastChangedDate, t));
                     }
-                    columns.Add(new Column(DALcolumn.Name, DALcolumn.Limit, tasks));
+                    tempColumns.Add(new Column(c.Name, c.Limit, tempTasks, c));
                 }
-                Boards.Add(DALboard.UserEmail, new Board(DALboard.UserEmail, DALboard.TaskCounter, columns));
+                Boards.Add(b.Email, new Board(b.Email, b.TaskCounter, tempColumns, b));
             }
+
         }
-         
-        /// <summary>
-        /// Gets the board associated with the given email.
-        /// </summary>
-        /// <param name="email">The user's email that the board is associated with.</param>
-        /// <returns>The Board of the user with that email.</returns>
-        /// <exception cref="ArgumentException.ArgumentException(string)">Thrown when the email given is not associated with any board.</exception>
-        public Board GetBoard(string email)
+
+            /// <summary>
+            /// Gets the board associated with the given email.
+            /// </summary>
+            /// <param name="email">The user's email that the board is associated with.</param>
+            /// <returns>The Board of the user with that email.</returns>
+            /// <exception cref="ArgumentException.ArgumentException(string)">Thrown when the email given is not associated with any board.</exception>
+            public Board GetBoard(string email) //checked
         {
             Board tempBoard;
             if (Boards.TryGetValue(email, out tempBoard))
@@ -56,7 +69,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnName">The name of the column in the board.</param>
         /// <returns>Returns the column with the specified name in the board associated with the given email.</returns>
-        public Column GetColumn(string email, string columnName)
+        public Column GetColumn(string email, string columnName) //checking in progress
         {
             Board newBoard = GetBoard(email);
             return newBoard.GetColumn(columnName);

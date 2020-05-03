@@ -1,26 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    internal class Column : PersistedObject<DataAccessLayer.Column>
+    internal class Column
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
         public string Name { get; }
         public int Limit { get; private set; }
         public List<Task> Tasks { get; }
+        public DalColumn DalCopyColumn { get; private set; }
+
+
 
         /// <summary>
         /// A public contructor that creates a new column and initializes its fields.
         /// </summary>
         /// <param name="name">The name the column will be created with.</param>
-        public Column(string name)
+        public Column(string name, string email, int columnOrdinal)
         {
             Name = name;
             Limit = Int32.MaxValue;
             Tasks = new List<Task>();
+            DalCopyColumn = new DalColumn(email, columnOrdinal, name, Limit);
             log.Info("New column " + name + "created");
         }
 
@@ -30,11 +35,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="name">The name the column will be created with.</param>
         /// <param name="limit">The maximum amount of tasks to be allowed in this column.</param>
         /// <param name="tasks">The list of tasks the column contains.</param>
-        internal Column(string name, int limit, List<Task> tasks)
+        internal Column(string name, int limit, List<Task> tasks, DalColumn dalColumn)
         {
             Name = name;
             Limit = limit;
             Tasks = tasks;
+            DalCopyColumn = dalColumn;
             log.Debug("load - Board " + name + " was loaded from memory");
         }
 
@@ -111,7 +117,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Transforms the column to its corresponding DalObject.
         /// </summary>
         /// <returns>Returns a Data Access Layer Column.</returns>
-        public DataAccessLayer.Column ToDalObject()
+        public DataAccessLayer.DALOs.DalColumn ToDalObject()
         {
             log.Debug("Creating DalObject<Column>");
             List<DataAccessLayer.Task> dalTasks = new List<DataAccessLayer.Task>();
