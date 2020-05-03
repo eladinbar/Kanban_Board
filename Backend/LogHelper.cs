@@ -53,8 +53,7 @@ namespace IntroSE.Kanban.Backend
                 ConnectionType = "System.Data.SQLite.SQLiteConnection, System.Data.SQLite",
                 ConnectionString = $"Data Source={path}; Version=3;",
                 CommandText =$"INSERT INTO {LogTableName} (Date, Level, Type, Method, LineNo, Massage, Exception) " +
-                $"Value  (@Date, @Level, @Type, @Method, @LineNo, @Massage, @Exception)"
-                
+                $"Value  (@Date, @Level, @Type, @Method, @LineNo, @Massage, @Exception)"     
             };
 
             AdoNetAppenderParameter dateParam = new AdoNetAppenderParameter
