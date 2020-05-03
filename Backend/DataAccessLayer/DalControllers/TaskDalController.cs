@@ -102,5 +102,42 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), (int)reader.GetValue(2), reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6), reader.GetDateTime(7));
             return result;
         }
+
+        internal override void CreateTable()
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"CREATE TABLE {TaskTableName} (" +
+                    $"{DalTask.EmailColumnName} TEXT NOT NULL," +
+                    $"{DalTask.ContainingTaskColumnNameColumnName} TEXT NOT NULL," +
+                    $"{DalTask.TaskIDColumnName} INTEGER NOT NULL," +
+                    $"{DalTask.TaskTitleColumnName} TEXT NOT NULL," +
+                    $"{DalTask.TaskDescriptionColumnName} TEXT NOT NULL," +
+                    $"{DalTask.TaskDueDateColumnName} INTEGER NOT NULL," +
+                    $"{DalTask.TaskCreationDateColumnName} INTEGER NOT NULL," +
+                    $"{DalTask.TaskLastChangedDateColumnName} INTEGER NOT NULL," +
+                    $"PRIMERY KEY({DalTask.EmailColumnName}, {DalColumn.ColumnNameColumnName},{DalTask.TaskIDColumnName})" +
+                    $"FOREIGN KEY({DalTask.EmailColumnName})" +
+                    $"  REFERANCE {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName})" +
+                     $"FOREIGN KEY({DalTask.ContainingTaskColumnNameColumnName})" +
+                    $"  REFERANCE {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
+                    $");";
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
     }
 }

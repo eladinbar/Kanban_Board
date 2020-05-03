@@ -333,5 +333,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res > 0;
         }
 
+        internal abstract void CreateTable();
     }
 }

@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
     internal class BoardDalController : DalController
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
-        private const string BoardTableName = "Boards";
+        internal const string BoardTableName = "Boards";
 
         public BoardDalController() : base(BoardTableName) { }
 
@@ -88,5 +88,35 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             DalBoard result = new DalBoard(reader.GetString(0), (int)reader.GetValue(1));
             return result;
         }
+
+        internal override void CreateTable()
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"CREATE TABLE {BoardTableName} (" +
+                    $"{DalBoard.EmailColumnName} TEXT NOT NULL," +
+                    $"{DalBoard.BoardTaskCountName} TEXT NOT NULL," +
+                    $"PRIMERY KEY({DalBoard.EmailColumnName})" +
+                    $"FOREIGN KEY({DalBoard.EmailColumnName})" +
+                    $"  REFERANCE {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
+                    $");";
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+    
     }
 }

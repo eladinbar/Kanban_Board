@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
     internal class ColumnDalController : DalController
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
-        private const string ColumnTableName = "Columns";
+        internal const string ColumnTableName = "Columns";
 
         public ColumnDalController() : base(ColumnTableName) { }
 
@@ -92,5 +92,37 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             DalColumn result = new DalColumn(reader.GetString(0), (int)reader.GetValue(1), reader.GetString(2), (int)reader.GetValue(3));
             return result;
         }
+
+        internal override void CreateTable()
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"CREATE TABLE {ColumnTableName} (" +
+                    $"{DalColumn.EmailColumnName} TEXT NOT NULL," +
+                    $"{DalColumn.ColumnNameColumnName} TEXT NOT NULL," +
+                    $"{DalColumn.ColumnOrdinalColumnName} INTEGER NOT NULL UNIQUE" +
+                    $"{DalColumn.ColumnLimitColumnName} INTEFER NOT NULL" +
+                    $"PRIMERY KEY({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
+                    $"FOREIGN KEY({DalColumn.EmailColumnName})" +
+                    $"  REFERANCE {BoardDalController.BoardTableName} ({DalColumn.EmailColumnName})" +                   
+                    $");";
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+    }
     }
 }

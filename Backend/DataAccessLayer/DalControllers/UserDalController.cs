@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
     internal class UserDalController : DalController
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
-        private const string UserTableName = "Users";
+        internal const string UserTableName = "Users";
 
         public UserDalController() : base(UserTableName) { }
 
@@ -89,6 +89,34 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         {
             DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
             return result;
+        }
+
+        internal override void CreateTable()
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"CREATE TABLE {UserTableName} (" +
+                    $"{DalUser.EmailColumnName} TEXT NOT NULL," +
+                    $"{DalUser.UserPasswordColumnName} TEXT NOT NULL," +
+                    $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
+                    $"PRIMERY KEY({DalUser.EmailColumnName})" +
+                    $");";
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
         }
     }   
    
