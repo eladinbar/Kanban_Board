@@ -32,11 +32,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     connection.Open();
                     command.CommandText = $"INSERT INTO {TaskTableName} " +
-                        $"({DalTask.EmailColumnName}, {DalTask.TaskOrdinalColumnName}, {DalTask.TaskIDColumnName}, {DalTask.TaskTitleColumnName}, {DalTask.TaskDescriptionColumnName}, {DalTask.TaskDueDateColumnName},{DalTask.TaskCreationDateColumnName}, {DalTask.TaskLastChangedDateColumnName})" +
+                        $"({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName}, {DalTask.TaskIDColumnName}, {DalTask.TaskTitleColumnName}, {DalTask.TaskDescriptionColumnName}, {DalTask.TaskDueDateColumnName},{DalTask.TaskCreationDateColumnName}, {DalTask.TaskLastChangedDateColumnName})" +
                         $"VALUES (@emailVal, @ordinalVal, @idVal, @titleVal, @descriptionVal, @dueDateVal, @creationDateVal, @lastChangedDateVal);";
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", task.Email);
-                    SQLiteParameter ordinalParam = new SQLiteParameter(@"ordinalVal", task.Ordinal);
+                    SQLiteParameter ordinalParam = new SQLiteParameter(@"ordinalVal", task.ColumnName);
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", task.TaskId);
                     SQLiteParameter titleParam = new SQLiteParameter(@"titleVal", task.Title);
                     SQLiteParameter descriptionParam = new SQLiteParameter(@"descriptionVal", task.Description);
@@ -76,7 +76,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {TaskTableName} WHERE email={task.Email} AND Ordinal={task.Ordinal} AND ID={task.TaskId}"
+                    CommandText = $"DALETE FROM {TaskTableName} WHERE email={task.Email} AND Ordinal={task.ColumnName} AND ID={task.TaskId}"
                 };
                 try
                 {
@@ -99,7 +99,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
       
         internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DalTask result = new DalTask(reader.GetString(0), (int)reader.GetValue(1), (int)reader.GetValue(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(7));
+            DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), (int)reader.GetValue(2), reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6), reader.GetDateTime(7));
             return result;
         }
     }
