@@ -101,7 +101,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 command.CommandText = $"CREATE TABLE {ColumnTableName} (" +
                     $"{DalColumn.EmailColumnName} TEXT NOT NULL," +
                     $"{DalColumn.ColumnNameColumnName} TEXT NOT NULL," +
-                    $"{DalColumn.ColumnOrdinalColumnName} INTEGER NOT NULL UNIQUE" +
+                    $"{DalColumn.ColumnOrdinalColumnName} INTEGER NOT NULL," +
                     $"{DalColumn.ColumnLimitColumnName} INTEFER NOT NULL" +
                     $"PRIMERY KEY({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
                     $"FOREIGN KEY({DalColumn.EmailColumnName})" +
