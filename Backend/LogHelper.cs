@@ -1,6 +1,8 @@
 ﻿using log4net.Appender;
 using log4net.Layout;
+using System;
 using System.Data;
+using System.Data.SQLite;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -28,26 +30,39 @@ namespace IntroSE.Kanban.Backend
         }
 
 
-        public static void SetUp(params AppenderSkeleton[] appenders)
+        public static void SetUp(params IAppender[] appenders)
         {
             //Sets the RollingFileAppender as the logger appender.
             log4net.Config.BasicConfigurator.Configure(appenders);
-            foreach(AppenderSkeleton appender in appenders)
-                appender.ActivateOptions();
         }
 
         /// <summary>
         /// Sets up the RollingFileAppender to save the logs to the "Logs" folder in the original directory the program is using.
         /// </summary>
+        /// 
+        /// <returns>
+        /// return the rolling file appender
+        /// </returns>
         /// <remarks>
         /// The logger saves a log file once per program execution.
         /// </remarks>
-        public static AppenderSkeleton SetupRoliingFileAppender()        {            //Defines how we want to log to the LogFile.txt            PatternLayout patternLayout = new PatternLayout();            patternLayout.ConversionPattern = "%d{yyyy-MM-dd HH:mm:ss} %level - (%type: %method - %line)%newline %message%newline%exception";            patternLayout.ActivateOptions();            //Creates and defines a RollingFileAppender for file logging.            RollingFileAppender roller = new RollingFileAppender();            roller.AppendToFile = true;            roller.File = BASE_PATH;            roller.Layout = patternLayout;            roller.MaxSizeRollBackups = 20;            roller.MaximumFileSize = "10MB";            roller.RollingStyle = RollingFileAppender.RollingMode.Once;
-            roller.StaticLogFileName = true;            return roller;        }
-
-        public static AppenderSkeleton SetUpSQLiteAppender()
+        public static IAppender SetupRoliingFileAppender()        {            //Defines how we want to log to the LogFile.txt            PatternLayout patternLayout = new PatternLayout();            patternLayout.ConversionPattern = "%d{yyyy-MM-dd HH:mm:ss} %level - (%type: %method - %line)%newline %message%newline%exception";            patternLayout.ActivateOptions();            //Creates and defines a RollingFileAppender for file logging.            RollingFileAppender roller = new RollingFileAppender();            roller.AppendToFile = true;            roller.File = BASE_PATH;            roller.Layout = patternLayout;            roller.MaxSizeRollBackups = 20;            roller.MaximumFileSize = "10MB";            roller.RollingStyle = RollingFileAppender.RollingMode.Once;
+            roller.StaticLogFileName = true;            roller.ActivateOptions();            return roller;        }
+        /// <summary>
+        /// Sets up AdoNetAppender to SQLite Database with the following columns LogId, Date, Level, Type, Method, LineNo, Massage, Exception
+        /// </summary>
+        /// <returns>
+        /// Returns the sqlite Appender
+        /// </returns>
+        public static IAppender SetUpSQLiteAppender()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanLoggerDB.db"));
+            FileInfo fileDB = new FileInfo(path);
+            if (!fileDB.Exists)
+            {
+                CreateLoggerDB();
+            }
+
             AdoNetAppender appender = new AdoNetAppender
             {
                 ConnectionType = "System.Data.SQLite.SQLiteConnection, System.Data.SQLite",
@@ -67,7 +82,7 @@ namespace IntroSE.Kanban.Backend
             {
                 ParameterName = "@Level",
                 DbType = DbType.String,
-                Layout = new log4net.Layout.RawPropertyLayout { Key = "Level"}
+                Layout = new Layout2RawLayoutAdapter(new PatternLayout("%level"))
             };
 
 
@@ -75,7 +90,7 @@ namespace IntroSE.Kanban.Backend
             {
                 ParameterName = "@Type",
                 DbType = DbType.String,
-                Layout = new log4net.Layout.RawPropertyLayout { Key = "Type" }
+                Layout = new Layout2RawLayoutAdapter(new PatternLayout("%type"))
             };
 
 
@@ -83,14 +98,14 @@ namespace IntroSE.Kanban.Backend
             {
                 ParameterName = "@Method",
                 DbType = DbType.String,
-                Layout = new log4net.Layout.RawPropertyLayout { Key = "Method" }
+                Layout = new Layout2RawLayoutAdapter(new PatternLayout("%method"))
             };
 
             AdoNetAppenderParameter lineNoParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@LineNo",
                 DbType = DbType.String,
-                Layout = new log4net.Layout.RawPropertyLayout { Key = "Level" }
+                Layout = new Layout2RawLayoutAdapter(new PatternLayout("%line"))
             };
 
 
@@ -98,14 +113,14 @@ namespace IntroSE.Kanban.Backend
             {
                 ParameterName = "@Message",
                 DbType = DbType.String,
-                Layout = new log4net.Layout.RawPropertyLayout { Key = "Massage" }
+                Layout = new Layout2RawLayoutAdapter(new PatternLayout("%massage"))
             };
 
             AdoNetAppenderParameter exceptionParam = new AdoNetAppenderParameter
             {
                 ParameterName = "@Exception",
                 DbType = DbType.String,
-                Layout = new log4net.Layout.RawPropertyLayout { Key = "Exception" }
+                Layout = new Layout2RawLayoutAdapter(new PatternLayout("%exeption"))
             };
 
             appender.AddParameter(dateParam);
@@ -120,6 +135,44 @@ namespace IntroSE.Kanban.Backend
             appender.ActivateOptions();
                                           
             return appender;
+        }
+        private static void CreateLoggerDB()
+        {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanLoggerDB.db"));
+            using (var connection = new SQLiteConnection())
+            {
+               
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"CREATE TABLE {LogTableName} (" +
+                                      $"\"LogId\"     INTEGER NOT NULL PRIMARY KEY," +
+                                      $"Date      TEXT NOT NULL," +
+                                      $"Level     TEXT NOT NULL," +
+                                      $"Type      TEXT NOT NULL," +
+                                      $"Method    TEXT NOT NULL," +
+                                      $"LineNo    INTEGER NOT NULL," +
+                                      $"Massage   TEXT NOT NULL," +
+                                      $"Exception TEXT NOT NULL" +
+                                      $"); "
+                };
+                connection.ConnectionString = $"Data Source={path}; Version=3;";
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+
+                } catch(SQLiteException e)
+                {
+                    getLogger().Error("SQlite Erxception occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
         }
     }
 }
