@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {BoardTableName} WHERE email={board.Email}"
+                    CommandText = $"DELETE FROM {BoardTableName} WHERE email=\"{board.Email}\""
                 };
                 try
                 {
@@ -96,15 +97,24 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo dBFile = new FileInfo(path);
+            if (!dBFile.Exists)
+            {
+                dBFile.Create();
+            }
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
+                CreateDBFile();
+
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 command.CommandText = $"CREATE TABLE {BoardTableName} (" +
                     $"{DalBoard.EmailColumnName} TEXT NOT NULL," +
-                    $"{DalBoard.BoardTaskCountName} TEXT NOT NULL," +
+                    $"{DalBoard.BoardTaskCountName} InTEGER NOT NULL," +
                     $"PRIMARY KEY({DalBoard.EmailColumnName})" +
                     $"FOREIGN KEY({DalBoard.EmailColumnName})" +
-                    $"  REFERENCE {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
+                    $"  REFERENCES {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
                     $");";
                 try
                 {

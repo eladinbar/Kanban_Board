@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         private static readonly log4net.ILog log = LogHelper.getLogger();
         public const string ColumnNameColumnName = "Name";
         public const string ColumnOrdinalColumnName = "Ordinal";
-        public const string ColumnLimitColumnName = "Limit";
+        public const string ColumnLimitColumnName = "TaskLimit";
 
         private string _name;
         public string Name { get => _name; set { _name = value; _controller.Update(Email, Name, ColumnNameColumnName, value); } }

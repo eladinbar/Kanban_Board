@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {UserTableName} WHERE email={user.Email}"
+                    CommandText = $"DELETE FROM {UserTableName} WHERE email=\"{user.Email}\""
                 };
                 try
                 {
@@ -93,6 +94,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
+
+            CreateDBFile();
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -100,7 +104,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalUser.EmailColumnName} TEXT NOT NULL," +
                     $"{DalUser.UserPasswordColumnName} TEXT NOT NULL," +
                     $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
-                    $"PRIMERY KEY({DalUser.EmailColumnName})" +
+                    $"PRIMARY KEY({DalUser.EmailColumnName})" +
                     $");";
                 try
                 {

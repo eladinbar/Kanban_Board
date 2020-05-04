@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         private string _password;
         public string Password { get => _password; set { _password = value; _controller.Update(Email,UserPasswordColumnName, value); } }
         private string _nickname;
-        public string Nickname { get => _nickname; set { _nickname = value; _controller.Update(Email, UserPasswordColumnName, value); } }
+        public string Nickname { get => _nickname; set { _nickname = value; _controller.Update(Email, UserNicknameColumnName, value); } }
 
         public DalUser(string email, string password, string nickname) : base(new UserDalController())
         {

@@ -68,7 +68,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"select * from {_tableName} where email={email}"
+                    CommandText = $"select * from {_tableName} where email=\"{email}\""
                 };
                 SQLiteDataReader dataReader = null;
                 try
@@ -105,7 +105,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"SELECT FROM {_tableName} WHERE email={email} and Ordinal={ordinal}"
+                    CommandText = $"SELECT FROM {_tableName} WHERE email=\"{email}\" AND Name=\"{columnName}\""
                 };
                 SQLiteDataReader dataReader = null;
                 try
@@ -143,11 +143,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\""
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug("Executing update to data base with key " + email);
@@ -176,11 +176,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\""
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug("Executing update to data base with key " + email);
@@ -209,11 +209,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} and Name={columnName}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\" AND Name=\"{columnName}\""
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug(("Executing update to data base with key {0} name {1}",email, columnName));
@@ -242,11 +242,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} and Name={columnName}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\" AND Name=\"{columnName}\""
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug(("Executing update to data base with key {0} name {1}", email, columnName));
@@ -275,11 +275,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} AND Name={columnName} AND ID={taskID}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\" AND ColumnName=\"{columnName}\" AND ID={taskID}"
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug(("Executing update to data base with key {0} name {1} ID {2}",email, columnName ,taskID));
@@ -308,11 +308,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email={email} AND Name={columnName} AND ID={taskID}"
+                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\" AND ColumnName=\"{columnName}\" AND ID={taskID}"
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug(("Executing update to data base with key {0} name {1} ID {2}", email, columnName, taskID));
@@ -334,5 +334,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         internal abstract void CreateTable();
+        protected void CreateDBFile()
+        {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo dBFile = new FileInfo(path);
+            if (!dBFile.Exists)
+            {
+                SQLiteConnection.CreateFile("KanbanDB.db");
+            }
+        }
     }
 }

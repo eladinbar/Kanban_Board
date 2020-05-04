@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     connection.Open();
                     command.CommandText = $"INSERT INTO {ColumnTableName} " +
-                        $"({DalColumn.EmailColumnName}, , {DalColumn.ColumnOrdinalColumnName}, {DalColumn.ColumnNameColumnName}, {DalColumn.ColumnLimitColumnName})" +
+                        $"({DalColumn.EmailColumnName}, {DalColumn.ColumnOrdinalColumnName}, {DalColumn.ColumnNameColumnName}, {DalColumn.ColumnLimitColumnName})" +
                         $"VALUES (@emailVal, @ordinalVal, @nameVal, @limitVal);";
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", column.Email);
@@ -73,7 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {ColumnTableName} WHERE email={column.Email} AND ordinal={column.Ordinal}"
+                    CommandText = $"DELETE FROM {ColumnTableName} WHERE email=\"{column.Email}\" AND Name=\"{column.Name}\""
                 };
                 try
                 {
@@ -101,6 +102,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo dBFile = new FileInfo(path);
+            if (!dBFile.Exists)
+            {
+                dBFile.Create();
+            }
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -108,10 +116,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalColumn.EmailColumnName} TEXT NOT NULL," +
                     $"{DalColumn.ColumnNameColumnName} TEXT NOT NULL," +
                     $"{DalColumn.ColumnOrdinalColumnName} INTEGER NOT NULL," +
-                    $"{DalColumn.ColumnLimitColumnName} INTEGER NOT NULL" +
+                    $"{DalColumn.ColumnLimitColumnName} INTEGER NOT NULL," +
                     $"PRIMARY KEY({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
                     $"FOREIGN KEY({DalColumn.EmailColumnName})" +
-                    $"  REFERENCE {BoardDalController.BoardTableName} ({DalColumn.EmailColumnName})" +                   
+                    $"  REFERENCES {BoardDalController.BoardTableName} ({DalColumn.EmailColumnName})" +                   
                     $");";
                 try
                 {
@@ -130,5 +138,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
         }
     }
-    }
+    
 }

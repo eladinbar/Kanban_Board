@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{54D4CA44-F049-47DE-BF74-81FC80F867FD}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IntroSE.Kanban.Backend</RootNamespace>
     <AssemblyName>IntroSE.Kanban.Backend</AssemblyName>
@@ -50,8 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>IntroSE.Kanban.Backend.DataAccessLayer.DalTesting</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -116,7 +115,6 @@
     <Compile Include="BusinessLayer\BoardPackage\BoardController.cs" />
     <Compile Include="BusinessLayer\BoardPackage\Column.cs" />
     <Compile Include="BusinessLayer\BoardPackage\Task.cs" />
-    <Compile Include="BusinessLayer\PersistedObject.cs" />
     <Compile Include="BusinessLayer\SecurityController.cs" />
     <Compile Include="BusinessLayer\UserPackage\User.cs" />
     <Compile Include="BusinessLayer\UserPackage\UserController.cs" />
@@ -130,6 +128,7 @@
     <Compile Include="DataAccessLayer\DALOs\DalObject.cs" />
     <Compile Include="DataAccessLayer\DALOs\DalTask.cs" />
     <Compile Include="DataAccessLayer\DALOs\DalUser.cs" />
+    <Compile Include="DataAccessLayer\DalTesting.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="ServiceLayer\BoardService.cs" />
     <Compile Include="ServiceLayer\Response.cs" />

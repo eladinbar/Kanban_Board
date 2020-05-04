@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,7 +77,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {TaskTableName} WHERE email={task.Email} AND Ordinal={task.ColumnName} AND ID={task.TaskId}"
+                    CommandText = $"DELETE FROM {TaskTableName} WHERE email=\"{task.Email}\" AND Name=\"{task.ColumnName}\" AND ID={task.TaskId}"
                 };
                 try
                 {
@@ -105,6 +106,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo dBFile = new FileInfo(path);
+            if (!dBFile.Exists)
+            {
+                dBFile.Create();
+            }
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -117,11 +125,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalTask.TaskDueDateColumnName} INTEGER NOT NULL," +
                     $"{DalTask.TaskCreationDateColumnName} INTEGER NOT NULL," +
                     $"{DalTask.TaskLastChangedDateColumnName} INTEGER NOT NULL," +
-                    $"PRIMERY KEY({DalTask.EmailColumnName}, {DalColumn.ColumnNameColumnName},{DalTask.TaskIDColumnName})" +
+                    $"PRIMARY KEY({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName},{DalTask.TaskIDColumnName})" +
                     $"FOREIGN KEY({DalTask.EmailColumnName})" +
-                    $"  REFERANCE {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName})" +
+                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName})" +
                      $"FOREIGN KEY({DalTask.ContainingTaskColumnNameColumnName})" +
-                    $"  REFERANCE {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
+                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
                     $");";
                 try
                 {
