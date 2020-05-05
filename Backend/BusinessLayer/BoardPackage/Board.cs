@@ -140,5 +140,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             return new DataAccessLayer.Board(UserEmail, TaskCounter, dalColumns);
         }
+
+        public Column AddColumn(string email, int columnOrdinal, string Name) //in progress...
+        {
+            if (!this.Columns.Exists(c => c.Name.Equals(Name))){
+                Column newColumn = new Column(Name, email, columnOrdinal);
+                this.Columns.Insert(columnOrdinal, newColumn);
+                this.DalCopyBoard.Columnsl.Insert(columnOrdinal, newColumn.DalCopyColumn);
+                for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns.
+                    this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal + 1;
+                return newColumn;                
+            }
+            else throw new InvalidOperationException("Column with this name ia already exists.");
+            //update dalColumn parameters (like dalColumnList, dalColumns' ordinals etc)           
+        }
     }
 }

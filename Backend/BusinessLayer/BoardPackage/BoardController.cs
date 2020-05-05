@@ -18,9 +18,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         //implement follownig methods:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         public void DeleteData() { throw new NotImplementedException(); } //via whcih class?
         public void RemoveColumn() { throw new NotImplementedException(); }
-        public void AddColumn() { throw new NotImplementedException(); }
-        public void MoveColumnRight() { throw new NotImplementedException(); }
-        public void MoveColumnLeft() { throw new NotImplementedException(); }
+        public Column MoveColumnRight() { throw new NotImplementedException(); }
+        public Column MoveColumnLeft() { throw new NotImplementedException(); }
 
 
         /// <summary>
@@ -86,6 +85,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Board b = GetBoard(email);
             return b.GetColumn(columnOrdinal);
         }
+
 
         /// <summary>
         /// Limits the number of tasks in a given board's column.
@@ -285,5 +285,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
             log.Info("New board was added with key " + email);
         }
+
+
+        public Column AddColumn(string email, int columnOrdinal, string Name)
+        {
+            Board b = GetBoard(email);
+            //b.AddColumn
+            //log
+            //save
+            throw new NotImplementedException();
+        }
+
     }
 }
