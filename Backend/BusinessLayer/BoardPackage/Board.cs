@@ -22,7 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// A public constructor that creates a new board and initializes all of its fields.
         /// </summary>
         /// <param name="email">The email of the board's user.</param>
-        public Board(string email)
+        public Board(string email) //checked
         {
             UserEmail = email;
             TaskCounter = 0;
@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="taskCounter">The amount of tasks that the board contains.</param>
         /// <param name="columns">The list of columns the board contains.</param>
-        internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard)
+        internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard) //checked
         {
             UserEmail = email;
             TaskCounter = taskCounter;

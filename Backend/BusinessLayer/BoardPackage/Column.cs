@@ -20,7 +20,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// A public contructor that creates a new column and initializes its fields.
         /// </summary>
         /// <param name="name">The name the column will be created with.</param>
-        public Column(string name, string email, int columnOrdinal)
+        public Column(string name, string email, int columnOrdinal) //checked
         {
             Name = name;
             Limit = Int32.MaxValue;
@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="name">The name the column will be created with.</param>
         /// <param name="limit">The maximum amount of tasks to be allowed in this column.</param>
         /// <param name="tasks">The list of tasks the column contains.</param>
-        internal Column(string name, int limit, List<Task> tasks, DalColumn dalColumn)
+        internal Column(string name, int limit, List<Task> tasks, DalColumn dalColumn) //checked
         {
             Name = name;
             Limit = limit;
@@ -60,10 +60,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else if (limit < Tasks.Count)
             {
                 log.Error("The number of tasks in the column is greater than the limit given");
-                throw new ArgumentOutOfRangeException("The number of tasks in the column: " + Tasks.Count + ", is more than the desired limit: "+ limit);
+                throw new ArgumentOutOfRangeException("The number of tasks in the column: " + Tasks.Count + ", is more than the desired limit: " + limit);
             }
             else
+            {
                 Limit = limit;
+                DalCopyColumn.Limit = limit;
+            }
         }
 
         /// <summary>
@@ -76,7 +79,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (!CheckLimit())
                 throw new ArgumentOutOfRangeException(Name + " column is full");
             else
-                Tasks.Add(t);
+                Tasks.Add(t); //checked
         }
 
         /// <summary>
@@ -85,18 +88,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskId">The ID of the task to remove.</param>
         /// <returns>Returns the task that has been removed.</returns>
         /// <exception cref="ArgumentException">Thrown if the task does not exist in the column.</exception>
-        internal Task RemoveTask(int taskId)
+        internal Task RemoveTask(int taskId) //checked
         {
             Task toRemove = Tasks.Find(x => x.Id.Equals(taskId));
             if (Tasks.Remove(toRemove))
             {
-                log.Debug("The task " + taskId + " was removed from " + Name);
+                log.Debug("The task " + taskId + " was removed from '" + Name+"' column");
                 return toRemove;
             }
             else
             {
                 log.Error("Removal attempt to non existing task");
-                throw new ArgumentException("Task #" + taskId + " is not in " + Name);
+                throw new ArgumentException("Task #" + taskId + " is not in '" + Name+"' column");
             }
         }
         
@@ -105,7 +108,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="taskId">The ID of the task to return.</param>
         /// <returns>Returns the task with the task ID if it exists, otherwise returns null.</returns>
-        public Task GetTask(int taskId)
+        public Task GetTask(int taskId) //checked
         {
             if (Tasks.Exists(x => x.Id == taskId))
                 return Tasks.Find(x => x.Id == taskId);

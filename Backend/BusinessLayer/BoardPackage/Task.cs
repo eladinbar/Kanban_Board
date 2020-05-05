@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="dueDate">The date the task will be due on.</param>
         /// <param name="id">The unique ID that will be associated with this task.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the title or description given are invalid.</exception>
-        public Task(string title, string description, DateTime dueDate, int id, string email, string columnName)
+        public Task(string title, string description, DateTime dueDate, int id, string email, string columnName) //checked
         {
             if (title.Length > 0 && title.Length <= 50)
                 Title = title;
@@ -57,7 +57,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="id">The unique ID that will be associated with this task.</param>
         /// <param name="creationTime">The time in which this loaded task was created on.</param>
         /// <param name="lastChangedDate">The last date this task was changed.</param>
-        internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate, DalTask dalTask) {
+        internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate, DalTask dalTask) //checked
+        { 
             Title = title;
             Description = description;
             DueDate = dueDate;
@@ -73,7 +74,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="title">The new title to be given to the task.</param>
         /// <exception cref="ArgumentException">Thrown if the new title is empty or is more than 50 characters long.</exception>
-        public void UpdateTaskTitle(string title)
+        public void UpdateTaskTitle(string title) //checked
         {
             if(title == null)
             {
@@ -83,6 +84,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 Title = title;
                 LastChangedDate = DateTime.Now;
+                DalCopyTask.Title = this.Title;
+                DalCopyTask.LastChangedDate = this.LastChangedDate;
+
             }
             else
                 throw new ArgumentException("The title cannot be empty or exceed 50 characters");
@@ -93,12 +97,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="description">The new description the task will be given.</param>
         /// <exception cref="ArgumentException">Thrown when the description is more than 300 characters long.</exception>
-        public void UpdateTaskDescription(string description)
+        public void UpdateTaskDescription(string description) //checked
         {
             if (description == null)
             {
                 Description = "";
-                LastChangedDate = DateTime.Now;
+                LastChangedDate = DateTime.Now;             
             }
             else if(description.Length <= 300)
             {
@@ -107,14 +111,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             else
                 throw new ArgumentException("The description can not exceed 300 charecters");
+            DalCopyTask.Description = this.Description;
+            DalCopyTask.LastChangedDate = this.LastChangedDate;
         }
-      
+
         /// <summary>
         /// Changes the task's due date to a new one.
         /// </summary>
         /// <param name="duedate">The new due date for the task.</param>
         /// <exception cref="ArgumentException">Thrown when the new due date is earlier than the current time.</exception>
-        public void UpdateTaskDuedate(DateTime duedate)
+        public void UpdateTaskDuedate(DateTime duedate) //checked
         {
             if (duedate == null)
                 throw new ArgumentNullException("Due date cannot be null.");
@@ -124,6 +130,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 DueDate = duedate;
                 LastChangedDate = DateTime.Now;
+                DalCopyTask.DueDate = duedate;
+                DalCopyTask.LastChangedDate = this.LastChangedDate;
             }
         }
 

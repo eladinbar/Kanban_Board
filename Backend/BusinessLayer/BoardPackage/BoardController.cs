@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private Dictionary<String, Board> Boards;
 
         //implement follownig methods:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        public void DeleteData() { throw new NotImplementedException(); }
+        public void DeleteData() { throw new NotImplementedException(); } //via whcih class?
         public void RemoveColumn() { throw new NotImplementedException(); }
         public void AddColumn() { throw new NotImplementedException(); }
         public void MoveColumnRight() { throw new NotImplementedException(); }
@@ -26,7 +26,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <summary>
         /// The board controller constructor. Initializes the 'Boards' field by loading all existing data from memory, if no data exists, creates an empty dictionary.
         /// </summary>
-        public BoardController()
+        public BoardController() //checked
         {
             BoardDalController boardDalC = new BoardDalController();
             Boards = new Dictionary<string, Board>();
@@ -69,7 +69,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnName">The name of the column in the board.</param>
         /// <returns>Returns the column with the specified name in the board associated with the given email.</returns>
-        public Column GetColumn(string email, string columnName) //checking in progress
+        public Column GetColumn(string email, string columnName) //checked
         {
             Board newBoard = GetBoard(email);
             return newBoard.GetColumn(columnName);
@@ -81,7 +81,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <returns>Returns the column with the specified column ordinal in the board associated with the given email.</returns>
-        public Column GetColumn(string email, int columnOrdinal)
+        public Column GetColumn(string email, int columnOrdinal) //checked
         {
             Board b = GetBoard(email);
             return b.GetColumn(columnOrdinal);
@@ -93,12 +93,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <param name="limit">>The maximum amount of tasks to be allowed in the given column.</param>
-        public void LimitColumnTask(string email, int columnOrdinal, int limit)
+        public void LimitColumnTask(string email, int columnOrdinal, int limit) //checked
         {
             Board b = GetBoard(email);
             Column c = b.GetColumn(columnOrdinal);
             c.LimitColumnTasks(limit);
-            c.Save("Boards\\" + email + "\\" + columnOrdinal + "-");
+
+            //c.Save("Boards\\" + email + "\\" + columnOrdinal + "-");
+
+            //the "Save' method is executed in 'Column' class itself
         }
 
         /// <summary>
@@ -109,16 +112,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskId">The ID of the task to advance.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if trying to advance from the 'done' column or if the next column is full.</exception>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
-        public void AdvanceTask(string email, int columnOrdinal, int taskId)
+        public void AdvanceTask(string email, int columnOrdinal, int taskId) //checked
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
 
-            if (b.GetColumn(columnOrdinal).Name.Equals("done"))
+            if (b.Columns.Count == (columnOrdinal+1))
             {
-                log.Error("Attempt to advance a task from the 'done' column");
-                throw new ArgumentOutOfRangeException("Cannot advance tasks from the 'done' column.");
+                log.Error("Attempt to advance a task from the current last column");
+                throw new ArgumentOutOfRangeException("Cannot advance tasks from the last column.");
             }
             else if (!b.GetColumn(columnOrdinal + 1).CheckLimit())
             {
@@ -127,12 +130,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             else
             {
+                //Bussiness layer runtime list update 
                 Column c = b.GetColumn(columnOrdinal);
                 Task toAdvance = c.RemoveTask(taskId);
                 Column targetColumn = b.GetColumn(columnOrdinal + 1);
                 targetColumn.InsertTask(toAdvance);
-                toAdvance.Save("Boards\\" + email + "\\" + (columnOrdinal+1) +"-" + targetColumn.Name + "\\");
-                toAdvance.Delete(toAdvance.Id + "-" + toAdvance.Title, "Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+
+                //DataAccess layer runtime list update 
+                toAdvance.DalCopyTask.ColumnName = targetColumn.Name;
+                c.DalCopyColumn.Tasks.Remove(toAdvance.DalCopyTask);
+                targetColumn.DalCopyColumn.Tasks.Add(toAdvance.DalCopyTask);
+
                 log.Debug("Task #" + taskId + "-" + toAdvance.Title + " was advanced");
             }
         }
@@ -146,20 +154,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="dueDate">The due date the task will be added with.</param>
         /// <returns>Returns the new task that was created.</returns>
         /// <exception cref="Exception">Thrown if the 'backlog' column is full.</exception>
-        public Task AddTask(string email, string title, string description, DateTime dueDate)
+        public Task AddTask(string email, string title, string description, DateTime dueDate) //checked
         {
             Board b = GetBoard(email);
             Column c = GetColumn(email, 0);
             if (!c.CheckLimit())
             {
-                log.Error("Attempt to add a task when 'backlog' is full");
-                throw new Exception("The 'backlog' column is full, please adjust the column limit accordingly and try again.");
+                log.Error("Attempt to add a task when first column is full");
+                throw new Exception("The first column is full, please adjust the column limit accordingly and try again.");
             }
-           
-            Task newTask = new Task(title, description, dueDate, b.TaskCounter+1);
-            b.TaskCounter = GetBoard(email).TaskCounter + 1;
+
+            Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name);
+            b.TaskCounter = GetBoard(email).TaskCounter + 1; //why not b.taskcounter = b.taskcounter+1??????????????????
+            b.DalCopyBoard.TaskCounter = b.DalCopyBoard.TaskCounter + 1;
             c.InsertTask(newTask);
-            newTask.Save("Boards\\" + email + "\\" + "0-" + c.Name + "\\");
+
+            c.DalCopyColumn.Tasks.Add(newTask.DalCopyTask);
+
             log.Debug("A new task was added to the 'backlog' column.");
 
             b.Save("Boards\\");
@@ -176,24 +187,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
-        public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
+        public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle) //checked
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - " + taskId + " .");
 
-            Column c = GetColumn(email, columnOrdinal);
-            if (!c.Name.Equals("done"))
+            if (b.Columns.Count != columnOrdinal + 1)
             {
+                Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
-                toUpdate.Delete(toUpdate.Id + "-" + toUpdate.Title, "Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
                 toUpdate.UpdateTaskTitle(newTitle);
-                toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+                //save method is a part of inner 'Task' update method
+
                 log.Debug("Task #" + taskId + " title was updated.");
             }
-            else {
-                log.Warn("Tasks cannot be edited in 'done' column.");
-                throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+            else
+            {
+                log.Warn("Tasks cannot be edited in the last column.");
+                throw new InvalidOperationException("Tasks cannot be edited in the last column.");
             }
         }
 
@@ -206,24 +218,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
-        public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription)
+        public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription) //checked
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
 
-            Column c = GetColumn(email, columnOrdinal);
-            if (!c.Name.Equals("done"))
+            if (b.Columns.Count != columnOrdinal + 1)
             {
+                Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDescription(newDescription);
-                toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+                //save method is a part of inner 'Task' update method
+
                 log.Debug("Task #" + taskId + " description was updated.");
             }
             else
             {
-                log.Warn("Tasks cannot be edited in 'done' column.");
-                throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+                log.Warn("Tasks cannot be edited in the last column.");
+                throw new InvalidOperationException("Tasks cannot be edited in the last column.");
             }
         }
 
@@ -236,24 +249,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
-        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
+        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate) //checked
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
 
-            Column c = GetColumn(email, columnOrdinal);
-            if (!c.Name.Equals("done"))
+            if (b.Columns.Count != columnOrdinal + 1)
             {
+                Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDuedate(newDueDate);
-                toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+                //save method is a part of inner 'Task' update method
+
                 log.Debug("Task #" + taskId + " dueDate was updated.");
             }
             else
             {
-                log.Warn("Tasks cannot be edited in 'done' column.");
-                throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+                log.Warn("Tasks cannot be edited in the last column.");
+                throw new InvalidOperationException("Tasks cannot be edited in the last column.");
             }
         }
 
@@ -261,11 +275,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Adds a new board to the Boards dictionary.
         /// </summary>
         /// <param name="email">The user's email that the board is associated with.</param>
-        public void AddNewBoard(string email)
+        public void AddNewBoard(string email) //checked
         {
             Board newBoard = new Board(email);
             Boards.Add(email, newBoard);
-            newBoard.Save("Boards\\");
+            //save method is a part of inner 'Board' update method
+
+            //does anyone holds DAL.Boards list in DAL????????
+
             log.Info("New board was added with key " + email);
         }
     }
