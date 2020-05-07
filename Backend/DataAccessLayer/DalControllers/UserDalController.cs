@@ -30,6 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();   
                     command.CommandText = $"INSERT INTO {UserTableName} ({DalUser.EmailColumnName}, {DalUser.UserPasswordColumnName},{DalUser.UserNicknameColumnName})" +
                         $"VALUES (@emailVal, @passwordVal,@NicknameVal);";
@@ -69,6 +70,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 };
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -116,6 +118,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $");";
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     command.ExecuteNonQuery();
                 }

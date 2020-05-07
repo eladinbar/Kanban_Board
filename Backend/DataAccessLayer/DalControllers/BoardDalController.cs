@@ -18,10 +18,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public List<DalBoard> SelectAllBoards()
         {
+            log.Info("loading all Boards from data base");
             List<DalBoard> boardList = Select().Cast<DalBoard>().ToList();
             ColumnDalController columnController = new ColumnDalController();
             foreach(DalBoard b in boardList)
             {
+                log.Debug("loading all columns of " + b.Email);
                 b.Columns = columnController.SelectAllColumns(b.Email);
             }
             return boardList;
@@ -35,6 +37,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     command.CommandText = $"INSERT INTO {BoardTableName} ({DalBoard.EmailColumnName}, {DalBoard.BoardTaskCountName})" +
                         $"VALUES (@emailVal, @taskCounterVal);";
@@ -72,6 +75,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 };
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -97,13 +101,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
-            FileInfo dBFile = new FileInfo(path);
-            if (!dBFile.Exists)
-            {
-                dBFile.Create();
-            }
-
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 CreateDBFile();
@@ -118,7 +115,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $");";
                 try
                 {
-                    connection.Open();
+                    log.Info("opening connection to DataBase");
+                    connection.Open();                    
                     command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)

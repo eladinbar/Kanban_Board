@@ -36,6 +36,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     command.CommandText = $"INSERT INTO {ColumnTableName} " +
                         $"({DalColumn.EmailColumnName}, {DalColumn.ColumnOrdinalColumnName}, {DalColumn.ColumnNameColumnName}, {DalColumn.ColumnLimitColumnName})" +
@@ -78,6 +79,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 };
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -102,12 +104,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
-            FileInfo dBFile = new FileInfo(path);
-            if (!dBFile.Exists)
-            {
-                dBFile.Create();
-            }
+            CreateDBFile();
 
             using (var connection = new SQLiteConnection(_connectionString))
             {
@@ -123,7 +120,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $");";
                 try
                 {
-                    connection.Open();
+                    log.Info("opening connection to DataBase");
+                    connection.Open();                    
                     command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
