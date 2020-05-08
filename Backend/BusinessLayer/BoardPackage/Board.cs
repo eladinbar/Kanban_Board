@@ -31,6 +31,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Columns.Add(this.AddColumn(email, 1, "in progress"));
             Columns.Add(this.AddColumn(email, 2, "done"));
             DalCopyBoard = new DalBoard(email, TaskCounter);
+            DalCopyBoard.Save();
             log.Info("New board created");
         }
 

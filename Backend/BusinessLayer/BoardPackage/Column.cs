@@ -28,6 +28,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Limit = Int32.MaxValue;
             Tasks = new List<Task>();
             DalCopyColumn = new DalColumn(email, columnOrdinal, name, Limit);
+            DalCopyColumn.Save();
             log.Info("New column " + name + "created");
         }
 
