@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 {
-    internal class DalUser : DalObject
+    /// <summary>
+    /// Dal access layer representation  of a User
+    /// </summary>
+    internal class DalUser : DalObject<DalUser>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
         public const string UserPasswordColumnName = "Password";

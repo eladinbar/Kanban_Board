@@ -9,7 +9,7 @@ using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 {
-    internal class TaskDalController : DalController
+    internal class TaskDalController : DalController<DalTask>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
         private const string TaskTableName = "Tasks";
@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
 
-        public bool Insert(DalTask task)
+        public override bool Insert(DalTask task)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -100,7 +100,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
       
-        internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
+        internal override DalTask ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), (int)reader.GetValue(2), reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6), reader.GetDateTime(7));
             return result;

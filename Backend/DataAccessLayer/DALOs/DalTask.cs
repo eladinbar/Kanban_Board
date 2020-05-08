@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 {
-    internal class DalTask : DalObject
+    /// <summary>
+    /// Dal access layer representation  of a Task
+    /// </summary>
+    internal class DalTask : DalObject<DalTask>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
         public const string TaskIDColumnName = "ID";
