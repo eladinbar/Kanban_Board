@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public DateTime CreationTime { get; }
         public DateTime DueDate { get; private set; }
         public DateTime LastChangedDate { get; private set; }
-        public DalTask DalCopyTask { get; private set; } 
+        public DalTask DalCopyTask { get; private set; }
 
         /// <summary>
         /// A public constructor that creates a new task and intializes all of its fields.
@@ -22,6 +22,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="description">The description the task will be created with.</param>
         /// <param name="dueDate">The date the task will be due on.</param>
         /// <param name="id">The unique ID that will be associated with this task.</param>
+        /// <param name="email">The email of current board user.</param>
+        /// <param name="columnName">The ordinal of the column the task should be added to.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the title or description given are invalid.</exception>
         public Task(string title, string description, DateTime dueDate, int id, string email, string columnName) //checked
         {
@@ -57,6 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="id">The unique ID that will be associated with this task.</param>
         /// <param name="creationTime">The time in which this loaded task was created on.</param>
         /// <param name="lastChangedDate">The last date this task was changed.</param>
+        /// <param name="dalTask">The DAL appearance of the current board.</param>
         internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate, DalTask dalTask) //checked
         { 
             Title = title;

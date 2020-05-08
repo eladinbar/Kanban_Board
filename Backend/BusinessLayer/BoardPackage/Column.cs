@@ -20,6 +20,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// A public contructor that creates a new column and initializes its fields.
         /// </summary>
         /// <param name="name">The name the column will be created with.</param>
+        /// <param name="email">The email of the board user.</param>
+        /// <param name="columnOrdinal">Ordinal the column will be created with.</param>
         public Column(string name, string email, int columnOrdinal) //checked
         {
             Name = name;
@@ -35,6 +37,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="name">The name the column will be created with.</param>
         /// <param name="limit">The maximum amount of tasks to be allowed in this column.</param>
         /// <param name="tasks">The list of tasks the column contains.</param>
+        /// <param name="dalColumn">The DAL appearance of the current column.</param>
         internal Column(string name, int limit, List<Task> tasks, DalColumn dalColumn) //checked
         {
             Name = name;

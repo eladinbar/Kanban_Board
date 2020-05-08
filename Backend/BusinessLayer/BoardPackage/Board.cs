@@ -113,8 +113,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to add at.</param>
         /// <param name="Name">The name of the new column.</param>
-        /// <returns>Returns the column with the given ordinal.</returns>
-        /// <exception cref="ArgumentException">Thrown when the ordinal given is not in the valid range.</exception>
+        /// <returns>Returns the added column.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
         public Column AddColumn(string email, int columnOrdinal, string Name) //checked
         {
             if (columnOrdinal < 0 | columnOrdinal > this.Columns.Count)
@@ -149,6 +149,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
 
+        /// <summary>
+        /// Adds a column at the demanded index (ordinal).
+        /// </summary>
+        /// <param name="email">The email of the board's user.</param>
+        /// <param name="columnOrdinal">The index of the column to remove.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
         public void RemoveColumn(string email, int columnOrdinal) //checked
         {
             if (columnOrdinal >= 0 & columnOrdinal < this.Columns.Count)
@@ -214,6 +220,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else throw new InvalidOperationException("Index of the removed column is invalid.");
         }
 
+
+        /// <summary>
+        /// Move a column at the demanded index (ordinal) to its right.
+        /// </summary>
+        /// <param name="email">The email of the board's user.</param>
+        /// <param name="columnOrdinal">The index of the column to move.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
         public Column MoveColumnRight(string email, int columnOrdinal) //checked
         {
             if (columnOrdinal == (this.Columns.Count - 1)) //in case of the last column
@@ -241,6 +254,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return toMove;
         }
 
+        /// <summary>
+        /// Move a column at the demanded index (ordinal) to its left.
+        /// </summary>
+        /// <param name="email">The email of the board's user.</param>
+        /// <param name="columnOrdinal">The index of the column to move.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
         public Column MoveColumnLeft(string email, int columnOrdinal) //checked
         {
             if (columnOrdinal == 0) //in case of the last column
