@@ -1,26 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 {
-    internal class Column : PersistedObject<DataAccessLayer.Column>
+    internal class Column
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
         public string Name { get; }
         public int Limit { get; private set; }
         public List<Task> Tasks { get; }
+        public DalColumn DalCopyColumn { get; private set; }
+
+
 
         /// <summary>
         /// A public contructor that creates a new column and initializes its fields.
         /// </summary>
         /// <param name="name">The name the column will be created with.</param>
-        public Column(string name)
+        /// <param name="email">The email of the board user.</param>
+        /// <param name="columnOrdinal">Ordinal the column will be created with.</param>
+        public Column(string name, string email, int columnOrdinal) //checked
         {
             Name = name;
             Limit = Int32.MaxValue;
             Tasks = new List<Task>();
+            DalCopyColumn = new DalColumn(email, columnOrdinal, name, Limit);
+            DalCopyColumn.Save();
             log.Info("New column " + name + "created");
         }
 
@@ -30,11 +38,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="name">The name the column will be created with.</param>
         /// <param name="limit">The maximum amount of tasks to be allowed in this column.</param>
         /// <param name="tasks">The list of tasks the column contains.</param>
-        internal Column(string name, int limit, List<Task> tasks)
+        /// <param name="dalColumn">The DAL appearance of the current column.</param>
+        internal Column(string name, int limit, List<Task> tasks, DalColumn dalColumn) //checked
         {
             Name = name;
             Limit = limit;
             Tasks = tasks;
+            DalCopyColumn = dalColumn;
             log.Debug("load - Board " + name + " was loaded from memory");
         }
 
@@ -44,7 +54,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="limit">The desired column limit.</param>
         /// <exception cref="ArgumentException">Thrown when trying to set the limit to a number less or equal to 0.
         /// Alternatively thrown if there are more tasks than the specified limit.</exception>
-        public void LimitColumnTasks(int limit)
+        public void LimitColumnTasks(int limit) //checked 
         {
             if (limit == 0)
             {
@@ -54,10 +64,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else if (limit < Tasks.Count)
             {
                 log.Error("The number of tasks in the column is greater than the limit given");
-                throw new ArgumentOutOfRangeException("The number of tasks in the column: " + Tasks.Count + ", is more than the desired limit: "+ limit);
+                throw new ArgumentOutOfRangeException("The number of tasks in the column: " + Tasks.Count + ", is more than the desired limit: " + limit);
             }
             else
+            {
                 Limit = limit;
+                DalCopyColumn.Limit = limit;
+            }
         }
 
         /// <summary>
@@ -65,12 +78,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="t">The task to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the column is full.</exception>
-        internal void InsertTask(Task t)
+        internal void InsertTask(Task t) //checked
         {
             if (!CheckLimit())
+            {
+                log.Warn("The column '" + Name + "' was full - task insert failed.");
                 throw new ArgumentOutOfRangeException(Name + " column is full");
+            }
             else
+            {
                 Tasks.Add(t);
+                this.DalCopyColumn.Tasks.Add(t.DalCopyTask);
+                log.Debug("The task " + t.Id + " was added to '" + Name + "' column");
+            }
         }
 
         /// <summary>
@@ -79,18 +99,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskId">The ID of the task to remove.</param>
         /// <returns>Returns the task that has been removed.</returns>
         /// <exception cref="ArgumentException">Thrown if the task does not exist in the column.</exception>
-        internal Task RemoveTask(int taskId)
+        internal Task RemoveTask(int taskId) //checked
         {
             Task toRemove = Tasks.Find(x => x.Id.Equals(taskId));
             if (Tasks.Remove(toRemove))
             {
-                log.Debug("The task " + taskId + " was removed from " + Name);
+                log.Debug("The task " + taskId + " was removed from '" + Name+"' column");
                 return toRemove;
             }
             else
             {
                 log.Error("Removal attempt to non existing task");
-                throw new ArgumentException("Task #" + taskId + " is not in " + Name);
+                throw new ArgumentException("Task #" + taskId + " is not in '" + Name+"' column");
             }
         }
         
@@ -99,7 +119,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="taskId">The ID of the task to return.</param>
         /// <returns>Returns the task with the task ID if it exists, otherwise returns null.</returns>
-        public Task GetTask(int taskId)
+        public Task GetTask(int taskId) //checked
         {
             if (Tasks.Exists(x => x.Id == taskId))
                 return Tasks.Find(x => x.Id == taskId);
@@ -108,35 +128,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
         /// <summary>
-        /// Transforms the column to its corresponding DalObject.
-        /// </summary>
-        /// <returns>Returns a Data Access Layer Column.</returns>
-        public DataAccessLayer.Column ToDalObject()
-        {
-            log.Debug("Creating DalObject<Column>");
-            List<DataAccessLayer.Task> dalTasks = new List<DataAccessLayer.Task>();
-            foreach(Task t in Tasks)
-            {
-                dalTasks.Add(t.ToDalObject());
-            }
-            return new DataAccessLayer.Column(Name, Limit, dalTasks);
-        }
-
-        /// <summary>
-        /// The method in the BusinessLayer to save an object to the persistent layer.
-        /// </summary>
-        /// <param name="path">The path the object will be saved to.</param>
-        public void Save(string path)
-        {
-            log.Info("Column.save was called");
-            ToDalObject().Save(path);
-        }
-
-        /// <summary>
         /// Checks if the column is full.
         /// </summary>
         /// <returns>Returns true if the column is not full, otherwise returns false.</returns>
-        internal bool CheckLimit()
+        internal bool CheckLimit() //checked
         {
             if (Tasks.Count() < Limit)
                 return true;
