@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 {
-    internal class DalBoard : DalObject
+
+    /// <summary>
+    /// Dal access layer representation  of a Board
+    /// </summary>
+    internal class DalBoard : DalObject<DalBoard>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
         public const string BoardTaskCountName = "TaskCounter";
