@@ -15,11 +15,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         private Dictionary<String, Board> Boards;
 
-        //implement follownig methods:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        public void DeleteData() { throw new NotImplementedException(); } //via whcih class?
-
-
-
         /// <summary>
         /// The board controller constructor. Initializes the 'Boards' field by loading all existing data from memory, if no data exists, creates an empty dictionary.
         /// </summary>
@@ -97,8 +92,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Column c = b.GetColumn(columnOrdinal);
             c.LimitColumnTasks(limit);
 
-            //c.Save("Boards\\" + email + "\\" + columnOrdinal + "-");
-
             //the "Save' method is executed in 'Column' class itself
         }
 
@@ -163,16 +156,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
 
             Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name);
-            b.TaskCounter = GetBoard(email).TaskCounter + 1; //why not b.taskcounter = b.taskcounter+1??????????????????
+            b.TaskCounter = (b.TaskCounter + 1); 
             b.DalCopyBoard.TaskCounter = b.DalCopyBoard.TaskCounter + 1;
             c.InsertTask(newTask);
-
             c.DalCopyColumn.Tasks.Add(newTask.DalCopyTask);
 
-            log.Debug("A new task was added to the 'backlog' column.");
-
-            b.Save("Boards\\");
-
+            log.Debug("A new task was added to the first column.");
             return newTask;            
         }
 
@@ -279,8 +268,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Boards.Add(email, newBoard);
             //save method is a part of inner 'Board' update method
 
-            //does anyone holds DAL.Boards list in DAL???????? ---->> no!!
-
             log.Info("New board was added with key " + email);
         }
 
@@ -304,7 +291,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         }
 
-        public Column MoveColumnLeft(string email, int columnOrdinal) //in progress...
+        public Column MoveColumnLeft(string email, int columnOrdinal) //checked
         {
             Board b = GetBoard(email);
             return b.MoveColumnLeft(email, columnOrdinal);

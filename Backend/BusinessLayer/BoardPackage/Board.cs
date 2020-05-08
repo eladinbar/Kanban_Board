@@ -27,9 +27,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             UserEmail = email;
             TaskCounter = 0;
             Columns = new List<Column>();
-            Columns.Add(newColumn("backlog"));
-            Columns.Add(newColumn("in progress"));
-            Columns.Add(newColumn("done"));
+            Columns.Add(this.AddColumn(email, 0, "backlog"));
+            Columns.Add(this.AddColumn(email, 1, "in progress"));
+            Columns.Add(this.AddColumn(email, 2, "done"));
             DalCopyBoard = new DalBoard(email, TaskCounter);
             log.Info("New board created");
         }
@@ -47,17 +47,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Columns = columns;
             DalCopyBoard = dalBoard;
             log.Info("load - Board " + email + " was loaded from memory");
-        }
-
-        /// <summary>
-        /// Creates a new column and returns it.
-        /// </summary>
-        /// <param name="name">The name of the column to be created.</param>
-        /// <returns>Returns the created column.</returns>
-        private Column newColumn(string name) { //not needed???
-            Column newColumn = new Column(name);
-            newColumn.Save("Boards\\" + UserEmail + "\\" + Columns.Count + "-");
-            return newColumn;
         }
 
         /// <summary>
@@ -116,30 +105,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return id <= TaskCounter & id >= 1;
         }
 
-        /// <summary>
-        /// The method in the BusinessLayer to save an object to the persistent layer.
-        /// </summary>
-        /// <param name="path">The path the object will be saved to.</param>
-        public void Save(string path) //not needed???
-        {
-            log.Info("Board.save was called");
-            ToDalObject().Save(path);         
-        }
-
-        /// <summary>
-        /// Transforms the Board to its corresponding DalObject.
-        /// </summary>
-        /// <returns>Returns a Data Access Layer Board.</returns>
-        public DataAccessLayer.Board ToDalObject() //not needed???
-        {
-            log.Debug("Creating DalObject<Board>");
-            List<DataAccessLayer.Column> dalColumns = new List<DataAccessLayer.Column>();
-            foreach(Column c in Columns)
-            {
-                dalColumns.Add(c.ToDalObject());
-            }
-            return new DataAccessLayer.Board(UserEmail, TaskCounter, dalColumns);
-        }
 
         public Column AddColumn(string email, int columnOrdinal, string Name) //checked
         {
@@ -156,10 +121,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (!this.Columns.Exists(c => c.Name.Equals(Name)))
             {
                 Column newColumn = new Column(Name, email, columnOrdinal);
-                this.Columns.Insert(columnOrdinal, newColumn);
-                this.DalCopyBoard.Columns.Insert(columnOrdinal, newColumn.DalCopyColumn);
-                for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns.
-                    this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal + 1;
+                if (columnOrdinal == this.Columns.Count) //in case of adding to the end 
+                {
+                    this.Columns.Add(newColumn);
+                    this.DalCopyBoard.Columns.Add(newColumn.DalCopyColumn);
+                }
+                else
+                {
+                    this.Columns.Insert(columnOrdinal, newColumn);
+                    this.DalCopyBoard.Columns.Insert(columnOrdinal, newColumn.DalCopyColumn);
+                    for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns.
+                        this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal + 1;
+                }
                 log.Debug("A new column '" + Name + "' was added at the index '" + columnOrdinal + "'.");
                 return newColumn;
             }
