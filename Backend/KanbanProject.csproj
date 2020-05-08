@@ -128,7 +128,6 @@
     <Compile Include="DataAccessLayer\DALOs\DalObject.cs" />
     <Compile Include="DataAccessLayer\DALOs\DalTask.cs" />
     <Compile Include="DataAccessLayer\DALOs\DalUser.cs" />
-    <Compile Include="DataAccessLayer\DalTesting.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="ServiceLayer\BoardService.cs" />
     <Compile Include="ServiceLayer\Response.cs" />
