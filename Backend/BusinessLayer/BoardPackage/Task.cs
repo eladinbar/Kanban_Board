@@ -135,34 +135,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
         }
 
-        /// <summary>
-        /// Transforms the task to its corresponding DalObject.
-        /// </summary>
-        /// <returns>Returns a Data Access Layer Task.</returns>
-        public DataAccessLayer.DALOs.DalTask ToDalObject()
-        {
-            return new DataAccessLayer.Task(Id, Title, Description, CreationTime, DueDate, LastChangedDate);
-        }
-
-        /// <summary>
-        /// The method in the BusinessLayer to save an object to the persistent layer.
-        /// </summary>
-        /// <param name="path">The path the object will be saved to.</param>
-        public void Save(string path)
-        {
-            ToDalObject().Save(path);
-            log.Info("Task.save was called");
-        }
-
-        /// <summary>
-        /// Removes a task from memory (used when a task is advanced to a new column).
-        /// </summary>
-        /// <param name="fileName">The name the task will be saved with.</param>
-        /// <param name="path">The path the task will be saved to.</param>
-        internal void Delete(string fileName, string path)
-        {
-            ToDalObject().Delete(fileName, path);
-            log.Info("Task " + Id + "-" + Title + "deleted");
-        }
     }
 }

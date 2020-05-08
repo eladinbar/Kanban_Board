@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="limit">The desired column limit.</param>
         /// <exception cref="ArgumentException">Thrown when trying to set the limit to a number less or equal to 0.
         /// Alternatively thrown if there are more tasks than the specified limit.</exception>
-        public void LimitColumnTasks(int limit)
+        public void LimitColumnTasks(int limit) //checked 
         {
             if (limit == 0)
             {
@@ -74,12 +74,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="t">The task to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the column is full.</exception>
-        internal void InsertTask(Task t)
+        internal void InsertTask(Task t) //checked
         {
             if (!CheckLimit())
+            {
+                log.Warn("The column '" + Name + "' was full - task insert failed.");
                 throw new ArgumentOutOfRangeException(Name + " column is full");
+            }
             else
-                Tasks.Add(t); //checked
+            {
+                Tasks.Add(t);
+                this.DalCopyColumn.Tasks.Add(t.DalCopyTask);
+                log.Debug("The task " + t.Id + " was added to '" + Name + "' column");
+            }
         }
 
         /// <summary>
@@ -117,35 +124,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
         /// <summary>
-        /// Transforms the column to its corresponding DalObject.
-        /// </summary>
-        /// <returns>Returns a Data Access Layer Column.</returns>
-        public DataAccessLayer.DALOs.DalColumn ToDalObject()
-        {
-            log.Debug("Creating DalObject<Column>");
-            List<DataAccessLayer.Task> dalTasks = new List<DataAccessLayer.Task>();
-            foreach(Task t in Tasks)
-            {
-                dalTasks.Add(t.ToDalObject());
-            }
-            return new DataAccessLayer.Column(Name, Limit, dalTasks);
-        }
-
-        /// <summary>
-        /// The method in the BusinessLayer to save an object to the persistent layer.
-        /// </summary>
-        /// <param name="path">The path the object will be saved to.</param>
-        public void Save(string path)
-        {
-            log.Info("Column.save was called");
-            ToDalObject().Save(path);
-        }
-
-        /// <summary>
         /// Checks if the column is full.
         /// </summary>
         /// <returns>Returns true if the column is not full, otherwise returns false.</returns>
-        internal bool CheckLimit()
+        internal bool CheckLimit() //checked
         {
             if (Tasks.Count() < Limit)
                 return true;

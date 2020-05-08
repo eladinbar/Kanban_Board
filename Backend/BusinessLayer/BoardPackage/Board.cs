@@ -40,6 +40,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="taskCounter">The amount of tasks that the board contains.</param>
         /// <param name="columns">The list of columns the board contains.</param>
+        /// <param name="dalBoard">The DAL appearance of the current board.</param>
         internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard) //checked
         {
             UserEmail = email;
@@ -55,7 +56,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnName">The column name to return.</param>
         /// <returns>Returns the column with the given name.</returns>
         /// <exception cref="ArgumentException">Thrown when the Column with the given name does not exist.</exception>
-        public Column GetColumn(string columnName)
+        public Column GetColumn(string columnName) //checked
         {
             if (Columns.Exists(c => c.Name.Equals(columnName)))
             {
@@ -71,7 +72,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnOrdinal">The index of the column to return.</param>
         /// <returns>Returns the column with the given ordinal.</returns>
         /// <exception cref="ArgumentException">Thrown when the ordinal given doesn't point to any valid Column.</exception>
-        public Column GetColumn(int columnOrdinal)
+        public Column GetColumn(int columnOrdinal) //checked
         {
             if (columnOrdinal >= Columns.Count || columnOrdinal<0)
             {
@@ -85,7 +86,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Get the names of the board's columns as a list.
         /// </summary>
         /// <returns>Returns a List of strings with the column names.</returns>
-        public List<string> getColumnNames()
+        public List<string> getColumnNames() //checked
         {
             List<string> columnNames = new List<string>();
             foreach(Column c in Columns)
@@ -106,6 +107,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
 
+        /// <summary>
+        /// Adds a column at the demanded index (ordinal).
+        /// </summary>
+        /// <param name="email">The email of the board's user.</param>
+        /// <param name="columnOrdinal">The index of the column to add at.</param>
+        /// <param name="Name">The name of the new column.</param>
+        /// <returns>Returns the column with the given ordinal.</returns>
+        /// <exception cref="ArgumentException">Thrown when the ordinal given is not in the valid range.</exception>
         public Column AddColumn(string email, int columnOrdinal, string Name) //checked
         {
             if (columnOrdinal < 0 | columnOrdinal > this.Columns.Count)
@@ -138,6 +147,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             else throw new InvalidOperationException("Column with this name ia already exists.");
         }
+
 
         public void RemoveColumn(string email, int columnOrdinal) //checked
         {
@@ -197,6 +207,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     }
                     log.Debug("Column '" + toRemove.Name + "' at index '" + columnOrdinal + "' was removed.");
                 }
+
+                for (int i = columnOrdinal; i < this.Columns.Count; i++) //updating the DAL.Columns ordinals 
+                    this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal - 1;
             }
             else throw new InvalidOperationException("Index of the removed column is invalid.");
         }
@@ -219,6 +232,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.Columns.Insert(columnOrdinal + 1, toMove);
             this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
             this.DalCopyBoard.Columns.Insert(columnOrdinal + 1, toMove.DalCopyColumn);
+
+            //updating DAL.Columns ordinals
+            toMove.DalCopyColumn.Ordinal = toMove.DalCopyColumn.Ordinal + 1;
+            this.DalCopyBoard.Columns[columnOrdinal].Ordinal = this.DalCopyBoard.Columns[columnOrdinal].Ordinal - 1;
+
             log.Debug("Column '"+toMove.Name+"' has been moved to its right ("+(columnOrdinal+1)+") successfully.");
             return toMove;
         }
@@ -241,6 +259,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.Columns.Insert(columnOrdinal - 1, toMove);
             this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
             this.DalCopyBoard.Columns.Insert(columnOrdinal - 1, toMove.DalCopyColumn);
+
+            //updating DAL.Columns ordinals
+            toMove.DalCopyColumn.Ordinal = toMove.DalCopyColumn.Ordinal - 1;
+            this.DalCopyBoard.Columns[columnOrdinal].Ordinal = this.DalCopyBoard.Columns[columnOrdinal].Ordinal + 1;
+
             log.Debug("Column '" + toMove.Name + "' has been moved to its left (" + (columnOrdinal - 1) + ") successfully.");
             return toMove;
         }

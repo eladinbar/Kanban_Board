@@ -158,8 +158,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name);
             b.TaskCounter = (b.TaskCounter + 1); 
             b.DalCopyBoard.TaskCounter = b.DalCopyBoard.TaskCounter + 1;
-            c.InsertTask(newTask);
-            c.DalCopyColumn.Tasks.Add(newTask.DalCopyTask);
+            c.InsertTask(newTask); //DAL.Column is updated via inner BP.Column method
 
             log.Debug("A new task was added to the first column.");
             return newTask;            
@@ -228,7 +227,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
         /// <summary>
-        /// update the duedate of the task with taskId 
+        /// Update the duedate of the task with taskId.
         /// </summary>
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
@@ -259,7 +258,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
         /// <summary>
-        /// Adds a new board to the Boards dictionary.
+        /// Adds a new board.
         /// </summary>
         /// <param name="email">The user's email that the board is associated with.</param>
         public void AddNewBoard(string email) //checked
@@ -272,18 +271,34 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
 
+        /// <summary>
+        /// Adds a new column at the demanded index (ordinal).
+        /// </summary>
+        /// <param name="email">The user's email that the board is associated with.</param>
+        /// <param name="columnOrdinal">Ordinal the column should be added at.</param>
+        /// <param name="Name">New column name.</param>
         public Column AddColumn(string email, int columnOrdinal, string Name) //checked
         {
             Board b = GetBoard(email);
             return b.AddColumn(email, columnOrdinal, Name);
         }
 
+        /// <summary>
+        /// Remove a column at the demanded index (ordinal).
+        /// </summary>
+        /// <param name="email">The user's email that the board is associated with.</param>
+        /// <param name="columnOrdinal">Ordinal of the column to delete.</param>
         public void RemoveColumn(string email, int columnOrdinal) //checked
         {
             Board b = GetBoard(email);
             b.RemoveColumn(email, columnOrdinal);
         }
 
+        /// <summary>
+        /// Move a column at the demanded index (ordinal) to its right.
+        /// </summary>
+        /// <param name="email">The user's email that the board is associated with.</param>
+        /// <param name="columnOrdinal">Ordinal of the column to move right.</param>
         public Column MoveColumnRight(string email, int columnOrdinal) //checked
         {
             Board b = GetBoard(email);
@@ -291,6 +306,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         }
 
+        /// <summary>
+        /// Move a column at the demanded index (ordinal) to its left.
+        /// </summary>
+        /// <param name="email">The user's email that the board is associated with.</param>
+        /// <param name="columnOrdinal">Ordinal of the column to move left.</param>
         public Column MoveColumnLeft(string email, int columnOrdinal) //checked
         {
             Board b = GetBoard(email);
