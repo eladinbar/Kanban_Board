@@ -17,9 +17,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         //implement follownig methods:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         public void DeleteData() { throw new NotImplementedException(); } //via whcih class?
-        public void RemoveColumn() { throw new NotImplementedException(); }
-        public Column MoveColumnRight() { throw new NotImplementedException(); }
-        public Column MoveColumnLeft() { throw new NotImplementedException(); }
+
 
 
         /// <summary>
@@ -33,7 +31,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             foreach (DalBoard b in dalBoards)
             {
                 List<Column> tempColumns = new List<Column>();
-                foreach (DalColumn c in b.Columnsl)
+                foreach (DalColumn c in b.Columns)
                 {
                     List<Task> tempTasks = new List<Task>();
                     foreach (DalTask t in c.Tasks)
@@ -281,20 +279,37 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Boards.Add(email, newBoard);
             //save method is a part of inner 'Board' update method
 
-            //does anyone holds DAL.Boards list in DAL????????
+            //does anyone holds DAL.Boards list in DAL???????? ---->> no!!
 
             log.Info("New board was added with key " + email);
         }
 
 
-        public Column AddColumn(string email, int columnOrdinal, string Name)
+        public Column AddColumn(string email, int columnOrdinal, string Name) //checked
         {
             Board b = GetBoard(email);
-            //b.AddColumn
-            //log
-            //save
-            throw new NotImplementedException();
+            return b.AddColumn(email, columnOrdinal, Name);
         }
+
+        public void RemoveColumn(string email, int columnOrdinal) //checked
+        {
+            Board b = GetBoard(email);
+            b.RemoveColumn(email, columnOrdinal);
+        }
+
+        public Column MoveColumnRight(string email, int columnOrdinal) //checked
+        {
+            Board b = GetBoard(email);
+            return b.MoveColumnRight(email, columnOrdinal);
+
+        }
+
+        public Column MoveColumnLeft(string email, int columnOrdinal) //in progress...
+        {
+            Board b = GetBoard(email);
+            return b.MoveColumnLeft(email, columnOrdinal);
+        }
+
 
     }
 }
