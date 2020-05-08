@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public string Email { get; }
         public string Password { get; private set; }
         public bool Logged_in { get; private set; }
-        public DalUser DalUser { get; private set { DalUser. } }
+        public DalUser DalUser { get; }
 
         /// <summary>
         /// A public constructor that creates a new user and initializes all of its fields.
@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.Nickname = nickname;
             Logged_in = false;
             DalUser = new DalUser(email, password, nickname);
-            DalUser.
+            DalUser.Save();
         }
 
         /// <summary>
@@ -49,23 +49,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// </summary>
         public void ChangePassword (string newPassword) {
             Password = newPassword;
-        }
-
-        /// <summary>
-        /// Transforms the user to its corresponding DalObject.
-        /// </summary>
-        /// <returns>Returns a Data Access Layer User.</returns>
-        public DataAccessLayer.User ToDalObject() {
-            return new DataAccessLayer.User(this.Email, this.Password, this.Nickname);
-        }
-
-        /// <summary>
-        /// The method in the BusinessLayer to save an object to the persistent layer.
-        /// </summary>
-        /// <param name="path">The path the object will be saved to.</param>
-        public void Save(string path) {
-            log.Info("User.save was called");
-            ToDalObject().Save(path);
+            DalUser.Password = newPassword;
         }
     }
 }
