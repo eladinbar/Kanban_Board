@@ -9,21 +9,26 @@ using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 {
-    internal class UserDalController : DalController
+    internal class UserDalController : DalController<DalUser>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
         internal const string UserTableName = "Users";
 
         public UserDalController() : base(UserTableName) { }
 
+        /// <summary>
+        /// gets all user data from database
+        /// </summary>
+        /// <returns></returns>
         public List<DalUser> SelectAllUsers()
         {
             List<DalUser> userList = Select().Cast<DalUser>().ToList();
             return userList;
         }
 
-        public bool Insert(DalUser user)
+        public override bool Insert(DalUser user)
         {
+            
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
             {
@@ -96,7 +101,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
         }
 
-        internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
+        internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
             return result;

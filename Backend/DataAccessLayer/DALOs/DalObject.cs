@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 {
-    public abstract class DalObject
+    /// <summary>
+    /// Base abstract class for Dal Entities
+    /// </summary>
+    public abstract class DalObject<T> where T:DalObject<T>
     {
         public const string EmailColumnName = "email";
-        protected DalController _controller;
+        protected DalController<T> _controller;
         public string Email { get; set; } = "";
 
-        protected DalObject(DalController controller)
+        protected DalObject(DalController<T> controller)
         {
             _controller = controller;
         }
+
+        
 
     }
 }

@@ -9,7 +9,7 @@ using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 {
-    internal class BoardDalController : DalController
+    internal class BoardDalController : DalController<DalBoard>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
         internal const string BoardTableName = "Boards";
@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return boardList;
         }
 
-        public bool Insert(DalBoard board)
+        public override bool Insert(DalBoard board)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -93,7 +93,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
 
-        internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
+        internal override DalBoard ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalBoard result = new DalBoard(reader.GetString(0), (int)reader.GetValue(1));
             return result;
