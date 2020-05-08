@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
-    ///The servicve for perfoming Board involved actions.
+    ///The service for perfoming Board involved actions.
     /// </summary>
     internal class BoardService
     {
@@ -303,8 +303,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
         /// <summary>
-        /// Adds a new column, given it's name and a location to place it.
-        /// The first column is identified by 0, the ID increases by 1 for each column        
+        /// Adds a new column, given its name and a location to place it.
+        /// The first column is identified by 0, the ID increases by 1 for each column.     
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <param name="columnOrdinal">Location to place to column</param>
@@ -330,12 +330,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
         /// <summary>
-        /// Moves a column to the right, swapping it with the column wich is currently located there.
-        /// The first column is identified by 0, the ID increases by 1 for each column        
+        /// Moves a column to the right, swapping it with the column which is currently located there.
+        /// The first column is identified by 0, the ID increases by 1 for each column.   
         /// </summary>
-        /// <param name="email">Email of the user. Must be logged in</param>
-        /// <param name="columnOrdinal">Current location of the column</param>
-        /// <returns>A response object with a value set to the moved Column, the response should contain an error message in case of an error</returns>
+        /// <param name="email">Email of the user. Must be logged in.</param>
+        /// <param name="columnOrdinal">Current location of the column.</param>
+        /// <returns>A response object with a value set to the moved Column, the response should contain an error message in case of an error.</returns>
         public Response<Column> MoveColumnRight(string email, int columnOrdinal)
         {
             if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user");
@@ -356,12 +356,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
         /// <summary>
-        /// Moves a column to the left, swapping it with the column wich is currently located there.
+        /// Moves a column to the left, swapping it with the column which is currently located there.
         /// The first column is identified by 0, the ID increases by 1 for each column.
         /// </summary>
-        /// <param name="email">Email of the user. Must be logged in</param>
-        /// <param name="columnOrdinal">Current location of the column</param>
-        /// <returns>A response object with a value set to the moved Column, the response should contain an error message in case of an error</returns>
+        /// <param name="email">Email of the user. Must be logged in.</param>
+        /// <param name="columnOrdinal">Current location of the column.</param>
+        /// <returns>A response object with a value set to the moved Column, the response should contain an error message in case of an error.</returns>
         public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
         {
             if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user");
