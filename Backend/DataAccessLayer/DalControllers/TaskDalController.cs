@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +16,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public TaskDalController(): base(TaskTableName) { }
 
-        public List<DalTask> SelectAllTasks(string email, int ordinal)
+        public List<DalTask> SelectAllTasks(string email, string columnName)
         {
-            List<DalTask> taskList = Select(email, ordinal).Cast<DalTask>().ToList();
+            List<DalTask> taskList = Select(email, columnName).Cast<DalTask>().ToList();
             return taskList;
         }
 
@@ -30,6 +31,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     command.CommandText = $"INSERT INTO {TaskTableName} " +
                         $"({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName}, {DalTask.TaskIDColumnName}, {DalTask.TaskTitleColumnName}, {DalTask.TaskDescriptionColumnName}, {DalTask.TaskDueDateColumnName},{DalTask.TaskCreationDateColumnName}, {DalTask.TaskLastChangedDateColumnName})" +
@@ -76,10 +78,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {TaskTableName} WHERE email={task.Email} AND Ordinal={task.ColumnName} AND ID={task.TaskId}"
+                    CommandText = $"DELETE FROM {TaskTableName} WHERE email=\"{task.Email}\" AND Name=\"{task.ColumnName}\" AND ID={task.TaskId}"
                 };
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -105,6 +108,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
+            CreateDBFile();
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -117,14 +122,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalTask.TaskDueDateColumnName} INTEGER NOT NULL," +
                     $"{DalTask.TaskCreationDateColumnName} INTEGER NOT NULL," +
                     $"{DalTask.TaskLastChangedDateColumnName} INTEGER NOT NULL," +
-                    $"PRIMERY KEY({DalTask.EmailColumnName}, {DalColumn.ColumnNameColumnName},{DalTask.TaskIDColumnName})" +
+                    $"PRIMARY KEY({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName},{DalTask.TaskIDColumnName})" +
                     $"FOREIGN KEY({DalTask.EmailColumnName})" +
-                    $"  REFERANCE {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName})" +
+                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName})" +
                      $"FOREIGN KEY({DalTask.ContainingTaskColumnNameColumnName})" +
-                    $"  REFERANCE {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
+                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
                     $");";
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     command.ExecuteNonQuery();
                 }

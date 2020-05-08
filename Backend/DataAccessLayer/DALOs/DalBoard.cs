@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 
         private int _taskCounter;
         public int TaskCounter { get => _taskCounter; set{ _taskCounter = value; _controller.Update(Email, BoardTaskCountName, value); } }
-        public List<DalColumn> Columnsl { get; set; }
+        public List<DalColumn> Columns { get; set; }
 
         public DalBoard(string email, int taskCounter) : base(new BoardDalController())
         {

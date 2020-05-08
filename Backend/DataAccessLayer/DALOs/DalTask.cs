@@ -27,11 +27,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         private string _description;
         public string Description { get => _description; set { _description = value; _controller.Update(Email, ColumnName, TaskId, TaskDescriptionColumnName, value); } }
         private DateTime _dueDate;
-        public DateTime DueDate { get => _dueDate; set { _dueDate = value; _controller.Update(Email, ColumnName, TaskId, TaskDueDateColumnName, value.Ticks); } }
+        public DateTime DueDate { get => _dueDate; set { _dueDate = value; _controller.Update(Email, ColumnName, TaskId, TaskDueDateColumnName, value.ToString()); } }
         private DateTime _creationDate;
-        public DateTime CreationDate { get => _creationDate; set { _creationDate = value; _controller.Update(Email, ColumnName, TaskId, TaskCreationDateColumnName, value.Ticks); } }
+        public DateTime CreationDate { get => _creationDate; set { _creationDate = value; _controller.Update(Email, ColumnName, TaskId, TaskCreationDateColumnName, value.ToString()); } }
         private DateTime _lastChangedDate;
-        public DateTime LastChangedDate { get => _lastChangedDate; set { _lastChangedDate = value; _controller.Update(Email, ColumnName, TaskId, TaskLastChangedDateColumnName, value.Ticks); } }
+        public DateTime LastChangedDate { get => _lastChangedDate; set { _lastChangedDate = value; _controller.Update(Email, ColumnName, TaskId, TaskLastChangedDateColumnName, value.ToString()); } }
 
         public DalTask(string email, string columnName, int id, string title, string description, DateTime dueDate, DateTime creationDate, DateTime lastChangedDate) : base(new TaskDalController())
         {

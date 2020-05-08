@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();   
                     command.CommandText = $"INSERT INTO {UserTableName} ({DalUser.EmailColumnName}, {DalUser.UserPasswordColumnName},{DalUser.UserNicknameColumnName})" +
                         $"VALUES (@emailVal, @passwordVal,@NicknameVal);";
@@ -64,10 +66,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {UserTableName} WHERE email={user.Email}"
+                    CommandText = $"DELETE FROM {UserTableName} WHERE email=\"{user.Email}\""
                 };
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -83,7 +86,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
-
+        public void DeleteDatabase()
+        {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo dBFile = new FileInfo(path);
+            if (dBFile.Exists)
+            {
+                dBFile.Delete();
+            }
+        }
 
         internal override DalObject ConvertReaderToObject(SQLiteDataReader reader)
         {
@@ -93,6 +104,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
+
+            CreateDBFile();
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -100,10 +114,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalUser.EmailColumnName} TEXT NOT NULL," +
                     $"{DalUser.UserPasswordColumnName} TEXT NOT NULL," +
                     $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
-                    $"PRIMERY KEY({DalUser.EmailColumnName})" +
+                    $"PRIMARY KEY({DalUser.EmailColumnName})" +
                     $");";
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     command.ExecuteNonQuery();
                 }

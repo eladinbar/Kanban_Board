@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public List<DalColumn> SelectAllColumns(string email)
         {
             List<DalColumn> columnList = Select(email).Cast<DalColumn>().ToList();
+            TaskDalController taskController = new TaskDalController();
+            foreach(DalColumn c in columnList)
+            {
+                c.Tasks = taskController.SelectAllTasks(c.Email, c.Name);
+            }
+
             return columnList;
         }
 
@@ -29,9 +36,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     command.CommandText = $"INSERT INTO {ColumnTableName} " +
-                        $"({DalColumn.EmailColumnName}, , {DalColumn.ColumnOrdinalColumnName}, {DalColumn.ColumnNameColumnName}, {DalColumn.ColumnLimitColumnName})" +
+                        $"({DalColumn.EmailColumnName}, {DalColumn.ColumnOrdinalColumnName}, {DalColumn.ColumnNameColumnName}, {DalColumn.ColumnLimitColumnName})" +
                         $"VALUES (@emailVal, @ordinalVal, @nameVal, @limitVal);";
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", column.Email);
@@ -67,10 +75,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {ColumnTableName} WHERE email={column.Email} AND ordinal={column.Ordinal}"
+                    CommandText = $"DELETE FROM {ColumnTableName} WHERE email=\"{column.Email}\" AND Name=\"{column.Name}\""
                 };
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -95,6 +104,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         internal override void CreateTable()
         {
+            CreateDBFile();
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -102,14 +113,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalColumn.EmailColumnName} TEXT NOT NULL," +
                     $"{DalColumn.ColumnNameColumnName} TEXT NOT NULL," +
                     $"{DalColumn.ColumnOrdinalColumnName} INTEGER NOT NULL," +
-                    $"{DalColumn.ColumnLimitColumnName} INTEFER NOT NULL" +
-                    $"PRIMERY KEY({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
+                    $"{DalColumn.ColumnLimitColumnName} INTEGER NOT NULL," +
+                    $"PRIMARY KEY({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
                     $"FOREIGN KEY({DalColumn.EmailColumnName})" +
-                    $"  REFERANCE {BoardDalController.BoardTableName} ({DalColumn.EmailColumnName})" +                   
+                    $"  REFERENCES {BoardDalController.BoardTableName} ({DalColumn.EmailColumnName})" +                   
                     $");";
                 try
                 {
-                    connection.Open();
+                    log.Info("opening connection to DataBase");
+                    connection.Open();                    
                     command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
@@ -124,5 +136,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
         }
     }
-    }
+    
 }

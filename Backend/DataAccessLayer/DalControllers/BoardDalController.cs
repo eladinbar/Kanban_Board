@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public List<DalBoard> SelectAllBoards()
         {
+            log.Info("loading all Boards from data base");
             List<DalBoard> boardList = Select().Cast<DalBoard>().ToList();
+            ColumnDalController columnController = new ColumnDalController();
+            foreach(DalBoard b in boardList)
+            {
+                log.Debug("loading all columns of " + b.Email);
+                b.Columns = columnController.SelectAllColumns(b.Email);
+            }
             return boardList;
         }
 
@@ -29,6 +37,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     command.CommandText = $"INSERT INTO {BoardTableName} ({DalBoard.EmailColumnName}, {DalBoard.BoardTaskCountName})" +
                         $"VALUES (@emailVal, @taskCounterVal);";
@@ -62,10 +71,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DALETE FROM {BoardTableName} WHERE email={board.Email}"
+                    CommandText = $"DELETE FROM {BoardTableName} WHERE email=\"{board.Email}\""
                 };
                 try
                 {
+                    log.Info("opening connection to DataBase");
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -93,17 +103,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         {
             using (var connection = new SQLiteConnection(_connectionString))
             {
+                CreateDBFile();
+
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 command.CommandText = $"CREATE TABLE {BoardTableName} (" +
                     $"{DalBoard.EmailColumnName} TEXT NOT NULL," +
-                    $"{DalBoard.BoardTaskCountName} TEXT NOT NULL," +
-                    $"PRIMERY KEY({DalBoard.EmailColumnName})" +
+                    $"{DalBoard.BoardTaskCountName} InTEGER NOT NULL," +
+                    $"PRIMARY KEY({DalBoard.EmailColumnName})" +
                     $"FOREIGN KEY({DalBoard.EmailColumnName})" +
-                    $"  REFERANCE {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
+                    $"  REFERENCES {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
                     $");";
                 try
                 {
-                    connection.Open();
+                    log.Info("opening connection to DataBase");
+                    connection.Open();                    
                     command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
