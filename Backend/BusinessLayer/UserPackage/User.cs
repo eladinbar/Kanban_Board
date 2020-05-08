@@ -1,9 +1,11 @@
-﻿namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
+
+namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
     /// <summary>
     /// Represents a user profile in the Kanban Board system.
     /// </summary>
-    internal class User : PersistedObject<DataAccessLayer.User>
+    internal class User
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
@@ -11,6 +13,7 @@
         public string Email { get; }
         public string Password { get; private set; }
         public bool Logged_in { get; private set; }
+        public DalUser DalUser { get; private set { DalUser. } }
 
         /// <summary>
         /// A public constructor that creates a new user and initializes all of its fields.
@@ -23,6 +26,8 @@
             this.Password = password;
             this.Nickname = nickname;
             Logged_in = false;
+            DalUser = new DalUser(email, password, nickname);
+            DalUser.
         }
 
         /// <summary>
