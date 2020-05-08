@@ -291,6 +291,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void RemoveColumn(string email, int columnOrdinal) //checked
         {
             Board b = GetBoard(email);
+            if (b.Columns.Count == 2)
+            {
+                log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns");
+                throw new InvalidOperationException("The board has 2 columns. Can't remove another column.");
+            }
             b.RemoveColumn(email, columnOrdinal);
         }
 
