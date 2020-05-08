@@ -24,6 +24,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public void DeleteData() {
+            DalController UserDal = new UserDalController();
+            UserDal.DeleteDatabase();
+        }
+
+        /// <summary>
         /// Calls UserController Login() method in case there is no other logged in user.
         /// </summary>
         /// <param name="email">User's email to Login with.</param>

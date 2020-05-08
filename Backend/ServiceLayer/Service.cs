@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
-        /// <returns>A response object. The response should contain a error message in case of an error.</returns>
+        /// <returns>A response object. The response should contain an error message in case of an error.</returns>
         public Response LoadData() 
         {
             log.Debug("Attempting to load the program data.");
@@ -58,7 +58,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-        ///<summary>Remove all persistent data.</summary>
+        /// <summary>Remove all persistent data.</summary>
+        /// <returns>A response object. The response should contain an error message in case of an error.</returns>
         public Response DeleteData()
         {
             log.Debug("Attempting to delete the program data.");
@@ -70,7 +71,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             try
             {
-                UserService.SecurityController.Delete();
+                UserService.SecurityController.DeleteData();
                 log.Info("The data was deleted successfully.");
                 return new Response();
             }

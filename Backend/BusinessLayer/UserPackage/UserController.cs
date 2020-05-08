@@ -109,9 +109,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <param name="password">The password the user would like to use.</param>
         /// <exception cref="ArgumentException">Thrown when the password given doesn't fit the criteria.</exception>
         private void ValidatePassword (string password) {
-            if (password.Length < 4 | password.Length > 20 ||
+            if (password.Length < 5 | password.Length > 25 ||
             !password.Any(char.IsDigit) | !password.Any(char.IsLower) | !password.Any(char.IsUpper))
-                throw new ArgumentException("A user password must be in length of 4 to 20 characters and must include at least one uppercase letter, one lowercase letter and a number.");
+                throw new ArgumentException("A user password must be in length of 5 to 25 characters and must include at least one uppercase letter, one lowercase letter and a number.");
         }
 
         /// <summary>
