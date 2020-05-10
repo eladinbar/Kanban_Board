@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// converts the reader to a DalObject
         /// </summary>
         /// <param name="reader">SQLite reader to convert</param>
-        /// <returns></returns>
+        /// <returns>A DalObject that extands DalObject<T></returns>
         internal abstract T ConvertReaderToObject(SQLiteDataReader reader);
 
         /// <summary>
