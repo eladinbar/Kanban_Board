@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public UserDalController() : base(UserTableName) { }
 
         /// <summary>
-        /// gets all user data from database
+        /// gets all user data from Database.
         /// </summary>
         /// <returns></returns>
         public List<DalUser> SelectAllUsers()
@@ -26,6 +26,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return userList;
         }
 
+        /// <summary>
+        /// Insert command for user to Database.
+        /// </summary>
+        /// <param name="user">Dal instance to insert to the Database</param>
+        /// <returns>True is the method changed more then 0 rows</returns>
         public override bool Insert(DalUser user)
         {
             
@@ -62,7 +67,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res>0;
         }
-    
+
+        /// <summary>
+        /// Delete command for user to the Database.
+        /// </summary>
+        /// <param name="user">Dal instance to delete from the Database</param>
+        /// <returns>True if the method changed more then 0 rows</returns>
         public bool Delete(DalUser user)
         {
             int res = -1;
@@ -91,6 +101,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
+
+        /// <summary>
+        /// Deletes the Database file for a clean start of the program.
+        /// </summary>
         public void DeleteDatabase()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
@@ -101,12 +115,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
         }
 
+        /// <inhecitdoc cref="DalController{T}"/>
         internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
             return result;
         }
 
+        /// <summary>
+        /// Creates the Users table in the Kanban.db.
+        /// </summary>
         internal override void CreateTable()
         {
 
