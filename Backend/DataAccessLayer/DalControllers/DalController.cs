@@ -71,6 +71,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return fromDB;
         }
+
         /// <summary>        
         /// select commeand for Columns table of a spesific Board.       
         /// </summary>
@@ -235,6 +236,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
+
         /// <summary>
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email and columnName arguments.
         /// </summary>
@@ -275,6 +277,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
+
         /// <summary>
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email and columnName arguments.
         /// </summary>
@@ -315,6 +318,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
+
         /// <summary>
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email, columnName and taskID arguments.
         /// </summary>
@@ -356,6 +360,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
+
         /// <summary>
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email, columnName and teskID arguments.
         /// </summary>

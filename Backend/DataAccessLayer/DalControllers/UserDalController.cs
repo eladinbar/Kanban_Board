@@ -91,6 +91,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
+
         public void DeleteDatabase()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
