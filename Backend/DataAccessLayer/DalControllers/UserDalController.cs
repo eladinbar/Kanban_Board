@@ -14,7 +14,45 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         private static readonly log4net.ILog log = LogHelper.getLogger();
         internal const string UserTableName = "Users";
 
+        /// <summary>
+        /// 
+        /// </summary>
         public UserDalController() : base(UserTableName) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal override void CreateTable()
+        {
+
+            CreateDBFile();
+
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"CREATE TABLE {UserTableName} (" +
+                    $"{DalUser.EmailColumnName} TEXT NOT NULL," +
+                    $"{DalUser.UserPasswordColumnName} TEXT NOT NULL," +
+                    $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
+                    $"PRIMARY KEY({DalUser.EmailColumnName})" +
+                    $");";
+                try
+                {
+                    log.Info("opening connection to DataBase");
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
 
         /// <summary>
         /// gets all user data from database
@@ -26,6 +64,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return userList;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public override bool Insert(DalUser user)
         {
             
@@ -63,6 +106,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res>0;
         }
     
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public bool Delete(DalUser user)
         {
             int res = -1;
@@ -92,6 +140,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res > 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void DeleteDatabase()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
@@ -102,43 +153,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
             return result;
         }
 
-        internal override void CreateTable()
-        {
 
-            CreateDBFile();
-
-            using (var connection = new SQLiteConnection(_connectionString))
-            {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"CREATE TABLE {UserTableName} (" +
-                    $"{DalUser.EmailColumnName} TEXT NOT NULL," +
-                    $"{DalUser.UserPasswordColumnName} TEXT NOT NULL," +
-                    $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
-                    $"PRIMARY KEY({DalUser.EmailColumnName})" +
-                    $");";
-                try
-                {
-                    log.Info("opening connection to DataBase");
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-                catch (SQLiteException e)
-                {
-                    log.Error("SQLite exeption occured", e);
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                }
-            }
-        }
     }   
    
 }

@@ -23,6 +23,30 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             _tableName = tableName;
         }
 
+        /// <summary>
+        /// Creates .db file.
+        /// </summary>
+        protected void CreateDBFile()
+        {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo dBFile = new FileInfo(path);
+            if (!dBFile.Exists)
+            {
+                SQLiteConnection.CreateFile("KanbanDB.db");
+            }
+        }
+
+        /// <summary>
+        /// Creates a Database table with the name _tableName.
+        /// </summary>
+        internal abstract void CreateTable();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dalObject"></param>
+        /// <returns></returns>
+        public abstract bool Insert(T dalObject);
 
         /// <summary>
         /// converts the reader to a DalObject
@@ -402,25 +426,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
-
-        /// <summary>
-        /// Creates a Database table with the name _tableName.
-        /// </summary>
-        internal abstract void CreateTable();
-
-        /// <summary>
-        /// Creates .db file.
-        /// </summary>
-        protected void CreateDBFile()
-        {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
-            FileInfo dBFile = new FileInfo(path);
-            if (!dBFile.Exists)
-            {
-                SQLiteConnection.CreateFile("KanbanDB.db");
-            }
-        }
-
-        public abstract bool Insert(T dalObject);
     }
 }
