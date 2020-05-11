@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleToAttribute("TestsLibrary")]
+[assembly: InternalsVisibleToAttribute("KanbanTests")]
 [assembly: InternalsVisibleTo("KanbanBoardTests")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

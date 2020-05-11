@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanProject", "Backend\Ka
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoardTests", "KanbanBoardTests\KanbanBoardTests.csproj", "{4E126A64-DAF7-4C3C-9B8F-726B9AF2F5A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanTests", "KanbanTests\KanbanTests.csproj", "{4BC1D7AF-30D7-4344-8D64-7440F0E81957}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4E126A64-DAF7-4C3C-9B8F-726B9AF2F5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E126A64-DAF7-4C3C-9B8F-726B9AF2F5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E126A64-DAF7-4C3C-9B8F-726B9AF2F5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BC1D7AF-30D7-4344-8D64-7440F0E81957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BC1D7AF-30D7-4344-8D64-7440F0E81957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BC1D7AF-30D7-4344-8D64-7440F0E81957}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BC1D7AF-30D7-4344-8D64-7440F0E81957}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
