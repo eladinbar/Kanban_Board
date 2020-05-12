@@ -21,6 +21,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
             _connectionString = $"Data Source={path}; Version=3;";
             _tableName = tableName;
+            CreateTable();
         }
 
 
