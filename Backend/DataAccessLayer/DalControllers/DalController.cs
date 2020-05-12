@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"select * from {_tableName}"
+                    CommandText = CommandTextSelect()
                 };
                 SQLiteDataReader dataReader = null;
                 try
@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"select * from {_tableName} where email=\"{email}\""
+                    CommandText = CommandTextSelect(email)
                 };
                 SQLiteDataReader dataReader = null;
                 try
@@ -127,7 +127,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"SELECT FROM {_tableName} WHERE email=\"{email}\" AND Name=\"{columnName}\""
+                    CommandText = CommandTextSelect(email, columnName)
                 };
                 SQLiteDataReader dataReader = null;
                 try
@@ -417,5 +417,28 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         public abstract bool Insert(T dalObject);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="keyArgs"></param>
+        /// <returns></returns>
+        private string CommandTextSelect(params string[] keyArgs)
+        {
+            string command = $"select * from {_tableName}";
+            
+            switch (keyArgs.Length)
+            {
+                case 1:
+                    return command + $" WHERE email=\"{keyArgs[0]}\"";
+                case 2:
+                    return command + $" WHERE email=\"{keyArgs[0]}\" AND Name=\"{keyArgs[1]}\"";
+                case 3:
+                    return command + $" WHERE email=\"{keyArgs[0]}\" AND ColumnName=\"{keyArgs[1]}\" AND ID={keyArgs[2]}";
+                default:
+                    return command;
+            }
+        }
     }
 }
