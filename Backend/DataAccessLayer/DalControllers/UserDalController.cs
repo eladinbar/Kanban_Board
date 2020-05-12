@@ -139,11 +139,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
                     $"PRIMARY KEY({DalUser.EmailColumnName})" +
                     $");";
+                SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
+                tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
+
                 try
                 {
                     log.Info("opening connection to DataBase");
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    SQLiteDataReader reader = tableExistence.ExecuteReader();
+                    if (!reader.Read())
+                        command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
                 {

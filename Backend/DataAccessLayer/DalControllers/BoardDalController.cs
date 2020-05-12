@@ -117,6 +117,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         internal override void CreateTable()
         {
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 CreateDBFile();
@@ -129,11 +130,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"FOREIGN KEY({DalBoard.EmailColumnName})" +
                     $"  REFERENCES {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
                     $");";
+                SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
+                tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
+
                 try
                 {
                     log.Info("opening connection to DataBase");
-                    connection.Open();                    
-                    command.ExecuteNonQuery();
+                    connection.Open();
+                    SQLiteDataReader reader = tableExistence.ExecuteReader();
+                    if (!reader.Read())
+                        command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
                 {
