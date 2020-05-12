@@ -16,12 +16,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
         public UserTests(int numOfDemandedUsers)
         {
-            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
-            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
-            if (dir2.Exists)
-            {
-                dir1.Delete(true);
-            }
+            
 
             _service = new ServiceLayer.Service();
             _service.LoadData();

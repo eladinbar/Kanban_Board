@@ -46,6 +46,7 @@
     <Compile Include="GetBoardTest.cs" />
     <Compile Include="LoadDataTest.cs" />
     <Compile Include="NormalUsageStateTest.cs" />
+    <Compile Include="OnTheRunTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskForTestCreator.cs" />
     <Compile Include="TaskInvolvedTests.cs" />

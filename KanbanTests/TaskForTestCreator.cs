@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             for (int i = 0; i < numOfTasks; i++)
             {
                 int id = rand.Next(numOfTasks) + 1;
-                ServiceLayer.Task tempTask = new ServiceLayer.Task(id, DateTime.Now, "task " + id + " title", "lorem ipsum " + (i + 1), dueDate);
+                ServiceLayer.Task tempTask = new ServiceLayer.Task(id, DateTime.Now, dueDate, "task " + id + " title", "lorem ipsum " + (i + 1));
                 _tasks.Add(tempTask);
             }
         }

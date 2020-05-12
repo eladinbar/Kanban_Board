@@ -10,7 +10,7 @@ using System.Security.AccessControl;
 using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.KanbanTests
-
+{
     class TestsController
     {
 
@@ -19,16 +19,16 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
             //LogHelper.Setup();
 
-            Console.Write("Do you want to perform a restart of the program with user currentUser@TaskInvolvedTeasts.com?");
-            Console.Write("(availavble only if the last tests performed were the regular tests): (y/n)");
+            Console.Write("Do you want to perform a restart of the program with user currentUser@TaskInvolvedTests.com?");
+            Console.Write("(available only if the last tests performed were the regular tests): (y/n)");
 
             string choice2 = Console.ReadLine();
             if (choice2 == "y")
             {
-                ServiceLayer.Service service = new ServiceLayer.Service();
+                Service service = new Service();
                 service.LoadData();
-                service.Login("currentUser@TaskInvolvedTeasts.com", "123Abc");
-                Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTeasts.com", "Backlog").Value.Tasks.ElementAt(0));
+                service.Login("currentUser@TaskInvolvedTests.com", "123Abc");
+                Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTests.com", "Backlog").Value.Tasks.ElementAt(0));
                 Console.ReadKey();
             }
             else
