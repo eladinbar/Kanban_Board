@@ -128,11 +128,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                      $"FOREIGN KEY({DalTask.ContainingTaskColumnNameColumnName})" +
                     $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
                     $");";
+                SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
+                tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
+
                 try
                 {
                     log.Info("opening connection to DataBase");
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    SQLiteDataReader reader = tableExistence.ExecuteReader();
+                    if (!reader.Read())
+                        command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
                 {

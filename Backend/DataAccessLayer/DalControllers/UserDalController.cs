@@ -14,48 +14,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         private static readonly log4net.ILog log = LogHelper.getLogger();
         internal const string UserTableName = "Users";
 
-        /// <summary>
-        /// 
-        /// </summary>
         public UserDalController() : base(UserTableName) { }
 
         /// <summary>
-        /// 
-        /// </summary>
-        internal override void CreateTable()
-        {
-
-            CreateDBFile();
-
-            using (var connection = new SQLiteConnection(_connectionString))
-            {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"CREATE TABLE {UserTableName} (" +
-                    $"{DalUser.EmailColumnName} TEXT NOT NULL," +
-                    $"{DalUser.UserPasswordColumnName} TEXT NOT NULL," +
-                    $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
-                    $"PRIMARY KEY({DalUser.EmailColumnName})" +
-                    $");";
-                try
-                {
-                    log.Info("opening connection to DataBase");
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-                catch (SQLiteException e)
-                {
-                    log.Error("SQLite exeption occured", e);
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                }
-            }
-        }
-
-        /// <summary>
-        /// gets all user data from database
+        /// gets all user data from Database.
         /// </summary>
         /// <returns></returns>
         public List<DalUser> SelectAllUsers()
@@ -65,10 +27,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         /// <summary>
-        /// 
+        /// Insert command for user to Database.
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <param name="user">Dal instance to insert to the Database</param>
+        /// <returns>True is the method changed more then 0 rows</returns>
         public override bool Insert(DalUser user)
         {
             
@@ -105,12 +67,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res>0;
         }
-    
+
         /// <summary>
-        /// 
+        /// Delete command for user to the Database.
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <param name="user">Dal instance to delete from the Database</param>
+        /// <returns>True if the method changed more then 0 rows</returns>
         public bool Delete(DalUser user)
         {
             int res = -1;
@@ -141,7 +103,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         /// <summary>
-        /// 
+        /// Deletes the Database file for a clean start of the program.
         /// </summary>
         public void DeleteDatabase()
         {
@@ -153,18 +115,52 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+        /// <inhecitdoc cref="DalController{T}"/>
         internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
             return result;
         }
 
+        /// <summary>
+        /// Creates the Users table in the Kanban.db.
+        /// </summary>
+        internal override void CreateTable()
+        {
 
+            CreateDBFile();
+
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"CREATE TABLE {UserTableName} (" +
+                    $"{DalUser.EmailColumnName} TEXT NOT NULL," +
+                    $"{DalUser.UserPasswordColumnName} TEXT NOT NULL," +
+                    $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
+                    $"PRIMARY KEY({DalUser.EmailColumnName})" +
+                    $");";
+                SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
+                tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
+
+                try
+                {
+                    log.Info("opening connection to DataBase");
+                    connection.Open();
+                    SQLiteDataReader reader = tableExistence.ExecuteReader();
+                    if (!reader.Read())
+                        command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
     }   
    
 }
