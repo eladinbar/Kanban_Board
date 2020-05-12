@@ -103,9 +103,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         internal override void CreateTable()
-        {
-            CreateDBFile();
-
+        {          
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -120,7 +118,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $");";
                 SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
                 tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
-
                 try
                 {
                     log.Info("opening connection to DataBase");
