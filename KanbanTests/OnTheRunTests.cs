@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 {
     public class OnTheRunTests
     {
-        public static void main(string[] args)
+        public static void Main(string[] args)
         {
             Service service = new Service();
             //loading data

@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
     class TestsController
     {
 
-        static void Main(string[] args)
+        static void jkn(string[] args)
         {
 
             //LogHelper.Setup();
