@@ -46,12 +46,7 @@ namespace KanbanBoardTests
             //Act
             TestBoard.RemoveColumn(TestBoard.UserEmail, columnOrdinal);
             //Assert
-            bool Removed = true;
-            foreach (IntroSE.Kanban.Backend.BusinessLayer.BoardPackage.Column column in TestBoard.Columns) {
-                if (column.Name.Equals(ColumnToRemove.Name))
-                    Removed = false;
-            }
-            Assert.IsTrue(Removed);
+            Assert.IsFalse(TestBoard.Columns.Contains(ColumnToRemove));
         }
 
         [Test]

@@ -154,6 +154,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
 
             Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name);
+            newTask.Save(email, c.Name);
             b.TaskCounter = (b.TaskCounter + 1); 
             b.DalCopyBoard.TaskCounter = b.DalCopyBoard.TaskCounter + 1;
             c.InsertTask(newTask); //DAL.Column is updated via inner BP.Column method
@@ -265,6 +266,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Boards.Add(email, newBoard);
             //save method is a part of inner 'Board' update method
             newBoard.Save();
+            newBoard.Columns.Add(this.AddColumn(email, 0, "backlog"));
+            newBoard.Columns.Add(this.AddColumn(email, 1, "in progress"));
+            newBoard.Columns.Add(this.AddColumn(email, 2, "done"));
 
             log.Info("New board was added with key " + email);
         }
@@ -279,7 +283,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Column AddColumn(string email, int columnOrdinal, string Name) //checked
         {
             Board b = GetBoard(email);
-            return b.AddColumn(email, columnOrdinal, Name);
+            Column newColumn = b.AddColumn(email, columnOrdinal, Name);
+            newColumn.Save(email, columnOrdinal);
+            return newColumn;
         }
 
         /// <summary>

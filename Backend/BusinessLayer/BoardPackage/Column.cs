@@ -27,8 +27,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Name = name;
             Limit = Int32.MaxValue;
             Tasks = new List<Task>();
-            DalCopyColumn = new DalColumn(email, columnOrdinal, name, Limit);
-            DalCopyColumn.Save();
             log.Info("New column " + name + "created");
         }
 
@@ -136,6 +134,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 return true;
             else
                 return false;
+        }
+
+        internal DalColumn ToDalObject(string email, int columnOrdinal)
+        {
+            DalCopyColumn = new DalColumn(email, columnOrdinal, Name, Limit);
+            return DalCopyColumn;
+        }
+
+        internal void Save(string email, int columnOrdinal)
+        {
+            ToDalObject(email, columnOrdinal);
+            DalCopyColumn.Save();
         }
     }
 }
