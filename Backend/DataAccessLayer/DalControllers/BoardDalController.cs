@@ -136,6 +136,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     SQLiteDataReader reader = tableExistence.ExecuteReader();
                     if (!reader.Read())
                         command.ExecuteNonQuery();
+                    reader.Close();
                 }
                 catch (SQLiteException e)
                 {
@@ -156,6 +157,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
     public enum BoardDalEnumController
     {
-        
+       
+
     }
 }

@@ -142,6 +142,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     SQLiteDataReader reader = tableExistence.ExecuteReader();
                     if (!reader.Read())
                         command.ExecuteNonQuery();
+                    reader.Close();
                 }
                 catch (SQLiteException e)
                 {
