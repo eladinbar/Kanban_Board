@@ -127,11 +127,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 }
                 finally
                 {
+                    tableExistence.Dispose();
                     command.Dispose();
                     connection.Close();
                 }
             }
         }
-    
+
+
+
+    }
+
+    public enum BoardDalEnumController
+    {
+        
     }
 }
