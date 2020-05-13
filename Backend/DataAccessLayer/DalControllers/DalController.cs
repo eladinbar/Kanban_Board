@@ -67,7 +67,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed.");
                 }
             }
 
@@ -109,7 +109,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed.");
                 }
             }
 
@@ -153,7 +153,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed.");
                 }
             }
 
@@ -192,7 +192,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed.");
                 }
 
             }
@@ -232,7 +232,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed."); log.Info("connection closed.");
                 }
 
             }
@@ -272,7 +272,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed.");
                 }
 
             }
@@ -312,7 +312,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed.");
                 }
 
             }
@@ -353,7 +353,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed.");
                 }
 
             }
@@ -394,7 +394,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 finally
                 {
                     command.Dispose();
-                    connection.Close();
+                    connection.Close(); log.Info("connection closed.");
                 }
 
             }
