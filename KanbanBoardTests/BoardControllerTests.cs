@@ -36,12 +36,15 @@ namespace KanbanBoardTests
         }
 
         [Test]
-        public void RemoveColumnTest()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        public void RemoveColumnTest(int columnOrdinal)
         {
             //Arrange
             IntroSE.Kanban.Backend.BusinessLayer.BoardPackage.Column ColumnToRemove = TestBoard.GetColumn(0);
             //Act
-            TestBoard.RemoveColumn(TestBoard.UserEmail, 0);
+            TestBoard.RemoveColumn(TestBoard.UserEmail, columnOrdinal);
             //Assert
             bool Removed = true;
             foreach (IntroSE.Kanban.Backend.BusinessLayer.BoardPackage.Column column in TestBoard.Columns) {
@@ -52,18 +55,23 @@ namespace KanbanBoardTests
         }
 
         [Test]
-        public void AddColumnTest()
+        [TestCase(0)]
+        [TestCase(2)]
+        [TestCase(4)]
+        [TestCase(1)]
+        public void AddColumnTest(int columnOrdinal)
         {
             //Act
-            TestBoard.AddColumn(TestBoard.UserEmail, 0, "to do");
+            TestBoard.AddColumn(TestBoard.UserEmail, columnOrdinal, "to do");
             //Assert
-            Assert.IsTrue(TestBoard.Columns[0].Name.Equals("to do"));
+            Assert.IsTrue(TestBoard.Columns[columnOrdinal].Name.Equals("to do"));
         }
 
         [Test]
         public void MoveColumnRightTest()
         {
-            
+            //Arrange
+
         }
 
         [Test]
