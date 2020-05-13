@@ -264,6 +264,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Board newBoard = new Board(email);
             Boards.Add(email, newBoard);
             //save method is a part of inner 'Board' update method
+            newBoard.Save();
 
             log.Info("New board was added with key " + email);
         }

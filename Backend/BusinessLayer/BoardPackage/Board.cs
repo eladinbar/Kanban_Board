@@ -8,7 +8,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     /// <summary>
     /// Represents the Kanban Board
     /// </summary>
-    internal class Board
+    internal class Board : PersistedObject<DalBoard>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
@@ -26,12 +26,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             UserEmail = email;
             TaskCounter = 0;
-            DalCopyBoard = new DalBoard(email, TaskCounter);
             Columns = new List<Column>();
             Columns.Add(this.AddColumn(email, 0, "backlog"));
             Columns.Add(this.AddColumn(email, 1, "in progress"));
             Columns.Add(this.AddColumn(email, 2, "done"));
-            DalCopyBoard.Save();
             log.Info("New board created");
         }
 
@@ -279,6 +277,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return toMove;
         }
 
+        internal override void Save() {
+            ToDalObject();
+            DalCopyBoard.Save();
+        }
 
+        internal override DalBoard ToDalObject()
+        {
+            DalCopyBoard = new DalBoard(UserEmail, TaskCounter);
+            return DalCopyBoard;
+        }
     }
 }
