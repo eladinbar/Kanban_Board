@@ -37,12 +37,12 @@ namespace KanbanBoardTests
 
         [Test]
         [TestCase(0)]
-        [TestCase(1)]
         [TestCase(2)]
+        [TestCase(1)]
         public void RemoveColumnTest(int columnOrdinal)
         {
             //Arrange
-            IntroSE.Kanban.Backend.BusinessLayer.BoardPackage.Column ColumnToRemove = TestBoard.GetColumn(0);
+            IntroSE.Kanban.Backend.BusinessLayer.BoardPackage.Column ColumnToRemove = TestBoard.GetColumn(columnOrdinal);
             //Act
             TestBoard.RemoveColumn(TestBoard.UserEmail, columnOrdinal);
             //Assert
