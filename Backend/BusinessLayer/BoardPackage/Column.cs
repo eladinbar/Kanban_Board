@@ -88,7 +88,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             else
             {
                 Tasks.Add(t);
-                this.DalCopyColumn.Tasks.Add(t.DalCopyTask);
                 log.Debug("The task " + t.Id + " was added to '" + Name + "' column");
             }
         }

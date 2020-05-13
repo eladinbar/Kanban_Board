@@ -134,12 +134,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 if (columnOrdinal == this.Columns.Count) //in case of adding to the end 
                 {
                     this.Columns.Add(newColumn);
-                    this.DalCopyBoard.Columns.Add(newColumn.DalCopyColumn);
                 }
                 else
                 {
                     this.Columns.Insert(columnOrdinal, newColumn);
-                    this.DalCopyBoard.Columns.Insert(columnOrdinal, newColumn.DalCopyColumn);
                     for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns.
                         this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal + 1;
                 }
@@ -178,11 +176,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     else //valid case
                     {
                         this.Columns.RemoveAt(columnOrdinal);
-                        this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
                         foreach (Task t in toRemove.Tasks)
                         {
                             this.Columns[columnOrdinal + 1].Tasks.Add(t);
-                            this.Columns[columnOrdinal + 1].DalCopyColumn.Tasks.Add(t.DalCopyTask);
                             t.DalCopyTask.ColumnName = this.Columns[columnOrdinal + 1].Name;
                         }
                         log.Debug("First column '" + toRemove.Name + "' was removed.");
@@ -209,7 +205,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     foreach (Task t in toRemove.Tasks)
                     {
                         this.Columns[columnOrdinal - 1].Tasks.Add(t);
-                        this.Columns[columnOrdinal - 1].DalCopyColumn.Tasks.Add(t.DalCopyTask);
                         t.DalCopyTask.ColumnName = this.Columns[columnOrdinal - 1].Name;
                     }
                     log.Debug("Column '" + toRemove.Name + "' at index '" + columnOrdinal + "' was removed.");
@@ -244,8 +239,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Column toMove = this.Columns[columnOrdinal];
             this.Columns.RemoveAt(columnOrdinal); 
             this.Columns.Insert(columnOrdinal + 1, toMove);
-            this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
-            this.DalCopyBoard.Columns.Insert(columnOrdinal + 1, toMove.DalCopyColumn);
 
             //updating DAL.Columns ordinals
             toMove.DalCopyColumn.Ordinal = toMove.DalCopyColumn.Ordinal + 1;
@@ -277,8 +270,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Column toMove = this.Columns[columnOrdinal];
             this.Columns.RemoveAt(columnOrdinal);
             this.Columns.Insert(columnOrdinal - 1, toMove);
-            this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
-            this.DalCopyBoard.Columns.Insert(columnOrdinal - 1, toMove.DalCopyColumn);
 
             //updating DAL.Columns ordinals
             toMove.DalCopyColumn.Ordinal = toMove.DalCopyColumn.Ordinal - 1;

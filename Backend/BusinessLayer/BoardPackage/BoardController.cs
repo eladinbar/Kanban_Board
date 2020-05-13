@@ -129,8 +129,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
                 //DataAccess layer runtime list update 
                 toAdvance.DalCopyTask.ColumnName = targetColumn.Name;
-                c.DalCopyColumn.Tasks.Remove(toAdvance.DalCopyTask);
-                targetColumn.DalCopyColumn.Tasks.Add(toAdvance.DalCopyTask);
 
                 log.Debug("Task #" + taskId + "-" + toAdvance.Title + " was advanced");
             }
