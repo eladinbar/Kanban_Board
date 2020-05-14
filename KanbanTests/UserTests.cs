@@ -49,9 +49,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             foreach (ServiceLayer.User tempUser in randomUsers)
             {
                 string message = service.Register(tempUser.Email, uniPassword, tempUser.Nickname).ErrorMessage;
-                Console.WriteLine("Runtime outcome: " + message);
-                if (message == null)
-                    Console.Write("User was registered successfully!");
+                Console.WriteLine("Runtime outcome: " + ((message==null) ?  "User was registered successfully!" : message));
             }
             Console.WriteLine("---------------------------------------------------------------");
         }
@@ -66,9 +64,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             for (int i = 0; i < badPasswords.Length; i++)
             {
                 string message = service.Register("badPass" + randomUsers[i].Email, badPasswords[i], randomUsers[i].Nickname).ErrorMessage;
-                Console.WriteLine("Runtime outcome: " + message);
-                if (message == null)
-                    Console.Write("BadPasswordRegister succeeded but was expected to fail");
+                Console.WriteLine("Runtime outcome: " + ((message == null) ? "BadPasswordRegister succeeded but was expected to fail" : message));
             }
             Console.WriteLine("---------------------------------------------------------------");
 
@@ -83,9 +79,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             foreach (ServiceLayer.User tempUser in randomUsers)
             {
                 string message = service.Register(tempUser.Email, uniPassword, tempUser.Nickname).ErrorMessage;
-                Console.WriteLine("Runtime outcome: " + message);
-                if (message == null)
-                    Console.Write("ExistingEmailRegister succeeded but was expected to fail");
+                Console.WriteLine("Runtime outcome: " + ((message == null) ? "ExistingEmailRegister succeeded but was expected to fail" : message));
             }
             Console.WriteLine("---------------------------------------------------------------");
 
@@ -101,9 +95,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             for (int i = 0; i < badEmails.Length; i++)
             {
                 string message = service.Register(badEmails[i], uniPassword, "nickOfNonAcceptEmail").ErrorMessage;
-                Console.WriteLine("Runtime outcome: " + message);
-                if (message == null)
-                    Console.Write("NonAcceptableEmailRegister succeeded but was expected to fail");
+                Console.WriteLine("Runtime outcome: " + ((message == null) ? "NonAcceptableEmailRegister succeeded but was expected to fail" : message));
             }
             Console.WriteLine("---------------------------------------------------------------");
 
@@ -115,9 +107,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("LoginTest");
             Console.WriteLine("Input: proper existing user data.");
             string message = service.Login(randomUsers.ElementAt(0).Email, uniPassword).ErrorMessage;
-            Console.WriteLine("Runtime outcome(succeed if empty): " + message);
-            if (message == null)
-                Console.Write("Login successful!");
+            Console.WriteLine("Runtime outcome(succeed if empty): " + ((message == null) ? "Login successful!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -128,9 +118,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("IncorrectPasswordLoginTest");
             Console.WriteLine("Input: user data with incorrect password.");
             string message = service.Login(randomUsers.ElementAt(0).Email, uniPassword + "Bad").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("IncorrectPasswordLogin succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "IncorrectPasswordLogin succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -141,9 +129,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("IncorrectEmailLoginTest");
             Console.WriteLine("Input: user data with incorrect email.");
             string message = service.Login("BadEmail_" + randomUsers.ElementAt(0).Email, uniPassword).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("IncorrectEmailLogin succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "IncorrectEmailLogin succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -154,13 +140,9 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("OtherUserAlreadyLoggedInTest");
             Console.WriteLine("Input: user data.");
             string message1 = service.Login(randomUsers.ElementAt(0).Email, uniPassword).ErrorMessage;
-            Console.WriteLine("Runtime outcome (same user as logged in): " + message1);
-            if (message1 == null)
-                Console.Write("SameUserAlreadyLoggedIn succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome (same user as logged in): " + ((message1 == null) ? "SameUserAlreadyLoggedIn succeeded but was expected to fail" : message1));
             string message2 = service.Login("Other_" + randomUsers.ElementAt(0).Email, uniPassword).ErrorMessage;
-            Console.WriteLine("Runtime outcome (different user): " + message2);
-            if (message2 == null)
-                Console.Write("OtherUserAlreadyLoggedIn succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome (different user): " + ((message2 == null) ? "OtherUserAlreadyLoggedIn succeeded but was expected to fail" : message2));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -170,9 +152,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("LogoutOfLoggedInUserTest");
             Console.WriteLine("Input: logged in user data.");
             string message = service.Logout(randomUsers.ElementAt(0).Email).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("LogoutofLoggedInUser was successful!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "LogoutofLoggedInUser was successful!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -183,9 +163,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("Input: not logged in user data.");
             service.Register("LogoutOfNotCurrentUserTestMethod@UsersTests.com", uniPassword, "tempNickName");
             string message = service.Logout("LogoutOfNotCurrentUserTestMethod@UsersTests.com").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("LogoutOfNotCurrentUser succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "LogoutOfNotCurrentUser succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 

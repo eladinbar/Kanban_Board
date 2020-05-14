@@ -42,9 +42,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetBoardTest");
             Console.WriteLine("Input: proper user's email.");
             string message = service.GetBoard(currentUser.Email).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("Board was retrieved successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "Board was retrieved successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -54,9 +52,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetBoardWithNonExistingEmailTest");
             Console.WriteLine("Input: non existing email.");
             string message = service.GetBoard("nonExistingEmail@GetBoardWithNonExistingEmailMethod.com").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("GetBoardWithNonExistingEmail succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "GetBoardWithNonExistingEmail succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -68,9 +64,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             User tempUser = new User("notLoggedInEmail@GetBoardOfNotLoggedInUserMethod.com", "tempGetBoardOfNotLoggedInUserNickName");
             service.Register(tempUser.Email, uniPassword, tempUser.Nickname);
             string message = service.GetBoard(tempUser.Email).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("GetBoardOfNotLoggedInUser succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "GetBoardOfNotLoggedInUser succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
 
         }

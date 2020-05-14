@@ -54,9 +54,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("LimitColumnTest");
             Console.WriteLine("Input: proper data.");
             string message = service.LimitColumnTasks(currentUser.Email, 1, 10).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("LimitColumn run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "LimitColumn run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -66,9 +64,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("LimitColumnBadColumnOrdinalTest");
             Console.WriteLine("Input: data with non existing column ordinal.");
             string message = service.LimitColumnTasks(currentUser.Email, int.MaxValue, 1).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("LimitColumnBadColumnOrdinal succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "LimitColumnBadColumnOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -83,9 +79,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             service.AddTask(currentUser.Email, randomTasks.ElementAt(1).Title, randomTasks.ElementAt(1).Description, randomTasks.ElementAt(1).DueDate);
             service.AddTask(currentUser.Email, randomTasks.ElementAt(2).Title, randomTasks.ElementAt(2).Description, randomTasks.ElementAt(2).DueDate);
             string message = service.LimitColumnTasks(currentUser.Email, 0, 1).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("LimitLesserThanTaskNum run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "LimitLesserThanTaskNum run successfully!" : message));
             service.LimitColumnTasks(currentUser.Email, 0, 10); //resetting the limit back to 10
             Console.WriteLine("End of the test: current limit was reset back to 10.");
             Console.WriteLine("---------------------------------------------------------------");
@@ -98,9 +92,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetColumnByNameTest");
             Console.WriteLine("Input: proper data.");
             string message = service.GetColumn(currentUser.Email, "done").ErrorMessage;
-            Console.Write("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("GetColumnByName run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "GetColumnByName run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -110,9 +102,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetColumnByNonExistNameTest");
             Console.WriteLine("Input: non existing column name.");
             string message = service.GetColumn(currentUser.Email, "NonExistingNameOfColumn").ErrorMessage;
-            Console.Write("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("GetColumnByNonExistName succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "GetColumnByNonExistName succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -123,9 +113,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetColumnByOrdinalTest");
             Console.WriteLine("Input: proper data.");
             string message = service.GetColumn(currentUser.Email, 2).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("GetColumnByOrdinal run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "GetColumnByOrdinal run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -135,9 +123,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetColumnByNonExistOrdinalTest");
             Console.WriteLine("Input: non existing column ordinal.");
             string message = service.GetColumn(currentUser.Email, int.MaxValue).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("GetColumnByNonExistOrdinal succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "GetColumnByNonExistOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -147,9 +133,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("AddColumnTest");
             Console.WriteLine("Input: proper data.");
             string message = service.AddColumn(currentUser.Email, 0, "new column").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("AddColumn run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "AddColumn run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -160,9 +144,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("AddColumnOutOfBoundsOrdinalTest");
             Console.WriteLine("Input: out of bounds column ordinal.");
             string message = service.AddColumn(currentUser.Email, b.ColumnsNames.Count, "new column").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("AddColumnOutOfBoundsOrdinal succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "AddColumnOutOfBoundsOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -172,9 +154,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("RemoveColumnTest");
             Console.WriteLine("Input: proper data.");
             string message = service.RemoveColumn(currentUser.Email, 0).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("RemoveColumn run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "RemoveColumn run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -184,9 +164,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("RemoveColumNonExistOrdinalTest");
             Console.WriteLine("Input: proper data.");
             string message = service.RemoveColumn(currentUser.Email, b.ColumnsNames.Count).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("RemoveColumnBadOrdinal succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "RemoveColumnBadOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -195,9 +173,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("MoveColumnRightTest");
             Console.WriteLine("Input: proper data.");
             string message = service.MoveColumnRight(currentUser.Email, 0).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("MoveColumnRight run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "MoveColumnRight run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -207,9 +183,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("MoveColumnRightLastOrdinalTest");
             Console.WriteLine("Input: proper data.");
             string message = service.RemoveColumn(currentUser.Email, b.ColumnsNames.Count - 1).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("MoveColumnRightLastOrdinal succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "MoveColumnRightLastOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -218,9 +192,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("MoveColumnLeftTest");
             Console.WriteLine("Input: proper data.");
             string message = service.RemoveColumn(currentUser.Email, 1).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("MoveColumnLeft run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "MoveColumnLeft run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -229,9 +201,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("MoveColumnLeftBadOrdinalTest");
             Console.WriteLine("Input: proper data.");
             string message = service.RemoveColumn(currentUser.Email, 0).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("MoveColumnLeftFirstOrdinal succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "MoveColumnLeftFirstOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
     }

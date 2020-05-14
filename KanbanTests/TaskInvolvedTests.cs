@@ -57,9 +57,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             foreach (ServiceLayer.Task tempTask in randomTasks)
             {
                 string message = service.AddTask(currentUser.Email, tempTask.Title, tempTask.Description, tempTask.DueDate).ErrorMessage;
-                Console.WriteLine(message);
-                if (message == null)
-                    Console.Write("AddTask was executed successfully!");
+                Console.WriteLine(((message == null) ? "AddTask was executed successfully!" : message));
             }
             Console.WriteLine("---------------------------------------------------------------");
         }
@@ -69,17 +67,17 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("AddTaskOverColumnLimitTest");
             Console.WriteLine("Input: proper new task details with existing email.");
-            Console.WriteLine("Runtime outcome: ");
+            Console.Write("Runtime outcome: ");
             service.LimitColumnTasks(currentUser.Email, 0, 10);
             int i = 1;
-            foreach (ServiceLayer.Task tempTask in randomTasks)
+            foreach (ServiceLayer.Task tempTask in randomTasks)///////////////////////////////////////////////////////////////////////////////////////
             {
                 string message = service.AddTask(currentUser.Email, "OverColumnLimit" + tempTask.Title + "#" + i, tempTask.Description, tempTask.DueDate).ErrorMessage;
                 Console.WriteLine(message);
                 if (message == null & i>10)
-                    Console.Write("AddTaskOverColumnLimit succeeded but was expected to fail");
+                    Console.WriteLine("AddTaskOverColumnLimit succeeded but was expected to fail");
                 else
-                    Console.Write("AddTask run successfully!");
+                    Console.WriteLine("AddTask run successfully!");
                 i++;
             }
             Console.WriteLine("---------------------------------------------------------------");
@@ -92,9 +90,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("Input: proper details.");
             DateTime newDueDate = new DateTime(2035, 7, 24);
             string message = service.UpdateTaskDueDate(currentUser.Email, 0, 1, newDueDate).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("UpdateTaskDueDate run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "UpdateTaskDueDate run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -105,9 +101,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("Input: proper details except columnOrdinal.");
             DateTime newDueDate = new DateTime(2035, 7, 24);
             string message = service.UpdateTaskDueDate(currentUser.Email, int.MaxValue, 1, newDueDate).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("UpdateTaskDueDateNonExistOrdinal succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "UpdateTaskDueDateNonExistOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -118,9 +112,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("Input: proper details except columnOrdinal - task exists but in different column.");
             DateTime newDueDate = new DateTime(2035, 7, 24);
             string message = service.UpdateTaskDueDate(currentUser.Email, 1, 1, newDueDate).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("UpdateTaskDueDateBadOrdinal succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "UpdateTaskDueDateBadOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -130,9 +122,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("UpdateTaskTitleTest");
             Console.WriteLine("Input: proper task details.");
             string message = service.UpdateTaskTitle(currentUser.Email, 0, 1, "UpdateTaskTitleTest").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("UpdateTaskTitle run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "UpdateTaskTitle run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -142,9 +132,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("UpdateTaskDescriptioneTest");
             Console.WriteLine("Input: proper task details.");
             string message = service.UpdateTaskDescription(currentUser.Email, 0, 1, "UpdateTaskDescriptioneTest").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("UpdateTaskDescription run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "UpdateTaskDescription run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -154,9 +142,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("AdvanceTaskTest");
             Console.WriteLine("Input: proper task details.");
             string message = service.AdvanceTask(currentUser.Email, 0, 1).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("AdvanceTask run successfully!");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "AdvanceTask run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -167,13 +153,9 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("Input: proper task details with 'done' column ordinal.");
             service.AdvanceTask(currentUser.Email, 1, 1);
             string message1 = service.AdvanceTask(currentUser.Email, 2, 1).ErrorMessage;
-            Console.WriteLine("Runtime outcome for advancing: " + message1);
-            if (message1 == null)
-                Console.WriteLine("AdvanceTaskFinalColumn succeeded but was expected to fail");
+            Console.Write("Runtime outcome for advancing: " + ((message1 == null) ? "AdvanceTaskFinalColumn succeeded but was expected to fail" : message1));
             string message2 = service.UpdateTaskDescription(currentUser.Email, 2, 1, "if you see this in description - it's bad").ErrorMessage;
-            Console.WriteLine("Runtime outcome for editing: " + message2);
-            if (message2 == null)
-                Console.Write("EditTaskFinalColumn succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome for editing: " + ((message2 == null) ? "EditTaskFinalColumn succeeded but was expected to fail" : message2));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -183,9 +165,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("AdvanceTaskIdNotExistTest");
             Console.WriteLine("Input: non existing task id.");
             string message = service.AdvanceTask(currentUser.Email, 0, -34543543).ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
-            if (message == null)
-                Console.Write("AdvanceTaskIdNotExist succeeded but was expected to fail");
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "AdvanceTaskIdNotExist succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
 
         }
