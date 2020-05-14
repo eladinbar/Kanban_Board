@@ -98,7 +98,9 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                 string choice3 = Console.ReadLine();
                 if (choice3 == "y")
                 {
-                    { 
+                    {
+                        DeleteDataTest deleteDataTest = new DeleteDataTest();
+                        deleteDataTest.RunTest();
                         Console.Write("Database was deleted. Thank you for using Tests.");
                     }
                     Console.ReadKey();

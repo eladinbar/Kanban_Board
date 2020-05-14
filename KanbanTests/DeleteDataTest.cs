@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KanbanTests
+namespace IntroSE.Kanban.Backend.KanbanTests
 {
-    class DeleteDataTest
+    public class DeleteDataTest
     {
         Service service;
 
