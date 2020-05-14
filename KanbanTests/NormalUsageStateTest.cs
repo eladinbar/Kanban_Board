@@ -27,8 +27,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
             service = new Service();
             service.LoadData();
-            randomUsers = new UserForTestCreator(10)._users;
-            randomTasks = new TaskForTestCreator(10)._tasks;
+            randomUsers = new UserForTestCreator(10).users;
+            randomTasks = new TaskForTestCreator(10).tasks;
             uniPassword = "123Abc";
             currentUser = null;
             userCounter = 0;

@@ -14,12 +14,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
         public LoadDataTest()
         {
-            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
-            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
-            if (dir2.Exists)
-            {
-                dir1.Delete(true);
-            }
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo DBFile = new FileInfo(path);
+            if (DBFile.Exists)
+                DBFile.Delete();
 
             service = new Service();
 

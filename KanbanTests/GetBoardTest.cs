@@ -10,25 +10,23 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 {
     class GetBoardTest
     {
-        private Service _service;
-        private User _currentUser;
-        private string _uniPassword;
+        private Service service;
+        private User currentUser;
+        private string uniPassword;
 
         public GetBoardTest()
         {
-            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
-            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
-            if (dir2.Exists)
-            {
-                dir1.Delete(true);
-            }
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo DBFile = new FileInfo(path);
+            if (DBFile.Exists)
+                DBFile.Delete();
 
-            _service = new Service();
-            _service.LoadData();
-            _currentUser = new User("currentUser@GetBoardTest.com", "currentUser@GetBoardTest");
-            _uniPassword = "123Abc";
-            _service.Register(_currentUser.Email, _uniPassword, _currentUser.Nickname);
-            _service.Login(_currentUser.Email, _uniPassword);
+            service = new Service();
+            service.LoadData();
+            currentUser = new User("currentUser@GetBoardTest.com", "currentUser@GetBoardTest");
+            uniPassword = "123Abc";
+            service.Register(currentUser.Email, uniPassword, currentUser.Nickname);
+            service.Login(currentUser.Email, uniPassword);
         }
 
         public void RunAllTests()
@@ -43,7 +41,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("GetBoardTest");
             Console.WriteLine("Input: proper user's email.");
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard(_currentUser.Email).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + service.GetBoard(currentUser.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -52,7 +50,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("GetBoardWithNonExistingEmailTest");
             Console.WriteLine("Input: non existing email.");
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard("nonExistingEmail@GetBoardWithNonExistingEmailMethod.com").ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + service.GetBoard("nonExistingEmail@GetBoardWithNonExistingEmailMethod.com").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -62,8 +60,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetBoardOfNotLoggedInUserTest");
             Console.WriteLine("Input: not logged in user's email.");
             User tempUser = new User("notLoggedInEmail@GetBoardOfNotLoggedInUserMethod.com", "tempGetBoardOfNotLoggedInUserNickName");
-            _service.Register(tempUser.Email, _uniPassword, tempUser.Nickname);
-            Console.WriteLine("Runtime outcome: " + _service.GetBoard(tempUser.Email).ErrorMessage);
+            service.Register(tempUser.Email, uniPassword, tempUser.Nickname);
+            Console.WriteLine("Runtime outcome: " + service.GetBoard(tempUser.Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }

@@ -10,18 +10,18 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 {
     class UserTests
     {
-        private ServiceLayer.Service _service;
-        private List<ServiceLayer.User> _randomUsers;
-        private string _uniPassword;
+        private ServiceLayer.Service service;
+        private List<ServiceLayer.User> randomUsers;
+        private string uniPassword;
 
         public UserTests(int numOfDemandedUsers)
         {
             
 
-            _service = new ServiceLayer.Service();
-            _service.LoadData();
-            _randomUsers = new UserForTestCreator(numOfDemandedUsers)._users;
-            _uniPassword = "123Abc";
+            service = new ServiceLayer.Service();
+            service.LoadData();
+            randomUsers = new UserForTestCreator(numOfDemandedUsers).users;
+            uniPassword = "123Abc";
         }
 
 
@@ -46,8 +46,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("RegisterTest");
             Console.WriteLine("Demanded input: proper new user data.");
-            foreach (ServiceLayer.User tempUser in _randomUsers)
-                Console.WriteLine("Runtime outcome: " + _service.Register(tempUser.Email, _uniPassword, tempUser.Nickname).ErrorMessage);
+            foreach (ServiceLayer.User tempUser in randomUsers)
+                Console.WriteLine("Runtime outcome: " + service.Register(tempUser.Email, uniPassword, tempUser.Nickname).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -59,7 +59,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("BadPasswordRegisterTest");
             Console.WriteLine("Input: new user data with non acceptable password.");
             for (int i = 0; i < badPsswords.Length; i++)
-                Console.WriteLine("Runtime outcome: " + _service.Register("badPass" + _randomUsers[i].Email, badPsswords[i], _randomUsers[i].Nickname).ErrorMessage);
+                Console.WriteLine("Runtime outcome: " + service.Register("badPass" + randomUsers[i].Email, badPsswords[i], randomUsers[i].Nickname).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }
@@ -70,8 +70,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("ExistingEmailRegisterTest");
             Console.WriteLine("Input: new user data with existing email.");
-            foreach (ServiceLayer.User tempUser in _randomUsers)
-                Console.WriteLine("Runtime outcome: " + _service.Register(tempUser.Email, _uniPassword, tempUser.Nickname).ErrorMessage);
+            foreach (ServiceLayer.User tempUser in randomUsers)
+                Console.WriteLine("Runtime outcome: " + service.Register(tempUser.Email, uniPassword, tempUser.Nickname).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }
@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("NonAcceptableEmailRegisterTest");
             Console.WriteLine("Input: new user data with non acceptable email.");
             for (int i = 0; i < badEmails.Length; i++)
-                Console.WriteLine("Runtime outcome: " + _service.Register(badEmails[i], _uniPassword, "nickOfNonAcceptEmail").ErrorMessage);
+                Console.WriteLine("Runtime outcome: " + service.Register(badEmails[i], uniPassword, "nickOfNonAcceptEmail").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
 
         }
@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("LoginTest");
             Console.WriteLine("Input: proper existing user data.");
-            Console.WriteLine("Runtime outcome(succeed if empty): " + _service.Login(_randomUsers.ElementAt(0).Email, _uniPassword).ErrorMessage);
+            Console.WriteLine("Runtime outcome(succeed if empty): " + service.Login(randomUsers.ElementAt(0).Email, uniPassword).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -104,7 +104,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("IncorrectPasswordLoginTest");
             Console.WriteLine("Input: user data with incorrect password.");
-            Console.WriteLine("Runtime outcome: " + _service.Login(_randomUsers.ElementAt(0).Email, _uniPassword + "Bad").ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + service.Login(randomUsers.ElementAt(0).Email, uniPassword + "Bad").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -114,7 +114,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("IncorrectEmailLoginTest");
             Console.WriteLine("Input: user data with incorrect email.");
-            Console.WriteLine("Runtime outcome: " + _service.Login("BadEmail_" + _randomUsers.ElementAt(0).Email, _uniPassword).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + service.Login("BadEmail_" + randomUsers.ElementAt(0).Email, uniPassword).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -124,8 +124,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("OtherUserAlreadyLoggedInTest");
             Console.WriteLine("Input: user data.");
-            Console.WriteLine("Runtime outcome (same user as logged in): " + _service.Login(_randomUsers.ElementAt(0).Email, _uniPassword).ErrorMessage);
-            Console.WriteLine("Runtime outcome (different user): " + _service.Login("Other_" + _randomUsers.ElementAt(0).Email, _uniPassword).ErrorMessage);
+            Console.WriteLine("Runtime outcome (same user as logged in): " + service.Login(randomUsers.ElementAt(0).Email, uniPassword).ErrorMessage);
+            Console.WriteLine("Runtime outcome (different user): " + service.Login("Other_" + randomUsers.ElementAt(0).Email, uniPassword).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -134,7 +134,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("LogoutOfLoggedInUserTest");
             Console.WriteLine("Input: logged in user data.");
-            Console.WriteLine("Runtime outcome: " + _service.Logout(_randomUsers.ElementAt(0).Email).ErrorMessage);
+            Console.WriteLine("Runtime outcome: " + service.Logout(randomUsers.ElementAt(0).Email).ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -143,8 +143,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("LogoutOfNotCurrentUserTest");
             Console.WriteLine("Input: not logged in user data.");
-            _service.Register("LogoutOfNotCurrentUserTestMethod@UsersTests.com", _uniPassword, "tempNickName");
-            Console.WriteLine("Runtime outcome: " + _service.Logout("LogoutOfNotCurrentUserTestMethod@UsersTests.com").ErrorMessage);
+            service.Register("LogoutOfNotCurrentUserTestMethod@UsersTests.com", uniPassword, "tempNickName");
+            Console.WriteLine("Runtime outcome: " + service.Logout("LogoutOfNotCurrentUserTestMethod@UsersTests.com").ErrorMessage);
             Console.WriteLine("---------------------------------------------------------------");
         }
 

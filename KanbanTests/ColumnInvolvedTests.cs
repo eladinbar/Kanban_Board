@@ -37,6 +37,15 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             this.GetColumnByOrdinal();
             this.GetColumnByNonExistName();
             this.GetColumnByNonExistOrdinal();
+
+            this.AddColumn();
+            this.AddColumnOutOfBoundsOrdinal();
+            this.RemoveColumn();
+            this.RemoveColumnNonExistOrdinal();
+            this.MoveColumnRight();
+            this.MoveColumnRightLastOrdinal();
+            this.MoveColumnLeft();
+            this.MoveColumnLeftFirstOrdinal();
         }
 
         public void LimitColumn()
@@ -69,7 +78,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("LimitLesserThanTaskNumTest");
             Console.WriteLine("Input: data with smaller column limit than current number of tasks in that column.");
             TaskForTestCreator taskForTestCreator = new TaskForTestCreator(4);
-            List<ServiceLayer.Task> randomTasks = taskForTestCreator._tasks;
+            List<ServiceLayer.Task> randomTasks = taskForTestCreator.tasks;
             service.AddTask(currentUser.Email, randomTasks.ElementAt(0).Title, randomTasks.ElementAt(0).Description, randomTasks.ElementAt(0).DueDate);
             service.AddTask(currentUser.Email, randomTasks.ElementAt(1).Title, randomTasks.ElementAt(1).Description, randomTasks.ElementAt(1).DueDate);
             service.AddTask(currentUser.Email, randomTasks.ElementAt(2).Title, randomTasks.ElementAt(2).Description, randomTasks.ElementAt(2).DueDate);

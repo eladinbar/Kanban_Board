@@ -95,16 +95,16 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.Write("do you want to clear the 'data' folder? (y/n):");
+                Console.Write("do you want to clear the database file? (y/n):");
                 string choice3 = Console.ReadLine();
                 if (choice3 == "y")
                 {
-                    DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
-                    DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
-                    if (dir2.Exists)
+                    string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+                    FileInfo DBFile = new FileInfo(path);
+                    if (DBFile.Exists)
                     {
-                        dir1.Delete(true);
-                        Console.Write("'data' folder was deleted. Thank you for using Tests.");
+                        DBFile.Delete();
+                        Console.Write("Database was deleted. Thank you for using Tests.");
                     }
                     Console.ReadKey();
                 }

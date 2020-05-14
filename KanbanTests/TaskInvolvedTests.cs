@@ -16,14 +16,12 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
         public TaskInvolvedTests()
         {
-            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
-            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
-            if (dir2.Exists)
-            {
-                dir1.Delete(true);
-            }
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo DBFile = new FileInfo(path);
+            if (DBFile.Exists)
+                DBFile.Delete();
 
-            _randomTasks = new TaskForTestCreator(10)._tasks;
+            _randomTasks = new TaskForTestCreator(10).tasks;
             _service = new ServiceLayer.Service();
             _service.LoadData();
             _currentUser = new ServiceLayer.User("currentUser@TaskInvolvedTeasts.com", "currentUser@TaskInvolvedTeasts.com");
