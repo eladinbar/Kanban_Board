@@ -10,23 +10,21 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 {
     class ColumnInvolvedTests
     {
-        private Service _service;
-        private User _currentUser;
+        private Service service;
+        private User currentUser;
 
         public ColumnInvolvedTests()
         {
-            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
-            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
-            if (dir2.Exists)
-            {
-                dir1.Delete(true);
-            }
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo DBFile = new FileInfo(path);
+            if (DBFile.Exists)
+                DBFile.Delete();
 
-            _service = new Service();
-            _service.LoadData();
-            _currentUser = new User("currentUser@ColumnInvolvedTests.com", "currentUser@ColumnInvolvedTests");
-            _service.Register(_currentUser.Email, "123Abc", _currentUser.Nickname);
-            _service.Login(_currentUser.Email, "123Abc");
+            service = new Service();
+            service.LoadData();
+            currentUser = new User("currentUser@ColumnInvolvedTests.com", "currentUser@ColumnInvolvedTests");
+            service.Register(currentUser.Email, "123Abc", currentUser.Nickname);
+            service.Login(currentUser.Email, "123Abc");
         }
 
         public void RunAllTests()
@@ -46,7 +44,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("LimitColumnTest");
             Console.WriteLine("Input: proper data.");
-            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, 1, 10).ErrorMessage);
+            string message = service.LimitColumnTasks(currentUser.Email, 1, 10).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.WriteLine("LimitColumn run successfully!");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -55,7 +56,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("LimitColumnBadColumnOrdinalTest");
             Console.WriteLine("Input: data with non existing column ordinal.");
-            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, int.MaxValue, 1).ErrorMessage);
+            string message = service.LimitColumnTasks(currentUser.Email, int.MaxValue, 1).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.WriteLine("LimitColumnBadColumnOrdinal succeeded but was expected to fail");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -65,13 +69,16 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("LimitLesserThanTaskNumTest");
             Console.WriteLine("Input: data with smaller column limit than current number of tasks in that column.");
             TaskForTestCreator taskForTestCreator = new TaskForTestCreator(4);
-            List<ServiceLayer.Task> _randomTasks = taskForTestCreator._tasks;
-            _service.AddTask(_currentUser.Email, _randomTasks.ElementAt(0).Title, _randomTasks.ElementAt(0).Description, _randomTasks.ElementAt(0).DueDate);
-            _service.AddTask(_currentUser.Email, _randomTasks.ElementAt(1).Title, _randomTasks.ElementAt(1).Description, _randomTasks.ElementAt(1).DueDate);
-            _service.AddTask(_currentUser.Email, _randomTasks.ElementAt(2).Title, _randomTasks.ElementAt(2).Description, _randomTasks.ElementAt(2).DueDate);
-            Console.WriteLine("Runtime outcome: " + _service.LimitColumnTasks(_currentUser.Email, 0, 1).ErrorMessage);
-            _service.LimitColumnTasks(_currentUser.Email, 0, 10); //reseting the limit to 10
-            Console.WriteLine("End of the test: current limit was resetted back to 10.");
+            List<ServiceLayer.Task> randomTasks = taskForTestCreator._tasks;
+            service.AddTask(currentUser.Email, randomTasks.ElementAt(0).Title, randomTasks.ElementAt(0).Description, randomTasks.ElementAt(0).DueDate);
+            service.AddTask(currentUser.Email, randomTasks.ElementAt(1).Title, randomTasks.ElementAt(1).Description, randomTasks.ElementAt(1).DueDate);
+            service.AddTask(currentUser.Email, randomTasks.ElementAt(2).Title, randomTasks.ElementAt(2).Description, randomTasks.ElementAt(2).DueDate);
+            string message = service.LimitColumnTasks(currentUser.Email, 0, 1).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.WriteLine("LimitLesserThanTaskNum run successfully!");
+            service.LimitColumnTasks(currentUser.Email, 0, 10); //resetting the limit back to 10
+            Console.WriteLine("End of the test: current limit was reset back to 10.");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -81,7 +88,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("GetColumnByNameTest");
             Console.WriteLine("Input: proper data.");
-            Console.WriteLine("Runtime outcome: " + _service.GetColumn(_currentUser.Email, "Done").ErrorMessage);
+            string message = service.GetColumn(currentUser.Email, "done").ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("GetColumnByName run successfully!");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -90,7 +100,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("GetColumnByNonExistNameTest");
             Console.WriteLine("Input: non existing column name.");
-            Console.WriteLine("Runtime outcome: " + _service.GetColumn(_currentUser.Email, "NonExistingNameOfColumn").ErrorMessage);
+            string message = service.GetColumn(currentUser.Email, "NonExistingNameOfColumn").ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("GetColumnByNonExistName succeeded but was expected to fail");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -100,7 +113,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("GetColumnByOrdinalTest");
             Console.WriteLine("Input: proper data.");
-            Console.WriteLine("Runtime outcome: " + _service.GetColumn(_currentUser.Email, 2).ErrorMessage);
+            string message = service.GetColumn(currentUser.Email, 2).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("GetColumnByOrdinal run successfully!");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -109,10 +125,105 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("GetColumnByNonExistOrdinalTest");
             Console.WriteLine("Input: non existing column ordinal.");
-            Console.WriteLine("Runtime outcome: " + _service.GetColumn(_currentUser.Email, int.MaxValue).ErrorMessage);
+            string message = service.GetColumn(currentUser.Email, int.MaxValue).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("GetColumnByNonExistOrdinal succeeded but was expected to fail");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
+        public void AddColumn()
+        {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("AddColumnTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.AddColumn(currentUser.Email, 0, "new column").ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("AddColumn run successfully!");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
 
+        public void AddColumnOutOfBoundsOrdinal()
+        {
+            Board b = service.GetBoard(currentUser.Email).Value;
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("AddColumnOutOfBoundsOrdinalTest");
+            Console.WriteLine("Input: out of bounds column ordinal.");
+            string message = service.AddColumn(currentUser.Email, b.ColumnsNames.Count, "new column").ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("AddColumnOutOfBoundsOrdinal succeeded but was expected to fail");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
+
+        public void RemoveColumn()
+        {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("RemoveColumnTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.RemoveColumn(currentUser.Email, 0).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("RemoveColumn run successfully!");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
+
+        public void RemoveColumnNonExistOrdinal() {
+            Board b = service.GetBoard(currentUser.Email).Value;
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("RemoveColumNonExistOrdinalTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.RemoveColumn(currentUser.Email, b.ColumnsNames.Count).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("RemoveColumnBadOrdinal succeeded but was expected to fail");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
+
+        public void MoveColumnRight() {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("MoveColumnRightTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.MoveColumnRight(currentUser.Email, 0).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("MoveColumnRight run successfully!");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
+
+        public void MoveColumnRightLastOrdinal() {
+            Board b = service.GetBoard(currentUser.Email).Value;
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("MoveColumnRightLastOrdinalTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.RemoveColumn(currentUser.Email, b.ColumnsNames.Count - 1).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("MoveColumnRightLastOrdinal succeeded but was expected to fail");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
+
+        public void MoveColumnLeft() {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("MoveColumnLeftTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.RemoveColumn(currentUser.Email, 1).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("MoveColumnLeft run successfully!");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
+
+        public void MoveColumnLeftFirstOrdinal() {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("MoveColumnLeftBadOrdinalTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.RemoveColumn(currentUser.Email, 0).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("MoveColumnLeftFirstOrdinal succeeded but was expected to fail");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
     }
 }

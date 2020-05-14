@@ -21,10 +21,12 @@ namespace KanbanBoardTests
         public void SetUp()
         {
             Controller = new BoardController();
-            TestBoard = new IntroSE.Kanban.Backend.BusinessLayer.BoardPackage.Board("example@gmail.com");
+            if (TestBoard==null)
+                TestBoard = new IntroSE.Kanban.Backend.BusinessLayer.BoardPackage.Board("example@gmail.com");
         }
 
         [Test]
+        [Order(3)]
         public void AddNewBoardTest()
         {
             //Arrange
@@ -36,6 +38,21 @@ namespace KanbanBoardTests
         }
 
         [Test]
+        [Order(1)]
+        [TestCase(0, "backlog")]
+        [TestCase(1, "in progress")]
+        [TestCase(2, "done")]
+        [TestCase(3, "to do")]
+        public void AddColumnTest(int columnOrdinal, string columnName)
+        {
+            //Act
+            TestBoard.AddColumn(TestBoard.UserEmail, columnOrdinal, columnName);
+            //Assert
+            Assert.IsTrue(TestBoard.Columns[columnOrdinal].Name.Equals(columnName));
+        }
+
+        [Test]
+        [Order(2)]
         [TestCase(0)]
         [TestCase(2)]
         [TestCase(1)]
@@ -47,19 +64,6 @@ namespace KanbanBoardTests
             TestBoard.RemoveColumn(TestBoard.UserEmail, columnOrdinal);
             //Assert
             Assert.IsFalse(TestBoard.Columns.Contains(ColumnToRemove));
-        }
-
-        [Test]
-        [TestCase(0)]
-        [TestCase(2)]
-        [TestCase(4)]
-        [TestCase(1)]
-        public void AddColumnTest(int columnOrdinal)
-        {
-            //Act
-            TestBoard.AddColumn(TestBoard.UserEmail, columnOrdinal, "to do");
-            //Assert
-            Assert.IsTrue(TestBoard.Columns[columnOrdinal].Name.Equals("to do"));
         }
 
         [Test]

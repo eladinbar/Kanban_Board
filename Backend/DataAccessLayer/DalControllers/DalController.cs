@@ -82,6 +82,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     {
                         fromDB.Add(ConvertReaderToObject(dataReader));
                     }
+                    dataReader.Close();
                 }
                 catch (SQLiteException e)
                 {
@@ -124,6 +125,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     {
                         fromDB.Add(ConvertReaderToObject(dataReader));
                     }
+                    dataReader.Close();
                 }
                 catch (SQLiteException e)
                 {
@@ -167,6 +169,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     {
                         fromDB.Add(ConvertReaderToObject(dataReader));
                     }
+                    dataReader.Close();
                 }
                 catch (SQLiteException e)
                 {

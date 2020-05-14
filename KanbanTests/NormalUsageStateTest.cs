@@ -20,14 +20,12 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
         public NormalUsageStateTest()
         {
-            DirectoryInfo dir1 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\");
-            DirectoryInfo dir2 = new DirectoryInfo(Path.GetFullPath(@"..\..\") + "data\\Users");
-            if (dir2.Exists)
-            {
-                dir1.Delete(true);
-            }
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo DBFile = new FileInfo(path);
+            if (DBFile.Exists)
+                DBFile.Delete();
 
-            service = new ServiceLayer.Service();
+            service = new Service();
             service.LoadData();
             randomUsers = new UserForTestCreator(10)._users;
             randomTasks = new TaskForTestCreator(10)._tasks;
@@ -45,30 +43,30 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                 if (i % 1000 == 0)
                 {
                     Console.Write("#" + counter + " ");
-                    int j = new Random().Next(1, 27);
+                    int j = new Random().Next(1, 51);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine(j + "<------------------------");
                     Console.ForegroundColor = ConsoleColor.Red;
                     switch (j)
                     {
                         case 2:
-                            {
-                                Register();
-                                Console.WriteLine(" Register() executed");
-                                break;
-                            }
+                        {
+                            Register();
+                            Console.WriteLine("Register() executed");
+                            break;
+                        }
 
                         case 1:
                         case 3:
                         case 4:
                         case 23:
                         case 24:
-                            {
-                                Console.WriteLine("Logout() and Login() executed");
-                                Logout();
-                                Login();
-                                break;
-                            }
+                        {
+                            Console.WriteLine("Logout() and Login() executed");
+                            Logout();
+                            Login();
+                            break;
+                        }
 
                         case 6:
                         case 7:
@@ -80,11 +78,11 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                         case 20:
                         case 26:
                         case 5:
-                            {
-                                Console.WriteLine("AddAllTasks() executed");
-                                AddAllTasks();
-                                break;
-                            }
+                        {
+                            Console.WriteLine("AddAllTasks() executed");
+                            AddAllTasks();
+                            break;
+                        }
 
                         case 12:
                         case 13:
@@ -92,27 +90,75 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                         case 15:
                         case 21:
                         case 25:
-                            {
-                                Console.WriteLine("AdvanceTask() executed");
-                                AdvanceTask();
-                                break;
-                            }
+                        {
+                            Console.WriteLine("AdvanceTask() executed");
+                            AdvanceTask();
+                            break;
+                        }
 
                         case 16:
                         case 17:
                         case 22:
-                            {
-                                Console.WriteLine("EditTask() executed");
-                                EditTask();
-                                break;
-                            }
+                        {
+                            Console.WriteLine("EditTask() executed");
+                            EditTask();
+                            break;
+                        }
 
                         case 18:
-                            {
-                                Console.WriteLine("LimitColumn() executed");
-                                LimitColumn();
-                                break;
-                            }
+                        {
+                            Console.WriteLine("LimitColumn() executed");
+                            LimitColumn();
+                            break;
+                        }
+
+                        case 27:
+                        case 33:
+                        case 44:
+                        case 50:
+                        case 32:
+                        case 29:
+                        {
+                            Console.WriteLine("AddColumn() executed");
+                            AddColumn();
+                            break;
+                        }
+
+                        case 45:
+                        case 28:
+                        case 34:
+                        case 37:
+                        case 40:
+                        case 42:
+                        {
+                            Console.WriteLine("RemoveColumn() executed");
+                            RemoveColumn();
+                            break;
+                        }
+
+                        case 39:
+                        case 46:
+                        case 41:
+                        case 48:
+                        case 43:
+                        case 30:
+                        {
+                            Console.WriteLine("MoveColumnRight() executed");
+                            MoveColumnRight();
+                            break;
+                        }
+
+                        case 31:
+                        case 35:
+                        case 47:
+                        case 36:
+                        case 49:
+                        case 38:
+                        {
+                            Console.WriteLine("MoveColumnLeft() executed");
+                            MoveColumnLeft();
+                            break;
+                        }
                     }
                     counter++;
                 }
@@ -146,7 +192,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             int randUser = new Random().Next(8, randomUsers.Count - 1);
             service.Login(randomUsers.ElementAt(randUser).Email, uniPassword);
             if (currentUser == null)
-                currentUser = new BusinessLayer.UserPackage.User(randomUsers.ElementAt(randUser).Email, uniPassword, randomUsers.ElementAt(randUser).Nickname);
+                currentUser = new BusinessLayer.UserPackage.User(randomUsers.ElementAt(randUser).Email, uniPassword,
+                                                                randomUsers.ElementAt(randUser).Nickname);
 
         }
 
@@ -161,8 +208,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
         private void AddAllTasks()
         {
             if (currentUser != null)
-                foreach (ServiceLayer.Task tempTask in randomTasks) service.AddTask(currentUser.Email, tempTask.Title, tempTask.Description, tempTask.DueDate);
-
+                foreach (ServiceLayer.Task tempTask in randomTasks)
+                service.AddTask(currentUser.Email, tempTask.Title, tempTask.Description, tempTask.DueDate);
         }
 
         private void AdvanceTask()
@@ -184,11 +231,11 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                 int randTest = new Random().Next(0, 2);
                 DateTime dueDate = new DateTime(2035, 03, 26);
                 if (randTaskId == 0)
-                    service.UpdateTaskDescription(currentUser.Email, randOrdinal, randTaskId, "this description was updated by NoramlUsageTest");
+                    service.UpdateTaskDescription(currentUser.Email, randOrdinal, randTaskId, "this description was updated by NormalUsageTest");
                 if (randTaskId == 1)
                     service.UpdateTaskDueDate(currentUser.Email, randOrdinal, randTaskId, dueDate);
                 if (randTaskId == 2)
-                    service.UpdateTaskTitle(currentUser.Email, randOrdinal, randTaskId, "this title was updated by NoramlUsageTest");
+                    service.UpdateTaskTitle(currentUser.Email, randOrdinal, randTaskId, "this title was updated by NormalUsageTest");
             }
 
         }
@@ -197,8 +244,45 @@ namespace IntroSE.Kanban.Backend.KanbanTests
         {
             if (currentUser != null)
             {
-                int randOrdinal = new Random().Next(0, 2);
-                service.LimitColumnTasks(currentUser.Email, randOrdinal, 5);
+                Board b = service.GetBoard(currentUser.Email).Value;
+                int randOrdinal = new Random().Next(0, b.ColumnsNames.Count);
+                int randLimit = new Random().Next(5, int.MaxValue);
+                service.LimitColumnTasks(currentUser.Email, randOrdinal, randLimit);
+            }
+        }
+
+        private void AddColumn() {
+            if (currentUser != null) {
+                Board b = service.GetBoard(currentUser.Email).Value;
+                int randOrdinal = new Random().Next(0, b.ColumnsNames.Count);
+                service.AddColumn(currentUser.Email, randOrdinal, "column-" + randOrdinal);
+            }
+        }
+
+        private void RemoveColumn() {
+            if (currentUser != null)
+            {
+                Board b = service.GetBoard(currentUser.Email).Value;
+                int randOrdinal = new Random().Next(0, b.ColumnsNames.Count - 1);
+                service.RemoveColumn(currentUser.Email, randOrdinal);
+            }
+        }
+
+        private void MoveColumnRight() {
+            if (currentUser != null)
+            {
+                Board b = service.GetBoard(currentUser.Email).Value;
+                int randOrdinal = new Random().Next(0, b.ColumnsNames.Count - 2);
+                service.MoveColumnRight(currentUser.Email, randOrdinal);
+            }
+        }
+
+        private void MoveColumnLeft() {
+            if (currentUser != null)
+            {
+                Board b = service.GetBoard(currentUser.Email).Value;
+                int randOrdinal = new Random().Next(1, b.ColumnsNames.Count - 1);
+                service.MoveColumnLeft(currentUser.Email, randOrdinal);
             }
         }
     }
