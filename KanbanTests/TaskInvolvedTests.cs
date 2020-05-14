@@ -76,7 +76,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                 Console.WriteLine(message);
                 if (message == null & i>10)
                     Console.WriteLine("AddTaskOverColumnLimit succeeded but was expected to fail");
-                else
+                else if (message==null)
                     Console.WriteLine("AddTask run successfully!");
                 i++;
             }

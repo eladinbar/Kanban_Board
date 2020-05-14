@@ -57,7 +57,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
         public void BadPasswordRegister()
         {
-            string[] badPasswords = { "12345", "123abc", "123abcс", "!@#$%^Abc1", "1Ab", "123Abcsadwaeadfgdgssdfgsdfgdsfgdsgdsfgsdgwa" };
+            string[] badPasswords = { "12345", "123abc", "123abcс", "1Ab", "123Abcsadwaeadfgdgssdfgsdfgdsfgdsgdsfgsdgwa" };
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("BadPasswordRegisterTest");
             Console.WriteLine("Input: new user data with non acceptable password.");
