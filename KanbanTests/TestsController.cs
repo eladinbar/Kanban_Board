@@ -16,7 +16,6 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
         static void Main(string[] args)
         {
-
             //LogHelper.Setup();
 
             Console.WriteLine("Do you want to run all regular tests or some tests on the run? : (r/o)");
@@ -99,11 +98,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                 string choice3 = Console.ReadLine();
                 if (choice3 == "y")
                 {
-                    string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
-                    FileInfo DBFile = new FileInfo(path);
-                    if (DBFile.Exists)
-                    {
-                        DBFile.Delete();
+                    { 
                         Console.Write("Database was deleted. Thank you for using Tests.");
                     }
                     Console.ReadKey();

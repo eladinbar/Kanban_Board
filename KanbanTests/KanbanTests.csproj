@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColumnInvolvedTests.cs" />
+    <Compile Include="DeleteDataTest.cs" />
     <Compile Include="GetBoardTest.cs" />
     <Compile Include="LoadDataTest.cs" />
     <Compile Include="NormalUsageStateTest.cs" />

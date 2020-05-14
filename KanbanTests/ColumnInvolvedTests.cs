@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             string message = service.LimitColumnTasks(currentUser.Email, 1, 10).ErrorMessage;
             Console.WriteLine("Runtime outcome: " + message);
             if (message == null)
-                Console.WriteLine("LimitColumn run successfully!");
+                Console.Write("LimitColumn run successfully!");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -68,7 +68,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             string message = service.LimitColumnTasks(currentUser.Email, int.MaxValue, 1).ErrorMessage;
             Console.WriteLine("Runtime outcome: " + message);
             if (message == null)
-                Console.WriteLine("LimitColumnBadColumnOrdinal succeeded but was expected to fail");
+                Console.Write("LimitColumnBadColumnOrdinal succeeded but was expected to fail");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -85,7 +85,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             string message = service.LimitColumnTasks(currentUser.Email, 0, 1).ErrorMessage;
             Console.WriteLine("Runtime outcome: " + message);
             if (message == null)
-                Console.WriteLine("LimitLesserThanTaskNum run successfully!");
+                Console.Write("LimitLesserThanTaskNum run successfully!");
             service.LimitColumnTasks(currentUser.Email, 0, 10); //resetting the limit back to 10
             Console.WriteLine("End of the test: current limit was reset back to 10.");
             Console.WriteLine("---------------------------------------------------------------");
@@ -98,7 +98,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetColumnByNameTest");
             Console.WriteLine("Input: proper data.");
             string message = service.GetColumn(currentUser.Email, "done").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
+            Console.Write("Runtime outcome: " + message);
             if (message == null)
                 Console.Write("GetColumnByName run successfully!");
             Console.WriteLine("---------------------------------------------------------------");
@@ -110,7 +110,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("GetColumnByNonExistNameTest");
             Console.WriteLine("Input: non existing column name.");
             string message = service.GetColumn(currentUser.Email, "NonExistingNameOfColumn").ErrorMessage;
-            Console.WriteLine("Runtime outcome: " + message);
+            Console.Write("Runtime outcome: " + message);
             if (message == null)
                 Console.Write("GetColumnByNonExistName succeeded but was expected to fail");
             Console.WriteLine("---------------------------------------------------------------");

@@ -41,7 +41,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("GetBoardTest");
             Console.WriteLine("Input: proper user's email.");
-            Console.WriteLine("Runtime outcome: " + service.GetBoard(currentUser.Email).ErrorMessage);
+            string message = service.GetBoard(currentUser.Email).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("Board was retrieved successfully!");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -50,7 +53,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("GetBoardWithNonExistingEmailTest");
             Console.WriteLine("Input: non existing email.");
-            Console.WriteLine("Runtime outcome: " + service.GetBoard("nonExistingEmail@GetBoardWithNonExistingEmailMethod.com").ErrorMessage);
+            string message = service.GetBoard("nonExistingEmail@GetBoardWithNonExistingEmailMethod.com").ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("GetBoardWithNonExistingEmail succeeded but was expected to fail");
             Console.WriteLine("---------------------------------------------------------------");
         }
 
@@ -61,7 +67,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("Input: not logged in user's email.");
             User tempUser = new User("notLoggedInEmail@GetBoardOfNotLoggedInUserMethod.com", "tempGetBoardOfNotLoggedInUserNickName");
             service.Register(tempUser.Email, uniPassword, tempUser.Nickname);
-            Console.WriteLine("Runtime outcome: " + service.GetBoard(tempUser.Email).ErrorMessage);
+            string message = service.GetBoard(tempUser.Email).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + message);
+            if (message == null)
+                Console.Write("GetBoardOfNotLoggedInUser succeeded but was expected to fail");
             Console.WriteLine("---------------------------------------------------------------");
 
         }

@@ -30,7 +30,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                 Console.WriteLine("---------------------------------------------------------------");
                 Console.WriteLine("LoadDataTest #" + i);
                 Console.WriteLine("Input: no input necessary.");
-                Console.WriteLine("Runtime outcome: " + service.LoadData().ErrorMessage);
+                string message = service.LoadData().ErrorMessage;
+                Console.WriteLine("Runtime outcome: " + message);
+                if (message == null)
+                    Console.Write("LoadData was run successfully!");
                 Console.WriteLine("---------------------------------------------------------------");
             }
         }
