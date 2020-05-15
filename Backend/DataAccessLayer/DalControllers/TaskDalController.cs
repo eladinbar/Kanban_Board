@@ -86,7 +86,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         /// <param name="task">Dal instance to delete from the Database</param>
         /// <returns>True if the method changed more then 0 rows</returns>
-        public bool Delete(DalTask task)
+        public override bool Delete(DalTask task)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))

@@ -31,6 +31,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <param name="reader">SQLite reader to convert</param>
         /// <returns>A DalObject that extands DalObject<T></returns>
         internal abstract T ConvertReaderToObject(SQLiteDataReader reader);
+        public abstract bool Insert(T dalObject);
+        public abstract bool Delete(T dalObject);
+        /// <summary>
+        /// Creates a Database table with the name _tableName.
+        /// </summary>
+        internal abstract void CreateTable();
 
         /// <summary>
         /// select commeand for User table and Board table.
@@ -115,7 +121,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return fromDB;
         }
-
         /// <summary>
         /// select commeand for Task table of a spesific column in a spacific board.
         /// </summary>
@@ -159,7 +164,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return fromDB;
         }
-
         /// <summary>
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email arguments.
         /// </summary>
@@ -199,7 +203,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
-
         /// <summary>
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email arguments.
         /// </summary>
@@ -401,12 +404,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
-
-        /// <summary>
-        /// Creates a Database table with the name _tableName.
-        /// </summary>
-        internal abstract void CreateTable();
-
         /// <summary>
         /// Creates .db file.
         /// </summary>
@@ -419,9 +416,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteConnection.CreateFile("KanbanDB.db");
             }
         }
-
-        public abstract bool Insert(T dalObject);
-
         /// <summary>
         /// 
         /// </summary>

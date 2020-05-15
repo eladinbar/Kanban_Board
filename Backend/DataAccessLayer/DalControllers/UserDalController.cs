@@ -74,7 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         /// <param name="user">Dal instance to delete from the Database</param>
         /// <returns>True if the method changed more then 0 rows</returns>
-        public bool Delete(DalUser user)
+        public override bool Delete(DalUser user)
         {
             int res = -1;
             using(var connection = new SQLiteConnection(_connectionString))
