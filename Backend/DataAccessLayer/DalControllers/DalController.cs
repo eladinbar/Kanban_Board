@@ -431,7 +431,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             switch (keyArgs.Length)
             {
                 case 1:
-                    return command + $"ORDER BY \"{DalColumn.ColumnOrdinalColumnName}\" WHERE email=\"{keyArgs[0]}\"";
+                    return command + $" ORDER BY \"{DalColumn.ColumnOrdinalColumnName}\" WHERE email=\"{keyArgs[0]}\"";
                 case 2:
                     return command + $" WHERE email=\"{keyArgs[0]}\" AND Name=\"{keyArgs[1]}\"";
                 case 3:
