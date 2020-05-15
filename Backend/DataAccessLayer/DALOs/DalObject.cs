@@ -20,12 +20,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         {
             _controller = controller;
         }
-
+        /// <summary>
+        /// Insert this to the Database.
+        /// </summary>
+        /// <returns>True if insert was successful</returns>
         public bool Save()
         {
             return _controller.Insert((T) this);
         }
-
+        /// <summary>
+        /// Delete the equivelnt row of this in the Database
+        /// </summary>
+        /// <returns>True if the row was removed successfully</returns>
         public bool Delete()
         {
             return _controller.Delete((T) this);

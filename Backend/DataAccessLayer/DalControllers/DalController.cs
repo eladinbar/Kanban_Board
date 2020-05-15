@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             CreateTable();
         }
 
-
+        //abstract methods
         /// <summary>
         /// converts the reader to a DalObject
         /// </summary>
@@ -38,6 +38,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         internal abstract void CreateTable();
 
+        //implemented methods
         /// <summary>
         /// select commeand for User table and Board table.
         /// </summary>
@@ -416,6 +417,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteConnection.CreateFile("KanbanDB.db");
             }
         }
+
+        //private methods
         /// <summary>
         /// 
         /// </summary>
