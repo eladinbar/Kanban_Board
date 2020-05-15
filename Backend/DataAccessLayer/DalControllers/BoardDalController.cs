@@ -66,6 +66,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
@@ -100,6 +101,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
@@ -119,21 +121,24 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         {
             using (var connection = new SQLiteConnection(_connectionString))
             {
-                CreateDBFile();
-
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 command.CommandText = $"CREATE TABLE {BoardTableName} (" +
                     $"{DalBoard.EmailColumnName} TEXT NOT NULL," +
-                    $"{DalBoard.BoardTaskCountName} InTEGER NOT NULL," +
+                    $"{DalBoard.BoardTaskCountName} INTEGER NOT NULL," +
                     $"PRIMARY KEY({DalBoard.EmailColumnName})" +
                     $"FOREIGN KEY({DalBoard.EmailColumnName})" +
                     $"  REFERENCES {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
                     $");";
+                SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
+                tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
                 try
                 {
                     log.Info("opening connection to DataBase");
-                    connection.Open();                    
-                    command.ExecuteNonQuery();
+                    connection.Open();
+                    SQLiteDataReader reader = tableExistence.ExecuteReader();
+                    if (!reader.Read())
+                        command.ExecuteNonQuery();
+                    reader.Close();
                 }
                 catch (SQLiteException e)
                 {
@@ -141,11 +146,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 }
                 finally
                 {
+                    tableExistence.Dispose();
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
         }
-    
     }
 }

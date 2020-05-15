@@ -50,8 +50,27 @@ namespace IntroSE.Kanban.Backend
         /// <remarks>
         /// The logger saves a log file once per program execution.
         /// </remarks>
-        public static IAppender SetupRoliingFileAppender()        {            //Defines how we want to log to the LogFile.txt            PatternLayout patternLayout = new PatternLayout();            patternLayout.ConversionPattern = "%d{yyyy-MM-dd HH:mm:ss} %level - (%type: %method - %line)%newline %message%newline%exception";            patternLayout.ActivateOptions();            //Creates and defines a RollingFileAppender for file logging.            RollingFileAppender roller = new RollingFileAppender();            roller.AppendToFile = true;            roller.File = BASE_PATH;            roller.Layout = patternLayout;            roller.MaxSizeRollBackups = 20;            roller.MaximumFileSize = "10MB";            roller.RollingStyle = RollingFileAppender.RollingMode.Once;
-            roller.StaticLogFileName = true;            roller.ActivateOptions();            return roller;        }
+        public static IAppender SetupRoliingFileAppender()
+        {
+            //Defines how we want to log to the LogFile.txt
+            PatternLayout patternLayout = new PatternLayout();
+            patternLayout.ConversionPattern = "%d{yyyy-MM-dd HH:mm:ss} %level - (%type: %method - %line)%newline %message%newline%exception";
+            patternLayout.ActivateOptions();
+
+            //Creates and defines a RollingFileAppender for file logging.
+            RollingFileAppender roller = new RollingFileAppender();
+            roller.AppendToFile = true;
+            roller.File = BASE_PATH;
+            roller.Layout = patternLayout;
+            roller.MaxSizeRollBackups = 20;
+            roller.MaximumFileSize = "10MB";
+            roller.RollingStyle = RollingFileAppender.RollingMode.Once;
+            roller.StaticLogFileName = true;
+
+            roller.ActivateOptions();
+            return roller;
+
+        }
         /// <summary>
         /// Sets up AdoNetAppender to SQLite Database with the following columns (LogId, Date, Level, Type, Method, LineNo, Massage, Exception).
         /// </summary>
@@ -173,6 +192,7 @@ namespace IntroSE.Kanban.Backend
                 {
                     command.Dispose();
                     connection.Close();
+                    getLogger().Info("connection closed.");
                 }
 
             }
