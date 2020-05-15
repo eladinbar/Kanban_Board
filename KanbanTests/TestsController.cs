@@ -67,30 +67,30 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
 
                 //TaskInvolvedTests
-                //TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
-                //taskInvolvedTests.RunAllTests();
+                TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
+                taskInvolvedTests.RunAllTests();
 
                 timer.Stop();
                 Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
 
-                ////Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Red;
 
-                ////Console.WriteLine("**********************************************************************");
-                ////Console.WriteLine("**********************************************************************");
-                ////Console.WriteLine("**********************************************************************");
-                ////Console.WriteLine("**********************************************************************");
-                ////Console.WriteLine("Normal usage state test starts here.");
+                Console.WriteLine("**********************************************************************");
+                Console.WriteLine("**********************************************************************");
+                Console.WriteLine("**********************************************************************");
+                Console.WriteLine("**********************************************************************");
+                Console.WriteLine("Normal usage state test starts here.");
 
-                //timer.Restart();
+                timer.Restart();
 
-                //NormalUsageStateTest normalUsageStateTest = new NormalUsageStateTest();
-                //normalUsageStateTest.RunTheTest();
+                NormalUsageStateTest normalUsageStateTest = new NormalUsageStateTest();
+                normalUsageStateTest.RunTheTest();
 
-                //timer.Stop();
+                timer.Stop();
 
-                //Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.Green;
 
-                //Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
+                Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
 
                 Console.ForegroundColor = ConsoleColor.White;
 

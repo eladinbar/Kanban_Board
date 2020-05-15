@@ -16,10 +16,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
         public TaskInvolvedTests()
         {
-            //string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
-            //FileInfo DBFile = new FileInfo(path);
-            //if (DBFile.Exists)
-            //    DBFile.Delete();
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo DBFile = new FileInfo(path);
+            if (DBFile.Exists)
+                DBFile.Delete();
 
             randomTasks = new TaskForTestCreator(10).tasks;
             service = new Service();

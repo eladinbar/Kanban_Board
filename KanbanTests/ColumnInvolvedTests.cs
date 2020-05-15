@@ -41,11 +41,13 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             this.AddColumn();
             this.AddColumnOutOfBoundsOrdinal();
             this.RemoveColumn();
+            this.RemoveLeftmostColumn();
+            this.RemoveOverLimitColumn();
             this.RemoveColumnNonExistOrdinal();
-            //this.MoveColumnRight();
-            //this.MoveColumnRightLastOrdinal();
-            //this.MoveColumnLeft();
-            //this.MoveColumnLeftFirstOrdinal();
+            this.MoveColumnRight();
+            this.MoveColumnRightLastOrdinal();
+            this.MoveColumnLeft();
+            this.MoveColumnLeftFirstOrdinal();
         }
 
         public void LimitColumn()
@@ -155,6 +157,26 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("Input: proper data.");
             string message = service.RemoveColumn(currentUser.Email, 1).ErrorMessage;
             Console.WriteLine("Runtime outcome: " + ((message == null) ? "RemoveColumn run successfully!" : message));
+            Console.WriteLine("---------------------------------------------------------------");
+        }
+
+        public void RemoveLeftmostColumn()
+        {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("RemoveLeftmostColumnTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.RemoveColumn(currentUser.Email, 0).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "RemoveLeftmostColumn run successfully!" : message));
+            Console.WriteLine("---------------------------------------------------------------");
+        }
+
+        public void RemoveOverLimitColumn()
+        {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("RemoveOverLimitColumnTest");
+            Console.WriteLine("Input: proper data.");
+            string message = service.RemoveColumn(currentUser.Email, 1).ErrorMessage;
+            Console.WriteLine("Runtime outcome: " + ((message == null) ? "RemoveOverLimitColumn succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
