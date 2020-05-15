@@ -124,7 +124,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 command.CommandText = $"CREATE TABLE {BoardTableName} (" +
                     $"{DalBoard.EmailColumnName} TEXT NOT NULL," +
-                    $"{DalBoard.BoardTaskCountName} InTEGER NOT NULL," +
+                    $"{DalBoard.BoardTaskCountName} INTEGER NOT NULL," +
                     $"PRIMARY KEY({DalBoard.EmailColumnName})" +
                     $"FOREIGN KEY({DalBoard.EmailColumnName})" +
                     $"  REFERENCES {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
@@ -153,14 +153,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 }
             }
         }
-
-
-
-    }
-
-    public enum BoardDalEnumController
-    {
-       
-
     }
 }

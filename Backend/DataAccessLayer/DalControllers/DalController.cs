@@ -164,10 +164,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email arguments.
         /// </summary>
         /// <param name="email">primary key</param>
-        /// <param name="attribluteName">column name to update</param>
+        /// <param name="attributeName">column name to update</param>
         /// <param name="attributeValue">Value to insert to the table</param>
         /// <returns>true if one or more rows where updated</returns>
-        public bool Update(string email, string attribluteName, string attributeValue)
+        public bool Update(string email, string attributeName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -175,11 +175,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\""
+                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\""
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attributeName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug("Executing update to data base with key " + email);
@@ -204,10 +204,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email arguments.
         /// </summary>
         /// <param name="email">primary key</param>
-        /// <param name="attribluteName">column name to update</param>
+        /// <param name="attributeName">column name to update</param>
         /// <param name="attributeValue">Value to insert to the table</param>
         /// <returns>true if one or more rows where updated</returns>
-        public bool Update(string email, string attribluteName, long attributeValue)
+        public bool Update(string email, string attributeName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -215,11 +215,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\""
+                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\""
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attributeName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug("Executing update to data base with key " + email);
@@ -244,10 +244,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         /// <param name="email">primary key</param>
         /// <param name="columnName">primary key</param>
-        /// <param name="attribluteName">column name to update</param>
+        /// <param name="attributeName">column name to update</param>
         /// <param name="attributeValue">Value to insert to the table</param>
         /// <returns>true if one or more rows where updated</returns>
-        public bool Update(string email, string columnName, string attribluteName, string attributeValue)
+        public bool Update(string email, string columnName, string attributeName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -255,11 +255,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\" AND Name=\"{columnName}\""
+                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\" AND Name=\"{columnName}\""
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attributeName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug(("Executing update to data base with key {0} name {1}",email, columnName));
@@ -325,10 +325,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <param name="email">primary key</param>
         /// <param name="columnName">primary key</param>
         /// <param name="taskID">primary key</param>
-        /// <param name="attribluteName">column name to update</param>
+        /// <param name="attributeName">column name to update</param>
         /// <param name="attributeValue">Value to insert to the table</param>
         /// <returns>true if one or more rows where updated</returns>
-        public bool Update(string email, string columnName, int taskID, string attribluteName, string attributeValue)
+        public bool Update(string email, string columnName, int taskID, string attributeName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -336,11 +336,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\" AND ColumnName=\"{columnName}\" AND ID={taskID}"
+                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\" AND ColumnName=\"{columnName}\" AND ID={taskID}"
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attributeName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug(("Executing update to data base with key {0} name {1} ID {2}",email, columnName ,taskID));
@@ -366,10 +366,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <param name="email">primary key</param>
         /// <param name="columnName">primary key</param>
         /// <param name="taskID">primary key</param>
-        /// <param name="attribluteName">column name to update</param>
+        /// <param name="attributeName">column name to update</param>
         /// <param name="attributeValue">Value to insert to the table</param>
         /// <returns>true if one or more rows where updated</returns>
-        public bool Update(string email, string columnName, int taskID, string attribluteName, long attributeValue)
+        public bool Update(string email, string columnName, int taskID, string attributeName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -377,11 +377,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\" AND ColumnName=\"{columnName}\" AND ID={taskID}"
+                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\" AND ColumnName=\"{columnName}\" AND ID={taskID}"
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter(@""+attribluteName, attributeValue));
+                    command.Parameters.Add(new SQLiteParameter(@""+attributeName, attributeValue));
                     log.Info("opening connection to DataBase");
                     connection.Open();
                     log.Debug(("Executing update to data base with key {0} name {1} ID {2}", email, columnName, taskID));
@@ -425,12 +425,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="table"></param>
         /// <param name="keyArgs"></param>
         /// <returns></returns>
         private string CommandTextSelect(params string[] keyArgs)
         {
-            string command = $"select * from {_tableName}";
+            string command = $"SELECT * FROM {_tableName}";
             
             switch (keyArgs.Length)
             {
