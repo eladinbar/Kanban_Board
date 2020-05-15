@@ -37,7 +37,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </inhecitdoc>
         internal override DalBoard ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DalBoard result = new DalBoard(reader.GetString(0), (int)reader.GetValue(1));
+            DalBoard result = new DalBoard(reader.GetString(0), reader.GetInt32(1));
             return result;
         }
         /// <summary>
