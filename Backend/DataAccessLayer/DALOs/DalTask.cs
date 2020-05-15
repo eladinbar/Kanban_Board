@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         private int _taskId;
         public int TaskId { get => _taskId; set { _taskId = value; } }
         private string _columnName;
-        public string ColumnName { get => _columnName; set { _columnName = value; _controller.Update(Email, ColumnName, TaskId, ContainingTaskColumnNameColumnName, value); } }
+        public string ColumnName { get => _columnName; set { _controller.Update(Email, ColumnName, TaskId, ContainingTaskColumnNameColumnName, value); _columnName = value; } }
         private string _title;
         public string Title { get => _title; set { _title = value; _controller.Update(Email, ColumnName, TaskId, TaskTitleColumnName, value); } }
         private string _description;

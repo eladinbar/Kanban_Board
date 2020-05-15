@@ -67,8 +67,8 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
 
                 //TaskInvolvedTests
-                TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
-                taskInvolvedTests.RunAllTests();
+                //TaskInvolvedTests taskInvolvedTests = new TaskInvolvedTests();
+                //taskInvolvedTests.RunAllTests();
 
                 timer.Stop();
                 Console.WriteLine("Total execution time: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));

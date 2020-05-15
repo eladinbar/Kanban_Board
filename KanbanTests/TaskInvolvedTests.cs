@@ -16,10 +16,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
 
         public TaskInvolvedTests()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
-            FileInfo DBFile = new FileInfo(path);
-            if (DBFile.Exists)
-                DBFile.Delete();
+            //string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            //FileInfo DBFile = new FileInfo(path);
+            //if (DBFile.Exists)
+            //    DBFile.Delete();
 
             randomTasks = new TaskForTestCreator(10).tasks;
             service = new Service();
@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             this.UpdateTaskDescription();
 
             this.AdvanceTask();
-            this.AdvanceOrEditTaskFinalColumn();
+            this.AdvanceOrEditTaskLastColumn();
             this.AdvanceTaskIdNotExist();
         }
 
@@ -146,16 +146,16 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void AdvanceOrEditTaskFinalColumn()////////////////////////////////////
+        public void AdvanceOrEditTaskLastColumn()////////////////////////////////////
         {
             Console.WriteLine("---------------------------------------------------------------");
-            Console.WriteLine("AdvanceOrEditTaskDoneColumn");
+            Console.WriteLine("AdvanceOrEditTaskLastColumn");
             Console.WriteLine("Input: proper task details with 'done' column ordinal.");
             service.AdvanceTask(currentUser.Email, 1, 1);
             string message1 = service.AdvanceTask(currentUser.Email, 2, 1).ErrorMessage;
-            Console.Write("Runtime outcome for advancing: " + ((message1 == null) ? "AdvanceTaskFinalColumn succeeded but was expected to fail" : message1));
+            Console.Write("Runtime outcome for advancing: " + ((message1 == null) ? "AdvanceTaskLastColumn succeeded but was expected to fail" : message1));
             string message2 = service.UpdateTaskDescription(currentUser.Email, 2, 1, "if you see this in description - it's bad").ErrorMessage;
-            Console.WriteLine("Runtime outcome for editing: " + ((message2 == null) ? "EditTaskFinalColumn succeeded but was expected to fail" : message2));
+            Console.WriteLine("Runtime outcome for editing: " + ((message2 == null) ? "EditTaskLastColumn succeeded but was expected to fail" : message2));
             Console.WriteLine("---------------------------------------------------------------");
         }
 

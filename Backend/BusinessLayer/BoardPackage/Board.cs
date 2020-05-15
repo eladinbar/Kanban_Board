@@ -136,10 +136,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns.
                         this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal + 1;
                 }
+                
                 log.Debug("A new column '" + Name + "' was added at the index '" + columnOrdinal + "'.");
                 return newColumn;
             }
-            else throw new InvalidOperationException("Column with this name ia already exists.");
+            else throw new InvalidOperationException("Column with this name is already exists.");
         }
 
 
@@ -196,7 +197,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 else //valid case
                 {
                     this.Columns.RemoveAt(columnOrdinal);
-                    this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
                     foreach (Task t in toRemove.Tasks)
                     {
                         this.Columns[columnOrdinal - 1].Tasks.Add(t);
@@ -204,7 +204,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     }
                     log.Debug("Column '" + toRemove.Name + "' at index '" + columnOrdinal + "' was removed.");
                 }
-
                 for (int i = columnOrdinal; i < this.Columns.Count; i++) //updating the DAL.Columns ordinals 
                     this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal - 1;
             }

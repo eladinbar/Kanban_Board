@@ -42,10 +42,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             this.AddColumnOutOfBoundsOrdinal();
             this.RemoveColumn();
             this.RemoveColumnNonExistOrdinal();
-            this.MoveColumnRight();
-            this.MoveColumnRightLastOrdinal();
-            this.MoveColumnLeft();
-            this.MoveColumnLeftFirstOrdinal();
+            //this.MoveColumnRight();
+            //this.MoveColumnRightLastOrdinal();
+            //this.MoveColumnLeft();
+            //this.MoveColumnLeftFirstOrdinal();
         }
 
         public void LimitColumn()
@@ -143,7 +143,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("AddColumnOutOfBoundsOrdinalTest");
             Console.WriteLine("Input: out of bounds column ordinal.");
-            string message = service.AddColumn(currentUser.Email, b.ColumnsNames.Count, "new column").ErrorMessage;
+            string message = service.AddColumn(currentUser.Email, b.ColumnsNames.Count+1, "new column2").ErrorMessage;
             Console.WriteLine("Runtime outcome: " + ((message == null) ? "AddColumnOutOfBoundsOrdinal succeeded but was expected to fail" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
@@ -153,12 +153,13 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("RemoveColumnTest");
             Console.WriteLine("Input: proper data.");
-            string message = service.RemoveColumn(currentUser.Email, 0).ErrorMessage;
+            string message = service.RemoveColumn(currentUser.Email, 1).ErrorMessage;
             Console.WriteLine("Runtime outcome: " + ((message == null) ? "RemoveColumn run successfully!" : message));
             Console.WriteLine("---------------------------------------------------------------");
         }
 
-        public void RemoveColumnNonExistOrdinal() {
+        public void RemoveColumnNonExistOrdinal()
+        {
             Board b = service.GetBoard(currentUser.Email).Value;
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine("RemoveColumNonExistOrdinalTest");

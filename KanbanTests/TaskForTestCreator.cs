@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
         {
             tasks = new List<ServiceLayer.Task>();
             Random rand = new Random();
-            DateTime dueDate = new DateTime(26 / 03 / 35);
+            DateTime dueDate = new DateTime(2035 , 03 , 26);
             for (int i = 0; i < numOfTasks; i++)
             {
                 int id = rand.Next(numOfTasks) + 1;

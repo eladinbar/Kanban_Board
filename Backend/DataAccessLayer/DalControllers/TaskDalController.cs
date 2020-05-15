@@ -42,9 +42,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", task.TaskId);
                     SQLiteParameter titleParam = new SQLiteParameter(@"titleVal", task.Title);
                     SQLiteParameter descriptionParam = new SQLiteParameter(@"descriptionVal", task.Description);
-                    SQLiteParameter dueDateParam = new SQLiteParameter(@"dueDateVal", task.DueDate);
-                    SQLiteParameter CreationDateParam = new SQLiteParameter(@"creationDateVal", task.CreationDate);
-                    SQLiteParameter lastChangedDateParam = new SQLiteParameter(@"lastChangedDateVal", task.LastChangedDate);
+                    SQLiteParameter dueDateParam = new SQLiteParameter(@"dueDateVal", task.DueDate.ToString());
+                    SQLiteParameter CreationDateParam = new SQLiteParameter(@"creationDateVal", task.CreationDate.ToString());
+                    SQLiteParameter lastChangedDateParam = new SQLiteParameter(@"lastChangedDateVal", task.LastChangedDate.ToString());
 
                     command.Parameters.Add(emailParam);                    
                     command.Parameters.Add(ordinalParam);

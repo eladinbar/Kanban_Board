@@ -147,5 +147,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             ToDalObject(email, columnOrdinal);
             DalCopyColumn.Save();
         }
+
+        internal void Delete() {
+            DalCopyColumn.Delete();
+        }
     }
 }

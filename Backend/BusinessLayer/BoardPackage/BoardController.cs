@@ -107,7 +107,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
-                throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
+                throw new ArgumentException("A task does not exist with the given task ID - " + taskId + " .");
 
             if (b.Columns.Count == (columnOrdinal+1))
             {
@@ -296,12 +296,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void RemoveColumn(string email, int columnOrdinal) //checked
         {
             Board b = GetBoard(email);
+            Column c = GetColumn(email, columnOrdinal);
             if (b.Columns.Count == 2)
             {
                 log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns");
                 throw new InvalidOperationException("The board has 2 columns. Can't remove another column.");
             }
             b.RemoveColumn(email, columnOrdinal);
+            c.Delete();
         }
 
         /// <summary>
