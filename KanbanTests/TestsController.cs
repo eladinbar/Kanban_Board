@@ -24,23 +24,23 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                 OnTheRunTests.RunTests();
             else
             {
-                Console.Write("Do you want to perform a restart of the program with user currentUser@TaskInvolvedTests.com?");
-                Console.Write("(available only if the last tests performed were the regular tests): (y/n)");
+                //Console.Write("Do you want to perform a restart of the program with user currentUser@TaskInvolvedTests.com?");
+                //Console.Write("(available only if the last tests performed were the regular tests): (y/n)");
 
-                string choice2 = Console.ReadLine();
-                if (choice2 == "y")
-                {
-                    Service service = new Service();
-                    service.LoadData();
-                    service.Login("currentUser@TaskInvolvedTests.com", "123Abc");
-                    Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTests.com", "Backlog").Value.Tasks.ElementAt(0));
-                    Console.ReadKey();
-                }
-                else
-                {
-                    Console.WriteLine("press any key to exit the console...");
-                    Console.ReadKey();
-                }
+                //string choice2 = Console.ReadLine();
+                //if (choice2 == "y")
+                //{
+                //    Service service = new Service();
+                //    service.LoadData();
+                //    service.Login("currentUser@TaskInvolvedTests.com", "123Abc");
+                //    Console.WriteLine(service.GetColumn("currentUser@TaskInvolvedTests.com", "Backlog").Value.Tasks.ElementAt(0));
+                //    Console.ReadKey();
+                //}
+                //else
+                //{
+                //    Console.WriteLine("press any key to exit the console...");
+                //    Console.ReadKey();
+                //}
 
 
                 //System.Environment.Exit(0);

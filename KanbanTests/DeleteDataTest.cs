@@ -15,6 +15,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
         public DeleteDataTest()
         {
             service = new Service();
+            UserService userService = new UserService(new BusinessLayer.SecurityController());
         }
 
         public void RunTest()
@@ -25,7 +26,7 @@ namespace IntroSE.Kanban.Backend.KanbanTests
                 Console.WriteLine("DeleteDataTest #" + i);
                 Console.WriteLine("Input: no input necessary.");
                 string message = service.DeleteData().ErrorMessage;
-                Console.WriteLine("Runtime outcome: " + ((message == null) ? "There is no database to delete" : message));
+                Console.WriteLine("Runtime outcome: " + ((message == null) ? "DeleteData run successfully!" : message));
                 Console.WriteLine("---------------------------------------------------------------");
             }
         }
