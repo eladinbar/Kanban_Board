@@ -31,8 +31,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         /// <summary>
         /// Delete the equivelnt row of this in the Database
         /// </summary>
-        /// <returns></returns>
-        public bool Delate()
+        /// <returns>True if the row was removed successfully</returns>
+        public bool Delete()
         {
             return _controller.Delete((T) this);
         }
