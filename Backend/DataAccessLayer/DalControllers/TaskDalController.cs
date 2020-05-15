@@ -75,6 +75,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
@@ -109,6 +110,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
@@ -125,9 +127,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// Creates the Tasks table in the Kanban.db.
         /// </summary>
         internal override void CreateTable()
-        {
-            CreateDBFile();
-
+        {       
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -146,11 +146,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                      $"FOREIGN KEY({DalTask.ContainingTaskColumnNameColumnName})" +
                     $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
                     $");";
+                SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
+                tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
                 try
                 {
                     log.Info("opening connection to DataBase");
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    SQLiteDataReader reader = tableExistence.ExecuteReader();
+                    if (!reader.Read())
+                        command.ExecuteNonQuery();
+                    reader.Close();
                 }
                 catch (SQLiteException e)
                 {
@@ -158,8 +163,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 }
                 finally
                 {
+                    tableExistence.Dispose();
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
         }
