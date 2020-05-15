@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         public int Limit { get => _limit; set { _limit = value; _controller.Update(Email, Name, ColumnLimitColumnName, value); } }
         public List<DalTask> Tasks { get; set; }
 
-        public DalColumn(string email, int ordinal, string name, int limit) : base ( new ColumnDalController())
+        public DalColumn(string email, string name, int ordinal, int limit) : base ( new ColumnDalController())
         {
             Email = email;
             _name = name;
