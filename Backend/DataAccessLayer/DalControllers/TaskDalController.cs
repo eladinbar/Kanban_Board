@@ -32,7 +32,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </inhecitdoc>
         internal override DalTask ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6), reader.GetDateTime(7));
+            DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetString(3), 
+                reader.GetString(4), DateTime.Parse(reader.GetString(5)), DateTime.Parse(reader.GetString(6)), DateTime.Parse(reader.GetString(7)));
             return result;
         }
         /// <summary>

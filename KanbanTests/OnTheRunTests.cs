@@ -25,9 +25,9 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             Response<Board> b = service.GetBoard("3@mashu.com");
 
             //adding task
-            Response<ServiceLayer.Task> t1 = service.AddTask("3@mashu.com", "", null, new DateTime(2020, 12, 31));
+            Response<ServiceLayer.Task> t1 = service.AddTask("3@mashu.com", "edanTitleYaavodHalak", null, new DateTime(2020, 12, 31));
             Response<ServiceLayer.Column> c1 = service.GetColumn("3@mashu.com", 0);
-            Console.WriteLine(t1.Value.ToString());
+            Console.WriteLine(t1.ErrorMessage);
 
             Response upDesc = service.UpdateTaskDescription("3@mashu.com", 0, t1.Value.Id, "description was updated");
             c1 = service.GetColumn("3@mashu.com", 0);

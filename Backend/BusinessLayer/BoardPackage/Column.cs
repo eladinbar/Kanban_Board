@@ -138,7 +138,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         internal DalColumn ToDalObject(string email, int columnOrdinal)
         {
-            DalCopyColumn = new DalColumn(email, columnOrdinal, Name, Limit);
+            DalCopyColumn = new DalColumn(email, Name, columnOrdinal, Limit);
             return DalCopyColumn;
         }
 
