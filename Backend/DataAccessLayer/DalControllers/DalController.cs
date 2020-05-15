@@ -420,10 +420,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         //private methods
         /// <summary>
-        /// 
+        /// Creates the SQLite CommandText for the Select methods
         /// </summary>
-        /// <param name="keyArgs"></param>
-        /// <returns></returns>
+        /// <param name="keyArgs">keyArgs[0] is for email key, keyArgs[1] is for ColumnName key, KeyArgs[2] is for taskID key</param>
+        /// <returns>string of the SQL command-Select</returns>
         private string CommandTextSelect(params string[] keyArgs)
         {
             string command = $"SELECT * FROM {_tableName}";
