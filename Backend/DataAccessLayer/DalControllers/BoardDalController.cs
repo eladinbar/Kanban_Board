@@ -32,6 +32,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return boardList;
         }
+        /// <inhecitdoc>
+        /// cref="DalController{T}"
+        /// </inhecitdoc>
+        internal override DalBoard ConvertReaderToObject(SQLiteDataReader reader)
+        {
+            DalBoard result = new DalBoard(reader.GetString(0), (int)reader.GetValue(1));
+            return result;
+        }
         /// <summary>
         /// Insert command for column to Database.
         /// </summary>
@@ -71,7 +79,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
-
         /// <summary>
         /// Delete command for boards to the Database.
         /// </summary>
@@ -106,14 +113,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
-
-        /// <inhecitdoc cref="DalController{T}"/>
-        internal override DalBoard ConvertReaderToObject(SQLiteDataReader reader)
-        {
-            DalBoard result = new DalBoard(reader.GetString(0), (int)reader.GetValue(1));
-            return result;
-        }
-
         /// <summary>
         /// Creates the Boards table in the Kanban.db.
         /// </summary>

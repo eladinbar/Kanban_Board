@@ -27,7 +27,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             List<DalTask> taskList = Select(email, columnName).Cast<DalTask>().ToList();
             return taskList;
         }
-
+        /// <inhecitdoc>
+        /// cref="DalController{T}"
+        /// </inhecitdoc>
+        internal override DalTask ConvertReaderToObject(SQLiteDataReader reader)
+        {
+            DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), (int)reader.GetValue(2), reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6), reader.GetDateTime(7));
+            return result;
+        }
         /// <summary>
         /// Insert command for task to Database.
         /// </summary>
@@ -52,9 +59,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", task.TaskId);
                     SQLiteParameter titleParam = new SQLiteParameter(@"titleVal", task.Title);
                     SQLiteParameter descriptionParam = new SQLiteParameter(@"descriptionVal", task.Description);
-                    SQLiteParameter dueDateParam = new SQLiteParameter(@"dueDateVal", task.DueDate);
-                    SQLiteParameter CreationDateParam = new SQLiteParameter(@"creationDateVal", task.CreationDate);
-                    SQLiteParameter lastChangedDateParam = new SQLiteParameter(@"lastChangedDateVal", task.LastChangedDate);
+                    SQLiteParameter dueDateParam = new SQLiteParameter(@"dueDateVal", task.DueDate.ToString());
+                    SQLiteParameter CreationDateParam = new SQLiteParameter(@"creationDateVal", task.CreationDate.ToString());
+                    SQLiteParameter lastChangedDateParam = new SQLiteParameter(@"lastChangedDateVal", task.LastChangedDate.ToString());
 
                     command.Parameters.Add(emailParam);                    
                     command.Parameters.Add(ordinalParam);
@@ -80,7 +87,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
-
         /// <summary>
         /// Delete command for user to the Database.
         /// </summary>
@@ -115,14 +121,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
-
-        /// <inhecitdoc cref="DalController{T}"/>
-        internal override DalTask ConvertReaderToObject(SQLiteDataReader reader)
-        {
-            DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), (int)reader.GetValue(2), reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6), reader.GetDateTime(7));
-            return result;
-        }
-
         /// <summary>
         /// Creates the Tasks table in the Kanban.db.
         /// </summary>
