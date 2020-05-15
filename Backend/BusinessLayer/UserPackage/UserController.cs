@@ -45,6 +45,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                ValidatePassword(password);
                ValidateEmail(email);
                User newUser = new User(email, password, nickname);
+               newUser.Save();
                Users.Add(email, newUser);
             }
             else

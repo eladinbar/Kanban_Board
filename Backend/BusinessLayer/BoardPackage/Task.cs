@@ -46,8 +46,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             CreationTime = DateTime.Now;
             LastChangedDate = DateTime.Now;
             Id = id;
-            DalCopyTask = new DalTask(email, columnName, id, title, description, dueDate, CreationTime, LastChangedDate);
-            DalCopyTask.Save();
             log.Info("New task #" + id + " was created");
         }
 
@@ -139,5 +137,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
         }
 
+        internal DalTask ToDalObject(string email, string columnName) {
+            DalCopyTask = new DalTask(email, columnName, Id, Title, Description, DueDate, CreationTime, LastChangedDate);
+            return DalCopyTask;
+        }
+
+        internal void Save(string email, string columnName) {
+            ToDalObject(email, columnName);
+            DalCopyTask.Save();
+        }
     }
 }

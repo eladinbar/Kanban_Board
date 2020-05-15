@@ -24,14 +24,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             CreateTable();
         }
 
-
+        //abstract methods
         /// <summary>
         /// converts the reader to a DalObject
         /// </summary>
         /// <param name="reader">SQLite reader to convert</param>
         /// <returns>A DalObject that extands DalObject<T></returns>
         internal abstract T ConvertReaderToObject(SQLiteDataReader reader);
+        public abstract bool Insert(T dalObject);
+        public abstract bool Delete(T dalObject);
+        /// <summary>
+        /// Creates a Database table with the name _tableName.
+        /// </summary>
+        internal abstract void CreateTable();
 
+        //implemented methods
         /// <summary>
         /// select commeand for User table and Board table.
         /// </summary>
@@ -115,7 +122,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return fromDB;
         }
-
         /// <summary>
         /// select commeand for Task table of a spesific column in a spacific board.
         /// </summary>
@@ -159,7 +165,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return fromDB;
         }
-
         /// <summary>
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email arguments.
         /// </summary>
@@ -199,7 +204,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
-
         /// <summary>
         /// update the column in the database accosiated with attributeName and set it as attributeValue according to the email arguments.
         /// </summary>
@@ -401,12 +405,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
-
-        /// <summary>
-        /// Creates a Database table with the name _tableName.
-        /// </summary>
-        internal abstract void CreateTable();
-
         /// <summary>
         /// Creates .db file.
         /// </summary>
@@ -420,13 +418,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
         }
 
-        public abstract bool Insert(T dalObject);
-
+        //private methods
         /// <summary>
-        /// 
+        /// Creates the SQLite CommandText for the Select methods
         /// </summary>
-        /// <param name="keyArgs"></param>
-        /// <returns></returns>
+        /// <param name="keyArgs">keyArgs[0] is for email key, keyArgs[1] is for ColumnName key, KeyArgs[2] is for taskID key</param>
+        /// <returns>string of the SQL command-Select</returns>
         private string CommandTextSelect(params string[] keyArgs)
         {
             string command = $"SELECT * FROM {_tableName}";
@@ -434,9 +431,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             switch (keyArgs.Length)
             {
                 case 1:
-                    return command + $" WHERE email=\"{keyArgs[0]}\"";
+                    return command + $" WHERE email=\"{keyArgs[0]}\" ORDER BY email, Ordinal ASC";
                 case 2:
-                    return command + $" WHERE email=\"{keyArgs[0]}\" AND Name=\"{keyArgs[1]}\"";
+                    return command + $" WHERE email=\"{keyArgs[0]}\" AND ColumnName=\"{keyArgs[1]}\"";
                 case 3:
                     return command + $" WHERE email=\"{keyArgs[0]}\" AND ColumnName=\"{keyArgs[1]}\" AND ID={keyArgs[2]}";
                 default:

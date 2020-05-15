@@ -1,21 +1,18 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kanban47")]
+[assembly: AssemblyTitle("KanbanTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Kanban47")]
+[assembly: AssemblyProduct("KanbanTests")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleToAttribute("KanbanTests")]
-[assembly: InternalsVisibleTo("KanbanBoardTests")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -23,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("54d4ca44-f049-47de-bf74-81fc80f867fd")]
+[assembly: Guid("4bc1d7af-30d7-4344-8d64-7440f0e81957")]
 
 // Version information for an assembly consists of the following four values:
 //

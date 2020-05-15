@@ -25,7 +25,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             List<DalUser> userList = Select().Cast<DalUser>().ToList();
             return userList;
         }
-
+        /// <inhecitdoc>
+        /// cref="DalController{T}"
+        /// </inhecitdoc>
+        internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
+        {
+            DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+            return result;
+        }
         /// <summary>
         /// Insert command for user to Database.
         /// </summary>
@@ -68,13 +75,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res>0;
         }
-
         /// <summary>
         /// Delete command for user to the Database.
         /// </summary>
         /// <param name="user">Dal instance to delete from the Database</param>
         /// <returns>True if the method changed more then 0 rows</returns>
-        public bool Delete(DalUser user)
+        public override bool Delete(DalUser user)
         {
             int res = -1;
             using(var connection = new SQLiteConnection(_connectionString))
@@ -103,27 +109,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
-
-        /// <summary>
-        /// Deletes the Database file for a clean start of the program.
-        /// </summary>
-        public void DeleteDatabase()
-        {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
-            FileInfo dBFile = new FileInfo(path);
-            if (dBFile.Exists)
-            {
-                dBFile.Delete();
-            }
-        }
-
-        /// <inhecitdoc cref="DalController{T}"/>
-        internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
-        {
-            DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
-            return result;
-        }
-
         /// <summary>
         /// Creates the Users table in the Kanban.db.
         /// </summary>
@@ -161,6 +146,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     connection.Close();
                     log.Info("connection closed.");
                 }
+            }
+        }
+        /// <summary>
+        /// Deletes the Database file for a clean start of the program.
+        /// </summary>
+        public void DeleteDatabase()
+        {
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            FileInfo dBFile = new FileInfo(path);
+            if (dBFile.Exists)
+            {
+                dBFile.Delete();
             }
         }
     }   

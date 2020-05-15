@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public string Email { get; }
         public string Password { get; private set; }
         public bool Logged_in { get; private set; }
-        public DalUser DalUser { get; }
+        public DalUser DalCopyUser { get; private set; }
 
         /// <summary>
         /// A public constructor that creates a new user and initializes all of its fields.
@@ -26,8 +26,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.Password = password;
             this.Nickname = nickname;
             Logged_in = false;
-            DalUser = new DalUser(email, password, nickname);
-            DalUser.Save();
         }
 
         /// <summary>
@@ -49,7 +47,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// </summary>
         public void ChangePassword (string newPassword) {
             Password = newPassword;
-            DalUser.Password = newPassword;
+            DalCopyUser.Password = newPassword;
+        }
+
+        public DalUser ToDalObject() {
+            DalCopyUser = new DalUser(Email, Password, Nickname);
+            return DalCopyUser;
+        }
+
+        public void Save() {
+            ToDalObject();
+            DalCopyUser.Save();
         }
     }
 }

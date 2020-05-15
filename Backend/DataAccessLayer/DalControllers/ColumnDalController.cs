@@ -32,7 +32,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return columnList;
         }
-
+        /// <inhecitdoc>
+        /// cref="DalController{T}"
+        /// </inhecitdoc>
+        internal override DalColumn ConvertReaderToObject(SQLiteDataReader reader)
+        {
+            DalColumn result = new DalColumn(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3));
+            return result;
+        }
         /// <summary>
         /// Insert command for column to Database.
         /// </summary>
@@ -77,13 +84,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return res > 0;
         }
-
         /// <summary>
         /// Delete command for column to the Database.
         /// </summary>
         /// <param name="column">Dal instance to delete from the Database</param>
         /// <returns>True if the method changed more then 0 rows</returns>
-        public bool Delete(DalColumn column)
+        public override bool Delete(DalColumn column)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -111,12 +117,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 }
             }
             return res > 0;
-        }
-        /// <inhecitdoc cref="DalController{T}"/>
-        internal override DalColumn ConvertReaderToObject(SQLiteDataReader reader)
-        {
-            DalColumn result = new DalColumn(reader.GetString(0), (int)reader.GetValue(1), reader.GetString(2), (int)reader.GetValue(3));
-            return result;
         }
         /// <summary>
         /// Creates the Columns table in the Kanban.db.

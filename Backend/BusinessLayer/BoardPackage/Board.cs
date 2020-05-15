@@ -8,7 +8,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     /// <summary>
     /// Represents the Kanban Board
     /// </summary>
-    internal class Board
+    internal class Board : PersistedObject<DalBoard>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
@@ -26,12 +26,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             UserEmail = email;
             TaskCounter = 0;
-            DalCopyBoard = new DalBoard(email, TaskCounter);
             Columns = new List<Column>();
-            Columns.Add(this.AddColumn(email, 0, "backlog"));
-            Columns.Add(this.AddColumn(email, 1, "in progress"));
-            Columns.Add(this.AddColumn(email, 2, "done"));
-            DalCopyBoard.Save();
             log.Info("New board created");
         }
 
@@ -134,19 +129,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 if (columnOrdinal == this.Columns.Count) //in case of adding to the end 
                 {
                     this.Columns.Add(newColumn);
-                    this.DalCopyBoard.Columns.Add(newColumn.DalCopyColumn);
                 }
                 else
                 {
                     this.Columns.Insert(columnOrdinal, newColumn);
-                    this.DalCopyBoard.Columns.Insert(columnOrdinal, newColumn.DalCopyColumn);
                     for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns.
                         this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal + 1;
                 }
+                
                 log.Debug("A new column '" + Name + "' was added at the index '" + columnOrdinal + "'.");
                 return newColumn;
             }
-            else throw new InvalidOperationException("Column with this name ia already exists.");
+            else throw new InvalidOperationException("Column with this name is already exists.");
         }
 
 
@@ -178,12 +172,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     else //valid case
                     {
                         this.Columns.RemoveAt(columnOrdinal);
-                        this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
                         foreach (Task t in toRemove.Tasks)
                         {
-                            this.Columns[columnOrdinal + 1].Tasks.Add(t);
-                            this.Columns[columnOrdinal + 1].DalCopyColumn.Tasks.Add(t.DalCopyTask);
-                            t.DalCopyTask.ColumnName = this.Columns[columnOrdinal + 1].Name;
+                            this.Columns[columnOrdinal].Tasks.Add(t);
+                            t.DalCopyTask.ColumnName = this.Columns[columnOrdinal].Name;
                         }
                         log.Debug("First column '" + toRemove.Name + "' was removed.");
                     }
@@ -205,16 +197,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 else //valid case
                 {
                     this.Columns.RemoveAt(columnOrdinal);
-                    this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
                     foreach (Task t in toRemove.Tasks)
                     {
                         this.Columns[columnOrdinal - 1].Tasks.Add(t);
-                        this.Columns[columnOrdinal - 1].DalCopyColumn.Tasks.Add(t.DalCopyTask);
                         t.DalCopyTask.ColumnName = this.Columns[columnOrdinal - 1].Name;
                     }
                     log.Debug("Column '" + toRemove.Name + "' at index '" + columnOrdinal + "' was removed.");
                 }
-
                 for (int i = columnOrdinal; i < this.Columns.Count; i++) //updating the DAL.Columns ordinals 
                     this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal - 1;
             }
@@ -235,7 +224,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Warn("Attempt to move right the last column.");
                 throw new InvalidOperationException("The last column cannot be moved to its right.");
             }
-            if (columnOrdinal < 0 | columnOrdinal > this.Columns.Count) //invalid index
+            if (columnOrdinal < 0 | columnOrdinal >= this.Columns.Count) //invalid index
             {
                 log.Warn("Given column ordinal is invalid.");
                 throw new IndexOutOfRangeException("Given column ordinal is invalid.");
@@ -244,12 +233,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Column toMove = this.Columns[columnOrdinal];
             this.Columns.RemoveAt(columnOrdinal); 
             this.Columns.Insert(columnOrdinal + 1, toMove);
-            this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
-            this.DalCopyBoard.Columns.Insert(columnOrdinal + 1, toMove.DalCopyColumn);
 
             //updating DAL.Columns ordinals
             toMove.DalCopyColumn.Ordinal = toMove.DalCopyColumn.Ordinal + 1;
-            this.DalCopyBoard.Columns[columnOrdinal].Ordinal = this.DalCopyBoard.Columns[columnOrdinal].Ordinal - 1;
+            this.Columns[columnOrdinal].DalCopyColumn.Ordinal = this.Columns[columnOrdinal].DalCopyColumn.Ordinal - 1;
 
             log.Debug("Column '"+toMove.Name+"' has been moved to its right ("+(columnOrdinal+1)+") successfully.");
             return toMove;
@@ -277,17 +264,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Column toMove = this.Columns[columnOrdinal];
             this.Columns.RemoveAt(columnOrdinal);
             this.Columns.Insert(columnOrdinal - 1, toMove);
-            this.DalCopyBoard.Columns.RemoveAt(columnOrdinal);
-            this.DalCopyBoard.Columns.Insert(columnOrdinal - 1, toMove.DalCopyColumn);
 
             //updating DAL.Columns ordinals
             toMove.DalCopyColumn.Ordinal = toMove.DalCopyColumn.Ordinal - 1;
-            this.DalCopyBoard.Columns[columnOrdinal].Ordinal = this.DalCopyBoard.Columns[columnOrdinal].Ordinal + 1;
+            this.Columns[columnOrdinal].DalCopyColumn.Ordinal = this.Columns[columnOrdinal].DalCopyColumn.Ordinal + 1;
 
             log.Debug("Column '" + toMove.Name + "' has been moved to its left (" + (columnOrdinal - 1) + ") successfully.");
             return toMove;
         }
 
+        internal override void Save() {
+            ToDalObject();
+            DalCopyBoard.Save();
+        }
 
+        internal override DalBoard ToDalObject()
+        {
+            DalCopyBoard = new DalBoard(UserEmail, TaskCounter);
+            return DalCopyBoard;
+        }
     }
 }

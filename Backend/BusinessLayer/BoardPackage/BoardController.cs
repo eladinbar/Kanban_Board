@@ -107,7 +107,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
-                throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
+                throw new ArgumentException("A task does not exist with the given task ID - " + taskId + " .");
 
             if (b.Columns.Count == (columnOrdinal+1))
             {
@@ -129,8 +129,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
                 //DataAccess layer runtime list update 
                 toAdvance.DalCopyTask.ColumnName = targetColumn.Name;
-                c.DalCopyColumn.Tasks.Remove(toAdvance.DalCopyTask);
-                targetColumn.DalCopyColumn.Tasks.Add(toAdvance.DalCopyTask);
 
                 log.Debug("Task #" + taskId + "-" + toAdvance.Title + " was advanced");
             }
@@ -156,6 +154,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
 
             Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name);
+            newTask.Save(email, c.Name);
             b.TaskCounter = (b.TaskCounter + 1); 
             b.DalCopyBoard.TaskCounter = b.DalCopyBoard.TaskCounter + 1;
             c.InsertTask(newTask); //DAL.Column is updated via inner BP.Column method
@@ -266,6 +265,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Board newBoard = new Board(email);
             Boards.Add(email, newBoard);
             //save method is a part of inner 'Board' update method
+            newBoard.Save();
+            AddColumn(email, 0, "backlog");
+            AddColumn(email, 1, "in progress");
+            AddColumn(email, 2, "done");
 
             log.Info("New board was added with key " + email);
         }
@@ -280,7 +283,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Column AddColumn(string email, int columnOrdinal, string Name) //checked
         {
             Board b = GetBoard(email);
-            return b.AddColumn(email, columnOrdinal, Name);
+            Column newColumn = b.AddColumn(email, columnOrdinal, Name);
+            newColumn.Save(email, columnOrdinal);
+            return newColumn;
         }
 
         /// <summary>
@@ -291,12 +296,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public void RemoveColumn(string email, int columnOrdinal) //checked
         {
             Board b = GetBoard(email);
+            Column c = GetColumn(email, columnOrdinal);
             if (b.Columns.Count == 2)
             {
                 log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns");
                 throw new InvalidOperationException("The board has 2 columns. Can't remove another column.");
             }
             b.RemoveColumn(email, columnOrdinal);
+            c.Delete();
         }
 
         /// <summary>
