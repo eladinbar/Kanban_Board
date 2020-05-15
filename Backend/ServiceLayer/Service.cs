@@ -27,6 +27,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             log.Info("Creates a service object");
             BoardService = null;
             UserService = null;
+            LoadData();
         }
 
         /// <summary>        

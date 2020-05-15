@@ -118,7 +118,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Warn("New column ordinal was out of range");
                 throw new InvalidOperationException("New column ordinal is invalid.");
             }
-            if (Name == null || Name.Length > 15)
+            if (Name == null || Name.Length > 15 | Name.Length == 0)
             {
                 log.Warn("New column name was invalid (null or longer than 15 chars.)");
                 throw new InvalidOperationException("New column name is invalid.");
