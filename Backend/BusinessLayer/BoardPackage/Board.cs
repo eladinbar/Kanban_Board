@@ -134,7 +134,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 {
                     this.Columns.Insert(columnOrdinal, newColumn);
                     for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns.
-                        this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal + 1;
+                        this.Columns[i].DalCopyColumn.Ordinal = i;
                 }
                 
                 log.Debug("A new column '" + Name + "' was added at the index '" + columnOrdinal + "'.");
@@ -205,7 +205,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     log.Debug("Column '" + toRemove.Name + "' at index '" + columnOrdinal + "' was removed.");
                 }
                 for (int i = columnOrdinal; i < this.Columns.Count; i++) //updating the DAL.Columns ordinals 
-                    this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal - 1;
+                    this.Columns[i].DalCopyColumn.Ordinal = i;
             }
             else throw new InvalidOperationException("Index of the removed column is invalid.");
         }
@@ -235,8 +235,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.Columns.Insert(columnOrdinal + 1, toMove);
 
             //updating DAL.Columns ordinals
-            toMove.DalCopyColumn.Ordinal = toMove.DalCopyColumn.Ordinal + 1;
-            this.Columns[columnOrdinal].DalCopyColumn.Ordinal = this.Columns[columnOrdinal].DalCopyColumn.Ordinal - 1;
+            toMove.DalCopyColumn.Ordinal = columnOrdinal + 1;
+            this.Columns[columnOrdinal].DalCopyColumn.Ordinal = columnOrdinal - 1;
 
             log.Debug("Column '"+toMove.Name+"' has been moved to its right ("+(columnOrdinal+1)+") successfully.");
             return toMove;
@@ -266,8 +266,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             this.Columns.Insert(columnOrdinal - 1, toMove);
 
             //updating DAL.Columns ordinals
-            toMove.DalCopyColumn.Ordinal = toMove.DalCopyColumn.Ordinal - 1;
-            this.Columns[columnOrdinal].DalCopyColumn.Ordinal = this.Columns[columnOrdinal].DalCopyColumn.Ordinal + 1;
+            toMove.DalCopyColumn.Ordinal = columnOrdinal - 1;
+            this.Columns[columnOrdinal].DalCopyColumn.Ordinal = columnOrdinal + 1;
 
             log.Debug("Column '" + toMove.Name + "' has been moved to its left (" + (columnOrdinal - 1) + ") successfully.");
             return toMove;
