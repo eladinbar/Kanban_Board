@@ -25,6 +25,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         {
             return _controller.Insert((T) this);
         }
+
+        public bool Delate()
+        {
+            return _controller.Delete((T) this);
+        }
         
 
     }

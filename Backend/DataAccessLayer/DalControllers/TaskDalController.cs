@@ -16,13 +16,23 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public TaskDalController(): base(TaskTableName) { }
 
+        /// <summary>
+        /// Select command for all task of a specific board of  a spacific column.
+        /// </summary>
+        /// <param name="email">the board to get the task from</param>
+        /// <param name="columnName">the column to gat the task from</param>
+        /// <returns>List of DalTask of the Specified column</returns>
         public List<DalTask> SelectAllTasks(string email, string columnName)
         {
             List<DalTask> taskList = Select(email, columnName).Cast<DalTask>().ToList();
             return taskList;
         }
 
-
+        /// <summary>
+        /// Insert command for task to Database.
+        /// </summary>
+        /// <param name="task">Dal instance to insert to the Database</param>
+        /// <returns>True is the method changed more then 0 rows</returns>
         public override bool Insert(DalTask task)
         {
             int res = -1;
@@ -42,9 +52,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", task.TaskId);
                     SQLiteParameter titleParam = new SQLiteParameter(@"titleVal", task.Title);
                     SQLiteParameter descriptionParam = new SQLiteParameter(@"descriptionVal", task.Description);
-                    SQLiteParameter dueDateParam = new SQLiteParameter(@"dueDateVal", task.DueDate.ToString());
-                    SQLiteParameter CreationDateParam = new SQLiteParameter(@"creationDateVal", task.CreationDate.ToString());
-                    SQLiteParameter lastChangedDateParam = new SQLiteParameter(@"lastChangedDateVal", task.LastChangedDate.ToString());
+                    SQLiteParameter dueDateParam = new SQLiteParameter(@"dueDateVal", task.DueDate);
+                    SQLiteParameter CreationDateParam = new SQLiteParameter(@"creationDateVal", task.CreationDate);
+                    SQLiteParameter lastChangedDateParam = new SQLiteParameter(@"lastChangedDateVal", task.LastChangedDate);
 
                     command.Parameters.Add(emailParam);                    
                     command.Parameters.Add(ordinalParam);
@@ -65,12 +75,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
         }
 
-        public bool Delete(DalTask task)
+        /// <summary>
+        /// Delete command for user to the Database.
+        /// </summary>
+        /// <param name="task">Dal instance to delete from the Database</param>
+        /// <returns>True if the method changed more then 0 rows</returns>
+        public override bool Delete(DalTask task)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -94,18 +110,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
         }
 
-      
+        /// <inhecitdoc cref="DalController{T}"/>
         internal override DalTask ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), (int)reader.GetValue(2), reader.GetString(3), reader.GetString(4), reader.GetDateTime(5), reader.GetDateTime(6), reader.GetDateTime(7));
             return result;
         }
 
+        /// <summary>
+        /// Creates the Tasks table in the Kanban.db.
+        /// </summary>
         internal override void CreateTable()
         {       
             using (var connection = new SQLiteConnection(_connectionString))
@@ -146,6 +166,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     tableExistence.Dispose();
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
         }

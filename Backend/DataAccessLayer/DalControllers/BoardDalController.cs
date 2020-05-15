@@ -16,6 +16,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public BoardDalController() : base(BoardTableName) { }
 
+        /// <summary>
+        /// Select command of all boards from Database
+        /// </summary>
+        /// <returns>List of DalBoard</returns>
         public List<DalBoard> SelectAllBoards()
         {
             log.Info("loading all Boards from data base");
@@ -28,7 +32,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             }
             return boardList;
         }
-
+        /// <summary>
+        /// Insert command for column to Database.
+        /// </summary>
+        /// <param name="board">>Dal instance to insert to the Database</param>
+        /// <returns>True is the method changed more then 0 rows</returns>
         public override bool Insert(DalBoard board)
         {
             int res = -1;
@@ -58,12 +66,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
         }
 
-        public bool Delete(DalBoard board)
+        /// <summary>
+        /// Delete command for boards to the Database.
+        /// </summary>
+        /// <param name="board">Dal instance to delete from the Database</param>
+        /// <returns>True if the method changed more then 0 rows</returns>
+        public override bool Delete(DalBoard board)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -87,18 +101,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
         }
 
-
+        /// <inhecitdoc cref="DalController{T}"/>
         internal override DalBoard ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalBoard result = new DalBoard(reader.GetString(0), (int)reader.GetValue(1));
             return result;
         }
 
+        /// <summary>
+        /// Creates the Boards table in the Kanban.db.
+        /// </summary>
         internal override void CreateTable()
         {
             using (var connection = new SQLiteConnection(_connectionString))
@@ -106,7 +124,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 command.CommandText = $"CREATE TABLE {BoardTableName} (" +
                     $"{DalBoard.EmailColumnName} TEXT NOT NULL," +
-                    $"{DalBoard.BoardTaskCountName} InTEGER NOT NULL," +
+                    $"{DalBoard.BoardTaskCountName} INTEGER NOT NULL," +
                     $"PRIMARY KEY({DalBoard.EmailColumnName})" +
                     $"FOREIGN KEY({DalBoard.EmailColumnName})" +
                     $"  REFERENCES {UserDalController.UserTableName} ({DalBoard.EmailColumnName})" +
@@ -131,16 +149,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     tableExistence.Dispose();
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
         }
-
-
-
-    }
-
-    public enum BoardDalEnumController
-    {
-        
     }
 }

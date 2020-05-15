@@ -16,6 +16,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
         public ColumnDalController() : base(ColumnTableName) { }
 
+        /// <summary>
+        /// Select command for all column of a specific board.
+        /// </summary>
+        /// <param name="email">the specified board to select</param>
+        /// <returns>List of DalColumn of the Specified Board</returns>
         public List<DalColumn> SelectAllColumns(string email)
         {
             List<DalColumn> columnList = Select(email).Cast<DalColumn>().ToList();
@@ -28,6 +33,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return columnList;
         }
 
+        /// <summary>
+        /// Insert command for column to Database.
+        /// </summary>
+        /// <param name="column">Dal instance to insert to the Database</param>
+        /// <returns>True is the method changed more then 0 rows</returns>
         public override bool Insert(DalColumn column)
         {
             int res = -1;
@@ -62,12 +72,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
         }
 
-        public bool Delete(DalColumn column)
+        /// <summary>
+        /// Delete command for column to the Database.
+        /// </summary>
+        /// <param name="column">Dal instance to delete from the Database</param>
+        /// <returns>True if the method changed more then 0 rows</returns>
+        public override bool Delete(DalColumn column)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -91,17 +107,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
             return res > 0;
         }
-
+        /// <inhecitdoc cref="DalController{T}"/>
         internal override DalColumn ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalColumn result = new DalColumn(reader.GetString(0), (int)reader.GetValue(1), reader.GetString(2), (int)reader.GetValue(3));
             return result;
         }
-
+        /// <summary>
+        /// Creates the Columns table in the Kanban.db.
+        /// </summary>
         internal override void CreateTable()
         {          
             using (var connection = new SQLiteConnection(_connectionString))
@@ -136,6 +155,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     tableExistence.Dispose();
                     command.Dispose();
                     connection.Close();
+                    log.Info("connection closed.");
                 }
             }
         }
