@@ -26,11 +26,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             UserEmail = email;
             TaskCounter = 0;
+            DalCopyBoard = new DalBoard(email, TaskCounter);
             Columns = new List<Column>();
             Columns.Add(this.AddColumn(email, 0, "backlog"));
             Columns.Add(this.AddColumn(email, 1, "in progress"));
             Columns.Add(this.AddColumn(email, 2, "done"));
-            DalCopyBoard = new DalBoard(email, TaskCounter);
             DalCopyBoard.Save();
             log.Info("New board created");
         }
