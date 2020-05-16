@@ -8,7 +8,7 @@ using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 {
     /// <summary>
-    /// an abstract class for conneting to database for writing and reading
+    /// An abstract class used as the basis to form connections with the database for reading and writing purposes.
     /// </summary>
     public abstract class DalController<T> where T:DalObject<T>
     {
@@ -16,6 +16,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         protected readonly string _connectionString;
         protected readonly string _tableName;
 
+        /// <summary>
+        /// A public constructor, initializes database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
+        /// </summary>
+        /// <param name="tableName">The table name of the object this controller represents.</param>
         public DalController(string tableName)
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
@@ -25,20 +29,35 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         //abstract methods
+
+        /// <summary>
+        /// Creates a Database table with the name in the field '_tableName'.
+        /// </summary>
+        internal abstract void CreateTable();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dalObject"></param>
+        /// <returns></returns>
+        public abstract bool Insert(T dalObject);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dalObject"></param>
+        /// <returns></returns>
+        public abstract bool Delete(T dalObject);
+
         /// <summary>
         /// converts the reader to a DalObject
         /// </summary>
         /// <param name="reader">SQLite reader to convert</param>
         /// <returns>A DalObject that extands DalObject<T></returns>
         internal abstract T ConvertReaderToObject(SQLiteDataReader reader);
-        public abstract bool Insert(T dalObject);
-        public abstract bool Delete(T dalObject);
-        /// <summary>
-        /// Creates a Database table with the name _tableName.
-        /// </summary>
-        internal abstract void CreateTable();
 
         //implemented methods
+
         /// <summary>
         /// select commeand for User table and Board table.
         /// </summary>
@@ -405,6 +424,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
 
             return res > 0;
         }
+
         /// <summary>
         /// Creates .db file.
         /// </summary>
@@ -419,6 +439,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         //private methods
+
         /// <summary>
         /// Creates the SQLite CommandText for the Select methods
         /// </summary>

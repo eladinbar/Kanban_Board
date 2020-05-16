@@ -20,6 +20,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         {
             _controller = controller;
         }
+
         /// <summary>
         /// Insert this to the Database.
         /// </summary>
@@ -28,6 +29,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         {
             return _controller.Insert((T) this);
         }
+
         /// <summary>
         /// Delete the equivelnt row of this in the Database
         /// </summary>

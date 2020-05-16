@@ -25,90 +25,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             List<DalUser> userList = Select().Cast<DalUser>().ToList();
             return userList;
         }
-        /// <inhecitdoc>
-        /// cref="DalController{T}"
-        /// </inhecitdoc>
-        internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
-        {
-            DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
-            return result;
-        }
-        /// <summary>
-        /// Insert command for user to Database.
-        /// </summary>
-        /// <param name="user">Dal instance to insert to the Database</param>
-        /// <returns>True is the method changed more then 0 rows</returns>
-        public override bool Insert(DalUser user)
-        {
-            
-            int res = -1;
-            using (var connection = new SQLiteConnection(_connectionString))
-            {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                try
-                {
-                    log.Info("opening connection to DataBase");
-                    connection.Open();   
-                    command.CommandText = $"INSERT INTO {UserTableName} ({DalUser.EmailColumnName}, {DalUser.UserPasswordColumnName},{DalUser.UserNicknameColumnName})" +
-                        $"VALUES (@emailVal, @passwordVal,@NicknameVal);";
 
-                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", user.Email);
-                    SQLiteParameter passwordParam = new SQLiteParameter(@"passwordVal", user.Password);
-                    SQLiteParameter nicknameParam = new SQLiteParameter(@"nicknameVal", user.Nickname);
-
-                    command.Parameters.Add(emailParam);
-                    command.Parameters.Add(passwordParam);
-                    command.Parameters.Add(nicknameParam);
-
-                    res = command.ExecuteNonQuery();
-                }
-                catch (SQLiteException e)
-                {
-                    log.Error("SQLite exeption occured", e);
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                    log.Info("connection closed.");
-                }
-            }
-            return res>0;
-        }
-        /// <summary>
-        /// Delete command for user to the Database.
-        /// </summary>
-        /// <param name="user">Dal instance to delete from the Database</param>
-        /// <returns>True if the method changed more then 0 rows</returns>
-        public override bool Delete(DalUser user)
-        {
-            int res = -1;
-            using(var connection = new SQLiteConnection(_connectionString))
-            {
-                SQLiteCommand command = new SQLiteCommand
-                {
-                    Connection = connection,
-                    CommandText = $"DELETE FROM {UserTableName} WHERE email=\"{user.Email}\""
-                };
-                try
-                {
-                    log.Info("opening connection to DataBase");
-                    connection.Open();
-                    res = command.ExecuteNonQuery();
-                }
-                catch (SQLiteException e)
-                {
-                    log.Error("SQLite exeption occured", e);
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                    log.Info("connection closed.");
-                }
-            }
-            return res > 0;
-        }
         /// <summary>
         /// Creates the Users table in the Kanban.db.
         /// </summary>
@@ -148,6 +65,96 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 }
             }
         }
+
+        /// <inheritdoc>
+        /// cref="DalController{T}"
+        /// </inheritdoc>
+        internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
+        {
+            DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+            return result;
+        }
+
+        /// <summary>
+        /// Inserts the given user into the 'Users' table in the database.
+        /// </summary>
+        /// <param name="user">The data access layer user instance to insert into the database.</param>
+        /// <returns>True if the method changed more than 0 rows</returns>
+        public override bool Insert(DalUser user)
+        {
+            
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    log.Info("opening connection to DataBase");
+                    connection.Open();   
+                    command.CommandText = $"INSERT INTO {UserTableName} ({DalUser.EmailColumnName}, {DalUser.UserPasswordColumnName},{DalUser.UserNicknameColumnName})" +
+                        $"VALUES (@emailVal, @passwordVal,@NicknameVal);";
+
+                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", user.Email);
+                    SQLiteParameter passwordParam = new SQLiteParameter(@"passwordVal", user.Password);
+                    SQLiteParameter nicknameParam = new SQLiteParameter(@"nicknameVal", user.Nickname);
+
+                    command.Parameters.Add(emailParam);
+                    command.Parameters.Add(passwordParam);
+                    command.Parameters.Add(nicknameParam);
+
+                    res = command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                    log.Info("connection closed.");
+                }
+            }
+            return res>0;
+        }
+
+        /// <summary>
+        /// Delete command for user to the Database.
+        /// </summary>
+        /// <param name="user">Dal instance to delete from the Database</param>
+        /// <returns>True if the method changed more then 0 rows</returns>
+        public override bool Delete(DalUser user)
+        {
+            int res = -1;
+            using(var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"DELETE FROM {UserTableName} WHERE email=\"{user.Email}\""
+                };
+                try
+                {
+                    log.Info("opening connection to DataBase");
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (SQLiteException e)
+                {
+                    log.Error("SQLite exeption occured", e);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                    log.Info("connection closed.");
+                }
+            }
+            return res > 0;
+        }
+
+
+
         /// <summary>
         /// Deletes the Database file for a clean start of the program.
         /// </summary>

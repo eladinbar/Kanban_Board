@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public BoardDalController() : base(BoardTableName) { }
 
         /// <summary>
-        /// Select command of all boards from Database
+        /// Select command - retrieves all boards from the database
         /// </summary>
         /// <returns>List of DalBoard</returns>
         public List<DalBoard> SelectAllBoards()
