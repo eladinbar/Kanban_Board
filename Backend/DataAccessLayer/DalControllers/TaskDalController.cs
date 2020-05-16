@@ -17,11 +17,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public TaskDalController(): base(TaskTableName) { }
 
         /// <summary>
-        /// Select command for all task of a specific board of  a spacific column.
+        /// Retrieves all task data of a specific board and column from the database.
         /// </summary>
-        /// <param name="email">the board to get the task from</param>
-        /// <param name="columnName">the column to gat the task from</param>
-        /// <returns>List of DalTask of the Specified column</returns>
+        /// <param name="email">The board to retrieve tasks from.</param>
+        /// <param name="columnName">the column to retrieve tasks from.</param>
+        /// <returns>Returns a list of DalTask objects associated with the specified board and column.</returns>
         public List<DalTask> SelectAllTasks(string email, string columnName)
         {
             List<DalTask> taskList = Select(email, columnName).Cast<DalTask>().ToList();

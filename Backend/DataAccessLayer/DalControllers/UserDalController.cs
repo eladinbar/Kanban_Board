@@ -17,9 +17,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public UserDalController() : base(UserTableName) { }
 
         /// <summary>
-        /// gets all user data from Database.
+        /// Retrieves all user data from the database.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a list of DalUser objects.</returns>
         public List<DalUser> SelectAllUsers()
         {
             List<DalUser> userList = Select().Cast<DalUser>().ToList();
@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         /// <summary>
-        /// Creates the Users table in the Kanban.db.
+        /// Creates the Users table in the Kanban.db database.
         /// </summary>
         internal override void CreateTable()
         {
@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
                 try
                 {
-                    log.Info("opening connection to DataBase");
+                    log.Info("Opening a connection to the database.");
                     connection.Open();
                     SQLiteDataReader reader = tableExistence.ExecuteReader();
                     if (!reader.Read())
@@ -54,21 +54,23 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 }
                 catch (SQLiteException e)
                 {
-                    log.Error("SQLite exeption occured", e);
+                    log.Error("SQLite exception occured.", e);
                 }
                 finally
                 {
                     tableExistence.Dispose();
                     command.Dispose();
                     connection.Close();
-                    log.Info("connection closed.");
+                    log.Info("The connection was closed.");
                 }
             }
         }
 
-        /// <inheritdoc>
-        /// cref="DalController{T}"
-        /// </inheritdoc>
+        /// <summary>
+        /// Converts the reader to a DalUser.
+        /// </summary>
+        /// <param name="reader">The SQLite reader to convert.</param>
+        /// <returns>Returns a DalUser.</returns>
         internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
@@ -79,7 +81,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// Inserts the given user into the 'Users' table in the database.
         /// </summary>
         /// <param name="user">The data access layer user instance to insert into the database.</param>
-        /// <returns>True if the method changed more than 0 rows</returns>
+        /// <returns>Returns true if the method changed more than 0 rows.</returns>
         public override bool Insert(DalUser user)
         {
             
@@ -89,10 +91,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
                 {
-                    log.Info("opening connection to DataBase");
+                    log.Info("Opening a connection to the database.");
                     connection.Open();   
                     command.CommandText = $"INSERT INTO {UserTableName} ({DalUser.EmailColumnName}, {DalUser.UserPasswordColumnName},{DalUser.UserNicknameColumnName})" +
-                        $"VALUES (@emailVal, @passwordVal,@NicknameVal);";
+                        $"VALUES (@emailVal, @passwordVal, @NicknameVal);";
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", user.Email);
                     SQLiteParameter passwordParam = new SQLiteParameter(@"passwordVal", user.Password);
@@ -106,23 +108,23 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 }
                 catch (SQLiteException e)
                 {
-                    log.Error("SQLite exeption occured", e);
+                    log.Error("SQLite exception occured.", e);
                 }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
-                    log.Info("connection closed.");
+                    log.Info("The connection was closed.");
                 }
             }
-            return res>0;
+            return res > 0;
         }
 
         /// <summary>
-        /// Delete command for user to the Database.
+        /// Deletes the given user from the 'Users' table in the database.
         /// </summary>
-        /// <param name="user">Dal instance to delete from the Database</param>
-        /// <returns>True if the method changed more then 0 rows</returns>
+        /// <param name="user">The data access layer user instance to delete from the database.</param>
+        /// <returns>Returns true if the method changed more than 0 rows.</returns>
         public override bool Delete(DalUser user)
         {
             int res = -1;
@@ -135,13 +137,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 };
                 try
                 {
-                    log.Info("opening connection to DataBase");
+                    log.Info("Opening a connection to the database.");
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
                 catch (SQLiteException e)
                 {
-                    log.Error("SQLite exeption occured", e);
+                    log.Error("SQLite exception occured.", e);
                 }
                 finally
                 {
@@ -153,10 +155,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return res > 0;
         }
 
-
-
         /// <summary>
-        /// Deletes the Database file for a clean start of the program.
+        /// Deletes the database file for a clean start of the program.
         /// </summary>
         public void DeleteDatabase()
         {
@@ -167,6 +167,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 dBFile.Delete();
             }
         }
-    }   
-   
+    }      
 }
