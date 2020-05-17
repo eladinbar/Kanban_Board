@@ -14,20 +14,24 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         private static readonly log4net.ILog log = LogHelper.getLogger();
         internal const string UserTableName = "Users";
 
+        /// <summary>
+        /// A public constructor that initializes the database path and the connection string accordingly. Initializes the 'Users' table name and creates it in the database.
+        /// </summary>
         public UserDalController() : base(UserTableName) { }
 
         /// <summary>
         /// Retrieves all user data from the database.
         /// </summary>
-        /// <returns>Returns a list of DalUser objects.</returns>
+        /// <returns>Returns a list of all DalUser objects in the database.</returns>
         public List<DalUser> SelectAllUsers()
         {
+            log.Info("Loading all users from the database.");
             List<DalUser> userList = Select().Cast<DalUser>().ToList();
             return userList;
         }
 
         /// <summary>
-        /// Creates the Users table in the Kanban.db database.
+        /// Creates the 'Users' table in the database.
         /// </summary>
         internal override void CreateTable()
         {
@@ -67,7 +71,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         /// <summary>
-        /// Converts the reader to a DalUser.
+        /// Converts an SQLiteDataReader to a DalUser.
         /// </summary>
         /// <param name="reader">The SQLite reader to convert.</param>
         /// <returns>Returns a DalUser.</returns>

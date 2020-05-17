@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public abstract bool Delete(T dalObject);
 
         /// <summary>
-        /// Converts the reader to a DalObject.
+        /// Converts an SQLiteDataReader to a DalObject.
         /// </summary>
         /// <param name="reader">The SQLite reader to convert.</param>
         /// <returns>Returns a DalObject that extends DalObject<T>.</returns>
