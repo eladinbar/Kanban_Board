@@ -276,14 +276,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
         /// <summary>
-        /// The method in the BusinessLayer to save a board to the database.
-        /// </summary>
-        internal override void Save() {
-            ToDalObject();
-            DalCopyBoard.Save();
-        }
-
-        /// <summary>
         /// Transforms the board to its data access layer variant.
         /// </summary>
         /// <returns>return a DalBoard with all necessary elements to be persisted.</returns>
@@ -291,6 +283,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             DalCopyBoard = new DalBoard(UserEmail, TaskCounter);
             return DalCopyBoard;
+        }
+
+        /// <summary>
+        /// The method in the BusinessLayer to save a board to the database.
+        /// </summary>
+        internal override void Save()
+        {
+            ToDalObject();
+            DalCopyBoard.Save();
         }
     }
 }
