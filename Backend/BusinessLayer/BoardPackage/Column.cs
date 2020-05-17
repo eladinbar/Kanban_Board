@@ -16,8 +16,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public List<Task> Tasks { get; }
         public DalColumn DalCopyColumn { get; private set; }
 
-
-
         /// <summary>
         /// A public contructor that creates a new column and initializes its fields.
         /// </summary>
@@ -123,7 +121,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (Tasks.Exists(x => x.Id == taskId))
                 return Tasks.Find(x => x.Id == taskId);
             else
-                throw new ArgumentException("Task #"+taskId+" does not exist in '" + Name + "' column");
+                throw new ArgumentException("Task #" + taskId + " does not exist in '" + Name + "' column");
         }
 
         /// <summary>
@@ -138,18 +136,32 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 return false;
         }
 
+        /// <summary>
+        /// Transforms the column to its data access layer variant.
+        /// </summary>
+        /// <param name="email">The email that is to be persisted with the new DalColumn.</param>
+        /// <param name="columnOrdinal">The column ordinal that is to be persisted with the new DalColumn.</param>
+        /// <returns>Returns a DalColumn.</returns>
         internal DalColumn ToDalObject(string email, int columnOrdinal)
         {
             DalCopyColumn = new DalColumn(email, Name, columnOrdinal, Limit);
             return DalCopyColumn;
         }
 
+        /// <summary>
+        /// The method in the BusinessLayer to save a column to the database.
+        /// </summary>
+        /// <param name="email">The email that is to be persisted with the new DalColumn.</param>
+        /// <param name="columnOrdinal">The column ordinal that is to be persisted with the new DalColumn.</param>
         internal void Save(string email, int columnOrdinal)
         {
             ToDalObject(email, columnOrdinal);
             DalCopyColumn.Save();
         }
 
+        /// <summary>
+        /// The method to remove a column from the database.
+        /// </summary>
         internal void Delete() {
             DalCopyColumn.Delete();
         }

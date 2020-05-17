@@ -94,7 +94,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Column c = b.GetColumn(columnOrdinal);
             c.LimitColumnTasks(limit);
 
-            //the "Save' method is executed in 'Column' class itself
+            //field database updates are executed in the 'Column' class itself
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskTitle(newTitle);
-                //save method is a part of inner 'Task' update method
+                //field database updates are a part of the inner 'Task' functionality
 
                 log.Debug("Task #" + taskId + " title was updated.");
             }
@@ -216,7 +216,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDescription(newDescription);
-                //save method is a part of inner 'Task' update method
+                //field database updates are a part of the inner 'Task' functionality
 
                 log.Debug("Task #" + taskId + " description was updated.");
             }
@@ -247,7 +247,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDuedate(newDueDate);
-                //save method is a part of inner 'Task' update method
+                //field database updates are a part of the inner 'Task' functionality
 
                 log.Debug("Task #" + taskId + " dueDate was updated.");
             }
@@ -266,7 +266,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board newBoard = new Board(email);
             Boards.Add(email, newBoard);
-            //save method is a part of inner 'Board' update method
+
             newBoard.Save();
             AddColumn(email, 0, "backlog");
             AddColumn(email, 1, "in progress");
@@ -301,7 +301,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Column c = GetColumn(email, columnOrdinal);
             if (b.Columns.Count == MINIMAL_NUMBER_OF_COLUMNS)
             {
-                log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns");
+                log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns.");
                 throw new InvalidOperationException("The board has 2 columns. Can't remove another column.");
             }
             b.RemoveColumn(email, columnOrdinal);
@@ -330,7 +330,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Board b = GetBoard(email);
             return b.MoveColumnLeft(email, columnOrdinal);
         }
-
-
     }
 }

@@ -11,7 +11,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private const int MINIMUM_TITLE_LENGTH = 0;
         private const int MAXIMUM_DESCRIPTION_LENGTH = 300; 
 
-
         public int Id { get; }
         public string Title { get; private set; }
         public string Description { get; private set; }
@@ -142,11 +141,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
         }
 
+        /// <summary>
+        /// Transforms the task to its data access layer variant.
+        /// </summary>
+        /// <param name="email">The email that is to be persisted with the new DalTask.</param>
+        /// <param name="columnName">The column name that is to be persisted with the new DalTask.</param>
+        /// <returns>Returns a DalTask with all necessary elements to be persisted.</returns>
         internal DalTask ToDalObject(string email, string columnName) {
             DalCopyTask = new DalTask(email, columnName, Id, Title, Description, DueDate, CreationTime, LastChangedDate);
             return DalCopyTask;
         }
 
+        /// <summary>
+        /// The method in the BusinessLayer to save a task to the database.
+        /// </summary>
+        /// <param name="email">The email that is to be persisted with the new DalTask.</param>
+        /// <param name="columnName">The columnName that is to be persisted with the new DalTask.</param>
         internal void Save(string email, string columnName) {
             ToDalObject(email, columnName);
             DalCopyTask.Save();
