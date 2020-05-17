@@ -7,6 +7,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
+        private const int MAXIMUM_TITLE_LENGTH = 50;
+        private const int MINIMUM_TITLE_LENGTH = 0;
+        private const int MAXIMUM_DESCRIPTION_LENGTH = 300; 
+
+
         public int Id { get; }
         public string Title { get; private set; }
         public string Description { get; private set; }
@@ -27,13 +32,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the title or description given are invalid.</exception>
         public Task(string title, string description, DateTime dueDate, int id, string email, string columnName) //checked
         {
-            if (title.Length > 0 && title.Length <= 50)
+            if (title.Length > MINIMUM_TITLE_LENGTH && title.Length <= MAXIMUM_TITLE_LENGTH)
                 Title = title;
             else
                 throw new ArgumentOutOfRangeException("The title cannot be empty or exceed 50 characters");
             if (description == null)
                 Description = "";
-            else if (description.Length <= 300)
+            else if (description.Length <= MAXIMUM_DESCRIPTION_LENGTH)
                 Description = description;
             else
                 throw new ArgumentOutOfRangeException("The description cannot exceed 300 characters");
@@ -82,7 +87,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             {
                 throw new ArgumentNullException("Title cannot be null.");
             }
-            else if (title.Length > 0 && title.Length <= 50)
+            else if (title.Length > 0 && title.Length <= MAXIMUM_TITLE_LENGTH)
             {
                 Title = title;
                 LastChangedDate = DateTime.Now;
@@ -106,7 +111,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Description = "";
                 LastChangedDate = DateTime.Now;             
             }
-            else if(description.Length <= 300)
+            else if(description.Length <= MAXIMUM_DESCRIPTION_LENGTH)
             {
                 Description = description;
                 LastChangedDate = DateTime.Now;

@@ -13,6 +13,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
+        private const int MINIMAL_NUMBER_OF_COLUMNS = 2;
+
         private Dictionary<String, Board> Boards;
 
         /// <summary>
@@ -297,7 +299,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             Column c = GetColumn(email, columnOrdinal);
-            if (b.Columns.Count == 2)
+            if (b.Columns.Count == MINIMAL_NUMBER_OF_COLUMNS)
             {
                 log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns");
                 throw new InvalidOperationException("The board has 2 columns. Can't remove another column.");

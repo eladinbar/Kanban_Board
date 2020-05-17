@@ -9,6 +9,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
+        private const int INITIALIZE_MAXIMUM_NUMBER_OF_TASKS = Int32.MaxValue; //infinite
+
         public string Name { get; }
         public int Limit { get; private set; }
         public List<Task> Tasks { get; }
@@ -22,10 +24,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="name">The name the column will be created with.</param>
         /// <param name="email">The email of the board user.</param>
         /// <param name="columnOrdinal">Ordinal the column will be created with.</param>
-        public Column(string name, string email, int columnOrdinal) //checked
+        public Column(string name, string email, int columnOrdinal) 
         {
             Name = name;
-            Limit = Int32.MaxValue;
+            Limit = INITIALIZE_MAXIMUM_NUMBER_OF_TASKS;
             Tasks = new List<Task>();
             log.Info("New column " + name + "created");
         }
