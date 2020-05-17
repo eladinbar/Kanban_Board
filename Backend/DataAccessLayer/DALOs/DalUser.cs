@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 {
     /// <summary>
-    /// Dal access layer representation  of a User
+    /// The data access layer representation of a User.
     /// </summary>
     internal class DalUser : DalObject<DalUser>
     {
@@ -21,6 +21,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         private string _nickname;
         public string Nickname { get => _nickname; set { _nickname = value; _controller.Update(Email, UserNicknameColumnName, value); } }
 
+        /// <summary>
+        /// A public constructor that initializes all necessary fields to be persisted.
+        /// </summary>
+        /// <param name="email">The email that is to be associated with the new DalUser.</param>
+        /// <param name="password">The password of the user to be persisted.</param>
+        /// <param name="nickname">The nickname of the user to be persisted.</param>
         public DalUser(string email, string password, string nickname) : base(new UserDalController())
         {
             Email = email;

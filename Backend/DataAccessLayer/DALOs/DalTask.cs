@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 {
     /// <summary>
-    /// Dal access layer representation  of a Task
+    /// The data access layer representation of a Task.
     /// </summary>
     internal class DalTask : DalObject<DalTask>
     {
@@ -36,6 +36,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         private DateTime _lastChangedDate;
         public DateTime LastChangedDate { get => _lastChangedDate; set { _lastChangedDate = value; _controller.Update(Email, ColumnName, TaskId, TaskLastChangedDateColumnName, value.ToString()); } }
 
+        /// <summary>
+        /// A public constructor that initializes all necessary fields to be persisted.
+        /// </summary>
+        /// <param name="email">The email of the user that is to be associated with the new DalTask.</param>
+        /// <param name="columnName">The name of the column this new DalTask is associated with.</param>
+        /// <param name="id">The ID of the task to be persisted.</param>
+        /// <param name="title">The title of the task to ber persisted.</param>
+        /// <param name="description">The description of the task to be persisted.</param>
+        /// <param name="dueDate">The due date of the task to be persisted.</param>
+        /// <param name="creationDate">The creation date of the task to be persisted.</param>
+        /// <param name="lastChangedDate">The last changed date of the task to be persisted.</param>
         public DalTask(string email, string columnName, int id, string title, string description, DateTime dueDate, DateTime creationDate, DateTime lastChangedDate) : base(new TaskDalController())
         {
             Email = email;
