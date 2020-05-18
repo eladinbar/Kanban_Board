@@ -442,11 +442,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         }
 
         /// <summary>
-        /// 
+        /// creates the command text for the Database of the update command.
         /// </summary>
-        /// <param name="attributeName"></param>
+        /// <param name="attributeName">The name of the column to update</param>
         /// <param name="keyArgs">keyArgs[0] is for email key, keyArgs[1] is for ColumnName key, KeyArgs[2] is for taskID key</param>
-        /// <returns></returns>
+        /// <returns>the command string for the update command</returns>
         private string CommandTextUpdate(string attributeName, params string[] keyArgs)
         {
             string command = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE {DalObject<T>.EmailColumnName}=\"{keyArgs[0]}\"";
