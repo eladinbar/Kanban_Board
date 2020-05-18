@@ -258,7 +258,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Warn("Attempt to move the first column left.");
                 throw new InvalidOperationException("The first column cannot be moved to its left.");
             }
-            if (columnOrdinal < 0 | columnOrdinal > this.Columns.Count) //invalid index
+            if (columnOrdinal < 0 | columnOrdinal >= this.Columns.Count) //invalid index
             {
                 log.Warn("Given column ordinal is invalid.");
                 throw new IndexOutOfRangeException("Given column ordinal is invalid.");
