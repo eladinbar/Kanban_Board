@@ -8,7 +8,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     /// <summary>
     /// Represents the Kanban Board
     /// </summary>
-    internal class Board : PersistedObject<DalBoard>
+    internal class Board
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
@@ -280,7 +280,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Transforms the board to its data access layer variant.
         /// </summary>
         /// <returns>return a DalBoard with all necessary elements to be persisted.</returns>
-        internal override DalBoard ToDalObject()
+        internal DalBoard ToDalObject()
         {
             DalCopyBoard = new DalBoard(UserEmail, TaskCounter);
             return DalCopyBoard;
@@ -289,7 +289,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <summary>
         /// The method in the BusinessLayer to save a board to the database.
         /// </summary>
-        internal override void Save()
+        internal void Save()
         {
             ToDalObject();
             DalCopyBoard.Save();
