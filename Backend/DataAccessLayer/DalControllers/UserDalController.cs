@@ -22,7 +22,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <returns></returns>
         public List<DalUser> SelectAllUsers()
         {
-            List<DalUser> userList = Select().Cast<DalUser>().ToList();
+            List<DalUser> userList = Select();
             return userList;
         }
         /// <inhecitdoc>

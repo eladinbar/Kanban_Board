@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <returns>List of DalColumn of the Specified Board</returns>
         public List<DalColumn> SelectAllColumns(string email)
         {
-            List<DalColumn> columnList = Select(email).Cast<DalColumn>().ToList();
+            List<DalColumn> columnList = Select(email);
             TaskDalController taskController = new TaskDalController();
             foreach(DalColumn c in columnList)
             {

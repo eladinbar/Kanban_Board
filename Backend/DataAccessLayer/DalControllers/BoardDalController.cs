@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public List<DalBoard> SelectAllBoards()
         {
             log.Info("loading all Boards from data base");
-            List<DalBoard> boardList = Select().Cast<DalBoard>().ToList();
+            List<DalBoard> boardList = Select();
             ColumnDalController columnController = new ColumnDalController();
             foreach(DalBoard b in boardList)
             {
