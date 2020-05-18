@@ -130,6 +130,10 @@ namespace IntroSE.Kanban.Backend.KanbanTests
             //trying to advance from last column
             Response advance31 = service.AdvanceTask("3@mashu.com", 2, t1.Value.Id);
             Console.WriteLine(advance3.ErrorMessage);
+
+            //trying to delete data
+            Response advance32 = service.DeleteData();
+            Console.WriteLine(advance32.ErrorMessage);
         }
     }
 }
