@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
     internal class DalColumn : DalObject<DalColumn>
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
-        public const string ColumnNameColumnName = "Name";
+        public const string ColumnNameColumnName = "ColumnName";
         public const string ColumnOrdinalColumnName = "Ordinal";
         public const string ColumnLimitColumnName = "TaskLimit";
 

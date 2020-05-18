@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <returns>List of DalTask of the Specified column</returns>
         public List<DalTask> SelectAllTasks(string email, string columnName)
         {
-            List<DalTask> taskList = Select(email, columnName).Cast<DalTask>().ToList();
+            List<DalTask> taskList = Select(email, columnName);
             return taskList;
         }
         /// <inhecitdoc>
