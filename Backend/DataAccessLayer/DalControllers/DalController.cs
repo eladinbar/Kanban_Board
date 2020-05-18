@@ -180,7 +180,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\""
+                    CommandText = CommandTextUpdate(attributeName, email)
                 };
                 try
                 {
@@ -219,7 +219,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\""
+                    CommandText = CommandTextUpdate(attributeName, email)
                 };
                 try
                 {
@@ -259,7 +259,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\" AND Name=\"{columnName}\""
+                    CommandText = CommandTextUpdate(attributeName,email,columnName)
                 };
                 try
                 {
@@ -299,7 +299,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attribluteName}] = @{attribluteName} WHERE email=\"{email}\" AND Name=\"{columnName}\""
+                    CommandText = CommandTextUpdate(attribluteName, email, columnName)
                 };
                 try
                 {
@@ -340,7 +340,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\" AND ColumnName=\"{columnName}\" AND ID={taskID}"
+                    CommandText = CommandTextUpdate(attributeName, email, columnName, taskID.ToString())
                 };
                 try
                 {
@@ -381,7 +381,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE email=\"{email}\" AND ColumnName=\"{columnName}\" AND ID={taskID}"
+                    CommandText = CommandTextUpdate(attributeName, email, columnName, taskID.ToString())
                 };
                 try
                 {
@@ -440,5 +440,30 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     return command;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="attributeName"></param>
+        /// <param name="keyArgs">keyArgs[0] is for email key, keyArgs[1] is for ColumnName key, KeyArgs[2] is for taskID key</param>
+        /// <returns></returns>
+        private string CommandTextUpdate(string attributeName, params string[] keyArgs)
+        {
+            string command = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE {DalObject<T>.EmailColumnName}=\"{keyArgs[0]}\"";
+
+            switch (keyArgs.Length)
+            {
+                case 1:
+                    return command;
+                case 2:
+                    return command + $" AND {DalColumn.ColumnNameColumnName}=\"{keyArgs[1]}\"";
+                case 3:
+                    return command + $" AND {DalColumn.ColumnNameColumnName}=\"{keyArgs[1]}\" AND {DalTask.TaskIDColumnName}={keyArgs[3]}";
+                default:
+                    log.Error("the amount of keyArgs does not meet the requirements");
+                    return "";
+            }
+        }
+
     }
 }
