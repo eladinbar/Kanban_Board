@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 {
 
     /// <summary>
-    /// The data access layer representation of a Board.
+    /// Dal access layer representation  of a Board
     /// </summary>
     internal class DalBoard : DalObject<DalBoard>
     {
@@ -20,11 +20,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         public int TaskCounter { get => _taskCounter; set{ _taskCounter = value; _controller.Update(Email, BoardTaskCountName, value); } }
         public List<DalColumn> Columns { get; set; }
 
-        /// <summary>
-        /// A public constructor that initializes all necessary fields to be persisted.
-        /// </summary>
-        /// <param name="email">The email of the user that is to be associated with the new DalBoard.</param>
-        /// <param name="taskCounter">The task counter of the board to be persisted.</param>
         public DalBoard(string email, int taskCounter) : base(new BoardDalController())
         {
             Email = email;

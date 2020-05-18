@@ -27,7 +27,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             log.Info("Creates a service object");
             BoardService = null;
             UserService = null;
-            LoadData();
         }
 
         /// <summary>        
@@ -74,10 +73,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 UserService.SecurityController.DeleteData();
                 log.Info("The data was deleted successfully.");
-                UserService = null;
-                BoardService = null;
-                LoadData();
-                log.Info("The data was resetted successfully.");
                 return new Response();
             }
             catch (Exception ex)
