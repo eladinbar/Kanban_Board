@@ -186,7 +186,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// Updates the column in the database associated with the given email and sets the value of its 'attributeName' to the given 'attributeValue'.
         /// </summary>
         /// <param name="email">The email the column to update is associated with.</param>
-        /// <param name="attributeName">The column name to update.</param>
+        /// <param name="attributeName">The name of the column to update</param>
         /// <param name="attributeValue">The value to update in the table.</param>
         /// <returns>Returns true if one or more rows were updated.</returns>
         public bool Update(string email, string attributeName, string attributeValue)
@@ -225,7 +225,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// Updates the column in the database associated with the given email and sets the value of its 'attributeName' to the given 'attributeValue'.
         /// </summary>
         /// <param name="email">The email the column to update is associated with.</param>
-        /// <param name="attributeName">The column name to update.</param>
+        /// <param name="attributeName">The name of the column to update</param>
         /// <param name="attributeValue">The value to update in the table.</param>
         /// <returns>Returns true if one or more rows were updated.</returns>
         public bool Update(string email, string attributeName, long attributeValue)
@@ -265,7 +265,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         /// <param name="email">The email the column to update is associated with.</param>
         /// <param name="columnName">The columnName the column to update is associated with.</param>
-        /// <param name="attributeName">The column name to update.</param>
+        /// <param name="attributeName">The name of the column to update</param>
         /// <param name="attributeValue">The value to update in the table.</param>
         /// <returns>Returns true if one or more rows were updated.</returns>
         public bool Update(string email, string columnName, string attributeName, string attributeValue)
@@ -305,7 +305,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         /// <param name="email">The email the column to update is associated with.</param>
         /// <param name="columnName">The columnName the column to update is associated with.</param>
-        /// <param name="attributeName">The column name to update.</param>
+        /// <param name="attributeName">The name of the column to update</param>
         /// <param name="attributeValue">The value to update in the table.</param>
         /// <returns>Returns true if one or more rows were updated.</returns>
         public bool Update(string email, string columnName, string attribluteName, long attributeValue)
@@ -346,7 +346,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <param name="email">The email the column to update is associated with.</param>
         /// <param name="columnName">The columnName the column to update is associated with.</param>
         /// <param name="taskID">The taskID the column to update is associated with.</param>
-        /// <param name="attributeName">The column name to update.</param>
+        /// <param name="attributeName">The name of the column to update</param>
         /// <param name="attributeValue">The value to update in the table.</param>
         /// <returns>Returns true if one or more rows were updated.</returns>
         public bool Update(string email, string columnName, int taskID, string attributeName, string attributeValue)
@@ -388,7 +388,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <param name="email">The email the column to update is associated with.</param>
         /// <param name="columnName">The columnName the column to update is associated with.</param>
         /// <param name="taskID">The taskID the column to update is associated with.</param>
-        /// <param name="attributeName">The column name to update.</param>
+        /// <param name="attributeName">The name of the column to update</param>
         /// <param name="attributeValue">The value to update in the table.</param>
         /// <returns>Returns true if one or more rows were updated.</returns>
         public bool Update(string email, string columnName, int taskID, string attributeName, long attributeValue)
@@ -441,8 +441,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <summary>
         /// Creates the SQLite CommandText for the various 'Select' methods.
         /// </summary>
-        /// <param name="keyArgs">keyArgs[0] is represents the email key, keyArgs[1] represents the ColumnName key and KeyArgs[2] represents the taskID key.</param>
-        /// <returns>Returns the respective string of the SQL command.</returns>
+        /// <param name="keyArgs">keyArgs[0] represents the email key, keyArgs[1] represents the ColumnName key and KeyArgs[2] represents the taskID key.</param>
+        /// <returns>Returns the respective string of the desired SQL command.</returns>
         private string CommandTextSelect(params string[] keyArgs)
         {
             string command = $"SELECT * FROM {_tableName}";
@@ -456,16 +456,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 case 3:
                     return command + $" WHERE email=\"{keyArgs[0]}\" AND ColumnName=\"{keyArgs[1]}\" AND ID={keyArgs[2]}";
                 default:
+                    log.Error("keyArgs contains values in slots [0]-[2], given index was out of bounds.");
                     return command;
             }
         }
 
         /// <summary>
-        /// creates the command text for the Database of the update command.
+        /// Creates the SQLite CommandText for the various 'Update' methods.
         /// </summary>
-        /// <param name="attributeName">The name of the column to update</param>
-        /// <param name="keyArgs">keyArgs[0] is for email key, keyArgs[1] is for ColumnName key, KeyArgs[2] is for taskID key</param>
-        /// <returns>the command string for the update command</returns>
+        /// <param name="attributeName">The name of the column to update.</param>
+        /// <param name="keyArgs">keyArgs[0] represents the email key, keyArgs[1] represents the ColumnName key and KeyArgs[2] represents the taskID key.</param>
+        /// <returns>Returns the respective string of the desired SQL command.</returns>
         private string CommandTextUpdate(string attributeName, params string[] keyArgs)
         {
             string command = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE {DalObject<T>.EmailColumnName}=\"{keyArgs[0]}\"";
@@ -479,7 +480,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 case 3:
                     return command + $" AND {DalColumn.ColumnNameColumnName}=\"{keyArgs[1]}\" AND {DalTask.TaskIDColumnName}={keyArgs[3]}";
                 default:
-                    log.Error("the amount of keyArgs does not meet the requirements");
+                    log.Error("keyArgs contains values in slots [0]-[2], given index was out of bounds.");
                     return "";
             }
         }
