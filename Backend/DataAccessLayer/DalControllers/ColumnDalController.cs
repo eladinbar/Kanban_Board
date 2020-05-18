@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public List<DalColumn> SelectAllColumns(string email)
         {
             log.Info("Loading all columns from the database.");
-            List<DalColumn> columnList = Select(email).Cast<DalColumn>().ToList();
+            List<DalColumn> columnList = Select(email);
             TaskDalController taskController = new TaskDalController();
             foreach(DalColumn c in columnList)
             {

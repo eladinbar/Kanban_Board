@@ -26,7 +26,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public List<DalUser> SelectAllUsers()
         {
             log.Info("Loading all users from the database.");
-            List<DalUser> userList = Select().Cast<DalUser>().ToList();
+            List<DalUser> userList = Select();
             return userList;
         }
 

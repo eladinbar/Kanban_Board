@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         public List<DalTask> SelectAllTasks(string email, string columnName)
         {
             log.Info("Loading all tasks from the database.");
-            List<DalTask> taskList = Select(email, columnName).Cast<DalTask>().ToList();
+            List<DalTask> taskList = Select(email, columnName);
             return taskList;
         }
 
