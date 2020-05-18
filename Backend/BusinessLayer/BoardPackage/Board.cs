@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
         private const int MAXIMUM_COLUMN_NAME_LENGTH = 15;
+        private const int MINIMUM_COLUMN_NAME_LENGTH = 0;
 
         public List<Column> Columns { get; }
         public string UserEmail { get; }
@@ -120,7 +121,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Warn("New column ordinal was out of range.");
                 throw new InvalidOperationException("New column ordinal is invalid.");
             }
-            if (Name == null || Name.Length > 15 | Name.Length == MAXIMUM_COLUMN_NAME_LENGTH)
+            if (Name == null || Name.Length > 15 | Name.Length == MINIMUM_COLUMN_NAME_LENGTH)
             {
                 log.Warn("New column name was invalid (null or longer than 15 characters).");
                 throw new InvalidOperationException("New column name is invalid.");
