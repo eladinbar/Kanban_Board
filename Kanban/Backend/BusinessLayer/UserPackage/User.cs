@@ -50,18 +50,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             DalCopyUser.Password = newPassword;
         }
 
-        /// <summary>
-        /// Transforms the user to its data access layer variant.
-        /// </summary>
-        /// <returns></returns>
         public DalUser ToDalObject() {
             DalCopyUser = new DalUser(Email, Password, Nickname);
             return DalCopyUser;
         }
 
-        /// <summary>
-        /// The method in the BusinessLayer to save a user to the database.
-        /// </summary>
         public void Save() {
             ToDalObject();
             DalCopyUser.Save();

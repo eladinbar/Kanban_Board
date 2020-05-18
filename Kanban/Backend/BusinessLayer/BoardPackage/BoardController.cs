@@ -13,8 +13,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private const int MINIMAL_NUMBER_OF_COLUMNS = 2;
-
         private Dictionary<String, Board> Boards;
 
         /// <summary>
@@ -94,7 +92,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Column c = b.GetColumn(columnOrdinal);
             c.LimitColumnTasks(limit);
 
-            //field database updates are executed in the 'Column' class itself
+            //the "Save' method is executed in 'Column' class itself
         }
 
         /// <summary>
@@ -185,7 +183,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskTitle(newTitle);
-                //field database updates are a part of the inner 'Task' functionality
+                //save method is a part of inner 'Task' update method
 
                 log.Debug("Task #" + taskId + " title was updated.");
             }
@@ -216,7 +214,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDescription(newDescription);
-                //field database updates are a part of the inner 'Task' functionality
+                //save method is a part of inner 'Task' update method
 
                 log.Debug("Task #" + taskId + " description was updated.");
             }
@@ -247,7 +245,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDuedate(newDueDate);
-                //field database updates are a part of the inner 'Task' functionality
+                //save method is a part of inner 'Task' update method
 
                 log.Debug("Task #" + taskId + " dueDate was updated.");
             }
@@ -266,7 +264,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board newBoard = new Board(email);
             Boards.Add(email, newBoard);
-
+            //save method is a part of inner 'Board' update method
             newBoard.Save();
             AddColumn(email, 0, "backlog");
             AddColumn(email, 1, "in progress");
@@ -299,9 +297,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             Column c = GetColumn(email, columnOrdinal);
-            if (b.Columns.Count == MINIMAL_NUMBER_OF_COLUMNS)
+            if (b.Columns.Count == 2)
             {
-                log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns.");
+                log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns");
                 throw new InvalidOperationException("The board has 2 columns. Can't remove another column.");
             }
             b.RemoveColumn(email, columnOrdinal);
@@ -330,5 +328,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Board b = GetBoard(email);
             return b.MoveColumnLeft(email, columnOrdinal);
         }
+
+
     }
 }

@@ -9,12 +9,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private const int INITIALIZE_MAXIMUM_NUMBER_OF_TASKS = Int32.MaxValue; //unlimited
-
         public string Name { get; }
         public int Limit { get; private set; }
         public List<Task> Tasks { get; }
         public DalColumn DalCopyColumn { get; private set; }
+
+
 
         /// <summary>
         /// A public contructor that creates a new column and initializes its fields.
@@ -22,10 +22,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="name">The name the column will be created with.</param>
         /// <param name="email">The email of the board user.</param>
         /// <param name="columnOrdinal">Ordinal the column will be created with.</param>
-        public Column(string name, string email, int columnOrdinal) 
+        public Column(string name, string email, int columnOrdinal) //checked
         {
             Name = name;
-            Limit = INITIALIZE_MAXIMUM_NUMBER_OF_TASKS;
+            Limit = Int32.MaxValue;
             Tasks = new List<Task>();
             log.Info("New column " + name + "created");
         }
@@ -121,7 +121,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (Tasks.Exists(x => x.Id == taskId))
                 return Tasks.Find(x => x.Id == taskId);
             else
-                throw new ArgumentException("Task #" + taskId + " does not exist in '" + Name + "' column");
+                throw new ArgumentException("Task #"+taskId+" does not exist in '" + Name + "' column");
         }
 
         /// <summary>
@@ -136,32 +136,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 return false;
         }
 
-        /// <summary>
-        /// Transforms the column to its data access layer variant.
-        /// </summary>
-        /// <param name="email">The email that is to be persisted with the new DalColumn.</param>
-        /// <param name="columnOrdinal">The column ordinal that is to be persisted with the new DalColumn.</param>
-        /// <returns>Returns a DalColumn.</returns>
         internal DalColumn ToDalObject(string email, int columnOrdinal)
         {
             DalCopyColumn = new DalColumn(email, Name, columnOrdinal, Limit);
             return DalCopyColumn;
         }
 
-        /// <summary>
-        /// The method in the BusinessLayer to save a column to the database.
-        /// </summary>
-        /// <param name="email">The email that is to be persisted with the new DalColumn.</param>
-        /// <param name="columnOrdinal">The column ordinal that is to be persisted with the new DalColumn.</param>
         internal void Save(string email, int columnOrdinal)
         {
             ToDalObject(email, columnOrdinal);
             DalCopyColumn.Save();
         }
 
-        /// <summary>
-        /// The method to remove a column from the database.
-        /// </summary>
         internal void Delete() {
             DalCopyColumn.Delete();
         }
