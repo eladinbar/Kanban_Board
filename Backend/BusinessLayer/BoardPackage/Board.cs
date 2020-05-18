@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// A public constructor that creates a new board and initializes all of its fields.
         /// </summary>
         /// <param name="email">The email of the board's user.</param>
-        public Board(string email) //checked
+        public Board(string email) 
         {
             UserEmail = email;
             TaskCounter = 0;
@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskCounter">The amount of tasks that the board contains.</param>
         /// <param name="columns">The list of columns the board contains.</param>
         /// <param name="dalBoard">The DAL appearance of the current board.</param>
-        internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard) //checked
+        internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard) 
         {
             UserEmail = email;
             TaskCounter = taskCounter;
@@ -54,7 +54,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnName">The column name to return.</param>
         /// <returns>Returns the column with the given name.</returns>
         /// <exception cref="ArgumentException">Thrown when the Column with the given name does not exist.</exception>
-        public Column GetColumn(string columnName) //checked
+        public Column GetColumn(string columnName) 
         {
             if (Columns.Exists(c => c.Name.Equals(columnName)))
             {
@@ -70,7 +70,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnOrdinal">The index of the column to return.</param>
         /// <returns>Returns the column with the given ordinal.</returns>
         /// <exception cref="ArgumentException">Thrown when the ordinal given doesn't point to any valid Column.</exception>
-        public Column GetColumn(int columnOrdinal) //checked
+        public Column GetColumn(int columnOrdinal) 
         {
             if (columnOrdinal >= Columns.Count || columnOrdinal<0)
             {
@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Get the names of the board's columns as a list.
         /// </summary>
         /// <returns>Returns a List of strings with the column names.</returns>
-        public List<string> getColumnNames() //checked
+        public List<string> getColumnNames() 
         {
             List<string> columnNames = new List<string>();
             foreach(Column c in Columns)
@@ -113,7 +113,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="Name">The name of the new column.</param>
         /// <returns>Returns the added column.</returns>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public Column AddColumn(string email, int columnOrdinal, string Name) //checked
+        public Column AddColumn(string email, int columnOrdinal, string Name) 
         {
             if (columnOrdinal < 0 | columnOrdinal > this.Columns.Count)
             {
@@ -152,7 +152,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to remove.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public void RemoveColumn(string email, int columnOrdinal) //checked
+        public void RemoveColumn(string email, int columnOrdinal) 
         {
             if (columnOrdinal >= 0 & columnOrdinal < this.Columns.Count)
             {
@@ -219,7 +219,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to move.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public Column MoveColumnRight(string email, int columnOrdinal) //checked
+        public Column MoveColumnRight(string email, int columnOrdinal) 
         {
             if (columnOrdinal == (this.Columns.Count - 1)) //in case of the last column
             {
@@ -250,7 +250,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to move.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public Column MoveColumnLeft(string email, int columnOrdinal) //checked
+        public Column MoveColumnLeft(string email, int columnOrdinal) 
         {
             if (columnOrdinal == 0) //in case of the first column
             {

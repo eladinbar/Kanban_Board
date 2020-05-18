@@ -37,7 +37,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="limit">The maximum amount of tasks to be allowed in this column.</param>
         /// <param name="tasks">The list of tasks the column contains.</param>
         /// <param name="dalColumn">The DAL appearance of the current column.</param>
-        internal Column(string name, int limit, List<Task> tasks, DalColumn dalColumn) //checked
+        internal Column(string name, int limit, List<Task> tasks, DalColumn dalColumn) 
         {
             Name = name;
             Limit = limit;
@@ -52,7 +52,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="limit">The desired column limit.</param>
         /// <exception cref="ArgumentException">Thrown when trying to set the limit to a number less or equal to 0.
         /// Alternatively thrown if there are more tasks than the specified limit.</exception>
-        public void LimitColumnTasks(int limit) //checked 
+        public void LimitColumnTasks(int limit)  
         {
             if (limit == 0)
             {
@@ -76,7 +76,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="t">The task to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the column is full.</exception>
-        internal void InsertTask(Task t) //checked
+        internal void InsertTask(Task t) 
         {
             if (!CheckLimit())
             {
@@ -96,7 +96,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskId">The ID of the task to remove.</param>
         /// <returns>Returns the task that has been removed.</returns>
         /// <exception cref="ArgumentException">Thrown if the task does not exist in the column.</exception>
-        internal Task RemoveTask(int taskId) //checked
+        internal Task RemoveTask(int taskId) 
         {
             Task toRemove = Tasks.Find(x => x.Id.Equals(taskId));
             if (Tasks.Remove(toRemove))
@@ -116,7 +116,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="taskId">The ID of the task to return.</param>
         /// <returns>Returns the task with the task ID if it exists, otherwise returns null.</returns>
-        public Task GetTask(int taskId) //checked
+        public Task GetTask(int taskId) 
         {
             if (Tasks.Exists(x => x.Id == taskId))
                 return Tasks.Find(x => x.Id == taskId);
@@ -128,7 +128,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Checks if the column is full.
         /// </summary>
         /// <returns>Returns true if the column is not full, otherwise returns false.</returns>
-        internal bool CheckLimit() //checked
+        internal bool CheckLimit() 
         {
             if (Tasks.Count() < Limit)
                 return true;
