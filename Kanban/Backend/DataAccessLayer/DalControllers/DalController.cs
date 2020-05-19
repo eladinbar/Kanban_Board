@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Data.SQLite;
 using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 
@@ -478,12 +476,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 case 2:
                     return command + $" AND {DalColumn.ColumnNameColumnName}=\"{keyArgs[1]}\"";
                 case 3:
-                    return command + $" AND {DalColumn.ColumnNameColumnName}=\"{keyArgs[1]}\" AND {DalTask.TaskIDColumnName}={keyArgs[3]}";
+                    return command + $" AND {DalColumn.ColumnNameColumnName}=\"{keyArgs[1]}\" AND {DalTask.TaskIDColumnName}={keyArgs[2]}";
                 default:
                     log.Error("keyArgs contains values in slots [0]-[2], given index was out of bounds.");
                     return "";
             }
         }
-
     }
 }
