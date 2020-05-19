@@ -39,7 +39,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 }
                 Boards.Add(b.Email, new Board(b.Email, b.TaskCounter, tempColumns, b));
             }
-
         }
 
             /// <summary>
