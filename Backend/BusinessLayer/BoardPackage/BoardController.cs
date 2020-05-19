@@ -123,7 +123,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             else
             {
-                //Bussiness layer runtime list update 
+                //Business layer runtime list update 
                 Column c = b.GetColumn(columnOrdinal);
                 Task toAdvance = c.RemoveTask(taskId);
                 Column targetColumn = b.GetColumn(columnOrdinal + 1);
