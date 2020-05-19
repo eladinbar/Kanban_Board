@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Data.SQLite;
 using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 
@@ -484,6 +482,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     return "";
             }
         }
-
     }
 }

@@ -7,6 +7,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
+        private const int MAXIMUM_TITLE_LENGTH = 50;
+        private const int MINIMUM_TITLE_LENGTH = 0;
+        private const int MAXIMUM_DESCRIPTION_LENGTH = 300; 
+
         public int Id { get; }
         public string Title { get; private set; }
         public string Description { get; private set; }
@@ -25,15 +29,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of current board user.</param>
         /// <param name="columnName">The ordinal of the column the task should be added to.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the title or description given are invalid.</exception>
-        public Task(string title, string description, DateTime dueDate, int id, string email, string columnName) //checked
+        public Task(string title, string description, DateTime dueDate, int id, string email, string columnName) 
         {
-            if (title.Length > 0 && title.Length <= 50)
+            if (title.Length > MINIMUM_TITLE_LENGTH && title.Length <= MAXIMUM_TITLE_LENGTH)
                 Title = title;
             else
                 throw new ArgumentOutOfRangeException("The title cannot be empty or exceed 50 characters");
             if (description == null)
                 Description = "";
-            else if (description.Length <= 300)
+            else if (description.Length <= MAXIMUM_DESCRIPTION_LENGTH)
                 Description = description;
             else
                 throw new ArgumentOutOfRangeException("The description cannot exceed 300 characters");
@@ -59,7 +63,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="creationTime">The time in which this loaded task was created on.</param>
         /// <param name="lastChangedDate">The last date this task was changed.</param>
         /// <param name="dalTask">The DAL appearance of the current board.</param>
-        internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate, DalTask dalTask) //checked
+        internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate, DalTask dalTask) 
         { 
             Title = title;
             Description = description;
@@ -76,13 +80,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="title">The new title to be given to the task.</param>
         /// <exception cref="ArgumentException">Thrown if the new title is empty or is more than 50 characters long.</exception>
-        public void UpdateTaskTitle(string title) //checked
+        public void UpdateTaskTitle(string title) 
         {
             if(title == null)
             {
                 throw new ArgumentNullException("Title cannot be null.");
             }
-            else if (title.Length > 0 && title.Length <= 50)
+            else if (title.Length > 0 && title.Length <= MAXIMUM_TITLE_LENGTH)
             {
                 Title = title;
                 LastChangedDate = DateTime.Now;
@@ -99,14 +103,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="description">The new description the task will be given.</param>
         /// <exception cref="ArgumentException">Thrown when the description is more than 300 characters long.</exception>
-        public void UpdateTaskDescription(string description) //checked
+        public void UpdateTaskDescription(string description) 
         {
             if (description == null)
             {
                 Description = "";
                 LastChangedDate = DateTime.Now;             
             }
-            else if(description.Length <= 300)
+            else if(description.Length <= MAXIMUM_DESCRIPTION_LENGTH)
             {
                 Description = description;
                 LastChangedDate = DateTime.Now;
@@ -122,7 +126,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="duedate">The new due date for the task.</param>
         /// <exception cref="ArgumentException">Thrown when the new due date is earlier than the current time.</exception>
-        public void UpdateTaskDuedate(DateTime duedate) //checked
+        public void UpdateTaskDuedate(DateTime duedate) 
         {
             if (duedate == null)
                 throw new ArgumentNullException("Due date cannot be null.");
@@ -137,11 +141,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
         }
 
+        /// <summary>
+        /// Transforms the task to its data access layer variant.
+        /// </summary>
+        /// <param name="email">The email that is to be persisted with the new DalTask.</param>
+        /// <param name="columnName">The column name that is to be persisted with the new DalTask.</param>
+        /// <returns>Returns a DalTask with all necessary elements to be persisted.</returns>
         internal DalTask ToDalObject(string email, string columnName) {
             DalCopyTask = new DalTask(email, columnName, Id, Title, Description, DueDate, CreationTime, LastChangedDate);
             return DalCopyTask;
         }
 
+        /// <summary>
+        /// The method in the BusinessLayer to save a task to the database.
+        /// </summary>
+        /// <param name="email">The email that is to be persisted with the new DalTask.</param>
+        /// <param name="columnName">The columnName that is to be persisted with the new DalTask.</param>
         internal void Save(string email, string columnName) {
             ToDalObject(email, columnName);
             DalCopyTask.Save();

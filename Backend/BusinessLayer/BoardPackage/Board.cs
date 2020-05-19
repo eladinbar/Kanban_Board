@@ -121,7 +121,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Warn("New column ordinal was out of range.");
                 throw new InvalidOperationException("New column ordinal is invalid.");
             }
-            if (Name == null || Name.Length > 15 | Name.Length == MINIMUM_COLUMN_NAME_LENGTH)
+            if (Name.Length > 15 | Name.Length == MINIMUM_COLUMN_NAME_LENGTH)
             {
                 log.Warn("New column name was invalid (null or longer than 15 characters).");
                 throw new InvalidOperationException("New column name is invalid.");
@@ -136,7 +136,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 else
                 {
                     this.Columns.Insert(columnOrdinal, newColumn);
-                    for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns.
+                    for (int i = columnOrdinal + 1; i < this.Columns.Count; i++) //increasing the ordinals of following DALColumns
                         this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal + 1;
                 }
                 
@@ -162,7 +162,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 //in case toRemove is the first column
                 if (columnOrdinal == 0) 
                 {
-                    if (!this.Columns[columnOrdinal + 1].CheckLimit()) //right column limi check
+                    if (!this.Columns[columnOrdinal + 1].CheckLimit()) //right column limit check
                     {
                         log.Warn("Right column at index '" + (columnOrdinal + 1) + "' was full.");
                         throw new InvalidOperationException("Right column is full. Update '" + this.Columns[columnOrdinal + 1].Name + "' column limit and try again.");

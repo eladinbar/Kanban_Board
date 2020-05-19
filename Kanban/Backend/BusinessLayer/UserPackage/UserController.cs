@@ -15,6 +15,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
+        private const int MAXIMAL_PASSWORD_LENGTH = 25;
+        private const int MINIMAL_PASSWORD_LENGTH = 5;
+
+
         private Dictionary<string, User> Users;
 
         /// <summary>
@@ -108,7 +112,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <param name="password">The password the user would like to use.</param>
         /// <exception cref="ArgumentException">Thrown when the password given doesn't fit the criteria.</exception>
         private void ValidatePassword (string password) {
-            if (password.Length < 5 | password.Length > 25 ||
+            if (password.Length < MINIMAL_PASSWORD_LENGTH | password.Length > MAXIMAL_PASSWORD_LENGTH ||
             !password.Any(char.IsDigit) | !password.Any(char.IsLower) | !password.Any(char.IsUpper))
                 throw new ArgumentException("A user password must be in length of 5 to 25 characters and must include at least one uppercase letter, one lowercase letter and a number.");
         }
