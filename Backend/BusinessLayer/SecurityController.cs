@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
+using System;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
@@ -21,6 +22,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             UserController = new UserPackage.UserController();
             BoardController = new BoardPackage.BoardController();
             CurrentUser = null;
+        }
+
+        /// <summary>
+        /// Removes all persistent data.
+        /// </summary>
+        public void DeleteData() {
+            UserDalController UserDal = new UserDalController();
+            UserDal.DeleteDatabase();
         }
 
         /// <summary>

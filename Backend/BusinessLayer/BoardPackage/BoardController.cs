@@ -1,4 +1,5 @@
-﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
+using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 using System;
 using System.Collections.Generic;
 
@@ -12,36 +13,42 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
+        private const int MINIMAL_NUMBER_OF_COLUMNS = 2;
+
         private Dictionary<String, Board> Boards;
 
         /// <summary>
         /// The board controller constructor. Initializes the 'Boards' field by loading all existing data from memory, if no data exists, creates an empty dictionary.
         /// </summary>
-        public BoardController()
+        public BoardController() 
         {
-            DalController dalC = new DalController();
+            BoardDalController boardDalC = new BoardDalController();
             Boards = new Dictionary<string, Board>();
-            List<DataAccessLayer.Board> DALboards = dalC.LoadAllBoards();
-            foreach (DataAccessLayer.Board DALboard in DALboards) {
-                List<Column> columns = new List<Column>();
-                foreach (DataAccessLayer.Column DALcolumn in DALboard.Columns) {
-                    List<Task> tasks = new List<Task>();
-                    foreach (DataAccessLayer.Task DALtask in DALcolumn.Tasks) {
-                        tasks.Add(new Task(DALtask.Title, DALtask.Description, DALtask.DueDate, DALtask.Id, DALtask.CreationTime, DALtask.LastChangedDate));
+            List<DalBoard> dalBoards = boardDalC.SelectAllBoards();
+            foreach (DalBoard b in dalBoards)
+            {
+                List<Column> tempColumns = new List<Column>();
+                foreach (DalColumn c in b.Columns)
+                {
+                    List<Task> tempTasks = new List<Task>();
+                    foreach (DalTask t in c.Tasks)
+                    {
+                        tempTasks.Add(new Task(t.Title, t.Description, t.DueDate, t.TaskId, t.CreationDate, t.LastChangedDate, t));
                     }
-                    columns.Add(new Column(DALcolumn.Name, DALcolumn.Limit, tasks));
+                    tempColumns.Add(new Column(c.Name, c.Limit, tempTasks, c));
                 }
-                Boards.Add(DALboard.UserEmail, new Board(DALboard.UserEmail, DALboard.TaskCounter, columns));
+                Boards.Add(b.Email, new Board(b.Email, b.TaskCounter, tempColumns, b));
             }
+
         }
-         
-        /// <summary>
-        /// Gets the board associated with the given email.
-        /// </summary>
-        /// <param name="email">The user's email that the board is associated with.</param>
-        /// <returns>The Board of the user with that email.</returns>
-        /// <exception cref="ArgumentException.ArgumentException(string)">Thrown when the email given is not associated with any board.</exception>
-        public Board GetBoard(string email)
+
+            /// <summary>
+            /// Gets the board associated with the given email.
+            /// </summary>
+            /// <param name="email">The user's email that the board is associated with.</param>
+            /// <returns>The Board of the user with that email.</returns>
+            /// <exception cref="ArgumentException.ArgumentException(string)">Thrown when the email given is not associated with any board.</exception>
+            public Board GetBoard(string email) 
         {
             Board tempBoard;
             if (Boards.TryGetValue(email, out tempBoard))
@@ -56,7 +63,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnName">The name of the column in the board.</param>
         /// <returns>Returns the column with the specified name in the board associated with the given email.</returns>
-        public Column GetColumn(string email, string columnName)
+        public Column GetColumn(string email, string columnName) 
         {
             Board newBoard = GetBoard(email);
             return newBoard.GetColumn(columnName);
@@ -68,11 +75,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <returns>Returns the column with the specified column ordinal in the board associated with the given email.</returns>
-        public Column GetColumn(string email, int columnOrdinal)
+        public Column GetColumn(string email, int columnOrdinal) 
         {
             Board b = GetBoard(email);
             return b.GetColumn(columnOrdinal);
         }
+
 
         /// <summary>
         /// Limits the number of tasks in a given board's column.
@@ -80,12 +88,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <param name="limit">>The maximum amount of tasks to be allowed in the given column.</param>
-        public void LimitColumnTask(string email, int columnOrdinal, int limit)
+        public void LimitColumnTask(string email, int columnOrdinal, int limit) 
         {
             Board b = GetBoard(email);
             Column c = b.GetColumn(columnOrdinal);
             c.LimitColumnTasks(limit);
-            c.Save("Boards\\" + email + "\\" + columnOrdinal + "-");
+
+            //field database updates are executed in the 'Column' class itself
         }
 
         /// <summary>
@@ -96,16 +105,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskId">The ID of the task to advance.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if trying to advance from the 'done' column or if the next column is full.</exception>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
-        public void AdvanceTask(string email, int columnOrdinal, int taskId)
+        public void AdvanceTask(string email, int columnOrdinal, int taskId) 
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
-                throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
+                throw new ArgumentException("A task does not exist with the given task ID - " + taskId + " .");
 
-            if (b.GetColumn(columnOrdinal).Name.Equals("done"))
+            if (b.Columns.Count == (columnOrdinal+1))
             {
-                log.Error("Attempt to advance a task from the 'done' column");
-                throw new ArgumentOutOfRangeException("Cannot advance tasks from the 'done' column.");
+                log.Error("Attempt to advance a task from the current last column");
+                throw new ArgumentOutOfRangeException("Cannot advance tasks from the last column.");
             }
             else if (!b.GetColumn(columnOrdinal + 1).CheckLimit())
             {
@@ -114,12 +123,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             else
             {
+                //Business layer runtime list update 
                 Column c = b.GetColumn(columnOrdinal);
                 Task toAdvance = c.RemoveTask(taskId);
                 Column targetColumn = b.GetColumn(columnOrdinal + 1);
                 targetColumn.InsertTask(toAdvance);
-                toAdvance.Save("Boards\\" + email + "\\" + (columnOrdinal+1) +"-" + targetColumn.Name + "\\");
-                toAdvance.Delete(toAdvance.Id + "-" + toAdvance.Title, "Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+
+                //DataAccess layer runtime list update 
+                toAdvance.DalCopyTask.ColumnName = targetColumn.Name;
+
                 log.Debug("Task #" + taskId + "-" + toAdvance.Title + " was advanced");
             }
         }
@@ -133,24 +145,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="dueDate">The due date the task will be added with.</param>
         /// <returns>Returns the new task that was created.</returns>
         /// <exception cref="Exception">Thrown if the 'backlog' column is full.</exception>
-        public Task AddTask(string email, string title, string description, DateTime dueDate)
+        public Task AddTask(string email, string title, string description, DateTime dueDate) 
         {
             Board b = GetBoard(email);
             Column c = GetColumn(email, 0);
             if (!c.CheckLimit())
             {
-                log.Error("Attempt to add a task when 'backlog' is full");
-                throw new Exception("The 'backlog' column is full, please adjust the column limit accordingly and try again.");
+                log.Error("Attempt to add a task when first column is full");
+                throw new Exception("The first column is full, please adjust the column limit accordingly and try again.");
             }
-           
-            Task newTask = new Task(title, description, dueDate, b.TaskCounter+1);
-            b.TaskCounter = GetBoard(email).TaskCounter + 1;
-            c.InsertTask(newTask);
-            newTask.Save("Boards\\" + email + "\\" + "0-" + c.Name + "\\");
-            log.Debug("A new task was added to the 'backlog' column.");
 
-            b.Save("Boards\\");
+            Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name);
+            newTask.Save(email, c.Name);
+            b.TaskCounter = (b.TaskCounter + 1); 
+            b.DalCopyBoard.TaskCounter = b.DalCopyBoard.TaskCounter + 1;
+            c.InsertTask(newTask); //DAL.Column is updated via inner BP.Column method
 
+            log.Debug("A new task was added to the first column.");
             return newTask;            
         }
 
@@ -163,24 +174,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
-        public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle)
+        public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle) 
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - " + taskId + " .");
 
-            Column c = GetColumn(email, columnOrdinal);
-            if (!c.Name.Equals("done"))
+            if (b.Columns.Count != columnOrdinal + 1)
             {
+                Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
-                toUpdate.Delete(toUpdate.Id + "-" + toUpdate.Title, "Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
                 toUpdate.UpdateTaskTitle(newTitle);
-                toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+                //field database updates are a part of the inner 'Task' functionality
+
                 log.Debug("Task #" + taskId + " title was updated.");
             }
-            else {
-                log.Warn("Tasks cannot be edited in 'done' column.");
-                throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+            else
+            {
+                log.Warn("Tasks cannot be edited in the last column.");
+                throw new InvalidOperationException("Tasks cannot be edited in the last column.");
             }
         }
 
@@ -193,29 +205,30 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
-        public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription)
+        public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription) 
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
 
-            Column c = GetColumn(email, columnOrdinal);
-            if (!c.Name.Equals("done"))
+            if (b.Columns.Count != columnOrdinal + 1)
             {
+                Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDescription(newDescription);
-                toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+                //field database updates are a part of the inner 'Task' functionality
+
                 log.Debug("Task #" + taskId + " description was updated.");
             }
             else
             {
-                log.Warn("Tasks cannot be edited in 'done' column.");
-                throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+                log.Warn("Tasks cannot be edited in the last column.");
+                throw new InvalidOperationException("Tasks cannot be edited in the last column.");
             }
         }
 
         /// <summary>
-        /// update the duedate of the task with taskId 
+        /// Update the duedate of the task with taskId.
         /// </summary>
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
@@ -223,37 +236,99 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
-        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate)
+        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate) 
         {
             Board b = GetBoard(email);
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
 
-            Column c = GetColumn(email, columnOrdinal);
-            if (!c.Name.Equals("done"))
+            if (b.Columns.Count != columnOrdinal + 1)
             {
+                Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 toUpdate.UpdateTaskDuedate(newDueDate);
-                toUpdate.Save("Boards\\" + email + "\\" + columnOrdinal + "-" + c.Name + "\\");
+                //field database updates are a part of the inner 'Task' functionality
+
                 log.Debug("Task #" + taskId + " dueDate was updated.");
             }
             else
             {
-                log.Warn("Tasks cannot be edited in 'done' column.");
-                throw new InvalidOperationException("Tasks cannot be edited in the 'done' column.");
+                log.Warn("Tasks cannot be edited in the last column.");
+                throw new InvalidOperationException("Tasks cannot be edited in the last column.");
             }
         }
 
         /// <summary>
-        /// Adds a new board to the Boards dictionary.
+        /// Adds a new board.
         /// </summary>
         /// <param name="email">The user's email that the board is associated with.</param>
-        public void AddNewBoard(string email)
+        public void AddNewBoard(string email) 
         {
             Board newBoard = new Board(email);
             Boards.Add(email, newBoard);
-            newBoard.Save("Boards\\");
+
+            newBoard.Save();
+            AddColumn(email, 0, "backlog");
+            AddColumn(email, 1, "in progress");
+            AddColumn(email, 2, "done");
+
             log.Info("New board was added with key " + email);
+        }
+
+
+        /// <summary>
+        /// Adds a new column at the demanded index (ordinal).
+        /// </summary>
+        /// <param name="email">The user's email that the board is associated with.</param>
+        /// <param name="columnOrdinal">Ordinal the column should be added at.</param>
+        /// <param name="Name">New column name.</param>
+        public Column AddColumn(string email, int columnOrdinal, string Name) 
+        {
+            Board b = GetBoard(email);
+            Column newColumn = b.AddColumn(email, columnOrdinal, Name);
+            newColumn.Save(email, columnOrdinal);
+            return newColumn;
+        }
+
+        /// <summary>
+        /// Remove a column at the demanded index (ordinal).
+        /// </summary>
+        /// <param name="email">The user's email that the board is associated with.</param>
+        /// <param name="columnOrdinal">Ordinal of the column to delete.</param>
+        public void RemoveColumn(string email, int columnOrdinal) 
+        {
+            Board b = GetBoard(email);
+            Column c = GetColumn(email, columnOrdinal);
+            if (b.Columns.Count == MINIMAL_NUMBER_OF_COLUMNS)
+            {
+                log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns.");
+                throw new InvalidOperationException("The board has 2 columns. Can't remove another column.");
+            }
+            b.RemoveColumn(email, columnOrdinal);
+            c.Delete();
+        }
+
+        /// <summary>
+        /// Move a column at the demanded index (ordinal) to its right.
+        /// </summary>
+        /// <param name="email">The user's email that the board is associated with.</param>
+        /// <param name="columnOrdinal">Ordinal of the column to move right.</param>
+        public Column MoveColumnRight(string email, int columnOrdinal) 
+        {
+            Board b = GetBoard(email);
+            return b.MoveColumnRight(email, columnOrdinal);
+
+        }
+
+        /// <summary>
+        /// Move a column at the demanded index (ordinal) to its left.
+        /// </summary>
+        /// <param name="email">The user's email that the board is associated with.</param>
+        /// <param name="columnOrdinal">Ordinal of the column to move left.</param>
+        public Column MoveColumnLeft(string email, int columnOrdinal) 
+        {
+            Board b = GetBoard(email);
+            return b.MoveColumnLeft(email, columnOrdinal);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     /// <summary>
-    ///The servicve for perfoming Board involved actions.
+    ///The service for perfoming Board involved actions.
     /// </summary>
     internal class BoardService
     {
@@ -271,6 +271,107 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Column tempStructColumn = new Column(structTaskList, tempColumn.Name, tempColumn.Limit);
 
                 log.Debug("Required column has reached the Service Layer");
+                return new Response<Column>(tempStructColumn);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                return new Response<Column>(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Removes a column given it's identifier.
+        /// The first column is identified by 0, the ID increases by 1 for each column
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">Column ID</param>
+        /// <returns>A response object. The response should contain an error message in case of an error</returns>
+        public Response RemoveColumn(string email, int columnOrdinal)
+        {
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");
+            try {
+                SecurityController.BoardController.RemoveColumn(email, columnOrdinal);
+
+                log.Info("Requested column has been successfully removed");
+                return new Response();
+            }
+            catch (Exception ex) {
+                log.Error(ex.Message, ex);
+                return new Response(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Adds a new column, given its name and a location to place it.
+        /// The first column is identified by 0, the ID increases by 1 for each column.     
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">Location to place to column</param>
+        /// <param name="Name">new Column name</param>
+        /// <returns>A response object with a value set to the new Column, the response should contain an error message in case of an error</returns>
+        public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
+        {
+            if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user");
+            try
+            {
+                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.AddColumn(email, columnOrdinal, Name);
+
+                Column tempStructColumn = new Column(new List<Task>(), tempColumn.Name, tempColumn.Limit);
+
+                log.Info("Column has been successfully added to the Kanban Board");
+                return new Response<Column>(tempStructColumn);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                return new Response<Column>(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Moves a column to the right, swapping it with the column which is currently located there.
+        /// The first column is identified by 0, the ID increases by 1 for each column.   
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in.</param>
+        /// <param name="columnOrdinal">Current location of the column.</param>
+        /// <returns>A response object with a value set to the moved Column, the response should contain an error message in case of an error.</returns>
+        public Response<Column> MoveColumnRight(string email, int columnOrdinal)
+        {
+            if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user");
+            try
+            {
+                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.MoveColumnRight(email, columnOrdinal);
+
+                Column tempStructColumn = GetColumn(email, columnOrdinal+1).Value;
+
+                log.Info("Column has been successfully moved right");
+                return new Response<Column>(tempStructColumn);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                return new Response<Column>(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Moves a column to the left, swapping it with the column which is currently located there.
+        /// The first column is identified by 0, the ID increases by 1 for each column.
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in.</param>
+        /// <param name="columnOrdinal">Current location of the column.</param>
+        /// <returns>A response object with a value set to the moved Column, the response should contain an error message in case of an error.</returns>
+        public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
+        {
+            if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user");
+            try
+            {
+                BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.MoveColumnLeft(email, columnOrdinal);
+
+                Column tempStructColumn = GetColumn(email, columnOrdinal-1).Value;
+
+                log.Info("Column has been successfully moved left");
                 return new Response<Column>(tempStructColumn);
             }
             catch (Exception ex)

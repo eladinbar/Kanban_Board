@@ -1,4 +1,4 @@
-﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +15,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
+        private const int MAXIMAL_PASSWORD_LENGTH = 25;
+        private const int MINIMAL_PASSWORD_LENGTH = 5;
+
+
         private Dictionary<string, User> Users;
 
         /// <summary>
@@ -22,9 +26,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// </summary>
         public UserController() {
             Users = new Dictionary<string, User>();
-            DalController dalC = new DalController();
-            List<DataAccessLayer.User> DALusers = dalC.LoadAllUsers();
-            foreach (DataAccessLayer.User DALuser in DALusers) {
+            UserDalController dalC = new UserDalController();
+            List<DataAccessLayer.DALOs.DalUser> DALusers = dalC.SelectAllUsers();
+            foreach (DataAccessLayer.DALOs.DalUser DALuser in DALusers) {
                 User savedUser = new User(DALuser.Email, DALuser.Password, DALuser.Nickname);
                 Users.Add(savedUser.Email, savedUser);
             }
@@ -45,8 +49,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                ValidatePassword(password);
                ValidateEmail(email);
                User newUser = new User(email, password, nickname);
+               newUser.Save();
                Users.Add(email, newUser);
-               newUser.Save("Users\\");
             }
             else
                throw new ArgumentException("A user with " + email + " E-mail address already exists, please re-evaluate your information and try again.");
@@ -95,7 +99,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             if (Users[email].Password.Equals(oldPassword)) {
                 ValidatePassword(newPassword);
                 Users[email].ChangePassword(newPassword);
-                Users[email].Save("Users\\");
             }
             else
                 throw new ArgumentException("Old password does not match the current password. Please try again.");
@@ -109,9 +112,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <param name="password">The password the user would like to use.</param>
         /// <exception cref="ArgumentException">Thrown when the password given doesn't fit the criteria.</exception>
         private void ValidatePassword (string password) {
-            if (password.Length < 4 | password.Length > 20 ||
+            if (password.Length < MINIMAL_PASSWORD_LENGTH | password.Length > MAXIMAL_PASSWORD_LENGTH ||
             !password.Any(char.IsDigit) | !password.Any(char.IsLower) | !password.Any(char.IsUpper))
-                throw new ArgumentException("A user password must be in length of 4 to 20 characters and must include at least one uppercase letter, one lowercase letter and a number.");
+                throw new ArgumentException("A user password must be in length of 5 to 25 characters and must include at least one uppercase letter, one lowercase letter and a number.");
         }
 
         /// <summary>

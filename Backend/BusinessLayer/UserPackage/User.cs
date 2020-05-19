@@ -1,9 +1,11 @@
-﻿namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
+
+namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
 {
     /// <summary>
     /// Represents a user profile in the Kanban Board system.
     /// </summary>
-    internal class User : PersistedObject<DataAccessLayer.User>
+    internal class User
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
@@ -11,6 +13,7 @@
         public string Email { get; }
         public string Password { get; private set; }
         public bool Logged_in { get; private set; }
+        public DalUser DalCopyUser { get; private set; }
 
         /// <summary>
         /// A public constructor that creates a new user and initializes all of its fields.
@@ -44,23 +47,24 @@
         /// </summary>
         public void ChangePassword (string newPassword) {
             Password = newPassword;
+            DalCopyUser.Password = newPassword;
         }
 
         /// <summary>
-        /// Transforms the user to its corresponding DalObject.
+        /// Transforms the user to its data access layer variant.
         /// </summary>
-        /// <returns>Returns a Data Access Layer User.</returns>
-        public DataAccessLayer.User ToDalObject() {
-            return new DataAccessLayer.User(this.Email, this.Password, this.Nickname);
+        /// <returns></returns>
+        public DalUser ToDalObject() {
+            DalCopyUser = new DalUser(Email, Password, Nickname);
+            return DalCopyUser;
         }
 
         /// <summary>
-        /// The method in the BusinessLayer to save an object to the persistent layer.
+        /// The method in the BusinessLayer to save a user to the database.
         /// </summary>
-        /// <param name="path">The path the object will be saved to.</param>
-        public void Save(string path) {
-            log.Info("User.save was called");
-            ToDalObject().Save(path);
+        public void Save() {
+            ToDalObject();
+            DalCopyUser.Save();
         }
     }
 }
