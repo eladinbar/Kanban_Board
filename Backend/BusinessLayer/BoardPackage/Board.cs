@@ -18,6 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public List<Column> Columns { get; }
         public string UserEmail { get; }
         public int TaskCounter { get; set; }
+        public List<string> Members { get; set; }
         public DalBoard DalCopyBoard { get; private set; }
 
 

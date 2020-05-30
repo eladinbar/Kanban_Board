@@ -380,5 +380,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return new Response<Column>(ex.Message);
             }
         }
+
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAsignee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

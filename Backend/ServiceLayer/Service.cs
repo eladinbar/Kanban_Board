@@ -295,5 +295,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (email == null) return new Response<Column>("One of the parameters is invalid.");
             return BoardService.MoveColumnLeft(email.ToLower(), columnOrdinal);
         }
+
+        public Response Register(string email, string password, string nickname, string emailHost)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

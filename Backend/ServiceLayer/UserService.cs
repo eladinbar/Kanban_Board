@@ -47,6 +47,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        public Response Register(string email, string password, string nickname, string emailHost)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Performs a validated Login action.
         /// </summary>
