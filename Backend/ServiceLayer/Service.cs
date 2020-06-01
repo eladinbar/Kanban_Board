@@ -102,7 +102,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response Register(string email, string password, string nickname, string emailHost)
         {
-            throw new NotImplementedException();
+            if(email == null | password == null | nickname == null | emailHost == null) return new Response("One of the parameters is invalid.");
+            return UserService.Register(email.ToLower(), password, nickname, emailHost.ToLower());
         }
 
         /// <summary>
@@ -210,12 +211,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
         {
-            throw new NotImplementedException();
+            if (email == null | emailAssignee == null) return new Response("One of the parameters is invalid.");
+            return BoardService.AssignTask(email.ToLower(), columnOrdinal, taskId, emailAssignee);
         }
 
         public Response DeleteTask(string email, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            if (email == null) return new Response("One of the parameters is invalid.");
+            return BoardService.DeleteTask(email.ToLower(), columnOrdinal, taskId);
         }
 
         /// <summary>
@@ -313,7 +316,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response ChangeColumnName(string email, int columnOrdinal, string newName)
         {
-            throw new NotImplementedException();
+            if (email == null | newName == null) return new Response<Column>("One of the parameters is invalid.");
+            return BoardService.ChangeColumnName(email.ToLower(), columnOrdinal, newName);
         }
     }
 }

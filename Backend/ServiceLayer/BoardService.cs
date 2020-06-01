@@ -390,5 +390,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             throw new NotImplementedException();
         }
+
+        public Response ChangeColumnName(string email, int columnOrdinal, string newName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
