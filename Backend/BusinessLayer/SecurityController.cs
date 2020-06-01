@@ -72,12 +72,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return CurrentUser.AssociatedBoard.Equals(email);
         }
 
+        /// <summary>
+        /// Validates if the current user is the Host of the Board.
+        /// </summary>
+        /// <returns>Returns true if the user validation succeeded, otherwise returns false.</returns>
         public bool ValidateHost()
         {
             if (CurrentUser == null) return false;
             return CurrentUser.Email.Equals(CurrentUser.AssociatedBoard);
         }
 
+        /// <summary>
+        /// Chacks if exist a board associated with email.
+        /// </summary>
+        /// <param name="email">email associated with the baord.</param>
+        /// <returns>Returns true if the board exists, otherwise returns false.</returns>
         public void BoardExistence(string boardId)
         {
             if (!BoardController.BoardExistence(boardId))

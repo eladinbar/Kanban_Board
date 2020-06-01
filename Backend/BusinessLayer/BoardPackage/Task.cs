@@ -165,6 +165,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             DalCopyTask.Save();
         }
 
+        /// <summary>
+        /// Chacks if the current user is the Assignee of the task.
+        /// </summary>
+        /// <param name="currentUserEmail">vurrent loggedIn use email.</param>
+        /// <returns>Returns true if the currentUserEmail is the TaskAssignee, otherwise returns false.</returns>
         public bool AssigneeCheck(string currentUserEmail)
         {
             if (this.EmailAssignee.Equals(currentUserEmail))
@@ -173,12 +178,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 return false;
         }
 
+        /// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
         internal void UpdateTaskAssignee(string emailAsignee)
         {
             EmailAssignee = emailAsignee;
             DalCopyTask.EmailAssignee = EmailAssignee;
         }
 
+        /// <summary>
+        /// Deletes the task from the database.
+        /// </summary>
         internal void Delete()
         {
             DalCopyTask.Delete();

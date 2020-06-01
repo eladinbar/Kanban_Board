@@ -107,6 +107,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <param name="taskId">The ID of the task to advance.</param>
+        /// <param name="currentUserEmail">The current login user for assignee valedation</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if trying to advance from the 'done' column or if the next column is full.</exception>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         public void AdvanceTask(string email, int columnOrdinal, int taskId, string currentUserEmail) 
@@ -150,6 +151,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="title">The title the task will be added with.</param>
         /// <param name="description">The description the task will be added with.</param>
         /// <param name="dueDate">The due date the task will be added with.</param>
+        /// <param name="emailAssignee">The email to assign the task to.</param>
         /// <returns>Returns the new task that was created.</returns>
         /// <exception cref="Exception">Thrown if the 'backlog' column is full.</exception>
         public Task AddTask(string email, string title, string description, DateTime dueDate, string emailAssignee) 
@@ -181,6 +183,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <param name="taskId">The ID of the task to advance.</param>
         /// <param name="newTitle">The new title to update the task with.</param>
+        /// <param name="currentUserEmail">The current login user for assignee valedation</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle, string currentUserEmail) 
@@ -215,6 +218,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <param name="taskId">The ID of the task to advance.</param>
         /// <param name="newTitle">The new title to update the task with.</param>
+        /// <param name="currentUserEmail">The current login user for assignee valedation</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription, string currentUserEmail) 
@@ -249,6 +253,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <param name="taskId">The ID of the task to advance.</param>
         /// <param name="newTitle">The new title to update the task with.</param>
+        /// <param name="currentUserEmail">The current login user for assignee valedation</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate, string currentUserEmail) 
@@ -276,11 +281,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
         }
 
-        public void AssignTask(string email, int columnOrdinal, int taskId, string emailAsignee, string currentUserEmail)
+        /// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <param name="currentUserEmail">The current login user for assignee valedation</param>
+        public void AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee, string currentUserEmail)
         {
             Board b = GetBoard(email);
-            if (!b.Members.ContainsKey(emailAsignee))
-                throw new ArgumentException($"{emailAsignee} is not a member of {email} board");
+            if (!b.Members.ContainsKey(emailAssignee))
+                throw new ArgumentException($"{emailAssignee} is not a member of {email} board");
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
 
@@ -289,12 +302,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 Column c = b.GetColumn(columnOrdinal);
                 Task toUpdate = c.GetTask(taskId);
                 if (toUpdate.AssigneeCheck(currentUserEmail))
-                    toUpdate.UpdateTaskAssignee(emailAsignee);
+                    toUpdate.UpdateTaskAssignee(emailAssignee);
                 else
                     throw new InvalidOperationException("Tasks can only be modified by its assignee. Current user is not the assigned to this task");
 
                 //field database updates are a part of the inner 'Task' functionality
-                log.Debug("Task #" + taskId + " Assignee was updated to " + emailAsignee + " .");
+                log.Debug("Task #" + taskId + " Assignee was updated to " + emailAssignee + " .");
             }
             else
             {
@@ -390,16 +403,35 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return b.MoveColumnLeft(email, columnOrdinal);
         }
 
+        /// <summary>
+        /// Change the name of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="newName">The new name.</param>
         public void ChangeColumnName(string email, int columnOrdinal, string newName)
         {
             GetBoard(email).ChangeColumnName(columnOrdinal, newName);  
         }
 
+        /// <summary>
+        /// Chacks if exist a board associated with email.
+        /// </summary>
+        /// <param name="email">email associated with the baord.</param>
+        /// <returns>Returns true if the board exists, otherwise returns false.</returns>
         public bool BoardExistence(string email)
         {
             return Boards.ContainsKey(email);
         }
 
+        /// <summary>
+        /// Delete a task
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>  
+        /// <param name="currentUserEmail">The current login user for assignee valedation</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         internal void DeleteTask(string email, int columnOrdinal, int taskId, string currentUserEmail)
         {
             Board b = GetBoard(email);

@@ -385,6 +385,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAsignee)
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");
@@ -400,6 +408,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+
+        /// <summary>
+        /// Delete a task
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        		
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response DeleteTask(string email, int columnOrdinal, int taskId)
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");
@@ -415,6 +431,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        /// <summary>
+        /// Change the name of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="newName">The new name.</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response ChangeColumnName(string email, int columnOrdinal, string newName)
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");

@@ -277,6 +277,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return toMove;
         }
 
+        /// <summary>
+        /// Change the name of a specific column
+        /// </summary>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="newName">The new name.</param>
         public void ChangeColumnName(int columnOrdinal, string newName)
         {
             if(Columns.Exists(x => x.Name.Equals(newName)))
@@ -298,6 +303,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         }
 
+        /// <summary>
+        /// Adds a member to the board.
+        /// </summary>
+        /// <param name="email">email of the new member</param>
+        /// <param name="nickname">nickname of the new membar</param>
         public void AddMember(string email, string nickname)
         {
             if (Members.ContainsKey(email))
