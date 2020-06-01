@@ -22,13 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// <param name="email">The email the user will be created with.</param>
         /// <param name="password">The password that will be used to sign in the user.</param>
         /// <param name="nickname">The nickname to be associated with this user.</param>
-        public User (string email, string password, string nickname) {
-            this.Email = email;
-            this.Password = password;
-            this.Nickname = nickname;
-            Logged_in = false;
-        }
-
+        /// <param name="boardId">The Board to be associated with.</param>
         public User(string email, string password, string nickname, string boardId)
         {
             this.Email = email;
@@ -65,7 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         /// </summary>
         /// <returns></returns>
         public DalUser ToDalObject() {
-            DalCopyUser = new DalUser(Email, Password, Nickname);
+            DalCopyUser = new DalUser(Email, Password, Nickname, AssociatedBoard);
             return DalCopyUser;
         }
 

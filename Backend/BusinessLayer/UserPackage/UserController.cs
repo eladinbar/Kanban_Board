@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             UserDalController dalC = new UserDalController();
             List<DataAccessLayer.DALOs.DalUser> DALusers = dalC.SelectAllUsers();
             foreach (DataAccessLayer.DALOs.DalUser DALuser in DALusers) {
-                User savedUser = new User(DALuser.Email, DALuser.Password, DALuser.Nickname);
+                User savedUser = new User(DALuser.Email, DALuser.Password, DALuser.Nickname, DALuser.AssociatedBoard);
                 Users.Add(savedUser.Email, savedUser);
             }
         }
