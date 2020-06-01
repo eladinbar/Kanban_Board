@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
-                Board tempStructBoard = new Board(tempColumnNames);
+                Board tempStructBoard = new Board(tempColumnNames, email);
                 log.Debug("Board reached the Service Layer successfully");
                 return new Response<Board>(tempStructBoard);
             }
@@ -93,8 +93,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (!SecurityController.UserValidation(email)) return new Response<Task>("Invalid current user.");
             try
             {
-                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate);
-                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime,dueDate, title, tempTask.Description);
+                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate, email);
+                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime,dueDate, title, tempTask.Description, tempTask.EmailAssignee);
                 log.Info("Task added successfully.");
                 return new Response<Task>(tempStructTask);
             }
@@ -231,7 +231,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 //Converting BL.Tasks of 'tempColumnTaskCollection' into struct Users and adding them to 'structTaskList'
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
-                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description));
+                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description, tempTask.EmailAssignee));
 
                 //Declaring struct Column with ReadOnlyCollection of struct Tasks
                 Column tempStructColumn = new Column(structTaskList, tempColumn.Name, tempColumn.Limit);
@@ -266,7 +266,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 List<Task> structTaskList = new List<Task>();
 
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
-                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description));
+                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description, tempTask.EmailAssignee));
 
                 Column tempStructColumn = new Column(structTaskList, tempColumn.Name, tempColumn.Limit);
 

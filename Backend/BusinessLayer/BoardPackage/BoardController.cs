@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     List<Task> tempTasks = new List<Task>();
                     foreach (DalTask t in c.Tasks)
                     {
-                        tempTasks.Add(new Task(t.Title, t.Description, t.DueDate, t.TaskId, t.CreationDate, t.LastChangedDate, t));
+                        tempTasks.Add(new Task(t.Title, t.Description, t.DueDate, t.TaskId, t.CreationDate, t.LastChangedDate, t.EmailAssignee, t));
                     }
                     tempColumns.Add(new Column(c.Name, c.Limit, tempTasks, c));
                 }
@@ -149,7 +149,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="dueDate">The due date the task will be added with.</param>
         /// <returns>Returns the new task that was created.</returns>
         /// <exception cref="Exception">Thrown if the 'backlog' column is full.</exception>
-        public Task AddTask(string email, string title, string description, DateTime dueDate) 
+        public Task AddTask(string email, string title, string description, DateTime dueDate, string emailAssignee) 
         {
             Board b = GetBoard(email);
             Column c = GetColumn(email, 0);
@@ -158,8 +158,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Error("Attempt to add a task when first column is full");
                 throw new Exception("The first column is full, please adjust the column limit accordingly and try again.");
             }
+            if (!b.Members.ContainsKey(emailAssignee))
+                throw new ArgumentException("email Assignee is not a member of the board");
 
-            Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name);
+            Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name, emailAssignee);
             newTask.Save(email, c.Name);
             b.TaskCounter = (b.TaskCounter + 1); 
             b.DalCopyBoard.TaskCounter = b.DalCopyBoard.TaskCounter + 1;

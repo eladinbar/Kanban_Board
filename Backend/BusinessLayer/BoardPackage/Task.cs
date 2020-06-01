@@ -14,6 +14,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public int Id { get; }
         public string Title { get; private set; }
         public string Description { get; private set; }
+        public string EmailAssignee { get; private set; }
         public DateTime CreationTime { get; }
         public DateTime DueDate { get; private set; }
         public DateTime LastChangedDate { get; private set; }
@@ -29,7 +30,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of current board user.</param>
         /// <param name="columnName">The ordinal of the column the task should be added to.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the title or description given are invalid.</exception>
-        public Task(string title, string description, DateTime dueDate, int id, string email, string columnName) 
+        public Task(string title, string description, DateTime dueDate, int id, string email, string columnName, string emailAssignee) 
         {
             if (title.Length > MINIMUM_TITLE_LENGTH && title.Length <= MAXIMUM_TITLE_LENGTH)
                 Title = title;
@@ -50,6 +51,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             CreationTime = DateTime.Now;
             LastChangedDate = DateTime.Now;
             Id = id;
+            EmailAssignee = emailAssignee;
             log.Info("New task #" + id + " was created");
         }
 
@@ -63,7 +65,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="creationTime">The time in which this loaded task was created on.</param>
         /// <param name="lastChangedDate">The last date this task was changed.</param>
         /// <param name="dalTask">The DAL appearance of the current board.</param>
-        internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate, DalTask dalTask) 
+        internal Task (string title, string description, DateTime dueDate, int id, DateTime creationTime, DateTime lastChangedDate, string emailAsignee, DalTask dalTask) 
         { 
             Title = title;
             Description = description;
@@ -71,6 +73,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Id = id;
             CreationTime = creationTime;
             LastChangedDate = lastChangedDate;
+            EmailAssignee = emailAsignee;
             DalCopyTask = dalTask;
             log.Info("Task " + id + " was Loaded from memory");
         }
@@ -148,7 +151,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnName">The column name that is to be persisted with the new DalTask.</param>
         /// <returns>Returns a DalTask with all necessary elements to be persisted.</returns>
         internal DalTask ToDalObject(string email, string columnName) {
-            DalCopyTask = new DalTask(email, columnName, Id, Title, Description, DueDate, CreationTime, LastChangedDate);
+            DalCopyTask = new DalTask(email, columnName, Id, Title, Description, EmailAssignee, DueDate, CreationTime, LastChangedDate);
             return DalCopyTask;
         }
 

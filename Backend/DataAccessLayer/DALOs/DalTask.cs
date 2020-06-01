@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         public const string ContainingTaskColumnNameColumnName = "ColumnName";
         public const string TaskTitleColumnName = "Title";
         public const string TaskDescriptionColumnName = "Description";
+        public const string TaskAssigneeColumnName = "EmailAssignee";
         public const string TaskDueDateColumnName = "DueDate";
         public const string TaskCreationDateColumnName = "CreationDate";
         public const string TaskLastChangedDateColumnName = "LastChangedDate";
@@ -25,6 +26,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         public string Title { get => _title; set { _title = value; _controller.Update(Email, ColumnName, TaskId, TaskTitleColumnName, value); } }
         private string _description;
         public string Description { get => _description; set { _description = value; _controller.Update(Email, ColumnName, TaskId, TaskDescriptionColumnName, value); } }
+        private string _emailAssignee;
+        public string EmailAssignee { get => _emailAssignee; set { _emailAssignee = value; _controller.Update(Email, ColumnName, TaskId, TaskAssigneeColumnName, value); } }
         private DateTime _dueDate;
         public DateTime DueDate { get => _dueDate; set { _dueDate = value; _controller.Update(Email, ColumnName, TaskId, TaskDueDateColumnName, value.ToString()); } }
         private DateTime _creationDate;
@@ -43,13 +46,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         /// <param name="dueDate">The due date of the task to be persisted.</param>
         /// <param name="creationDate">The creation date of the task to be persisted.</param>
         /// <param name="lastChangedDate">The last changed date of the task to be persisted.</param>
-        public DalTask(string email, string columnName, int id, string title, string description, DateTime dueDate, DateTime creationDate, DateTime lastChangedDate) : base(new TaskDalController())
+        public DalTask(string email, string columnName, int id, string title, string description, string emailAssignee, DateTime dueDate, DateTime creationDate, DateTime lastChangedDate) : base(new TaskDalController())
         {
             Email = email;
             _columnName = columnName;
             _taskId = id;
             _title = title;
             _description = description;
+            _emailAssignee = emailAssignee;
             _dueDate = dueDate;
             _creationDate = creationDate;
             _lastChangedDate = lastChangedDate;
