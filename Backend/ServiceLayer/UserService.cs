@@ -49,7 +49,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response Register(string email, string password, string nickname, string emailHost)
         {
-            throw new NotImplementedException();
+            try
+            {
+                SecurityController.BoardExistence(emailHost);
+                SecurityController.UserController.Register(email, password, nickname, emailHost);
+                SecurityController.BoardController.JoinBoard(email, nickname, emailHost);
+                log.Info($"{email} register successfully and joined {emailHost} Board");
+                return new Response();
+
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message, e);
+                return new Response(e.Message);
+            }
         }
 
         /// <summary>
