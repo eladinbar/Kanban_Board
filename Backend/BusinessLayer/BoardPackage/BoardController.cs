@@ -49,13 +49,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             /// <returns>The Board of the user with that email.</returns>
             /// <exception cref="ArgumentException.ArgumentException(string)">Thrown when the email given is not associated with any board.</exception>
             public Board GetBoard(string email) 
-        {
+            {
             Board tempBoard;
             if (Boards.TryGetValue(email, out tempBoard))
                 return tempBoard;
             else
                 throw new ArgumentException("There are no boards associated with this email address");
-        }
+            }
 
         /// <summary>
         /// Get the column in the board associated with the given email and its specified column name.
@@ -329,6 +329,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             return b.MoveColumnLeft(email, columnOrdinal);
+        }
+
+        public bool BoardExistence(string email)
+        {
+            return Boards.ContainsKey(email);
         }
     }
 }

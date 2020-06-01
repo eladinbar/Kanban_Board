@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
         public string Nickname { get; private set; }
         public string Email { get; }
         public string Password { get; private set; }
+        public string AssociatedBoard { get; private set; }
         public bool Logged_in { get; private set; }
         public DalUser DalCopyUser { get; private set; }
 
@@ -25,6 +26,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             this.Email = email;
             this.Password = password;
             this.Nickname = nickname;
+            Logged_in = false;
+        }
+
+        public User(string email, string password, string nickname, string boardId)
+        {
+            this.Email = email;
+            this.Password = password;
+            this.Nickname = nickname;
+            this.AssociatedBoard = boardId;
             Logged_in = false;
         }
 

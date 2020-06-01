@@ -100,6 +100,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return UserService.Register(email.ToLower(), password, nickname);
         }
 
+        public Response Register(string email, string password, string nickname, string emailHost)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Log in an existing user
         /// </summary>
@@ -203,6 +208,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return BoardService.UpdateTaskDescription(email.ToLower(), columnOrdinal, taskId, description);
         }
 
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Advance a task to the next column
         /// </summary>
@@ -296,17 +311,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return BoardService.MoveColumnLeft(email.ToLower(), columnOrdinal);
         }
 
-        public Response Register(string email, string password, string nickname, string emailHost)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        public Response ChangeColumnName(string email, int columnOrdinal, string newName)
         {
             throw new NotImplementedException();
         }

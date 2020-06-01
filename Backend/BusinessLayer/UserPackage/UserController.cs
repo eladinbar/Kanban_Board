@@ -56,6 +56,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                throw new ArgumentException("A user with " + email + " E-mail address already exists, please re-evaluate your information and try again.");
         }
 
+        public void Register(string email, string password, string nickname, string boardId)
+        {
+            log.Debug("Register Attempt");
+            if (nickname.Length == 0)
+                throw new ArgumentException("Cannot register with an empty nickname, please try again.");
+            if (!Users.ContainsKey(email))
+            {
+                ValidatePassword(password);
+                ValidateEmail(email);
+                User newUser = new User(email, password, nickname, boardId);
+                newUser.Save();
+                Users.Add(email, newUser);
+            }
+            else
+                throw new ArgumentException("A user with " + email + " E-mail address already exists, please re-evaluate your information and try again.");
+        }
+
         /// <summary>
         /// Log in an existing user.
         /// </summary>
