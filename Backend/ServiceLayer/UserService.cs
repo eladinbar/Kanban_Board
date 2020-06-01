@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.UserController.Register(email, password, nickname);
-                SecurityController.BoardController.AddNewBoard(email);
+                SecurityController.BoardController.AddNewBoard(email, nickname);
                 
                 Response r = new Response();
                 log.Info("Registered with " + email);

@@ -1,4 +1,5 @@
-﻿using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
+﻿using IntroSE.Kanban.Backend.BusinessLayer.BoardPackage;
+using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
 using System;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
@@ -12,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public UserPackage.UserController UserController { get; }
         public BoardPackage.BoardController BoardController { get; }
-        private UserPackage.User CurrentUser;
+        public UserPackage.User CurrentUser { get; internal set; }
 
         /// <summary>
         /// Public constructor. Initializes UserController and BoardController classes.
@@ -68,10 +69,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public bool UserValidation(string email) 
         {
             if (CurrentUser == null) return false;
-            return CurrentUser.Email.Equals(email);
+            return CurrentUser.AssociatedBoard.Equals(email);
         }
 
-        public bool ValidateHost(string email)
+        public bool ValidateHost()
         {
             if (CurrentUser == null) return false;
             return CurrentUser.Email.Equals(CurrentUser.AssociatedBoard);

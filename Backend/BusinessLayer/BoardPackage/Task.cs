@@ -164,5 +164,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             ToDalObject(email, columnName);
             DalCopyTask.Save();
         }
+
+        public bool AssigneeCheck(string currentUserEmail)
+        {
+            if (this.EmailAssignee.Equals(currentUserEmail))
+                return true;
+            else
+                return false;
+        }
+
+        internal void UpdateTaskAssignee(string emailAsignee)
+        {
+            EmailAssignee = emailAsignee;
+            DalCopyTask.EmailAssignee = EmailAssignee;
+        }
+
+        internal void Delete()
+        {
+            DalCopyTask.Delete();
+        }
     }
 }

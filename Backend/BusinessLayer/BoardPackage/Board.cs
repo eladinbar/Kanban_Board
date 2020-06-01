@@ -277,6 +277,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             return toMove;
         }
 
+        public void ChangeColumnName(int columnOrdinal, string newName)
+        {
+            if(Columns.Exists(x => x.Name.Equals(newName)))
+            {
+                throw new ArgumentException("A column with this name already exists");
+            }
+            if (columnOrdinal < 0 | columnOrdinal > this.Columns.Count)
+            {
+                log.Warn("New column ordinal was out of range.");
+                throw new InvalidOperationException("New column ordinal is invalid.");
+            }
+            if (newName.Length > 15 | newName.Length == MINIMUM_COLUMN_NAME_LENGTH)
+            {
+                log.Warn("New column name was invalid (null or longer than 15 characters).");
+                throw new InvalidOperationException("New column name is invalid.");
+            }
+
+            Columns[columnOrdinal].ChangeName(newName);
+
+        }
+
         public void AddMember(string email, string nickname)
         {
             if (Members.ContainsKey(email))
