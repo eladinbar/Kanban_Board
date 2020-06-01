@@ -48,7 +48,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
             if (!Users.ContainsKey(email)) {
                ValidatePassword(password);
                ValidateEmail(email);
-               User newUser = new User(email, password, nickname);
+               User newUser = new User(email, password, nickname, email);
                newUser.Save();
                Users.Add(email, newUser);
             }
@@ -56,6 +56,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserPackage
                throw new ArgumentException("A user with " + email + " E-mail address already exists, please re-evaluate your information and try again.");
         }
 
+        /// <summary>
+        /// Registers a new user to another board.
+        /// </summary>
+        /// <param name="email">The email address of the user to register.</param>
+        /// <param name="password">The password of the user to register.</param>
+        /// <param name="nickname">The nickname of the user to register.</param>
+        /// <param name="boardId">The board that the user will be Associated with.</param>
+        /// <exception cref="ArgumentException">Thrown when the e-mail address given is already taken by another user.</exception>
         public void Register(string email, string password, string nickname, string boardId)
         {
             log.Debug("Register Attempt");
