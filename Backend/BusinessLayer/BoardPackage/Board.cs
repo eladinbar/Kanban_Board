@@ -41,7 +41,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskCounter">The amount of tasks that the board contains.</param>
         /// <param name="columns">The list of columns the board contains.</param>
         /// <param name="dalBoard">The DAL appearance of the current board.</param>
-        internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard) 
+        internal Board(string email, int taskCounter, List<Column> columns, Dictionary<string,string> members ,DalBoard dalBoard) 
         {
             UserEmail = email;
             TaskCounter = taskCounter;

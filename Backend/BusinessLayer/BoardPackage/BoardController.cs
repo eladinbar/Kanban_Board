@@ -1,6 +1,7 @@
 ﻿using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
 using IntroSE.Kanban.Backend.DataAccessLayer.DALOs;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
@@ -27,6 +28,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             List<DalBoard> dalBoards = boardDalC.SelectAllBoards();
             foreach (DalBoard b in dalBoards)
             {
+                Dictionary<string, string> tampMembers = new UserDalController().SelectAllUsersOfBoard(b.Email)
+                                                         .ToDictionary<DalUser, string, string>(x => x.Email, y => y.Nickname);
                 List<Column> tempColumns = new List<Column>();
                 foreach (DalColumn c in b.Columns)
                 {
@@ -37,7 +40,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                     }
                     tempColumns.Add(new Column(c.Name, c.Limit, tempTasks, c));
                 }
-                Boards.Add(b.Email, new Board(b.Email, b.TaskCounter, tempColumns, b));
+                Boards.Add(b.Email, new Board(b.Email, b.TaskCounter, tempColumns, tampMembers, b));
+
             }
 
         }
