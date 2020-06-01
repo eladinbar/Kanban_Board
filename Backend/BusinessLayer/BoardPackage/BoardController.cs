@@ -275,6 +275,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             log.Info("New board was added with key " + email);
         }
 
+        public void JoinBoard(string newMemberEmail, string newMemberNickname, string boardToJoinEmail)
+        {
+            
+            if(Boards.TryGetValue(boardToJoinEmail, out Board tmpBoard))
+            {
+                log.Info("adding new member to board " + boardToJoinEmail);
+                tmpBoard.AddMember(newMemberEmail, newMemberNickname);
+            }
+            else
+            {
+                throw new ArgumentException($"{boardToJoinEmail} does not exist, check if email entered correctly");
+            }
+        }
+
 
         /// <summary>
         /// Adds a new column at the demanded index (ordinal).

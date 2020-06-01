@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public List<Column> Columns { get; }
         public string UserEmail { get; }
         public int TaskCounter { get; set; }
-        public List<string> Members { get; set; }
+        public Dictionary<string,string> Members { get; set; }
         public DalBoard DalCopyBoard { get; private set; }
 
 
@@ -275,6 +275,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
             log.Debug("Column '" + toMove.Name + "' has been moved to its left (" + (columnOrdinal - 1) + ") successfully.");
             return toMove;
+        }
+
+        public void AddMember(string email, string nickname)
+        {
+            if (Members.ContainsKey(email))
+                throw new ArgumentException("email all ready a member in the board");
+            Members.Add(email, nickname);
         }
 
         /// <summary>

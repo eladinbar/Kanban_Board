@@ -73,15 +73,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public bool ValidateHost(string email)
         {
-            throw new NotImplementedException();
+            if (CurrentUser == null) return false;
+            return CurrentUser.Email.Equals(CurrentUser.AssociatedBoard);
         }
 
-        public bool BoardExistence(string boardId)
+        public void BoardExistence(string boardId)
         {
-            if (BoardController.BoardExistence(boardId))
-                return true;
-            else
-                return false;
+            if (!BoardController.BoardExistence(boardId))
+                throw new ArgumentException($"{boardId} does not exist in the system, check validity");
         }
     }
 }
