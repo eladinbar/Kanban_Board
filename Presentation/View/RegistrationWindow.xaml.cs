@@ -19,7 +19,7 @@ namespace Presentation.View
     /// </summary>
     public partial class RegistrationWindow : Window
     {
-        public RegistrationWindow()
+        public RegistrationWindow(BackendController controller)
         {
             InitializeComponent();
         }

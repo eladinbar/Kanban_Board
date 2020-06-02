@@ -24,9 +24,9 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Content="Email" FontSize="15" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" FontWeight="DemiBold"/>
-                <TextBox Text="" Width="200" Height="25" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" BorderBrush="#FF202121"/>
+                <TextBox Text="{Binding  Path=Email, Mode=TwoWay}"  Width="200" Height="25" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" BorderBrush="#FF202121"/>
                 <Label Content="Password" FontSize="15" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" FontWeight="DemiBold"/>
-                <TextBox Text="" Width="200" Height="25" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" BorderBrush="#FF202121"/>
+                <TextBox Text="{Binding Path=Password, Mode=OneWayToSource}" Width="200" Height="25" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" BorderBrush="#FF202121"/>
             </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel.Resources>
@@ -37,7 +37,7 @@
                 <Button Content="Login" Name="LoginButton" Click="LoginButton_Click" Width="100" Height="25"/>
                 <Button Content="Register" Name="RegisterButton" Click="RegisterButton_Click" Width="100" Height="25"/>
             </StackPanel>
-            <Label Content="Massage" Foreground="Red" HorizontalAlignment="Center"/>
+            <Label Content="{Binding Path=Message, Mode=TwoWay}" Foreground="Red" HorizontalAlignment="Center"/>
         </StackPanel>
 
     </Grid>
