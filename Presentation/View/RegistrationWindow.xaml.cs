@@ -28,5 +28,10 @@ namespace Presentation.View
         {
 
         }
+
+        private void JoinBoardCheck_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

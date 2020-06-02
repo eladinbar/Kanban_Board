@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Presentation.ViewModal
 {
-    public class MainViewModal
+    public class MainViewModal : NotifiableObject
     {
+        
     }
 }
