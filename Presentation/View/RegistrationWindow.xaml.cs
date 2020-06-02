@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation.ViewModal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,13 @@ namespace Presentation.View
     /// </summary>
     public partial class RegistrationWindow : Window
     {
+        RegistrationViewModal viewModal;
+
         public RegistrationWindow(BackendController controller)
         {
             InitializeComponent();
+            viewModal = new RegistrationViewModal(controller);
+            DataContext = viewModal;
         }
 
         private void ConfirmRegistration_Click(object sender, RoutedEventArgs e)
@@ -30,6 +35,16 @@ namespace Presentation.View
         }
 
         private void JoinBoardCheck_Checked(object sender, RoutedEventArgs e)
+        {
+            HostEmailBox.Visibility = Visibility.Visible;
+        }
+
+        private void JoinBoardCheck_Unchecked(object sender, RoutedEventArgs e)
+        {
+            HostEmailBox.Visibility = Visibility.Hidden;
+        }
+
+        private void HostEmailBox_GotFocus(object sender, RoutedEventArgs e)
         {
 
         }

@@ -31,12 +31,11 @@
                 <Label Content="Nickname" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
                 <TextBox Text="" Width="200" Height="25" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" BorderBrush="#FF202121"/>
                 <StackPanel Grid.Column="0" Grid.Row="4" Orientation="Horizontal">
-                    <CheckBox Name="JoinBoardCheck" VerticalAlignment="Center" Checked="JoinBoardCheck_Checked"/>
+                    <CheckBox Name="JoinBoardCheck" VerticalAlignment="Center" Checked="JoinBoardCheck_Checked" Unchecked="JoinBoardCheck_Unchecked"/>
                     <Label Content="Join Board" HorizontalAlignment="Center" Margin="10,0,0,0"/>
                 </StackPanel>
-                <TextBox Text="Host Email" Width="200" Height="25" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" 
-                         Visibility="Visible" BorderBrush="#FF202121">
-                    
+                <TextBox Name="HostEmailBox" Text="{Binding Path=HostEmail, Mode=OneWay}" Width="200" Height="25" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" 
+                         GotFocus="HostEmailBox_GotFocus" Visibility="Hidden" BorderBrush="#FF202121">
                     <TextBox.Foreground>
                         <SolidColorBrush Color="Black" Opacity=".5"/>
                     </TextBox.Foreground>

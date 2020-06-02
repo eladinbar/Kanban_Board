@@ -13,7 +13,7 @@ namespace Presentation
         private IService Service { get; set; }
         public BackendController()
         {
-            Service = new Service();
+            //Service = new Service();
         }
 
         internal UserModal Login(string email, string password)
