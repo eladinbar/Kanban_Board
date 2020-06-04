@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\NotifiableModelObject.cs" />
+    <Compile Include="Model\TaskModel.cs" />
     <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="View\TaskWindow.xaml.cs">
       <DependentUpon>TaskWindow.xaml</DependentUpon>
@@ -104,9 +106,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Backend\KanbanProject.csproj">
       <Project>{54d4ca44-f049-47de-bf74-81fc80f867fd}</Project>
