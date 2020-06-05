@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.UserController.Register(email, password, nickname);
-                SecurityController.BoardController.AddNewBoard(email);
+                SecurityController.BoardController.AddNewBoard(email, nickname);
                 
                 Response r = new Response();
                 log.Info("Registered with " + email);
@@ -44,6 +44,32 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response resp = new Response(ex.Message);
                 log.Warn(ex.Message, ex);
                 return resp;
+            }
+        }
+
+        /// <summary>
+        /// Registers a new user and joins the user to an existing board.
+        /// </summary>
+        /// <param name="email">The email address of the user to register</param>
+        /// <param name="password">The password of the user to register</param>
+        /// <param name="nickname">The nickname of the user to register</param>
+        /// <param name="emailHost">The email address of the host user which owns the board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error<returns>
+        public Response Register(string email, string password, string nickname, string emailHost)
+        {
+            try
+            {
+                SecurityController.BoardExistence(emailHost);
+                SecurityController.UserController.Register(email, password, nickname, emailHost);
+                SecurityController.BoardController.JoinBoard(email, nickname, emailHost);
+                log.Info($"{email} register successfully and joined {emailHost} Board");
+                return new Response();
+
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message, e);
+                return new Response(e.Message);
             }
         }
 

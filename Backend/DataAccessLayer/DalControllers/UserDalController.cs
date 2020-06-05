@@ -26,6 +26,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             return userList;
         }
 
+        public List<DalUser> SelectAllUsersOfBoard(string email)
+        {
+            log.Info("Loading all users from the database.");
+            List<DalUser> userList = Select(email);
+            return userList;
+        }
+
         /// <summary>
         /// Creates the 'Users' table in the database.
         /// </summary>
@@ -39,6 +46,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalUser.EmailColumnName} TEXT NOT NULL," +
                     $"{DalUser.UserPasswordColumnName} TEXT NOT NULL," +
                     $"{DalUser.UserNicknameColumnName} TEXT NOT NULL," +
+                    $"{DalUser.UserAssociatedBoardColumnName} TEXT NOT NULL," +
                     $"PRIMARY KEY({DalUser.EmailColumnName})" +
                     $");";
                 SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
@@ -73,7 +81,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <returns>Returns a DalUser.</returns>
         internal override DalUser ConvertReaderToObject(SQLiteDataReader reader)
         {
-            DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+            DalUser result = new DalUser(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
             return result;
         }
 
@@ -93,16 +101,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 {
                     log.Info("Opening a connection to the database.");
                     connection.Open();   
-                    command.CommandText = $"INSERT INTO {UserTableName} ({DalUser.EmailColumnName}, {DalUser.UserPasswordColumnName},{DalUser.UserNicknameColumnName})" +
-                        $"VALUES (@emailVal, @passwordVal, @NicknameVal);";
+                    command.CommandText = $"INSERT INTO {UserTableName} ({DalUser.EmailColumnName}, {DalUser.UserPasswordColumnName},{DalUser.UserNicknameColumnName},{DalUser.UserAssociatedBoardColumnName})" +
+                        $"VALUES (@emailVal, @passwordVal, @nicknameVal, @associatedBoardVal);";
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", user.Email);
                     SQLiteParameter passwordParam = new SQLiteParameter(@"passwordVal", user.Password);
                     SQLiteParameter nicknameParam = new SQLiteParameter(@"nicknameVal", user.Nickname);
+                    SQLiteParameter boardParam = new SQLiteParameter(@"associatedBoardVal", user.AssociatedBoard);
 
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(passwordParam);
                     command.Parameters.Add(nicknameParam);
+                    command.Parameters.Add(boardParam);
 
                     res = command.ExecuteNonQuery();
                 }
@@ -160,7 +170,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         public void DeleteDatabase()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _databaseName));
             FileInfo dBFile = new FileInfo(path);
             if (dBFile.Exists)
             {
