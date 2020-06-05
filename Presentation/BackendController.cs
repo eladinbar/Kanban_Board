@@ -16,14 +16,14 @@ namespace Presentation
             //Service = new Service();
         }
 
-        internal UserModal Login(string email, string password)
+        internal UserModel Login(string email, string password)
         {
             Response<User> user = Service.Login(email, password);
             if (user.ErrorOccured)
             {
                 throw new Exception(user.ErrorMessage);
             }
-            return new UserModal(this, email, user.Value.Nickname);
+            return new UserModel(this, email, user.Value.Nickname);
         }
     }
 }

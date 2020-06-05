@@ -22,10 +22,10 @@ namespace Presentation.View
     {
         private BoardViewModel viewModel;
 
-        public BoardWindow()
+        public BoardWindow(Model.UserModel currentUser)
         {
             InitializeComponent();
-            this.viewModel = new BoardViewModel();
+            this.viewModel = new BoardViewModel(currentUser);
             this.DataContext = this.viewModel;
         }
 

@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IntroSE.Kanban.Backend">
+      <HintPath>..\Backend\bin\Debug\IntroSE.Kanban.Backend.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -56,7 +59,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BackendController.cs" />
+    <Compile Include="Model\BoardModel.cs" />
+    <Compile Include="Model\ColumnModel.cs" />
     <Compile Include="Model\NotifiableModelObject.cs" />
+    <Compile Include="Model\TaskModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="NotifiableObject.cs" />
     <Compile Include="ViewModel\BoardViewModel.cs" />

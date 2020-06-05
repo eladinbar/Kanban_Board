@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Model
 {
-    public class UserModal: NotifiableModelObject
+    public class UserModel: NotifiableModelObject
     {
         private string _email;
         public string Email
@@ -30,7 +30,7 @@ namespace Presentation.Model
             }
         }
 
-        public UserModal(BackendController controller, string email, string nickname): base(controller)
+        public UserModel(BackendController controller, string email, string nickname): base(controller)
         {
             _email = email;
             _nickname = nickname;
