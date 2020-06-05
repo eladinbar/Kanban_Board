@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Modal
+namespace Presentation.Model
 {
-    public class NotifiableModalObject : NotifiableObject
+    public class NotifiableModelObject : NotifiableObject
     {
         public BackendController Controller { get; private set; }
-        protected NotifiableModalObject(BackendController controller)
+        protected NotifiableModelObject(BackendController controller)
         {
             Controller = controller;
         }

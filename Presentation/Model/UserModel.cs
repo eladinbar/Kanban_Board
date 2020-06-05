@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Modal
+namespace Presentation.Model
 {
-    public class UserModal: NotifiableModalObject
+    public class UserModal: NotifiableModelObject
     {
         private string _email;
         public string Email

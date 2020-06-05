@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanProject", "Backend\KanbanProject.csproj", "{54D4CA44-F049-47DE-BF74-81FC80F867FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{993701FC-27ED-4786-86E4-7E59F2092610}"
+	ProjectSection(ProjectDependencies) = postProject
+		{54D4CA44-F049-47DE-BF74-81FC80F867FD} = {54D4CA44-F049-47DE-BF74-81FC80F867FD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
