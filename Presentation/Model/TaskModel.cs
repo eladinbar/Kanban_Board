@@ -15,6 +15,7 @@ namespace Presentation.Model
         public DateTime DueDate;
         public DateTime LastChangedDate;
         public UserModel TaskAssignee;
+        public int ColumnOrdinal;
 
         public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate, 
         DateTime LastChangedDate, UserModel TaskAssignee) : base(Controller) {

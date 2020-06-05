@@ -1,4 +1,4 @@
-﻿namespace Presentation.Model;
+﻿namespace Presentation.Model {
     public class ColumnModel
     {
         

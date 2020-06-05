@@ -22,31 +22,43 @@ namespace Presentation.View
     public partial class TaskWindow : Window
     {
         private TaskViewModel taskViewModel;
-        private UserModel userModel;
-        private BoardModel boardModel;
 
-        public TaskWindow(TaskModel taskWindow, UserModel userModel)
+        public TaskWindow(TaskModel taskModel)
         {
             InitializeComponent();
-            DataContext = new TaskViewModel(taskWindow);
+            DataContext = new TaskViewModel(taskModel);
             taskViewModel = (TaskViewModel)DataContext;
-            this.userModel = userModel;
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            taskViewModel.ConfirmChangesValidity();
+            bool valid = taskViewModel.ConfirmChangesValidity();
+            if (valid) {
+                taskViewModel.UpdateTask(); //
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            //BoardWindow Board = new BoardWindow();
-            this.Hide();
+            this.Hide(); //
         }
 
-        private void Title_TextChanged(object sender, TextChangedEventArgs e)
+        private void Title_Changed(object sender, TextChangedEventArgs e)
         {
-            taskViewModel.UpdateTaskTitle(userModel.Username, boardModel.Columns)
+            taskViewModel.ChangeTitle(tTitle);
+        }
+
+        private void Description_Changed(object sender, TextChangedEventArgs e)
+        {
+            taskViewModel.ChangeDescription(tDescription);
+        }
+
+        private void DueDate_Changed(object sender, TextChangedEventArgs e) {
+            taskViewModel.ChangeDueDate(tDueDate);
+        }
+
+        private void TaskAssignee_Changed(object sender, TextChangedEventArgs e) {
+            taskViewModel.ChangeTaskAssignee(tTaskAssignee);
         }
     }
 }

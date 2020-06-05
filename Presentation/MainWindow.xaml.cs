@@ -31,13 +31,14 @@ namespace Presentation
             InitializeComponent();
             UserModel user = new UserModel("username", "password", "nickname");
             window = new TaskWindow(new TaskModel(new BackendController(new Service()), 1, "title", "description",
-            DateTime.Now, DateTime.UtcNow, DateTime.Now, user), user);
+            DateTime.Now, DateTime.UtcNow, DateTime.Now, user));
 
 
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
+            //if (window.Closed())
             window.ShowDialog();
         }
     }

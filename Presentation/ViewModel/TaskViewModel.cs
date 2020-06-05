@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Presentation.ViewModel
@@ -24,7 +25,8 @@ namespace Presentation.ViewModel
         private TaskModel Task;
         private UserModel TaskAssignee;
         public readonly SolidColorBrush INVALID_BACKGROUND_COLOR = new SolidColorBrush(Colors.Red);
-        public readonly SolidColorBrush VALID_BACKGROUND_COLOR = new SolidColorBrush(Colors.Blue);
+        public readonly SolidColorBrush VALID_BACKGROUND_COLOR = new SolidColorBrush(Colors.CornflowerBlue);
+        public readonly SolidColorBrush EDITED_BACKGROUND_COLOR = new SolidColorBrush(Colors.Green);
 
         //get {return new SolidColorBrush(Task.DueDate.CompareTo(DateTime.Now) ? Colors.Blue : Colors.Red);} }
 
@@ -42,6 +44,11 @@ namespace Presentation.ViewModel
              this.TaskAssignee = Task.TaskAssignee;
              this.TaskAssigneeUsername = TaskAssignee.Username;
              this.TaskAsigneeNickname = TaskAssignee.Nickname;
+        }
+
+        internal void ChangeTaskAssignee(TextBox tTaskAssignee, Brush borderBrush)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -113,7 +120,11 @@ namespace Presentation.ViewModel
             }
         }
 
-        public void ConfirmChangesValidity() {
+        public void UpdateTask() {
+            
+        }
+
+        public bool ConfirmChangesValidity() { //All changeable parameters?
             if (true)
             { //if(fields.contains(invalid))
                 MessageBox.Show("Some fields were assigned invalid values. \n" +
@@ -128,7 +139,39 @@ namespace Presentation.ViewModel
             else
             {
                 MessageBox.Show("Task data updated successfully!");
+                return true;
             }
+            return false;
+        }
+
+        internal void ChangeTitle(TextBox tTitle)
+        {
+            if (tTitle.Text.Length > 50 | tTitle.Text.Length < 1)
+                tTitle.BorderBrush = INVALID_BACKGROUND_COLOR;
+            else if (!tTitle.Text.Equals(Title))
+                tTitle.BorderBrush = EDITED_BACKGROUND_COLOR;
+            else
+                tTitle.BorderBrush = VALID_BACKGROUND_COLOR;
+        }
+
+        internal void ChangeDescription(TextBox tDescription)
+        {
+            if (tDescription.Text.Length > 300)
+                tDescription.BorderBrush = INVALID_BACKGROUND_COLOR;
+            else if (!tDescription.Text.Equals(Description))
+                tDescription.BorderBrush = EDITED_BACKGROUND_COLOR;
+            else
+                tDescription.BorderBrush = VALID_BACKGROUND_COLOR;
+        }
+
+        internal void ChangeDueDate(TextBox tDueDate)
+        {
+            //if (tDueDate.Text.) //DateTime.Now something something
+            //    tDescription.BorderBrush = INVALID_BACKGROUND_COLOR;
+            //else if (!tDueDate.Text.Equals(DueDate))
+            //    tDescription.BorderBrush = EDITED_BACKGROUND_COLOR;
+            //else
+            //    tDescription.BorderBrush = VALID_BACKGROUND_COLOR;
         }
     }
 }
