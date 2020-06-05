@@ -23,34 +23,30 @@ namespace Presentation.View
     {
         private TaskViewModel taskViewModel;
         private UserModel userModel;
+        private BoardModel boardModel;
 
         public TaskWindow(TaskModel taskWindow, UserModel userModel)
         {
             InitializeComponent();
             DataContext = new TaskViewModel(taskWindow);
             taskViewModel = (TaskViewModel)DataContext;
-            userModel = userModel;
+            this.userModel = userModel;
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            if (true) { //if(fields.contains(invalid))
-                MessageBox.Show("Some fields were assigned invalid values. \n" +
-                "Please review your changes and try again.", "Invalid fields", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
-            else if (true) { //if (assignee.changed)
-                MessageBox.Show("You are trying to change the task assignee. \n  " +
-                "Confirming your changes will prevent you from making any further adjustments to this task. \n" +
-                "Would you like to proceed?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
-            }
-            else {
-                MessageBox.Show("Task data updated successfully!");
-            }
+            taskViewModel.ConfirmChangesValidity();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            BoardWindow Board = new BoardWindow();
+            //BoardWindow Board = new BoardWindow();
+            this.Hide();
+        }
+
+        private void Title_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            taskViewModel.UpdateTaskTitle(userModel.Username, boardModel.Columns)
         }
     }
 }

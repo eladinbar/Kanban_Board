@@ -1,4 +1,7 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using Presentation.Model;
+using Presentation.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,22 @@ namespace Presentation
     /// </summary>
     public partial class MainWindow : Window
     {
+        TaskWindow window;
+        
+        //Mock MainWindow for testing only
         public MainWindow()
         {
             InitializeComponent();
+            UserModel user = new UserModel("username", "password", "nickname");
+            window = new TaskWindow(new TaskModel(new BackendController(new Service()), 1, "title", "description",
+            DateTime.Now, DateTime.UtcNow, DateTime.Now, user), user);
+
+
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            window.ShowDialog();
         }
     }
 }
