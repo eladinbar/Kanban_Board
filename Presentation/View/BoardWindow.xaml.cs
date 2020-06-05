@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,12 +20,21 @@ namespace Presentation.View
     /// </summary>
     public partial class BoardWindow : Window
     {
+        private BoardViewModel viewModel;
+
         public BoardWindow()
         {
             InitializeComponent();
+            this.viewModel = new BoardViewModel();
+            this.DataContext = this.viewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SearchBox_TextChanged(object sender, RoutedEventArgs e)
         {
 
         }

@@ -7,7 +7,13 @@
         mc:Ignorable="d"
         Title="BoardWindow" Height="450" Width="800">
     <Grid>
-        <Button Name="BoardPlusMenu" Content="+" FontWeight="ExtraBold" FontSize="30" FontFamily="David" Height="35" Width="35" Margin="0,0,749.6,0" VerticalAlignment="Top" BorderThickness="2" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black">
+        <TextBox Name="SearchBox" Text="Search for a task..." FontSize="10" FontStyle="Italic" BorderThickness="1" Height="20" Width="150" VerticalAlignment="Top" Margin="-400,5,0,0" 
+                 Foreground="Gray" Background="{Binding}" TextChanged="SearchBox_TextChanged"/>
+        <!--(Search: binding->grey->whiteOnClick, also for a text)-->
+        <Label Name="MainTitleLabel" Content="Kanban Board" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Label Name="CurrentBoardEmailLabel" Content="(BindingWithCurrentBoardEmail)" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="320,15,313.6,0" Opacity="0.75" FontSize="10" Width="160"/>
+        <Label Name="CurrentUserEmailLabel" Content="User: (CurrentUserEmailGoesHere)" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <Button Name="AddNewTaskButton" Content="+" FontWeight="ExtraBold" FontSize="30" FontFamily="David" Height="35" Width="35" Margin="0,0,749.6,0" VerticalAlignment="Top" BorderThickness="2" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black">
             <Button.BitmapEffect>
                 <DropShadowBitmapEffect />
             </Button.BitmapEffect>
@@ -26,25 +32,33 @@
                 </ContextMenu.Resources>-->
             <!--</ContextMenu>-->
         </Button>
-        <Menu Height="40" Width="40" Margin="744,10,9.6,370" Background="#FF7EEA08" Foreground="Black">
-            <MenuItem Name="UserMenu" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="UltraBold" 
-                  Background="{x:Null}" Height="40" Width="40" FontSize="30" FontFamily="David" >
+        <Menu Height="30" Width="30" Margin="744,10,9.6,370" Background="#FF7EEA08" Foreground="Black">
+            <Menu.ToolTip>
+                <ToolTip>(BindingWithCurrentNick)</ToolTip>
+            </Menu.ToolTip>
+            
+            <MenuItem x:Name="UserMenu" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="UltraBold" 
+                  Background="{x:Null}" Height="30" Width="30" FontSize="30" FontFamily="David" >
                 <MenuItem.Header>
-                    <TextBlock Text="C" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Text="C" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
                 </MenuItem.Header>
+                <MenuItem Header="_Exmp1" IsCheckable="True" FontSize="12" FontWeight="Regular"/>
+                <Separator />
+                <MenuItem Header="_Exmp2" IsCheckable="True" FontSize="12" FontWeight="Regular"/>
+
             </MenuItem>
         </Menu>
         <Grid HorizontalAlignment="Left" Height="343" Margin="40,39,0,0" VerticalAlignment="Top" Width="721">
             <!--<StackPanel Orientation="Horizontal">-->
-                <ListBox Name="BoardWindowColumns" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,0,0,0.2" Width="720">
-                    <ListBox.ItemsPanel>
+            <ListBox Name="BoardWindowColumns" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,0,0,0.2" Width="720">
+                <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" IsItemsHost="True" />
                     </ItemsPanelTemplate>
                     <!--<DataTemplate>
                         <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>-->
-                    </ListBox.ItemsPanel>
+                </ListBox.ItemsPanel>
                 <ListBoxItem Content="Coffie"></ListBoxItem>
                 <ListBoxItem Content="Tea"></ListBoxItem>
                 <ListBoxItem Content="Orange Juice"></ListBoxItem>
@@ -52,10 +66,10 @@
                 <ListBoxItem Content="Iced Tea"></ListBoxItem>
                 <ListBoxItem Content="Mango Shake"></ListBoxItem>
                 <StackPanel>
-                            <ListBox>
-                            </ListBox>
-                        </StackPanel>
-                </ListBox>
+                    <ListBox>
+                    </ListBox>
+                </StackPanel>
+            </ListBox>
             <!--</StackPanel>-->
         </Grid>
     </Grid>
