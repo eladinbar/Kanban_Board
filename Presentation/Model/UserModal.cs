@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Modal
+namespace Presentation.Model
 {
-    public class UserModal: NotifiableModalObject
+    public class UserModel: NotifiableModalObject
     {
         private string _email;
         public string Email
@@ -30,7 +30,7 @@ namespace Presentation.Modal
             }
         }
 
-        public UserModal(BackendController controller, string email, string nickname): base(controller)
+        public UserModel(BackendController controller, string email, string nickname): base(controller)
         {
             _email = email;
             _nickname = nickname;

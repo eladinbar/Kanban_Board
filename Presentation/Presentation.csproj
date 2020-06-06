@@ -66,10 +66,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BackendController.cs" />
-    <Compile Include="Modal\NotifiableModalObject.cs" />
-    <Compile Include="Modal\UserModal.cs" />
-    <Compile Include="ViewModal\MainViewModal.cs" />
-    <Compile Include="ViewModal\RegistrationViewModal.cs" />
+    <Compile Include="Model\NotifiableModalObject.cs" />
+    <Compile Include="Model\UserModal.cs" />
+    <Compile Include="ViewModel\MainViewModal.cs" />
+    <Compile Include="ViewModel\RegistrationViewModal.cs" />
     <Compile Include="View\RegistrationWindow.xaml.cs">
       <DependentUpon>RegistrationWindow.xaml</DependentUpon>
     </Compile>

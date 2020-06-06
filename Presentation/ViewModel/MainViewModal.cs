@@ -1,11 +1,11 @@
-﻿using Presentation.Modal;
+﻿using Presentation.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.ViewModal
+namespace Presentation.ViewModel
 {
     public class MainViewModal : NotifiableObject
     {
@@ -44,7 +44,7 @@ namespace Presentation.ViewModal
             }
         }
 
-        internal UserModal Login()
+        internal UserModel Login()
         {
             Message = "";
             try

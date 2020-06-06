@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Presentation.ViewModal
+namespace Presentation.ViewModel
 {
-    public class RegistrationViewModal : NotifiableObject
+    public class RegistrationViewModel : NotifiableObject
     {
         public BackendController Controller { get; private set; }
 
@@ -59,9 +59,8 @@ namespace Presentation.ViewModal
                 RaisePropertyChanged("Nickname");
             }
         }
-
-        private const string HostEmailDefualt = "";
-        private string _hostEmail = HostEmailDefualt;
+        
+        private string _hostEmail = "";
         public string HostEmail
         {
             get => _hostEmail;
@@ -74,18 +73,18 @@ namespace Presentation.ViewModal
             }
         }
 
-        private string _responseMassage = "";
-        public string ResponseMassage
+        private string _responseMessage = "";
+        public string ResponseMessage
         {
-            get => _responseMassage;
+            get => _responseMessage;
             set
             {
-                _responseMassage = value;
-                RaisePropertyChanged("ResponseMassage");
+                _responseMessage = value;
+                RaisePropertyChanged("ResponseMessage");
             }
         }
 
-        public RegistrationViewModal(BackendController controller)
+        public RegistrationViewModel(BackendController controller)
         {
             this.Controller = controller;
         }
@@ -106,13 +105,13 @@ namespace Presentation.ViewModal
                 }
                 else
                 {
-                    ResponseMassage = "Password Entrys does not match";
+                    ResponseMessage = "Password Entrys does not match";
                     return false;
                 }
             }
             catch(Exception ex)
             {
-                ResponseMassage = ex.Message;
+                ResponseMessage = ex.Message;
                 return false;
             }
         }

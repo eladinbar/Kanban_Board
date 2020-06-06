@@ -1,5 +1,5 @@
-﻿using Presentation.Modal;
-using Presentation.ViewModal;
+﻿using Presentation.Model;
+using Presentation.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace Presentation.View
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            UserModal user = viewModal.Login();
+            UserModel user = viewModal.Login();
             if(user != null)
             {
                 //BoardWindow bw = new BoardWindow(user);

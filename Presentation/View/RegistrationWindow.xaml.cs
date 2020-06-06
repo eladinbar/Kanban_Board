@@ -1,4 +1,4 @@
-﻿using Presentation.ViewModal;
+﻿using Presentation.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +20,12 @@ namespace Presentation.View
     /// </summary>
     public partial class RegistrationWindow : Window
     {
-        private RegistrationViewModal viewModal;
+        private RegistrationViewModel viewModal;
 
         public RegistrationWindow(BackendController controller)
         {
             InitializeComponent();
-            viewModal = new RegistrationViewModal(controller);
+            viewModal = new RegistrationViewModel(controller);
             DataContext = viewModal;
         }
 
