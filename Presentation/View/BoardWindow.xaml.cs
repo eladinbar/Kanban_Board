@@ -12,6 +12,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Presentation.Model;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace Presentation.View
 {
@@ -22,11 +25,22 @@ namespace Presentation.View
     {
         private BoardViewModel viewModel;
 
-        public BoardWindow(Model.UserModel currentUser)
+        private string CreatorEmail;
+
+        private ObservableCollection<ColumnModel> _columns; //???????????????????????????
+        public ObservableCollection<ColumnModel> Columns //???????????????????????????
+        {
+            get => _columns;
+            set => _columns = value;
+        }
+
+        public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) //need to receive from login window those parameters
         {
             InitializeComponent();
-            this.viewModel = new BoardViewModel(currentUser);
+            this.viewModel = new BoardViewModel(controller, currentUser, creatorEmail);
             this.DataContext = this.viewModel;
+            this.CreatorEmail = creatorEmail;
+            //this._columns
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

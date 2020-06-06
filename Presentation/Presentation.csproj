@@ -62,6 +62,7 @@
     <Compile Include="Model\BoardModel.cs" />
     <Compile Include="Model\ColumnModel.cs" />
     <Compile Include="Model\NotifiableModelObject.cs" />
+    <Compile Include="Model\SimpleTaskModel.cs" />
     <Compile Include="Model\TaskModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="NotifiableObject.cs" />
