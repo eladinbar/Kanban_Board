@@ -12,27 +12,28 @@ namespace Presentation.ViewModel
 {
     internal class TaskViewModel : NotifiableObject
     {
+        public readonly SolidColorBrush INVALID_BORDER_COLOR = Brushes.Red;
+        public readonly SolidColorBrush VALID_BORDER_COLOR = Brushes.Green;
+        public readonly SolidColorBrush ORIGINAL_BORDER_COLOR = Brushes.CornflowerBlue;
+
+        private BackendController Controller;
+        private TaskModel Task;
         public int ID { get; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Message { get => Message; set { Message = value; RaisePropertyChanged("Message"); } }
         public DateTime CreationTime { get; }
         public DateTime DueDate { get; set; }
         public DateTime LastChangedDate { get; }
         public string TaskAssigneeUsername { get; set; }
-        public string TaskAsigneeNickname { get; set; }
-        private BackendController Controller;
-        private TaskModel Task;
-        private UserModel TaskAssignee;
-        public readonly SolidColorBrush INVALID_BACKGROUND_COLOR = new SolidColorBrush(Colors.Red);
-        public readonly SolidColorBrush VALID_BACKGROUND_COLOR = new SolidColorBrush(Colors.CornflowerBlue);
-        public readonly SolidColorBrush EDITED_BACKGROUND_COLOR = new SolidColorBrush(Colors.Green);
+        public string TaskAsigneeNickname { get; set; } //Pending
+        public bool IsAssignee { get; set; }
+        public string Message { get => Message; set { Message = value; RaisePropertyChanged("Message"); } }
 
         //get {return new SolidColorBrush(Task.DueDate.CompareTo(DateTime.Now) ? Colors.Blue : Colors.Red);} }
 
 
         //Constructor
-        public TaskViewModel(TaskModel Task) {
+        public TaskViewModel(TaskModel Task, bool isAssignee) {
              this.Controller = Task.Controller;
              this.Task = Task;
              this.ID = Task.ID;
@@ -41,14 +42,8 @@ namespace Presentation.ViewModel
              this.CreationTime = Task.CreationTime;
              this.DueDate = Task.DueDate;
              this.LastChangedDate = Task.LastChangedDate;
-             this.TaskAssignee = Task.TaskAssignee;
-             this.TaskAssigneeUsername = TaskAssignee.Username;
-             this.TaskAsigneeNickname = TaskAssignee.Nickname;
-        }
-
-        internal void ChangeTaskAssignee(TextBox tTaskAssignee, Brush borderBrush)
-        {
-            throw new NotImplementedException();
+             this.TaskAssigneeUsername = Task.AssigneeEmail;
+             this.IsAssignee = isAssignee;
         }
 
         /// <summary>
@@ -62,8 +57,6 @@ namespace Presentation.ViewModel
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
             Message = "";
-            this.DueDate = dueDate;
-            RaisePropertyChanging("DueDate");
             try {
                 Controller.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
                 this.DueDate = dueDate;
@@ -124,44 +117,55 @@ namespace Presentation.ViewModel
             
         }
 
-        public bool ConfirmChangesValidity() { //All changeable parameters?
-            if (true)
-            { //if(fields.contains(invalid))
+        public bool ConfirmChangesValidity(params Brush[] fields) {
+            if (!ValidFields(fields.Take(fields.Length-1))) //Checks all fields except TaskAssignee
+            {
                 MessageBox.Show("Some fields were assigned invalid values. \n" +
                 "Please review your changes and try again.", "Invalid fields", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-            else if (true)
-            { //if (assignee.changed)
-                MessageBox.Show("You are trying to change the task assignee. \n  " +
-                "Confirming your changes will prevent you from making any further adjustments to this task. \n" +
-                "Would you like to proceed?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
-            }
-            else
-            {
-                MessageBox.Show("Task data updated successfully!");
-                return true;
+            else {
+                if (fields[fields.Length-1].Equals(Brushes.Green)) //If the task assignee field was modified
+                {
+                    MessageBoxResult Result = MessageBox.Show("You are trying to change the task assignee. \n  " +
+                    "Confirming your changes will prevent you from making any further adjustments to this task. \n" +
+                    "Would you like to proceed?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+                    if (Result == MessageBoxResult.OK)
+                    {
+                        MessageBox.Show("Task Assignee was changed successfully.");
+                        MessageBox.Show("Task data was updated successfully!");
+                        return true;
+                    }
+                }
             }
             return false;
+        }
+
+        private bool ValidFields(IEnumerable<Brush> fields) {
+            foreach (Brush brush in fields) {
+                if (brush.Equals(Brushes.Red))
+                    return false;
+            }     
+            return true;
         }
 
         internal void ChangeTitle(TextBox tTitle)
         {
             if (tTitle.Text.Length > 50 | tTitle.Text.Length < 1)
-                tTitle.BorderBrush = INVALID_BACKGROUND_COLOR;
+                tTitle.BorderBrush = INVALID_BORDER_COLOR;
             else if (!tTitle.Text.Equals(Title))
-                tTitle.BorderBrush = EDITED_BACKGROUND_COLOR;
+                tTitle.BorderBrush = VALID_BORDER_COLOR;
             else
-                tTitle.BorderBrush = VALID_BACKGROUND_COLOR;
+                tTitle.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
 
         internal void ChangeDescription(TextBox tDescription)
         {
             if (tDescription.Text.Length > 300)
-                tDescription.BorderBrush = INVALID_BACKGROUND_COLOR;
+                tDescription.BorderBrush = INVALID_BORDER_COLOR;
             else if (!tDescription.Text.Equals(Description))
-                tDescription.BorderBrush = EDITED_BACKGROUND_COLOR;
+                tDescription.BorderBrush = VALID_BORDER_COLOR;
             else
-                tDescription.BorderBrush = VALID_BACKGROUND_COLOR;
+                tDescription.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
 
         internal void ChangeDueDate(TextBox tDueDate)
@@ -172,6 +176,11 @@ namespace Presentation.ViewModel
             //    tDescription.BorderBrush = EDITED_BACKGROUND_COLOR;
             //else
             //    tDescription.BorderBrush = VALID_BACKGROUND_COLOR;
+        }
+
+        internal void ChangeTaskAssignee(TextBox tTaskAssignee)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -21,20 +21,20 @@ namespace Presentation.View
     /// </summary>
     public partial class TaskWindow : Window
     {
-        private TaskViewModel taskViewModel;
+        private TaskViewModel ViewModel;
 
-        public TaskWindow(TaskModel taskModel)
+        public TaskWindow(TaskModel taskModel, bool isAssignee)
         {
             InitializeComponent();
-            DataContext = new TaskViewModel(taskModel);
-            taskViewModel = (TaskViewModel)DataContext;
+            ViewModel = new TaskViewModel(taskModel, isAssignee);
+            DataContext = ViewModel;
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            bool valid = taskViewModel.ConfirmChangesValidity();
+            bool valid = ViewModel.ConfirmChangesValidity(tTitle.BorderBrush, tDescription.BorderBrush, tDueDate.BorderBrush);
             if (valid) {
-                taskViewModel.UpdateTask(); //
+                ViewModel.UpdateTask(); //
             }
         }
 
@@ -45,20 +45,20 @@ namespace Presentation.View
 
         private void Title_Changed(object sender, TextChangedEventArgs e)
         {
-            taskViewModel.ChangeTitle(tTitle);
+            ViewModel.ChangeTitle(tTitle);
         }
 
         private void Description_Changed(object sender, TextChangedEventArgs e)
         {
-            taskViewModel.ChangeDescription(tDescription);
+            ViewModel.ChangeDescription(tDescription);
         }
 
         private void DueDate_Changed(object sender, TextChangedEventArgs e) {
-            taskViewModel.ChangeDueDate(tDueDate);
+            ViewModel.ChangeDueDate(tDueDate);
         }
 
         private void TaskAssignee_Changed(object sender, TextChangedEventArgs e) {
-            taskViewModel.ChangeTaskAssignee(tTaskAssignee);
+            ViewModel.ChangeTaskAssignee(tTaskAssignee);
         }
     }
 }

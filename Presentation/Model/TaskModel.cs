@@ -14,18 +14,17 @@ namespace Presentation.Model
         public DateTime CreationTime;
         public DateTime DueDate;
         public DateTime LastChangedDate;
-        public UserModel TaskAssignee;
-        public int ColumnOrdinal;
+        public string AssigneeEmail;
 
         public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate, 
-        DateTime LastChangedDate, UserModel TaskAssignee) : base(Controller) {
+        DateTime LastChangedDate, string AssigneeEmail) : base(Controller) {
             this.ID = ID;
             this.Title = Title;
             this.Description = Description;
             this.CreationTime = CreationTime;
             this.DueDate = DueDate;
             this.LastChangedDate = LastChangedDate;
-            this.TaskAssignee = TaskAssignee;
+            this.AssigneeEmail = AssigneeEmail;
         }
     }
 }
