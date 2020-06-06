@@ -113,12 +113,24 @@ namespace Presentation.ViewModel
             }
         }
 
-        public void UpdateTask() {
-            
+        public void UpdateTask(Border[] validFields) {
+            if (validFields[0] == Border.Green)
+                UpdateTaskTitle(email, columnOrdinal, taskId, title);
+            if (validFields[1] == Border.Green)
+                UpdateTaskDescription(email, columnOrdinal, taskId, description);
+            if (validFields[2] == Border.Green)
+                UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
+            if (validFields[3] == Border.Green)
+                UpdateTaskAssignee();
         }
+        
+        private enum UpdateFunction { Title=0, Description=1, DueDate=2, TaskAssignee=3 }
+        
+        public enum Border { Blue=0, Green=1, Red=2 }
 
-        public bool ConfirmChangesValidity(params Brush[] fields) {
-            if (!ValidFields(fields.Take(fields.Length-1))) //Checks all fields except TaskAssignee
+        public Border[] ConfirmChangesValidity(params Brush[] fields) {
+            Border[] validFields = ValidFields(fields.Take(fields.Length - 1));
+            if (validFields.Contains(Border.Red)) //Checks all fields except TaskAssignee
             {
                 MessageBox.Show("Some fields were assigned invalid values. \n" +
                 "Please review your changes and try again.", "Invalid fields", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -128,24 +140,28 @@ namespace Presentation.ViewModel
                 {
                     MessageBoxResult Result = MessageBox.Show("You are trying to change the task assignee. \n  " +
                     "Confirming your changes will prevent you from making any further adjustments to this task. \n" +
-                    "Would you like to proceed?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+                    "Would you like to proceed?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Information, MessageBoxResult.Cancel);
                     if (Result == MessageBoxResult.OK)
                     {
-                        MessageBox.Show("Task Assignee was changed successfully.");
-                        MessageBox.Show("Task data was updated successfully!");
-                        return true;
+                        MessageBox.Show("Task Assignee was changed successfully.", "", MessageBoxButton.OK);
+                        MessageBox.Show("Task data was updated successfully!", "", MessageBoxButton.OK);
                     }
                 }
             }
-            return false;
+            return validFields;
         }
 
-        private bool ValidFields(IEnumerable<Brush> fields) {
+        private Border[] ValidFields(IEnumerable<Brush> fields) {
+            Border[] validFields = new Border[fields.Count()];
             foreach (Brush brush in fields) {
                 if (brush.Equals(Brushes.Red))
-                    return false;
+                    validFields.Concat(new Border[] { Border.Red });
+                else if (brush.Equals(Brushes.Green))
+                    validFields.Concat(new Border[] { Border.Green });
+                else
+                    validFields.Concat(new Border[] { Border.Blue });
             }     
-            return true;
+            return validFields;
         }
 
         internal void ChangeTitle(TextBox tTitle)

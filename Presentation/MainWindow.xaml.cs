@@ -31,7 +31,7 @@ namespace Presentation
             InitializeComponent();
             UserModel user = new UserModel("username", "password", "nickname");
             window = new TaskWindow(new TaskModel(new BackendController(new Service()), 1, "title", "description",
-            DateTime.Now, DateTime.UtcNow, DateTime.Now, user));
+            DateTime.Now, DateTime.UtcNow, DateTime.Now, "email"), true);
 
 
         }

@@ -32,15 +32,16 @@ namespace Presentation.View
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            bool valid = ViewModel.ConfirmChangesValidity(tTitle.BorderBrush, tDescription.BorderBrush, tDueDate.BorderBrush);
-            if (valid) {
-                ViewModel.UpdateTask(); //
+            TaskViewModel.Border[] validFields = ViewModel.ConfirmChangesValidity(tTitle.BorderBrush, tDescription.BorderBrush,
+                                                                                  tDueDate.BorderBrush, tTaskAssignee.BorderBrush);
+            if (!validFields.Contains(TaskViewModel.Border.Red)) {
+                ViewModel.UpdateTask(validFields);
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide(); //
+            this.Close();
         }
 
         private void Title_Changed(object sender, TextChangedEventArgs e)
