@@ -16,6 +16,10 @@ namespace Presentation.ViewModel
         public readonly SolidColorBrush VALID_BORDER_COLOR = Brushes.Green;
         public readonly SolidColorBrush ORIGINAL_BORDER_COLOR = Brushes.CornflowerBlue;
 
+        private const int MAXIMUM_TITLE_LENGTH = 50;
+        private const int MINIMUM_TITLE_LENGTH = 0;
+        private const int MAXIMUM_DESCRIPTION_LENGTH = 300;
+
         private BackendController Controller;
         private TaskModel Task;
         public int ID { get; }
@@ -44,27 +48,6 @@ namespace Presentation.ViewModel
              this.LastChangedDate = Task.LastChangedDate;
              this.TaskAssigneeUsername = Task.AssigneeEmail;
              this.IsAssignee = isAssignee;
-        }
-
-        /// <summary>
-        /// Update the due date of a task.
-        /// </summary>
-        /// <param name="email">Email of the user. Must be logged in.</param>
-        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column.</param>
-        /// <param name="taskId">The task to be updated identified task ID.</param>
-        /// <param name="dueDate">The new due date of the column.</param>
-        /// <returns>A response object. The response should contain an error message in case of an error.</returns>
-        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
-        {
-            Message = "";
-            try {
-                Controller.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
-                this.DueDate = dueDate;
-                RaisePropertyChanged("DueDate");
-            }
-            catch(Exception ex) {
-                Message = ex.Message;
-            }
         }
 
         /// <summary>
@@ -113,18 +96,67 @@ namespace Presentation.ViewModel
             }
         }
 
+        
+
+
+        /// <summary>
+        /// Update the due date of a task.
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in.</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column.</param>
+        /// <param name="taskId">The task to be updated identified task ID.</param>
+        /// <param name="dueDate">The new due date of the column.</param>
+        /// <returns>A response object. The response should contain an error message in case of an error.</returns>
+        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
+        {
+            Message = "";
+            try
+            {
+                Controller.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
+                this.DueDate = dueDate;
+                RaisePropertyChanged("DueDate");
+            }
+            catch (Exception ex)
+            {
+                Message = ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public void AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            Message = "";
+            try
+            {
+                Controller.AssignTask(email, columnOrdinal, taskId, emailAssignee);
+                this.TaskAssigneeUsername = emailAssignee;
+                RaisePropertyChanged("DueDate");
+            }
+            catch (Exception ex)
+            {
+                Message = ex.Message;
+            }
+        }
+
         public void UpdateTask(Border[] validFields) {
-            if (validFields[0] == Border.Green)
-                UpdateTaskTitle(email, columnOrdinal, taskId, title);
-            if (validFields[1] == Border.Green)
-                UpdateTaskDescription(email, columnOrdinal, taskId, description);
-            if (validFields[2] == Border.Green)
-                UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
-            if (validFields[3] == Border.Green)
-                UpdateTaskAssignee();
+            if (validFields[(int)Update.Title] == Border.Green)
+                UpdateTaskTitle(email, columnOrdinal, ID, Title);
+            if (validFields[(int)Update.Description] == Border.Green)
+                UpdateTaskDescription(email, columnOrdinal, ID, Description);
+            if (validFields[(int)Update.DueDate] == Border.Green)
+                UpdateTaskDueDate(email, columnOrdinal, ID, DueDate);
+            if (validFields[(int)Update.TaskAssignee] == Border.Green)
+                AssignTask(email, columnOrdinal, ID, TaskAssigneeUsername);
         }
         
-        private enum UpdateFunction { Title=0, Description=1, DueDate=2, TaskAssignee=3 }
+        private enum Update { Title=0, Description=1, DueDate=2, TaskAssignee=3 }
         
         public enum Border { Blue=0, Green=1, Red=2 }
 
@@ -166,7 +198,7 @@ namespace Presentation.ViewModel
 
         internal void ChangeTitle(TextBox tTitle)
         {
-            if (tTitle.Text.Length > 50 | tTitle.Text.Length < 1)
+            if (tTitle.Text.Length > MAXIMUM_TITLE_LENGTH | tTitle.Text.Length == MINIMUM_TITLE_LENGTH)
                 tTitle.BorderBrush = INVALID_BORDER_COLOR;
             else if (!tTitle.Text.Equals(Title))
                 tTitle.BorderBrush = VALID_BORDER_COLOR;
@@ -176,7 +208,7 @@ namespace Presentation.ViewModel
 
         internal void ChangeDescription(TextBox tDescription)
         {
-            if (tDescription.Text.Length > 300)
+            if (tDescription.Text.Length > MAXIMUM_DESCRIPTION_LENGTH)
                 tDescription.BorderBrush = INVALID_BORDER_COLOR;
             else if (!tDescription.Text.Equals(Description))
                 tDescription.BorderBrush = VALID_BORDER_COLOR;
@@ -186,17 +218,19 @@ namespace Presentation.ViewModel
 
         internal void ChangeDueDate(TextBox tDueDate)
         {
-            //if (tDueDate.Text.) //DateTime.Now something something
-            //    tDescription.BorderBrush = INVALID_BACKGROUND_COLOR;
-            //else if (!tDueDate.Text.Equals(DueDate))
-            //    tDescription.BorderBrush = EDITED_BACKGROUND_COLOR;
-            //else
-            //    tDescription.BorderBrush = VALID_BACKGROUND_COLOR;
+            if (!tDueDate.Equals(DueDate))
+                tDueDate.BorderBrush = VALID_BORDER_COLOR;
+            else
+                tDueDate.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
+    
 
         internal void ChangeTaskAssignee(TextBox tTaskAssignee)
         {
-            throw new NotImplementedException();
+            if (!tTaskAssignee.Equals(TaskAssigneeUsername))
+                tTaskAssignee.BorderBrush = VALID_BORDER_COLOR;
+            else
+                tTaskAssignee.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
     }
 }

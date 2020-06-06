@@ -24,13 +24,15 @@ namespace Presentation
     public partial class MainWindow : Window
     {
         TaskWindow window;
+        BackendController Controller;
         
         //Mock MainWindow for testing only
         public MainWindow()
         {
             InitializeComponent();
-            UserModel user = new UserModel("username", "password", "nickname");
-            window = new TaskWindow(new TaskModel(new BackendController(new Service()), 1, "title", "description",
+            this.Controller = new BackendController();
+            UserModel user = new UserModel(Controller, "username", "nickname");
+            window = new TaskWindow(new TaskModel(new BackendController(), 1, "title", "description",
             DateTime.Now, DateTime.UtcNow, DateTime.Now, "email"), true);
 
 

@@ -34,9 +34,8 @@ namespace Presentation.View
         {
             TaskViewModel.Border[] validFields = ViewModel.ConfirmChangesValidity(tTitle.BorderBrush, tDescription.BorderBrush,
                                                                                   tDueDate.BorderBrush, tTaskAssignee.BorderBrush);
-            if (!validFields.Contains(TaskViewModel.Border.Red)) {
+            if (!validFields.Contains(TaskViewModel.Border.Red))
                 ViewModel.UpdateTask(validFields);
-            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

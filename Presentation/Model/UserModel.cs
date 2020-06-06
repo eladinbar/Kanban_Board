@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace Presentation.Model
 {
-    public class UserModel
+    public class UserModel : NotifiableModelObject
     {
         public string Username { get; private set; }
-        public string Password { get; private set; }
         public string Nickname { get; private set; }
         
-        public UserModel(string username, string password, string nickname)
+        public UserModel(BackendController controller, string username, string nickname) : base(controller)
         {
             Username = username;
-            Password = password;
             Nickname = nickname;
         }
     }
