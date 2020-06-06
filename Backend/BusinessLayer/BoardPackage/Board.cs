@@ -47,6 +47,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             UserEmail = email;
             TaskCounter = taskCounter;
             Columns = columns;
+            Members = members;
             DalCopyBoard = dalBoard;
             log.Info("load - Board " + email + " was loaded from memory");
         }
