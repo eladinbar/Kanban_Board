@@ -29,7 +29,7 @@ namespace Presentation
         internal void Register(string email, string password, string nickname, string hostEmail)
         {
             Response r;
-            if (hostEmail == null)
+            if (hostEmail.Equals(String.Empty))
                 r = Service.Register(email, password, nickname);
             else
                 r = Service.Register(email, password, nickname, hostEmail);

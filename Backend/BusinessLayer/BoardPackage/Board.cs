@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public List<Column> Columns { get; }
         public string UserEmail { get; }
         public int TaskCounter { get; set; }
-        public Dictionary<string,string> Members { get; set; }
+        public Dictionary<string,string> Members { get; private set; }
         public DalBoard DalCopyBoard { get; private set; }
 
 
@@ -31,6 +31,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             UserEmail = email;
             TaskCounter = 0;
             Columns = new List<Column>();
+            Members = new Dictionary<string, string>();
             log.Info("New board created");
         }
 

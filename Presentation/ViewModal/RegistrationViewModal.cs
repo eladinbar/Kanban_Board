@@ -101,7 +101,7 @@ namespace Presentation.ViewModal
                 }
                 else if (Password.Equals(PasswordConfirm) && HostEmail.Equals(String.Empty))
                 {
-                    Controller.Register(Email, Password, Nickname, null);
+                    Controller.Register(Email, Password, Nickname, "");
                     return true;
                 }
                 else
