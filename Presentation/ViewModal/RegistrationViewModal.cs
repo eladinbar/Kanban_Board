@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Presentation.ViewModal
 {
     public class RegistrationViewModal : NotifiableObject
     {
-        private BackendController controller;
+        public BackendController Controller { get; private set; }
 
         private string _email;
         public string Email
@@ -17,7 +18,8 @@ namespace Presentation.ViewModal
             set
             {
                 _email = value;
-                RaisePropertyChanging("Email");
+                Console.WriteLine(_email);
+                RaisePropertyChanged("Email");
             }
 
         }
@@ -29,18 +31,20 @@ namespace Presentation.ViewModal
             set
             {
                 _password = value;
-                RaisePropertyChanging("Password");
+                Console.WriteLine(_password);
+                RaisePropertyChanged("Password");
             }
         }
 
         private string _passwordConfirm;
-        private string PasswordConfirm
+        public string PasswordConfirm
         {
             get => _passwordConfirm;
             set
             {
                 _passwordConfirm = value;
-                RaisePropertyChanging("PasswordConfirm");
+                Console.WriteLine(_passwordConfirm);
+                RaisePropertyChanged("PasswordConfirm");
             }
         }
 
@@ -51,24 +55,66 @@ namespace Presentation.ViewModal
             set
             {
                 _nickname = value;
-                RaisePropertyChanging("Nickname");
+                Console.WriteLine(_nickname);
+                RaisePropertyChanged("Nickname");
             }
         }
 
-        private string _hostEmail;
+        private const string HostEmailDefualt = "";
+        private string _hostEmail = HostEmailDefualt;
         public string HostEmail
         {
             get => _hostEmail;
             set
             {
                 _hostEmail = value;
-                RaisePropertyChanging("HostEmail");
+                Console.WriteLine(_hostEmail);
+                RaisePropertyChanged("HostEmail");
+                
+            }
+        }
+
+        private string _responseMassage = "";
+        public string ResponseMassage
+        {
+            get => _responseMassage;
+            set
+            {
+                _responseMassage = value;
+                RaisePropertyChanged("ResponseMassage");
             }
         }
 
         public RegistrationViewModal(BackendController controller)
         {
-            this.controller = controller;
+            this.Controller = controller;
+        }
+
+        public bool Register()
+        {
+            try
+            {
+                if (Password.Equals(PasswordConfirm) && !HostEmail.Equals(String.Empty))
+                {
+                    Controller.Register(Email, Password, Nickname, HostEmail);
+                    return true;
+                }
+                else if (Password.Equals(PasswordConfirm) && HostEmail.Equals(String.Empty))
+                {
+                    Controller.Register(Email, Password, Nickname, null);
+                    return true;
+                }
+                else
+                {
+                    ResponseMassage = "Password Entrys does not match";
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                ResponseMassage = ex.Message;
+                return false;
+            }
         }
     }
 }

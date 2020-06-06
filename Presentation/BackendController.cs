@@ -13,7 +13,7 @@ namespace Presentation
         private IService Service { get; set; }
         public BackendController()
         {
-            //Service = new Service();
+            Service = new Service();
         }
 
         internal UserModal Login(string email, string password)
@@ -24,6 +24,20 @@ namespace Presentation
                 throw new Exception(user.ErrorMessage);
             }
             return new UserModal(this, email, user.Value.Nickname);
+        }
+
+        internal void Register(string email, string password, string nickname, string hostEmail)
+        {
+            Response r;
+            if (hostEmail == null)
+                r = Service.Register(email, password, nickname);
+            else
+                r = Service.Register(email, password, nickname, hostEmail);
+
+            if (r.ErrorOccured)
+            {
+                throw new Exception(r.ErrorMessage);
+            }
         }
     }
 }

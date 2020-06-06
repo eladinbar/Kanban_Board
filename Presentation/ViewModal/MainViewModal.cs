@@ -33,7 +33,7 @@ namespace Presentation.ViewModal
             }
         }
 
-        private string _message;
+        private string _message = "";
         public string Message
         {
             get => _message;
@@ -61,7 +61,16 @@ namespace Presentation.ViewModal
         public MainViewModal()
         {
             Controller = new BackendController();
-            Email = "Email";
+            Email = "";
+            Password = "";
+            Message = "";
+        }
+
+
+        public MainViewModal(BackendController controller)
+        {
+            Controller = controller;
+            Email = "";
             Password = "";
             Message = "";
         }

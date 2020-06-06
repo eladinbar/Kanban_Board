@@ -31,22 +31,23 @@ namespace Presentation.View
 
         private void ConfirmRegistration_Click(object sender, RoutedEventArgs e)
         {
-
+            if (viewModal.Register())
+            {
+                MainWindow main = new MainWindow(viewModal.Controller);
+                main.Show();
+                this.Close();
+            }
         }
 
         private void JoinBoardCheck_Checked(object sender, RoutedEventArgs e)
         {
-            HostEmailBox.Visibility = Visibility.Visible;
+            HostEmailPanal.Visibility = Visibility.Visible;
         }
 
         private void JoinBoardCheck_Unchecked(object sender, RoutedEventArgs e)
         {
-            HostEmailBox.Visibility = Visibility.Hidden;
-        }
-
-        private void HostEmailBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-
+            HostEmailPanal.Visibility = Visibility.Hidden;
+            HostEmailBox.Clear();
         }
     }
 }

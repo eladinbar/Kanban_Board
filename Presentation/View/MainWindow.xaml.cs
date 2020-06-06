@@ -31,6 +31,12 @@ namespace Presentation.View
             viewModal = new MainViewModal();
             DataContext = viewModal;
         }
+        public MainWindow(BackendController controller)
+        {
+            InitializeComponent();
+            viewModal = new MainViewModal(controller);
+            DataContext = viewModal;
+        }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
