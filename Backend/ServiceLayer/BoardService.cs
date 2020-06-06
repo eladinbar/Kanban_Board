@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 List<string> tempColumnNames = SecurityController.BoardController.GetBoard(email).getColumnNames();
-                Board tempStructBoard = new Board(tempColumnNames);
+                Board tempStructBoard = new Board(tempColumnNames, email);
                 log.Debug("Board reached the Service Layer successfully");
                 return new Response<Board>(tempStructBoard);
             }
@@ -93,8 +93,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (!SecurityController.UserValidation(email)) return new Response<Task>("Invalid current user.");
             try
             {
-                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate);
-                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime,dueDate, title, tempTask.Description);
+                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate, email);
+                Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime,dueDate, title, tempTask.Description, tempTask.EmailAssignee);
                 log.Info("Task added successfully.");
                 return new Response<Task>(tempStructTask);
             }
@@ -120,7 +120,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate);
+                SecurityController.BoardController.UpdateTaskDueDate(email, columnOrdinal, taskId, newDueDate, SecurityController.CurrentUser.Email);
                 log.Info("Task due date was updated successfully.");
                 return new Response();
             }
@@ -146,7 +146,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                SecurityController.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle);
+                SecurityController.BoardController.UpdateTaskTitle(email, columnOrdinal, taskId, newTitle, SecurityController.CurrentUser.Email);
                 log.Info("Task title updated successfully.");
                 return new Response();
             }
@@ -172,7 +172,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                SecurityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription);
+                SecurityController.BoardController.UpdateTaskDescription(email, columnOrdinal, taskId, newDescription, SecurityController.CurrentUser.Email);
                 log.Info("Task description has been updated successfully.");
                 return new Response();
             }
@@ -198,7 +198,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user.");
             try
             {
-                SecurityController.BoardController.AdvanceTask(email, columnOrdinal, taskId);
+                SecurityController.BoardController.AdvanceTask(email, columnOrdinal, taskId, SecurityController.CurrentUser.Email);
                 log.Info("Task has been advanced to column #" + (columnOrdinal+1));
                 return new Response();            }
             catch (Exception ex)
@@ -231,7 +231,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 //Converting BL.Tasks of 'tempColumnTaskCollection' into struct Users and adding them to 'structTaskList'
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
-                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description));
+                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description, tempTask.EmailAssignee));
 
                 //Declaring struct Column with ReadOnlyCollection of struct Tasks
                 Column tempStructColumn = new Column(structTaskList, tempColumn.Name, tempColumn.Limit);
@@ -266,7 +266,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 List<Task> structTaskList = new List<Task>();
 
                 foreach (BusinessLayer.BoardPackage.Task tempTask in tempColumnTaskCollection)
-                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description));
+                    structTaskList.Add(new Task(tempTask.Id, tempTask.CreationTime, tempTask.DueDate, tempTask.Title, tempTask.Description, tempTask.EmailAssignee));
 
                 Column tempStructColumn = new Column(structTaskList, tempColumn.Name, tempColumn.Limit);
 
@@ -290,6 +290,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response RemoveColumn(string email, int columnOrdinal)
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");
+            if (!SecurityController.ValidateHost()) return new Response<Column>("Current user is not the host of the Board");
             try {
                 SecurityController.BoardController.RemoveColumn(email, columnOrdinal);
 
@@ -313,6 +314,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
         {
             if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user");
+            if (!SecurityController.ValidateHost()) return new Response<Column>("Current user is not the host of the Board");
             try
             {
                 BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.AddColumn(email, columnOrdinal, Name);
@@ -339,6 +341,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> MoveColumnRight(string email, int columnOrdinal)
         {
             if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user");
+            if (!SecurityController.ValidateHost()) return new Response<Column>("Current user is not the host of the Board");
             try
             {
                 BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.MoveColumnRight(email, columnOrdinal);
@@ -365,6 +368,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
         {
             if (!SecurityController.UserValidation(email)) return new Response<Column>("Invalid current user");
+            if (!SecurityController.ValidateHost()) return new Response<Column>("Current user is not the host of the Board");
             try
             {
                 BusinessLayer.BoardPackage.Column tempColumn = SecurityController.BoardController.MoveColumnLeft(email, columnOrdinal);
@@ -378,6 +382,75 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 log.Error(ex.Message, ex);
                 return new Response<Column>(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAsignee)
+        {
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");
+            try
+            {
+                SecurityController.BoardController.AssignTask(email, columnOrdinal, taskId, emailAsignee, SecurityController.CurrentUser.Email);
+                log.Info("Assignee changed to " + emailAsignee);
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Delete a task
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        		
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");
+            try
+            {
+                SecurityController.BoardController.DeleteTask(email, columnOrdinal, taskId, SecurityController.CurrentUser.Email);
+                log.Info($"Task #{taskId} was deleted succesfully");
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Change the name of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="newName">The new name.</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response ChangeColumnName(string email, int columnOrdinal, string newName)
+        {
+            if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");
+            if (!SecurityController.ValidateHost()) return new Response<Column>("Current user is not the host of the Board");
+            try
+            {
+                SecurityController.BoardController.ChangeColumnName(email, columnOrdinal, newName);
+                log.Info("ColumnName changed to " + newName);
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
             }
         }
     }
