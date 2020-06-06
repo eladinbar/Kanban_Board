@@ -55,5 +55,10 @@ namespace Presentation.View
             registration.Show();
             this.Close();
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            viewModal.Password = PasswordBox.Password;
+        }
     }
 }

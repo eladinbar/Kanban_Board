@@ -33,14 +33,14 @@ namespace Presentation.ViewModel
             }
         }
 
-        private string _message = "";
+        private string _message = "this is a message";
         public string Message
         {
             get => _message;
             set
             {
                 _message = value;
-                RaisePropertyChanged("Massage");
+                RaisePropertyChanged("Message");
             }
         }
 
@@ -49,6 +49,11 @@ namespace Presentation.ViewModel
             Message = "";
             try
             {
+                if(Email.Equals(String.Empty) || Password.Equals(String.Empty))
+                {
+                    Message = "Please enter Email and Password";
+                    return null;
+                }
                 return Controller.Login(Email, Password);
             }
             catch(Exception ex)

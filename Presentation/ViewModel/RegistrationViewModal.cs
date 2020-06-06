@@ -93,7 +93,12 @@ namespace Presentation.ViewModel
         {
             try
             {
-                if (Password.Equals(PasswordConfirm) && !HostEmail.Equals(String.Empty))
+                if (Email.Equals(String.Empty) || Password.Equals(String.Empty) || PasswordConfirm.Equals(String.Empty) || Nickname.Equals(String.Empty))
+                {
+                    ResponseMessage = "One or more of the fields is empty. Please re-evaluate entered info.";
+                    return false;
+                }
+                else if (Password.Equals(PasswordConfirm) && !HostEmail.Equals(String.Empty))
                 {
                     Controller.Register(Email, Password, Nickname, HostEmail);
                     return true;
