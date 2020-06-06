@@ -9,9 +9,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private const int INITIALIZE_MAXIMUM_NUMBER_OF_TASKS = Int32.MaxValue; //unlimited
+        private const int INITIALIZE_MAXIMUM_NUMBER_OF_TASKS = 100; //unlimited
 
-        public string Name { get; }
+        public string Name { get; private set; }
         public int Limit { get; private set; }
         public List<Task> Tasks { get; }
         public DalColumn DalCopyColumn { get; private set; }
@@ -164,6 +164,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         internal void Delete() {
             DalCopyColumn.Delete();
+        }
+
+        /// <summary>
+        /// Update the Name of the column
+        /// </summary>
+        /// <param name="newName"> The updated name</param>
+        internal void ChangeName(string newName)
+        {
+            Name = newName;
+            DalCopyColumn.Name = newName;
         }
     }
 }

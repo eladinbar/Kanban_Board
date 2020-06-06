@@ -1,4 +1,5 @@
-﻿using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
+﻿using IntroSE.Kanban.Backend.BusinessLayer.BoardPackage;
+using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
 using System;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
@@ -12,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public UserPackage.UserController UserController { get; }
         public BoardPackage.BoardController BoardController { get; }
-        private UserPackage.User CurrentUser;
+        public UserPackage.User CurrentUser { get; internal set; }
 
         /// <summary>
         /// Public constructor. Initializes UserController and BoardController classes.
@@ -68,7 +69,28 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public bool UserValidation(string email) 
         {
             if (CurrentUser == null) return false;
-            return CurrentUser.Email.Equals(email);
+            return CurrentUser.AssociatedBoard.Equals(email);
+        }
+
+        /// <summary>
+        /// Validates if the current user is the Host of the Board.
+        /// </summary>
+        /// <returns>Returns true if the user validation succeeded, otherwise returns false.</returns>
+        public bool ValidateHost()
+        {
+            if (CurrentUser == null) return false;
+            return CurrentUser.Email.Equals(CurrentUser.AssociatedBoard);
+        }
+
+        /// <summary>
+        /// Chacks if exist a board associated with email.
+        /// </summary>
+        /// <param name="email">email associated with the baord.</param>
+        /// <returns>Returns true if the board exists, otherwise returns false.</returns>
+        public void BoardExistence(string boardId)
+        {
+            if (!BoardController.BoardExistence(boardId))
+                throw new ArgumentException($"{boardId} does not exist in the system, check validity");
         }
     }
 }

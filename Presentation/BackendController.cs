@@ -4,15 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using Presentation.Model;
 
 namespace Presentation
 {
     public class BackendController
     {
         private IService Service { get; set; }
-        public BackendController(IService service)
+        public BackendController()
         {
-            Service = service;
+            Service = new Service();
+        }
+
+        internal UserModel Login(string email, string password)
+        {
+            Response<User> user = Service.Login(email, password);
+            if (user.ErrorOccured)
+            {
+                throw new Exception(user.ErrorMessage);
+            }
+            return new UserModel(this, email, user.Value.Nickname);
+        }
+
+        internal void Register(string email, string password, string nickname, string hostEmail)
+        {
+            Response r;
+            if (hostEmail.Equals(String.Empty))
+                r = Service.Register(email, password, nickname);
+            else
+                r = Service.Register(email, password, nickname, hostEmail);
+
+            if (r.ErrorOccured)
+            {
+                throw new Exception(r.ErrorMessage);
+            }
         }
 
         /// <summary>

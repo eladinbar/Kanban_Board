@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend
         {
             if (!setted)
             {
-                SetUp(SetupRoliingFileAppender(), SetUpSQLiteAppender());
+                SetUp(SetupRoliingFileAppender());
                 setted = true;
             }
             return log4net.LogManager.GetLogger(filename);

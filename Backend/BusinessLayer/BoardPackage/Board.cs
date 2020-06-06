@@ -18,6 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public List<Column> Columns { get; }
         public string UserEmail { get; }
         public int TaskCounter { get; set; }
+        public Dictionary<string,string> Members { get; private set; }
         public DalBoard DalCopyBoard { get; private set; }
 
 
@@ -30,6 +31,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             UserEmail = email;
             TaskCounter = 0;
             Columns = new List<Column>();
+            Members = new Dictionary<string, string>();
             log.Info("New board created");
         }
 
@@ -40,12 +42,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskCounter">The amount of tasks that the board contains.</param>
         /// <param name="columns">The list of columns the board contains.</param>
         /// <param name="dalBoard">The DAL appearance of the current board.</param>
-        internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard) 
+        internal Board(string email, int taskCounter, List<Column> columns, Dictionary<string,string> members ,DalBoard dalBoard) 
         {
             UserEmail = email;
             TaskCounter = taskCounter;
             Columns = columns;
+            Members = members;
             DalCopyBoard = dalBoard;
+            Members = members;
             log.Info("load - Board " + email + " was loaded from memory");
         }
 
@@ -274,6 +278,44 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
             log.Debug("Column '" + toMove.Name + "' has been moved to its left (" + (columnOrdinal - 1) + ") successfully.");
             return toMove;
+        }
+
+        /// <summary>
+        /// Change the name of a specific column
+        /// </summary>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="newName">The new name.</param>
+        public void ChangeColumnName(int columnOrdinal, string newName)
+        {
+            if(Columns.Exists(x => x.Name.Equals(newName)))
+            {
+                throw new ArgumentException("A column with this name already exists");
+            }
+            if (columnOrdinal < 0 | columnOrdinal > this.Columns.Count)
+            {
+                log.Warn("New column ordinal was out of range.");
+                throw new InvalidOperationException("New column ordinal is invalid.");
+            }
+            if (newName.Length > 15 | newName.Length == MINIMUM_COLUMN_NAME_LENGTH)
+            {
+                log.Warn("New column name was invalid (null or longer than 15 characters).");
+                throw new InvalidOperationException("New column name is invalid.");
+            }
+
+            Columns[columnOrdinal].ChangeName(newName);
+
+        }
+
+        /// <summary>
+        /// Adds a member to the board.
+        /// </summary>
+        /// <param name="email">email of the new member</param>
+        /// <param name="nickname">nickname of the new membar</param>
+        public void AddMember(string email, string nickname)
+        {
+            if (Members.ContainsKey(email))
+                throw new ArgumentException("email all ready a member in the board");
+            Members.Add(email, nickname);
         }
 
         /// <summary>

@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         private static readonly log4net.ILog log = LogHelper.getLogger();
         protected readonly string _connectionString;
         protected readonly string _tableName;
+        protected const string _databaseName = "KanbanDB.db";
 
         /// <summary>
         /// A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
@@ -20,7 +21,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <param name="tableName">The table name of the object this controller represents.</param>
         public DalController(string tableName)
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _databaseName));
             _connectionString = $"Data Source={path}; Version=3;";
             _tableName = tableName;
             CreateTable();
@@ -426,11 +427,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// </summary>
         protected void CreateDBFile()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _databaseName));
             FileInfo DBFile = new FileInfo(path);
             if (!DBFile.Exists)
             {
-                SQLiteConnection.CreateFile("KanbanDB.db");
+                SQLiteConnection.CreateFile(_databaseName);
             }
         }
 
@@ -448,7 +449,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
             switch (keyArgs.Length)
             {
                 case 1:
-                    return command + $" WHERE email=\"{keyArgs[0]}\" ORDER BY email, Ordinal ASC";
+                    if (_tableName.Equals(UserDalController.UserTableName))
+                    {
+                        //gets the member of a board
+                        return command + $" WHERE {DalUser.UserAssociatedBoardColumnName}=\"{keyArgs[0]}\" ";
+                    }
+                    else
+                    {
+                        return command + $" WHERE email=\"{keyArgs[0]}\" ORDER BY email, Ordinal ASC";
+                    }
                 case 2:
                     return command + $" WHERE email=\"{keyArgs[0]}\" AND ColumnName=\"{keyArgs[1]}\"";
                 case 3:
