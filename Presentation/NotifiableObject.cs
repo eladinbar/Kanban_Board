@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Presentation
 {
-    class NotifiableObject : INotifyPropertyChanged, INotifyPropertyChanging
+    public class NotifiableObject : INotifyPropertyChanged, INotifyPropertyChanging
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event PropertyChangingEventHandler PropertyChanging;
