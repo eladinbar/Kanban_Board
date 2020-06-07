@@ -3,16 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Presentation.View"
         mc:Ignorable="d"
         Title="BoardWindow" Height="450" Width="800">
     <Grid>
-        <TextBox Name="SearchBox" Text="Search for a task..." FontSize="10" FontStyle="Italic" BorderThickness="1" Height="20" Width="150" VerticalAlignment="Top" Margin="-400,5,0,0" 
+        
+        
+        <TextBox Name="SearchBox" Text="Search for a task..." FontSize="10" FontStyle="Italic" BorderThickness="1" Height="20" Width="170" VerticalAlignment="Top" Margin="-450,5,0,0" 
                  Foreground="Gray" Background="{Binding}" TextChanged="SearchBox_TextChanged"/>
         <!--(Search: binding->grey->whiteOnClick, also for a text)-->
-        <Label Name="MainTitleLabel" Content="Kanban Board" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Label Name="CurrentBoardEmailLabel" Content="(BindingWithCurrentBoardEmail)" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="320,15,313.6,0" Opacity="0.75" FontSize="10" Width="160"/>
-        <Label Name="CurrentUserEmailLabel" Content="User: (CurrentUserEmailGoesHere)" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        
+        
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Height="50" Width="120" Margin="337,-6,336.6,0">
+            <Label Name="MainTitleLabel" Content="Kanban Board" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" />
+            <Label x:Name="CurrentBoardEmailLabel" Content="{Binding Board.CreatorEmail}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Opacity="0.75" FontSize="10" Width="160" Height="30" Margin="0,-20"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="30" >
+            <Label Name="CurrentUserEmailLabel1" Content="Current User:" FontWeight="Bold" />
+            <Label Name="CurrentUserEmailLabel2" Content="{Binding CurrentUser.Email}" HorizontalAlignment="Left"/>
+        </StackPanel>
+
+        
         <Button Name="AddNewTaskButton" Content="+" FontWeight="ExtraBold" FontSize="30" FontFamily="David" Height="35" Width="35" Margin="0,0,749.6,0" VerticalAlignment="Top" BorderThickness="2" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black">
             <Button.BitmapEffect>
                 <DropShadowBitmapEffect />
@@ -32,30 +43,46 @@
                 </ContextMenu.Resources>-->
             <!--</ContextMenu>-->
         </Button>
-        <Menu Height="30" Width="30" Margin="744,10,9.6,370" Background="#FF7EEA08" Foreground="Black">
+        
+        
+        <Menu Height="30" Width="30" Margin="745,-5,9.6,370" Background="#FF7EEA08" Foreground="Black">            
             <Menu.ToolTip>
-                <ToolTip>(BindingWithCurrentNick)</ToolTip>
+                <ToolTip>
+                    <TextBlock Text="{Binding CurrentUser.Nickname}" />
+                </ToolTip>
             </Menu.ToolTip>
             
             <MenuItem x:Name="UserMenu" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="UltraBold" 
                   Background="{x:Null}" Height="30" Width="30" FontSize="30" FontFamily="David" >
                 <MenuItem.Header>
-                    <TextBlock Text="C" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
+                    <TextBlock Text="{Binding CurrentUser.Nickname[0]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
                 </MenuItem.Header>
-                <MenuItem Header="_Exmp1" IsCheckable="True" FontSize="12" FontWeight="Regular"/>
+                <MenuItem Header="Change password" IsCheckable="True" FontSize="12" FontWeight="Regular"/>
                 <Separator />
-                <MenuItem Header="_Exmp2" IsCheckable="True" FontSize="12" FontWeight="Regular"/>
+                <MenuItem Header="Logout" IsCheckable="True" FontSize="12" FontWeight="Regular" Click="LogoutVerificationMessageBox"/>
 
             </MenuItem>
         </Menu>
-        <Grid HorizontalAlignment="Left" Height="343" Margin="40,39,0,0" VerticalAlignment="Top" Width="721">
-            <!--<StackPanel Orientation="Horizontal">-->
-            
-            
-            <ListBox Name="BoardWindowColumns" ItemsSource="{Binding Path=BoardModel.Columns}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,0,0,0.2" Width="720" />
-            
-            
-            <!--</StackPanel>-->
+        
+        
+        <Grid HorizontalAlignment="Left" Height="343" Margin="40,50,0,0" VerticalAlignment="Top" Width="721">
+            <StackPanel Orientation="Horizontal">
+
+                <ListBox ItemsSource="{Binding Path=DataContext.Board.Columns}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,-9,0,9.4" Width="720" >
+                    <!--<SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource Mode=FindAncestor, AncestorType=x:Type Window}}}">-->
+                    <!--"BoardWindowColumns"-->
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Black" BorderThickness="1">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBox Text="{Binding Path=Name, Mode=TwoWay}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

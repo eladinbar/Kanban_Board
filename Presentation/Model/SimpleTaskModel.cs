@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Model
 {
-    class SimpleTaskModel : NotifiableModelObject
+    public class SimpleTaskModel : NotifiableModelObject
     {
 
         public string Title;

@@ -26,25 +26,75 @@ namespace Presentation.View
     {
         private BoardViewModel viewModel;
 
-        private string CreatorEmail;
+        public string CreatorEmail { get; private set; }
 
 
-        //public BoardWindow() //need to receive from login window those parameters
-        //{
-        //    InitializeComponent();
-        //    this.viewModel = new BoardViewModel(controller, currentUser, creatorEmail);
-        //    this.DataContext = this.viewModel;
-        //    this.CreatorEmail = creatorEmail;
-        //    //this._columns
-        //}
+        private static BackendController controller = new BackendController();
+        private static string tempUser1Email = "maze1@mapo.com";
+        private static string tempPass = "123Abc";
+        private static string tempUser1Nick = "maze1Nick";
+        private static UserModel tempUserModel1 = new UserModel(controller, tempUser1Email, tempUser1Nick);
+
+        private static IService service = controller.Service;
+        private void CreateData() {
+            service.Register(tempUser1Email, tempPass, tempUser1Nick);
+            service.Login(tempUser1Email, tempPass);
+            DateTime dTime = new DateTime(2035, 03, 26);
+            Console.WriteLine("this is not the droids: {0}", service.AddTask(tempUser1Email, "title1", "desc1", dTime).ErrorOccured);
+            service.AddTask(tempUser1Email, "title2", "desc2", dTime);
+            service.AddTask(tempUser1Email, "title3", "desc3", dTime);
+            service.AddTask(tempUser1Email, "title4", "desc4", dTime);
+            service.AddTask(tempUser1Email, "title5", "desc5", dTime);
+            service.AddTask(tempUser1Email, "title6", "desc6", dTime);
+
+            service.AdvanceTask(tempUser1Email, 0, 29);
+            service.AdvanceTask(tempUser1Email, 1, 29);
+
+            service.AdvanceTask(tempUser1Email, 0, 30);
+            service.AdvanceTask(tempUser1Email, 1, 30);
+
+            service.AdvanceTask(tempUser1Email, 0, 31);
+            service.AdvanceTask(tempUser1Email, 0, 32);
+        }
+
+
+
+
+        public BoardWindow() 
+        {
+            this.CreateData();
+            InitializeComponent();
+            this.viewModel = new BoardViewModel(controller, tempUserModel1, tempUser1Email);
+            this.DataContext = this.viewModel;
+            this.CreatorEmail = tempUser1Email;
+        }
 
         public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) //need to receive from login window those parameters
         {
             InitializeComponent();
             this.viewModel = new BoardViewModel(controller, currentUser, creatorEmail);
             this.DataContext = this.viewModel;
-            this.CreatorEmail = creatorEmail;
+            this.CreatorEmail = creatorEmail;            
         }
+
+
+        public void LogoutVerificationMessageBox(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to leave? :( ", "Logout", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    this.viewModel.Logout();
+                    //LoginWindow invoke()
+                    this.Close();
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+        }
+
+
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

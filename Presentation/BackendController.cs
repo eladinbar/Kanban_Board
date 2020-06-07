@@ -36,6 +36,16 @@ namespace Presentation
             return column.Value;
         }
 
+        internal string Logout(string emailToLogout)
+        {
+            Response rsp = Service.Logout(emailToLogout);
+            if (rsp.ErrorOccured)
+            {
+                return rsp.ErrorMessage;
+            }
+            return "User was logged out successfully.";
+        }
+
         internal Board GetBoard(string creatorEmail)
         {
             Response<Board> board = Service.GetBoard(creatorEmail);
@@ -45,5 +55,7 @@ namespace Presentation
             }
             return board.Value;
         }
+
+
     }
 }

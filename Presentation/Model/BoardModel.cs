@@ -8,7 +8,7 @@ using System.Collections.Specialized;
 
 namespace Presentation.Model
 {
-    class BoardModel : NotifiableModelObject
+    public class BoardModel : NotifiableModelObject
     {
 
         public string CreatorEmail { get; set; }
@@ -18,7 +18,7 @@ namespace Presentation.Model
         {
             this.CreatorEmail = creatorEmail;
             this.Columns = this.CreateColumns(creatorEmail);
-            this.Columns.CollectionChanged += HandleChange; //do we realy need HandleChange?????????????????
+            //this.Columns.CollectionChanged += HandleChange; //do we realy need HandleChange?????????????????
         }
 
         private ObservableCollection<ColumnModel> CreateColumns(string creatorEmail)  //receives SL.Columns and its list of Tasks and transform them into PL.Columns - 
@@ -42,18 +42,18 @@ namespace Presentation.Model
             return tempColumns;
         }
 
-        private void HandleChange(object sender, NotifyCollectionChangedEventArgs e) //?????? dont know if needed??????????????
-        {
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
+        //private void HandleChange(object sender, NotifyCollectionChangedEventArgs e) //?????? dont know if needed??????????????
+        //{
+        //    if (e.Action == NotifyCollectionChangedAction.Remove)
+        //    {
                 
-                foreach (ColumnModel tempColumn in e.OldItems) //e.OldItems - the list of Objects that have been changed??????????
-                {
-                    //Controller.RemoveMessage(user.Email, y.Id);
-                }
+        //        foreach (ColumnModel tempColumn in e.OldItems) //e.OldItems - the list of Objects that have been changed??????????
+        //        {
+        //            //Controller.RemoveMessage(user.Email, y.Id);
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
 
     }

@@ -8,32 +8,13 @@ namespace Presentation.Model
 {
     public class UserModel: NotifiableModelObject
     {
-        private string _email;
-        public string Email
-        {
-            get => _email;
-            set
-            {
-                _email = value;
-                RaisePropertyChanged("Email");
-            }
-        }
-
-        private string _nickname;
-        public string Nickname
-        {
-            get => _nickname;
-            set
-            {
-                _nickname = value;
-                RaisePropertyChanged("Nickname");
-            }
-        }
-
+        public string Email { get; private set; }
+        public string Nickname { get; private set; }
+ 
         public UserModel(BackendController controller, string email, string nickname): base(controller)
         {
-            _email = email;
-            _nickname = nickname;
+            this.Email = email;
+            this.Nickname = nickname;
         }
     }
 }

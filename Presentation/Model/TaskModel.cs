@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Model
 {
-    class TaskModel
+    public class TaskModel
     {
         public int Id;
         public string Title;
