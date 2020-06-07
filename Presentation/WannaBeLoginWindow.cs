@@ -23,13 +23,14 @@ namespace Presentation
             IService service = controller.Service;
             service.Register(tempUser1Email, tempPass, tempUser1Nick);
             service.Login(tempUser1Email, tempPass);
-            Console.WriteLine("this is not the droids: {0}", service.AddTask(tempUser1Email, "title1", "desc1", DateTime.Now).ErrorMessage);
-            service.AddTask(tempUser1Email, "title2", "desc2", DateTime.Now);
-            service.AddTask(tempUser1Email, "title3", "desc3", DateTime.Now);
-            service.AddTask(tempUser1Email, "title4", "desc4", DateTime.Now);
-            service.AddTask(tempUser1Email, "title5", "desc5", DateTime.Now);
-            service.AddTask(tempUser1Email, "title6", "desc6", DateTime.Now);
-            //service.AdvanceTask(tempUser1Email,0,)
+            DateTime dTime = new DateTime(2035, 03, 26);
+            Console.WriteLine("this is not the droids: {0}", service.AddTask(tempUser1Email, "title1", "desc1", dTime).ErrorOccured);
+            service.AddTask(tempUser1Email, "title2", "desc2", dTime);
+            service.AddTask(tempUser1Email, "title3", "desc3", dTime);
+            service.AddTask(tempUser1Email, "title4", "desc4", dTime);
+            service.AddTask(tempUser1Email, "title5", "desc5", dTime);
+            service.AddTask(tempUser1Email, "title6", "desc6", dTime);
+            //service.AdvanceTask(tempUser1Email, 0,);
 
 
             UserModel tempUserModel1 = new UserModel(controller, tempUser1Email, tempUser1Nick);
