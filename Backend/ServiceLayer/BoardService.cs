@@ -441,7 +441,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response ChangeColumnName(string email, int columnOrdinal, string newName)
         {
             if (!SecurityController.UserValidation(email)) return new Response("Invalid current user");
-            if (!SecurityController.ValidateHost()) return new Response<Column>("Current user is not the host of the Board");
+            if (!SecurityController.ValidateHost()) return new Response("Current user is not the host of the Board");
             try
             {
                 SecurityController.BoardController.ChangeColumnName(email, columnOrdinal, newName);

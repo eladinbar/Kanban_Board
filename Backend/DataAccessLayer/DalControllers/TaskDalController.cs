@@ -47,11 +47,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalTask.TaskCreationDateColumnName} INTEGER NOT NULL," +
                     $"{DalTask.TaskLastChangedDateColumnName} INTEGER NOT NULL," +
                     $"PRIMARY KEY({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName},{DalTask.TaskIDColumnName})" +
-                    $"FOREIGN KEY({DalTask.EmailColumnName})" +
-                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName}) ON UPDATE CASCADE" +
-                     $"FOREIGN KEY({DalTask.ContainingTaskColumnNameColumnName})" +
-                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
-                    $");";
+                    $"FOREIGN KEY({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName})" +
+                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
+                    $" ON UPDATE CASCADE);";
+
                 SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
                 tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
                 try

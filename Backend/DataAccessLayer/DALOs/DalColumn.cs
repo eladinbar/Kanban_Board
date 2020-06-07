@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         public const string ColumnLimitColumnName = "TaskLimit";
 
         private string _name;
-        public string Name { get => _name; set { _name = value; _controller.Update(Email, Name, ColumnNameColumnName, value); } }
+        public string Name { get => _name; set {_controller.Update(Email, Name, ColumnNameColumnName, value); _name = value; } }
         private int _ordinal;
         public int Ordinal { get => _ordinal; set { _ordinal = value; _controller.Update(Email, Name, ColumnOrdinalColumnName, value); } }
         private int _limit;
