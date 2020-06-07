@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Presentation.Model
 {
+    /// <summary>
+    /// The model the task window is designed after.
+    /// </summary>
     public class TaskModel : NotifiableModelObject
     {
         public int ID { get; }
@@ -17,6 +20,19 @@ namespace Presentation.Model
         public string AssigneeEmail { get; set; }
         public int ColumnOrdinal { get; set; }
 
+        /// <summary>
+        /// The task model constructor. Initializes all task relevant fields in addition to
+        /// the assignee of this task and the ordinal of the column this task belongs to.
+        /// </summary>
+        /// <param name="Controller">The controller this task uses to communicate with the backend.</param>
+        /// <param name="ID">The task's ID.</param>
+        /// <param name="Title">The task's title.</param>
+        /// <param name="Description">The task's description.</param>
+        /// <param name="CreationTime">The task's creation time.</param>
+        /// <param name="DueDate">The task's due date.</param>
+        /// <param name="LastChangedDate">The task's last changed date.</param>
+        /// <param name="AssigneeEmail">The task assignee's email address.</param>
+        /// <param name="columnOrdinal">The column ordinal this task is associated with.</param>
         public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate, 
         DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal) : base(Controller) {
             this.ID = ID;
@@ -30,7 +46,7 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Update task title
+        /// Update task title.
         /// </summary>
         /// <param name="title">New title for the task</param>
         public void UpdateTaskTitle(string title)
@@ -41,7 +57,7 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Update the description of a task
+        /// Update the description of a task.
         /// </summary>
         /// <param name="description">New description for the task</param>
         public void UpdateTaskDescription(string description)
@@ -67,9 +83,9 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Assigns a task to a user
+        /// Assigns a task to a user.
         /// </summary> 
-        /// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <param name="emailAssignee">The email of the user to assign the task to.</param>
         public void AssignTask(string emailAssignee)
         {
             Controller.AssignTask(AssigneeEmail, ColumnOrdinal, ID, emailAssignee);

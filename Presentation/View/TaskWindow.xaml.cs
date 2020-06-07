@@ -23,6 +23,12 @@ namespace Presentation.View
     {
         private TaskViewModel ViewModel;
 
+        /// <summary>
+        /// The task window constructor. Initializes the window and creates its respective data context with the required information given from the board window.
+        /// </summary>
+        /// <param name="taskModel">The task this window represents.</param>
+        /// <param name="columnOrdinal">The column ordinal the task this window represents belongs to.</param>
+        /// <param name="isAssignee">The token used to decide whether the current user can make any task modifications.</param>
         public TaskWindow(TaskModel taskModel, int columnOrdinal, bool isAssignee)
         {
             InitializeComponent();
@@ -30,42 +36,70 @@ namespace Presentation.View
             DataContext = ViewModel;
         }
 
+        /// <summary>
+        /// Ensures all fields are valid, then updates them in the Backend then closes. Otherwise allows re-evaluation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            List<TaskViewModel.Border> validFields = ViewModel.ConfirmChangesValidity(tTitle.BorderBrush, tDescription.BorderBrush,
-                                                                                  dpDueDate.BorderBrush, tTaskAssignee.BorderBrush);
+            List<TaskViewModel.Border> validFields = ViewModel.ConfirmChangesValidity(txtTitle.BorderBrush, txtDescription.BorderBrush,
+                                                                                  dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
             if (!validFields.Contains(TaskViewModel.Border.Red))
             {
-                ViewModel.UpdateTask(validFields, tTitle.Text, tDescription.Text, dpDueDate.DisplayDate, tTaskAssignee.Text);
+                ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate, txtTaskAssignee.Text);
                 this.Close();
             }
             
         }
 
+        /// <summary>
+        /// Discards all changes made to the task and closes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Update the "txtTitle" TextBox state according to the changes made to the field.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Title_Changed(object sender, TextChangedEventArgs e)
         {
-            ViewModel.ChangedTitle(tTitle);
+            ViewModel.ChangedTitle(txtTitle);
         }
 
+        /// <summary>
+        /// Update the "txtDescription" TextBox state according to the changes made to the field.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Description_Changed(object sender, TextChangedEventArgs e)
         {
-            ViewModel.ChangedDescription(tDescription);
+            ViewModel.ChangedDescription(txtDescription);
         }
 
+        /// <summary>
+        /// Update the "dpDueDate" TextBox state according to the changes made to the field.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DueDate_Changed(object sender, DependencyPropertyChangedEventArgs e)
         {
             ViewModel.ChangedDueDate(dpDueDate);
         }
 
+        /// <summary>
+        /// Update the "txtTaskAssignee" TextBox state according to the changes made to the field.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TaskAssignee_Changed(object sender, TextChangedEventArgs e) {
-            ViewModel.ChangedTaskAssignee(tTaskAssignee);
-        }
-
-        
+            ViewModel.ChangedTaskAssignee(txtTaskAssignee);
+        }     
     }
 }

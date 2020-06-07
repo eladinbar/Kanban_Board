@@ -10,6 +10,9 @@ using System.Windows.Media;
 
 namespace Presentation.ViewModel
 {
+    /// <summary>
+    /// The data context of the task window.
+    /// </summary>
     internal class TaskViewModel : NotifiableObject
     {
         public readonly SolidColorBrush INVALID_BORDER_COLOR = Brushes.Red;
@@ -33,13 +36,15 @@ namespace Presentation.ViewModel
         public bool IsAssignee { get; set; }
         private string _message;
         public string Message { get => _message; set { _message = value; RaisePropertyChanged("Message"); } }
-        private string _dpMessage;
+        private string _dpMessage; //For testing DueDate
         public string dpMessage { get => _dpMessage; set { _dpMessage = value; RaisePropertyChanged("dpMessage"); } }
 
-        //get {return new SolidColorBrush(Task.DueDate.CompareTo(DateTime.Now) ? Colors.Blue : Colors.Red);} }
-
-
-        //Constructor
+        /// <summary>
+        /// The TaskViewModel constructor. Initializes all bound fields as well as its respective TaskModel and BackendController.
+        /// </summary>
+        /// <param name="Task">The TaskModel representing this TaskViewModel.</param>
+        /// <param name="columnOrdinal">The column ordinal that contains the task this view model represents.</param>
+        /// <param name="isAssignee">A verification variable to ensure task editing can only be performed by its assignee.</param>
         public TaskViewModel(TaskModel Task, int columnOrdinal, bool isAssignee) {
              this.Controller = Task.Controller;
              this.Task = Task;
@@ -54,8 +59,14 @@ namespace Presentation.ViewModel
              this.Message = "";
         }
 
-
-
+        /// <summary>
+        /// Updates all task fields that were modified by the user in the GUI.
+        /// </summary>
+        /// <param name="validFields">Represents the state of all fields in the task window.</param>
+        /// <param name="title">The title of the task to update.</param>
+        /// <param name="description">The description of the task to update.</param>
+        /// <param name="dueDate">The due date of the task to update.</param>
+        /// <param name="taskAssignee">The assignee of the task to update.</param>
         public void UpdateTask(List<Border> validFields, string title, string description, DateTime dueDate, string taskAssignee) {
             Message = "";
             if (validFields[(int)Update.Title] == Border.Green)
@@ -108,10 +119,21 @@ namespace Presentation.ViewModel
             }
         }
         
+        /// <summary>
+        /// An enum used to represent 
+        /// </summary>
         private enum Update { Title=0, Description=1, DueDate=2, TaskAssignee=3 }
         
+        /// <summary>
+        /// An enum used to represent the state of a field in the task window.
+        /// </summary>
         public enum Border { Blue=0, Green=1, Red=2 }
 
+        /// <summary>
+        /// Checks if all user changes are valid. Presents relevant message boxes for every different case.
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns>Returns a list of borders representing the state of each field in the task window.</returns>
         public List<Border> ConfirmChangesValidity(params Brush[] fields) {
             List<Border> validFields = ValidFields(fields.Take(fields.Length - 1));
             if (validFields.Contains(Border.Red)) //Checks all fields except TaskAssignee
@@ -134,12 +156,17 @@ namespace Presentation.ViewModel
                     else
                         validFields.Add(Border.Red);
                 }
-                else if (fields[fields.Length - 1].Equals(Brushes.Blue))
+                else
                     validFields.Add(Border.Blue);
             }
             return validFields;
         }
 
+        /// <summary>
+        /// Creates a list representing the state of all of the window's fields.
+        /// </summary>
+        /// <param name="fields">The fields' list to check.</param>
+        /// <returns>Returns a list of borders representing the state of each field in the task window.</returns>
         private List<Border> ValidFields(IEnumerable<Brush> fields) {
             List<Border> validFields = new List<Border>();
             foreach (Brush brush in fields) {
@@ -153,29 +180,41 @@ namespace Presentation.ViewModel
             return validFields;
         }
 
-        internal void ChangedTitle(TextBox tTitle)
+        /// <summary>
+        /// Assigns the appropriate border to the "txtTitle" text box according to its state.
+        /// </summary>
+        /// <param name="txtTitle">The text box to assign the state to.</param>
+        internal void ChangedTitle(TextBox txtTitle)
         {
-            if (tTitle.Text.Length > MAXIMUM_TITLE_LENGTH | tTitle.Text.Length == MINIMUM_TITLE_LENGTH)
-                tTitle.BorderBrush = INVALID_BORDER_COLOR;
-            else if (!tTitle.Text.Equals(Title))
-                tTitle.BorderBrush = VALID_BORDER_COLOR;
+            if (txtTitle.Text.Length > MAXIMUM_TITLE_LENGTH | txtTitle.Text.Length == MINIMUM_TITLE_LENGTH)
+                txtTitle.BorderBrush = INVALID_BORDER_COLOR;
+            else if (!txtTitle.Text.Equals(Title))
+                txtTitle.BorderBrush = VALID_BORDER_COLOR;
             else
-                tTitle.BorderBrush = ORIGINAL_BORDER_COLOR;
+                txtTitle.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
 
-        internal void ChangedDescription(TextBox tDescription)
+        /// <summary>
+        /// Assigns the appropriate border to the "txtDescription" text box according to its state.
+        /// </summary>
+        /// <param name="txtDescription">The text box to assign the state to.</param>
+        internal void ChangedDescription(TextBox txtDescription)
         {
-            if (tDescription.Text.Length > MAXIMUM_DESCRIPTION_LENGTH)
-                tDescription.BorderBrush = INVALID_BORDER_COLOR;
-            else if (!tDescription.Text.Equals(Description))
-                tDescription.BorderBrush = VALID_BORDER_COLOR;
+            if (txtDescription.Text.Length > MAXIMUM_DESCRIPTION_LENGTH)
+                txtDescription.BorderBrush = INVALID_BORDER_COLOR;
+            else if (!txtDescription.Text.Equals(Description))
+                txtDescription.BorderBrush = VALID_BORDER_COLOR;
             else
-                tDescription.BorderBrush = ORIGINAL_BORDER_COLOR;
+                txtDescription.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
 
+        /// <summary>
+        /// Assigns the appropriate border to the "dpDueDate" date picker according to its state.
+        /// </summary>
+        /// <param name="dpDueDate">The date picker to assign the state to.</param>
         internal void ChangedDueDate(DatePicker dpDueDate)
         {
-            dpMessage = (dpDueDate.SelectedDate <= DueDate.Date).ToString();
+            dpMessage = (dpDueDate.SelectedDate <= DueDate.Date).ToString(); //Experimental DatePicker CompareTo checking
             if (dpDueDate.DisplayDate < DueDate.Date)
                 dpDueDate.BorderBrush = INVALID_BORDER_COLOR;
             if (!dpDueDate.SelectedDate.Equals(this.DueDate))
@@ -186,14 +225,17 @@ namespace Presentation.ViewModel
             else
                 dpDueDate.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
-    
 
-        internal void ChangedTaskAssignee(TextBox tTaskAssignee)
+        /// <summary>
+        /// Assigns the appropriate border to the "txtTaskAssignee" text box according to its state.
+        /// </summary>
+        /// <param name="txtTaskAssignee">The text box to assign the state to.</param>
+        internal void ChangedTaskAssignee(TextBox txtTaskAssignee)
         {
-            if (!tTaskAssignee.Text.Equals(TaskAssigneeUsername))
-                tTaskAssignee.BorderBrush = VALID_BORDER_COLOR;
+            if (!txtTaskAssignee.Text.Equals(TaskAssigneeUsername))
+                txtTaskAssignee.BorderBrush = VALID_BORDER_COLOR;
             else
-                tTaskAssignee.BorderBrush = ORIGINAL_BORDER_COLOR;
+                txtTaskAssignee.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
     }
 }
