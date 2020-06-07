@@ -24,8 +24,12 @@ namespace Presentation.ViewModel
 
         public void Logout()
         {
-            MessageBox.Show(this.Controller.Logout(CurrentUser.Email), "Logout", MessageBoxButton.OK);
+            MessageBox.Show(this.Controller.Logout(CurrentUser.Email), "Logout", MessageBoxButton.OK);            
         }
 
+        internal void ChangePassword()
+        {
+            MessageBox.Show(this.Controller.Logout(CurrentUser.Email), "Change password", MessageBoxButton.OK);
+        }
     }
 }

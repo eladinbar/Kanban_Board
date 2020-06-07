@@ -93,6 +93,11 @@ namespace Presentation.View
             }
         }
 
+        public void ChangePassword(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.ChangePassword();
+        }
+
 
 
 

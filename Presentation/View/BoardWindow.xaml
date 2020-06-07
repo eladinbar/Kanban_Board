@@ -57,7 +57,7 @@
                 <MenuItem.Header>
                     <TextBlock Text="{Binding CurrentUser.Nickname[0]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
                 </MenuItem.Header>
-                <MenuItem Header="Change password" IsCheckable="True" FontSize="12" FontWeight="Regular"/>
+                <MenuItem Header="Change password" IsCheckable="True" FontSize="12" FontWeight="Regular" />
                 <Separator />
                 <MenuItem Header="Logout" IsCheckable="True" FontSize="12" FontWeight="Regular" Click="LogoutVerificationMessageBox"/>
 
@@ -68,19 +68,37 @@
         <Grid HorizontalAlignment="Left" Height="343" Margin="40,50,0,0" VerticalAlignment="Top" Width="721">
             <StackPanel Orientation="Horizontal">
 
-                <ListBox ItemsSource="{Binding Path=DataContext.Board.Columns}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,-9,0,9.4" Width="720" >
+                <ListBox ItemsSource="{Binding Board.Columns}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,-9,0,9.4" Width="720" >
                     <!--<SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource Mode=FindAncestor, AncestorType=x:Type Window}}}">-->
                     <!--"BoardWindowColumns"-->
 
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="Black" BorderThickness="1">
-                                <StackPanel Orientation="Vertical">
-                                    <TextBox Text="{Binding Path=Name, Mode=TwoWay}"/>
-                                </StackPanel>
+                        <DataTemplate>                            
+                            <Border BorderBrush="Black" BorderThickness="1">                                
+                                <!--<TextBox Text="{Binding Path=Name}" />-->
+                                <ListBox ItemsSource="{Binding Board.Columns.Tasks}" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="Black" BorderThickness="1">
+                                                <TextBox Text="{Binding Path=Title}" />
+                                            </Border>
+                                            </DataTemplate>
+                                    </ListBox.ItemTemplate>
+
+                                </ListBox>
                             </Border>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
+                    </ListBox.ItemTemplate> 
                 </ListBox>
             </StackPanel>
         </Grid>
