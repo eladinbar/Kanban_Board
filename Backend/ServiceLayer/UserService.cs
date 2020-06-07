@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.UserPackage.User tempUser = SecurityController.Login(email, password);
-                User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
+                User tempStructUser = new User(tempUser.Email,tempUser.Nickname,tempUser.AssociatedBoard);
                 Response<User> r = new Response<User>(tempStructUser);
                 log.Info("Successful login action.");
                 return r;

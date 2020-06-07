@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
     {
         private static readonly log4net.ILog log = LogHelper.getLogger();
 
-        private const int INITIALIZE_MAXIMUM_NUMBER_OF_TASKS = Int32.MaxValue; //unlimited
+        private const int INITIALIZE_MAXIMUM_NUMBER_OF_TASKS = 100; //unlimited
 
         public string Name { get; private set; }
         public int Limit { get; private set; }

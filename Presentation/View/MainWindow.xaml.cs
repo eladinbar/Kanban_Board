@@ -1,5 +1,5 @@
-﻿using Presentation.Modal;
-using Presentation.ViewModal;
+﻿using Presentation.Model;
+using Presentation.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +31,16 @@ namespace Presentation.View
             viewModal = new MainViewModal();
             DataContext = viewModal;
         }
+        public MainWindow(BackendController controller)
+        {
+            InitializeComponent();
+            viewModal = new MainViewModal(controller);
+            DataContext = viewModal;
+        }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            UserModal user = viewModal.Login();
+            UserModel user = viewModal.Login();
             if(user != null)
             {
                 //BoardWindow bw = new BoardWindow(user);
@@ -48,6 +54,11 @@ namespace Presentation.View
             RegistrationWindow registration = new RegistrationWindow(viewModal.Controller);
             registration.Show();
             this.Close();
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            viewModal.Password = PasswordBox.Password;
         }
     }
 }

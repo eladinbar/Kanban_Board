@@ -1,4 +1,4 @@
-﻿using Presentation.ViewModal;
+﻿using Presentation.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,33 +20,59 @@ namespace Presentation.View
     /// </summary>
     public partial class RegistrationWindow : Window
     {
-        RegistrationViewModal viewModal;
+        private RegistrationViewModel viewModal;
 
         public RegistrationWindow(BackendController controller)
         {
             InitializeComponent();
-            viewModal = new RegistrationViewModal(controller);
+            viewModal = new RegistrationViewModel(controller);
             DataContext = viewModal;
         }
 
         private void ConfirmRegistration_Click(object sender, RoutedEventArgs e)
         {
-
+            if (viewModal.Register())
+            {
+                MainWindow main = new MainWindow(viewModal.Controller);
+                main.Show();
+                this.Close();
+            }
         }
 
         private void JoinBoardCheck_Checked(object sender, RoutedEventArgs e)
         {
-            HostEmailBox.Visibility = Visibility.Visible;
+            HostEmailPanal.Visibility = Visibility.Visible;
         }
 
         private void JoinBoardCheck_Unchecked(object sender, RoutedEventArgs e)
         {
-            HostEmailBox.Visibility = Visibility.Hidden;
+            HostEmailPanal.Visibility = Visibility.Hidden;
+            HostEmailBox.Clear();
         }
 
-        private void HostEmailBox_GotFocus(object sender, RoutedEventArgs e)
+        private void PasswordTextBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            viewModal.Password = PasswordTextBox.Password;
+            PasswordTextBox.PasswordChar = RandomizeCher();
+        }
 
+        private void PasswordConfirmTexBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            viewModal.PasswordConfirm = PasswordConfirmTexBox.Password;
+            PasswordConfirmTexBox.PasswordChar = RandomizeCher();
+        }
+
+        private char RandomizeCher()
+        {
+            Random rnd = new Random();
+            return (char) rnd.Next(0, 65536);
+        }
+
+        private void CancelRegistration_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow(viewModal.Controller);
+            main.Show();
+            this.Close();
         }
     }
 }
