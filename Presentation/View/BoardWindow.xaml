@@ -81,7 +81,7 @@
                         <DataTemplate>                            
                             <Border BorderBrush="Black" BorderThickness="1">                                
                                 <!--<TextBox Text="{Binding Path=Name}" />-->
-                                <ListBox ItemsSource="{Binding Board.Columns.Tasks}" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                                <ListBox ItemsSource="{Binding Board.Columns.SimpleTasks}" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" >
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Vertical"/>

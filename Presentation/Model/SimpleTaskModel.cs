@@ -9,8 +9,8 @@ namespace Presentation.Model
     public class SimpleTaskModel : NotifiableModelObject
     {
 
-        public string Title;
-        public DateTime DueDate;
+        public string Title { get; set; }//???????
+        public DateTime DueDate { get; set; }//???????????
 
         //properties of border and backgrounfd colors
 

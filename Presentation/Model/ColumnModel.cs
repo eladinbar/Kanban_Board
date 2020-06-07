@@ -11,7 +11,7 @@ namespace Presentation.Model
     public class ColumnModel
     {
         public ObservableCollection<TaskModel> Tasks;
-        public ObservableCollection<SimpleTaskModel> SimpleTasks; //minimalistic tasks models list
+        public ObservableCollection<SimpleTaskModel> SimpleTasks { get; set; } //minimalistic tasks models list
         public int Limit { get; private set; } //maybe make it a property which will appear at the bottom part of a columnModel and will be a changable box????????????????
         public string _name;
         public string Name
