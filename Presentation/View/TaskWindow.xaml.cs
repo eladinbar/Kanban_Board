@@ -23,19 +23,23 @@ namespace Presentation.View
     {
         private TaskViewModel ViewModel;
 
-        public TaskWindow(TaskModel taskModel, bool isAssignee)
+        public TaskWindow(TaskModel taskModel, int columnOrdinal, bool isAssignee)
         {
             InitializeComponent();
-            ViewModel = new TaskViewModel(taskModel, isAssignee);
+            ViewModel = new TaskViewModel(taskModel, columnOrdinal, isAssignee);
             DataContext = ViewModel;
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            TaskViewModel.Border[] validFields = ViewModel.ConfirmChangesValidity(tTitle.BorderBrush, tDescription.BorderBrush,
-                                                                                  tDueDate.BorderBrush, tTaskAssignee.BorderBrush);
+            List<TaskViewModel.Border> validFields = ViewModel.ConfirmChangesValidity(tTitle.BorderBrush, tDescription.BorderBrush,
+                                                                                  dpDueDate.BorderBrush, tTaskAssignee.BorderBrush);
             if (!validFields.Contains(TaskViewModel.Border.Red))
-                ViewModel.UpdateTask(validFields, tTitle.Text, tDescription.Text, Convert.ToDateTime(tDueDate.Text), tTaskAssignee.Text);
+            {
+                ViewModel.UpdateTask(validFields, tTitle.Text, tDescription.Text, dpDueDate.DisplayDate, tTaskAssignee.Text);
+                this.Close();
+            }
+            
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -45,20 +49,23 @@ namespace Presentation.View
 
         private void Title_Changed(object sender, TextChangedEventArgs e)
         {
-            ViewModel.ChangeTitle(tTitle);
+            ViewModel.ChangedTitle(tTitle);
         }
 
         private void Description_Changed(object sender, TextChangedEventArgs e)
         {
-            ViewModel.ChangeDescription(tDescription);
+            ViewModel.ChangedDescription(tDescription);
         }
 
-        private void DueDate_Changed(object sender, TextChangedEventArgs e) {
-            ViewModel.ChangeDueDate(tDueDate);
+        private void DueDate_Changed(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ViewModel.ChangedDueDate(dpDueDate);
         }
 
         private void TaskAssignee_Changed(object sender, TextChangedEventArgs e) {
-            ViewModel.ChangeTaskAssignee(tTaskAssignee);
+            ViewModel.ChangedTaskAssignee(tTaskAssignee);
         }
+
+        
     }
 }

@@ -31,13 +31,16 @@ namespace Presentation.ViewModel
         public string TaskAssigneeUsername { get; set; }
         public string TaskAsigneeNickname { get; set; } //Pending
         public bool IsAssignee { get; set; }
-        public string Message { get => Message; set { Message = value; RaisePropertyChanged("Message"); } }
+        private string _message;
+        public string Message { get => _message; set { _message = value; RaisePropertyChanged("Message"); } }
+        private string _dpMessage;
+        public string dpMessage { get => _dpMessage; set { _dpMessage = value; RaisePropertyChanged("dpMessage"); } }
 
         //get {return new SolidColorBrush(Task.DueDate.CompareTo(DateTime.Now) ? Colors.Blue : Colors.Red);} }
 
 
         //Constructor
-        public TaskViewModel(TaskModel Task, bool isAssignee) {
+        public TaskViewModel(TaskModel Task, int columnOrdinal, bool isAssignee) {
              this.Controller = Task.Controller;
              this.Task = Task;
              this.ID = Task.ID;
@@ -48,11 +51,12 @@ namespace Presentation.ViewModel
              this.LastChangedDate = Task.LastChangedDate;
              this.TaskAssigneeUsername = Task.AssigneeEmail;
              this.IsAssignee = isAssignee;
+             this.Message = "";
         }
 
 
 
-        public void UpdateTask(Border[] validFields, string title, string description, DateTime dueDate, string taskAssignee) {
+        public void UpdateTask(List<Border> validFields, string title, string description, DateTime dueDate, string taskAssignee) {
             Message = "";
             if (validFields[(int)Update.Title] == Border.Green)
             {
@@ -108,43 +112,48 @@ namespace Presentation.ViewModel
         
         public enum Border { Blue=0, Green=1, Red=2 }
 
-        public Border[] ConfirmChangesValidity(params Brush[] fields) {
-            Border[] validFields = ValidFields(fields.Take(fields.Length - 1));
+        public List<Border> ConfirmChangesValidity(params Brush[] fields) {
+            List<Border> validFields = ValidFields(fields.Take(fields.Length - 1));
             if (validFields.Contains(Border.Red)) //Checks all fields except TaskAssignee
             {
                 MessageBox.Show("Some fields were assigned invalid values. \n" +
                 "Please review your changes and try again.", "Invalid fields", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
             else {
-                if (fields[fields.Length-1].Equals(Brushes.Green)) //If the task assignee field was modified
+                if (fields[fields.Length - 1].Equals(Brushes.Green)) //If the task assignee field was modified
                 {
-                    MessageBoxResult Result = MessageBox.Show("You are trying to change the task assignee. \n  " +
+                    MessageBoxResult Result = MessageBox.Show("You are trying to change the task assignee. \n" +
                     "Confirming your changes will prevent you from making any further adjustments to this task. \n" +
                     "Would you like to proceed?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Information, MessageBoxResult.Cancel);
                     if (Result == MessageBoxResult.OK)
                     {
+                        validFields.Add(Border.Green);
                         MessageBox.Show("Task Assignee was changed successfully.", "", MessageBoxButton.OK);
                         MessageBox.Show("Task data was updated successfully!", "", MessageBoxButton.OK);
                     }
+                    else
+                        validFields.Add(Border.Red);
                 }
+                else if (fields[fields.Length - 1].Equals(Brushes.Blue))
+                    validFields.Add(Border.Blue);
             }
             return validFields;
         }
 
-        private Border[] ValidFields(IEnumerable<Brush> fields) {
-            Border[] validFields = new Border[fields.Count()];
+        private List<Border> ValidFields(IEnumerable<Brush> fields) {
+            List<Border> validFields = new List<Border>();
             foreach (Brush brush in fields) {
                 if (brush.Equals(Brushes.Red))
-                    validFields.Concat(new Border[] { Border.Red });
+                    validFields.Add(Border.Red);
                 else if (brush.Equals(Brushes.Green))
-                    validFields.Concat(new Border[] { Border.Green });
+                    validFields.Add(Border.Green);
                 else
-                    validFields.Concat(new Border[] { Border.Blue });
+                    validFields.Add(Border.Blue);
             }     
             return validFields;
         }
 
-        internal void ChangeTitle(TextBox tTitle)
+        internal void ChangedTitle(TextBox tTitle)
         {
             if (tTitle.Text.Length > MAXIMUM_TITLE_LENGTH | tTitle.Text.Length == MINIMUM_TITLE_LENGTH)
                 tTitle.BorderBrush = INVALID_BORDER_COLOR;
@@ -154,7 +163,7 @@ namespace Presentation.ViewModel
                 tTitle.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
 
-        internal void ChangeDescription(TextBox tDescription)
+        internal void ChangedDescription(TextBox tDescription)
         {
             if (tDescription.Text.Length > MAXIMUM_DESCRIPTION_LENGTH)
                 tDescription.BorderBrush = INVALID_BORDER_COLOR;
@@ -164,18 +173,24 @@ namespace Presentation.ViewModel
                 tDescription.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
 
-        internal void ChangeDueDate(TextBox tDueDate)
+        internal void ChangedDueDate(DatePicker dpDueDate)
         {
-            if (!tDueDate.Equals(DueDate))
-                tDueDate.BorderBrush = VALID_BORDER_COLOR;
+            dpMessage = (dpDueDate.SelectedDate <= DueDate.Date).ToString();
+            if (dpDueDate.DisplayDate < DueDate.Date)
+                dpDueDate.BorderBrush = INVALID_BORDER_COLOR;
+            if (!dpDueDate.SelectedDate.Equals(this.DueDate))
+            {
+                dpDueDate.BorderBrush = VALID_BORDER_COLOR;
+
+            }
             else
-                tDueDate.BorderBrush = ORIGINAL_BORDER_COLOR;
+                dpDueDate.BorderBrush = ORIGINAL_BORDER_COLOR;
         }
     
 
-        internal void ChangeTaskAssignee(TextBox tTaskAssignee)
+        internal void ChangedTaskAssignee(TextBox tTaskAssignee)
         {
-            if (!tTaskAssignee.Equals(TaskAssigneeUsername))
+            if (!tTaskAssignee.Text.Equals(TaskAssigneeUsername))
                 tTaskAssignee.BorderBrush = VALID_BORDER_COLOR;
             else
                 tTaskAssignee.BorderBrush = ORIGINAL_BORDER_COLOR;

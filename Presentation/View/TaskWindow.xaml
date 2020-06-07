@@ -31,7 +31,8 @@
                 <Label Content="Description" FontSize="16" Grid.Column="0" Grid.Row="2"/>
                 <TextBox Name="tDescription" Text="{Binding Path=Description, Mode=OneWay}" TextChanged="Description_Changed" BorderBrush="{Binding Path=DescriptionBorder}" Grid.Column="1" Grid.Row="2" Margin="0,5,0,5"/>
                 <Label Content="Due Date" FontSize="16" Grid.Column="0" Grid.Row="3"/>
-                <TextBox Name="tDueDate" Text="{Binding Path=DueDate, Mode=OneWay}" TextChanged="DueDate_Changed" Grid.Column="1" Grid.Row="3" Margin="0,5,0,5"/>
+                <DatePicker Name="dpDueDate" Text="{Binding Path=DueDate, Mode=OneWay}" DataContextChanged="DueDate_Changed" Grid.Column="1" Grid.Row="3" Margin="0,5,0,5"/>
+                <Label Name="lMessage" Content="{Binding Path=dpMessage}" Foreground="Red" Grid.Column="2" Grid.Row="3"/>
                 <Label Content="Creation Time" FontSize="16" Grid.Column="0" Grid.Row="4"/>
                 <Label Content="{Binding Path=CreationTime}" Grid.Column="1" Grid.Row="4" Margin="0,5,0,5"/>
                 <Label Content="Last Changed Date" FontSize="16" Grid.Column="0" Grid.Row="5"/>
