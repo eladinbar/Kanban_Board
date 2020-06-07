@@ -50,26 +50,11 @@
         </Menu>
         <Grid HorizontalAlignment="Left" Height="343" Margin="40,39,0,0" VerticalAlignment="Top" Width="721">
             <!--<StackPanel Orientation="Horizontal">-->
-            <ListBox Name="BoardWindowColumns" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,0,0,0.2" Width="720">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" IsItemsHost="True" />
-                    </ItemsPanelTemplate>
-                    <!--<DataTemplate>
-                        <TextBlock Text="{Binding Name}"/>
-                    </DataTemplate>-->
-                </ListBox.ItemsPanel>
-                <ListBoxItem Content="Coffie"></ListBoxItem>
-                <ListBoxItem Content="Tea"></ListBoxItem>
-                <ListBoxItem Content="Orange Juice"></ListBoxItem>
-                <ListBoxItem Content="Milk"></ListBoxItem>
-                <ListBoxItem Content="Iced Tea"></ListBoxItem>
-                <ListBoxItem Content="Mango Shake"></ListBoxItem>
-                <StackPanel>
-                    <ListBox>
-                    </ListBox>
-                </StackPanel>
-            </ListBox>
+            
+            
+            <ListBox Name="BoardWindowColumns" ItemsSource="{Binding Path=BoardModel.Columns}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,0,0,0.2" Width="720" />
+            
+            
             <!--</StackPanel>-->
         </Grid>
     </Grid>

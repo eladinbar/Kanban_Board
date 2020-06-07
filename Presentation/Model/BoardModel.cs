@@ -18,10 +18,11 @@ namespace Presentation.Model
         {
             this.CreatorEmail = creatorEmail;
             this.Columns = this.CreateColumns(creatorEmail);
-            this.Columns.CollectionChanged += HandleChange;
+            this.Columns.CollectionChanged += HandleChange; //do we realy need HandleChange?????????????????
         }
 
-        private ObservableCollection<ColumnModel> CreateColumns(string creatorEmail)  //receives SL.Columns and its list of Tasks and transform them into PL.Columns
+        private ObservableCollection<ColumnModel> CreateColumns(string creatorEmail)  //receives SL.Columns and its list of Tasks and transform them into PL.Columns - 
+            //has to be here or in ViewModel / BackendControlller??????????
         {
             ObservableCollection<ColumnModel> tempColumns = new ObservableCollection<ColumnModel>();
             int i = 0;
@@ -41,12 +42,12 @@ namespace Presentation.Model
             return tempColumns;
         }
 
-        private void HandleChange(object sender, NotifyCollectionChangedEventArgs e) //?????? dont know if needed
+        private void HandleChange(object sender, NotifyCollectionChangedEventArgs e) //?????? dont know if needed??????????????
         {
             if (e.Action == NotifyCollectionChangedAction.Remove)
             {
                 
-                foreach (ColumnModel tempColumn in e.OldItems)
+                foreach (ColumnModel tempColumn in e.OldItems) //e.OldItems - the list of Objects that have been changed??????????
                 {
                     //Controller.RemoveMessage(user.Email, y.Id);
                 }

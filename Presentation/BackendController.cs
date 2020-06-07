@@ -10,10 +10,10 @@ namespace Presentation
 {
     public class BackendController
     {
-        private IService Service { get; set; }
+        public IService Service { get; set; }
         public BackendController()
         {
-            //Service = new Service();
+            Service = new Service();
         }
 
         internal UserModel Login(string email, string password)

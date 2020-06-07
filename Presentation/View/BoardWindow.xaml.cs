@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Presentation.Model;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace Presentation.View
 {
@@ -27,12 +28,15 @@ namespace Presentation.View
 
         private string CreatorEmail;
 
-        private ObservableCollection<ColumnModel> _columns; //???????????????????????????
-        public ObservableCollection<ColumnModel> Columns //???????????????????????????
-        {
-            get => _columns;
-            set => _columns = value;
-        }
+
+        //public BoardWindow() //need to receive from login window those parameters
+        //{
+        //    InitializeComponent();
+        //    this.viewModel = new BoardViewModel(controller, currentUser, creatorEmail);
+        //    this.DataContext = this.viewModel;
+        //    this.CreatorEmail = creatorEmail;
+        //    //this._columns
+        //}
 
         public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) //need to receive from login window those parameters
         {
@@ -40,7 +44,6 @@ namespace Presentation.View
             this.viewModel = new BoardViewModel(controller, currentUser, creatorEmail);
             this.DataContext = this.viewModel;
             this.CreatorEmail = creatorEmail;
-            //this._columns
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -52,5 +55,11 @@ namespace Presentation.View
         {
 
         }
+
+        /*private void EditTaskButton_Click((object sender, RoutedEventArgs e){
+          TaskWindow tW = new TaskWindow (controller, currentUser, creatorEmail);
+          tW.ShowDialog();
+        }
+        */
     }
 }
