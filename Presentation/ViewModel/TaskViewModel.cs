@@ -50,110 +50,58 @@ namespace Presentation.ViewModel
              this.IsAssignee = isAssignee;
         }
 
-        /// <summary>
-        /// Update task title
-        /// </summary>
-        /// <param name="email">Email of user. Must be logged in</param>
-        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-        /// <param name="taskId">The task to be updated identified task ID</param>
-        /// <param name="title">New title for the task</param>
-        /// <returns>A response object. The response should contain an error message in case of an error</returns>
-        public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
-        {
+
+
+        public void UpdateTask(Border[] validFields, string title, string description, DateTime dueDate, string taskAssignee) {
             Message = "";
-            try
-            {
-                Controller.UpdateTaskTitle(email, columnOrdinal, taskId, title);
-                this.Title = title;
-                RaisePropertyChanged("Title");
-            }
-            catch (Exception ex)
-            {
-                Message = ex.Message;
-            }
-        }
-
-        /// <summary>
-        /// Update the description of a task
-        /// </summary>
-        /// <param name="email">Email of user. Must be logged in</param>
-        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-        /// <param name="taskId">The task to be updated identified task ID</param>
-        /// <param name="description">New description for the task</param>
-        /// <returns>A response object. The response should contain an error message in case of an error</returns>
-        public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
-        {
-            Message = "";
-            try
-            {
-                Controller.UpdateTaskDescription(email, columnOrdinal, taskId, description);
-                this.Description = description;
-                RaisePropertyChanged("Description");
-            }
-            catch (Exception ex)
-            {
-                Message = ex.Message;
-            }
-        }
-
-        
-
-
-        /// <summary>
-        /// Update the due date of a task.
-        /// </summary>
-        /// <param name="email">Email of the user. Must be logged in.</param>
-        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column.</param>
-        /// <param name="taskId">The task to be updated identified task ID.</param>
-        /// <param name="dueDate">The new due date of the column.</param>
-        /// <returns>A response object. The response should contain an error message in case of an error.</returns>
-        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
-        {
-            Message = "";
-            try
-            {
-                Controller.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
-                this.DueDate = dueDate;
-                RaisePropertyChanged("DueDate");
-            }
-            catch (Exception ex)
-            {
-                Message = ex.Message;
-            }
-        }
-
-        /// <summary>
-        /// Assigns a task to a user
-        /// </summary>
-        /// <param name="email">Email of the user. Must be logged in</param>
-        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-        /// <param name="taskId">The task to be updated identified task ID</param>        
-        /// <param name="emailAssignee">Email of the user to assign to task to</param>
-        /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public void AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
-        {
-            Message = "";
-            try
-            {
-                Controller.AssignTask(email, columnOrdinal, taskId, emailAssignee);
-                this.TaskAssigneeUsername = emailAssignee;
-                RaisePropertyChanged("DueDate");
-            }
-            catch (Exception ex)
-            {
-                Message = ex.Message;
-            }
-        }
-
-        public void UpdateTask(Border[] validFields) {
             if (validFields[(int)Update.Title] == Border.Green)
-                UpdateTaskTitle(email, columnOrdinal, ID, Title);
+            {
+                try
+                {
+                    Task.UpdateTaskTitle(title);
+                    this.Title = title;
+                    RaisePropertyChanged("Title");
+                }
+                catch(Exception ex) {
+                    Message += ex.Message;
+                }
+            }
             if (validFields[(int)Update.Description] == Border.Green)
-                UpdateTaskDescription(email, columnOrdinal, ID, Description);
+            {
+                try {
+                    Task.UpdateTaskDescription(description);
+                    this.Description = description;
+                    RaisePropertyChanged("Description");
+                }
+                catch(Exception ex) {
+                    Message += " " + ex.Message;
+                }
+
+            }
             if (validFields[(int)Update.DueDate] == Border.Green)
-                UpdateTaskDueDate(email, columnOrdinal, ID, DueDate);
+            {
+                try
+                {
+                    Task.UpdateTaskDueDate(dueDate);
+                    this.DueDate = dueDate;
+                    RaisePropertyChanged("DueDate");
+                }
+                catch(Exception ex) {
+                    Message += " " + ex.Message;
+                }
+            }
             if (validFields[(int)Update.TaskAssignee] == Border.Green)
-                AssignTask(email, columnOrdinal, ID, TaskAssigneeUsername);
+            {
+                try
+                {
+                    Task.AssignTask(taskAssignee);
+                    this.TaskAssigneeUsername = taskAssignee;
+                    RaisePropertyChanged("TaskAssigneeUsername");
+                }
+                catch(Exception ex) {
+                    Message += " " + ex.Message;
+                }
+            }
         }
         
         private enum Update { Title=0, Description=1, DueDate=2, TaskAssignee=3 }
