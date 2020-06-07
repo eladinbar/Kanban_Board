@@ -14,17 +14,15 @@ namespace BackendTesting
         [OneTimeSetUp]
         public void SetUp()
         {
-            //service.DeleteData();
-            //string path = @"D:\UProject\IntroToSE\milestones-2-tpee\BackendTesting\bin\Debug\KanbanDB.db";
-            //FileInfo dBFile = new FileInfo(path);
-            //if (dBFile.Exists)
-            //{
-            //    dBFile.Delete();
-            //}
-
+           
             service = new Service();
             service.Register("1@mashu.com", "Aa1234", "1");
             service.Register("2@mashu.com", "Aa1234", "2", "1@mashu.com");
+            service.Register("3@mashu.com", "Aa1234", "3", "1@mashu.com");
+            service.Register("4@mashu.com", "Aa1234", "4", "1@mashu.com");
+            service.Register("5@mashu.com", "Aa1234", "5", "1@mashu.com");
+            service.Register("6@mashu.com", "Aa1234", "6", "1@mashu.com");
+            service.Register("7@mashu.com", "Aa1234", "7", "1@mashu.com");
         }
         
 
@@ -54,26 +52,10 @@ namespace BackendTesting
 
         }
 
-
-        
-        //[Test]
-        //public void CheckAssosiatedBoard(string user)
-        //{
-        //    User u1 = service.Login("1@mashu.com", "Aa1234").Value;
-        //    NUnit.Framework.Assert.True(u1.AssociatedBoard.Equals("1@mashu.com"));
-        //    service.Logout(user);
-        //}
-
-        //[Test]
-        //public void CheckAssosiatedBoard2(string user)
-        //{
-        //    User u1;
-        //    u1 = service.Login("2@mashu.com", "Aa1234").Value;
-        //    NUnit.Framework.Assert.True(u1.AssociatedBoard.Equals("1@mashu.com"));
-        //    service.Logout(user);
-        //}
-
-
-       
+        [OneTimeTearDown]
+        public void Clean()
+        {
+            service.DeleteData();
+        }
     }
 }
