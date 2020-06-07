@@ -184,10 +184,13 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "txtTitle" text box according to its state.
         /// </summary>
         /// <param name="txtTitle">The text box to assign the state to.</param>
-        internal void ChangedTitle(TextBox txtTitle)
+        internal void ChangedTitle(TextBox txtTitle, Label titleMessage)
         {
             if (txtTitle.Text.Length > MAXIMUM_TITLE_LENGTH | txtTitle.Text.Length == MINIMUM_TITLE_LENGTH)
+            {
                 txtTitle.BorderBrush = INVALID_BORDER_COLOR;
+                titleMessage.Content = "The title cannot be empty or exceed 50 characters.";
+            }
             else if (!txtTitle.Text.Equals(Title))
                 txtTitle.BorderBrush = VALID_BORDER_COLOR;
             else
@@ -198,10 +201,13 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "txtDescription" text box according to its state.
         /// </summary>
         /// <param name="txtDescription">The text box to assign the state to.</param>
-        internal void ChangedDescription(TextBox txtDescription)
+        internal void ChangedDescription(TextBox txtDescription, Label descMessage)
         {
             if (txtDescription.Text.Length > MAXIMUM_DESCRIPTION_LENGTH)
+            {
                 txtDescription.BorderBrush = INVALID_BORDER_COLOR;
+                descMessage.Content = "The description cannot exceed 300 characters.";
+            }
             else if (!txtDescription.Text.Equals(Description))
                 txtDescription.BorderBrush = VALID_BORDER_COLOR;
             else
@@ -212,11 +218,14 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "dpDueDate" date picker according to its state.
         /// </summary>
         /// <param name="dpDueDate">The date picker to assign the state to.</param>
-        internal void ChangedDueDate(DatePicker dpDueDate)
+        internal void ChangedDueDate(DatePicker dpDueDate, Label dueMessage)
         {
             dpMessage = (dpDueDate.SelectedDate <= DueDate.Date).ToString(); //Experimental DatePicker CompareTo checking
             if (dpDueDate.DisplayDate < DueDate.Date)
+            {
                 dpDueDate.BorderBrush = INVALID_BORDER_COLOR;
+                dueMessage.Content = "Due date cannot be set to past time.";
+            }
             if (!dpDueDate.SelectedDate.Equals(this.DueDate))
             {
                 dpDueDate.BorderBrush = VALID_BORDER_COLOR;
@@ -230,7 +239,7 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "txtTaskAssignee" text box according to its state.
         /// </summary>
         /// <param name="txtTaskAssignee">The text box to assign the state to.</param>
-        internal void ChangedTaskAssignee(TextBox txtTaskAssignee)
+        internal void ChangedTaskAssignee(TextBox txtTaskAssignee, Label assigneeMessage)
         {
             if (!txtTaskAssignee.Text.Equals(TaskAssigneeUsername))
                 txtTaskAssignee.BorderBrush = VALID_BORDER_COLOR;

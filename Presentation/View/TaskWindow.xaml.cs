@@ -70,7 +70,7 @@ namespace Presentation.View
         /// <param name="e"></param>
         private void Title_Changed(object sender, TextChangedEventArgs e)
         {
-            ViewModel.ChangedTitle(txtTitle);
+            ViewModel.ChangedTitle(txtTitle, titleMessage);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Presentation.View
         /// <param name="e"></param>
         private void Description_Changed(object sender, TextChangedEventArgs e)
         {
-            ViewModel.ChangedDescription(txtDescription);
+            ViewModel.ChangedDescription(txtDescription, descMessage);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Presentation.View
         /// <param name="e"></param>
         private void DueDate_Changed(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ViewModel.ChangedDueDate(dpDueDate);
+            ViewModel.ChangedDueDate(dpDueDate, dueMessage);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Presentation.View
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TaskAssignee_Changed(object sender, TextChangedEventArgs e) {
-            ViewModel.ChangedTaskAssignee(txtTaskAssignee);
+            ViewModel.ChangedTaskAssignee(txtTaskAssignee, assigneeMessage);
         }     
     }
 }

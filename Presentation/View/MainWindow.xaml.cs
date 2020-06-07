@@ -33,8 +33,6 @@ namespace Presentation
             this.Controller = new BackendController();
             UserModel user = new UserModel(Controller, "username", "nickname");
             window = null;
-
-
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
