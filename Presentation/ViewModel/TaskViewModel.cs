@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -32,12 +30,9 @@ namespace Presentation.ViewModel
         public DateTime DueDate { get; set; }
         public DateTime LastChangedDate { get; }
         public string TaskAssigneeUsername { get; set; }
-        public string TaskAsigneeNickname { get; set; } //Pending
         public bool IsAssignee { get; set; }
         private string _message;
         public string Message { get => _message; set { _message = value; RaisePropertyChanged("Message"); } }
-        private string _dpMessage; //For testing DueDate
-        public string dpMessage { get => _dpMessage; set { _dpMessage = value; RaisePropertyChanged("dpMessage"); } }
 
         /// <summary>
         /// The TaskViewModel constructor. Initializes all bound fields as well as its respective TaskModel and BackendController.
@@ -69,7 +64,7 @@ namespace Presentation.ViewModel
         /// <param name="taskAssignee">The assignee of the task to update.</param>
         public void UpdateTask(List<Border> validFields, string title, string description, DateTime dueDate, string taskAssignee) {
             Message = "";
-            if (validFields[(int)Update.Title] == Border.Green)
+            if (validFields[Convert.ToInt32(Update.Title)] == Border.Green)
             {
                 try
                 {
@@ -81,7 +76,7 @@ namespace Presentation.ViewModel
                     Message += ex.Message;
                 }
             }
-            if (validFields[(int)Update.Description] == Border.Green)
+            if (validFields[Convert.ToInt32(Update.Description)] == Border.Green)
             {
                 try {
                     Task.UpdateTaskDescription(description);
@@ -192,9 +187,15 @@ namespace Presentation.ViewModel
                 titleMessage.Content = "The title cannot be empty or exceed 50 characters.";
             }
             else if (!txtTitle.Text.Equals(Title))
+            {
                 txtTitle.BorderBrush = VALID_BORDER_COLOR;
+                titleMessage.Content = "";
+            }
             else
+            {
                 txtTitle.BorderBrush = ORIGINAL_BORDER_COLOR;
+                titleMessage.Content = "";
+            }
         }
 
         /// <summary>
@@ -209,9 +210,15 @@ namespace Presentation.ViewModel
                 descMessage.Content = "The description cannot exceed 300 characters.";
             }
             else if (!txtDescription.Text.Equals(Description))
+            {
                 txtDescription.BorderBrush = VALID_BORDER_COLOR;
+                descMessage.Content = "";
+            }
             else
+            {
                 txtDescription.BorderBrush = ORIGINAL_BORDER_COLOR;
+                descMessage.Content = "";
+            }
         }
 
         /// <summary>
@@ -220,19 +227,21 @@ namespace Presentation.ViewModel
         /// <param name="dpDueDate">The date picker to assign the state to.</param>
         internal void ChangedDueDate(DatePicker dpDueDate, Label dueMessage)
         {
-            dpMessage = (dpDueDate.SelectedDate <= DueDate.Date).ToString(); //Experimental DatePicker CompareTo checking
-            if (dpDueDate.DisplayDate < DueDate.Date)
+            if (dpDueDate.SelectedDate?.CompareTo(DateTime.Now) < 0)
             {
                 dpDueDate.BorderBrush = INVALID_BORDER_COLOR;
                 dueMessage.Content = "Due date cannot be set to past time.";
             }
-            if (!dpDueDate.SelectedDate.Equals(this.DueDate))
+            else if (dpDueDate.SelectedDate?.CompareTo(DueDate.Date) != 0)
             {
                 dpDueDate.BorderBrush = VALID_BORDER_COLOR;
-
+                dueMessage.Content = "";
             }
             else
+            {
                 dpDueDate.BorderBrush = ORIGINAL_BORDER_COLOR;
+                dueMessage.Content = "";
+            }
         }
 
         /// <summary>

@@ -39,7 +39,7 @@ namespace Presentation
         {
             //if (window.Closed())
             window = new TaskWindow(new TaskModel(new BackendController(), 1, "title", "description",
-            DateTime.Now, DateTime.UtcNow, DateTime.Now, "email", 0), 0, true);
+            DateTime.Now, new DateTime(2021, 2, 1), DateTime.Now, "email", 0), 0, true);
             window.ShowDialog();
         }
     }
