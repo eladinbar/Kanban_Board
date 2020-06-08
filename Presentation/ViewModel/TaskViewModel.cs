@@ -62,9 +62,9 @@ namespace Presentation.ViewModel
         /// <param name="description">The description of the task to update.</param>
         /// <param name="dueDate">The due date of the task to update.</param>
         /// <param name="taskAssignee">The assignee of the task to update.</param>
-        public void UpdateTask(List<Border> validFields, string title, string description, DateTime dueDate, string taskAssignee) {
+        public void UpdateTask(List<BorderColor> validFields, string title, string description, DateTime dueDate, string taskAssignee) {
             Message = "";
-            if (validFields[Convert.ToInt32(Update.Title)] == Border.Green)
+            if (validFields[Convert.ToInt32(Update.Title)] == BorderColor.Green)
             {
                 try
                 {
@@ -76,7 +76,7 @@ namespace Presentation.ViewModel
                     Message += ex.Message;
                 }
             }
-            if (validFields[Convert.ToInt32(Update.Description)] == Border.Green)
+            if (validFields[Convert.ToInt32(Update.Description)] == BorderColor.Green)
             {
                 try {
                     Task.UpdateTaskDescription(description);
@@ -88,7 +88,7 @@ namespace Presentation.ViewModel
                 }
 
             }
-            if (validFields[(int)Update.DueDate] == Border.Green)
+            if (validFields[(int)Update.DueDate] == BorderColor.Green)
             {
                 try
                 {
@@ -100,7 +100,7 @@ namespace Presentation.ViewModel
                     Message += " " + ex.Message;
                 }
             }
-            if (validFields[(int)Update.TaskAssignee] == Border.Green)
+            if (validFields[(int)Update.TaskAssignee] == BorderColor.Green)
             {
                 try
                 {
@@ -122,16 +122,16 @@ namespace Presentation.ViewModel
         /// <summary>
         /// An enum used to represent the state of a field in the task window.
         /// </summary>
-        public enum Border { Blue=0, Green=1, Red=2 }
+        public enum BorderColor { Blue=0, Green=1, Red=2 }
 
         /// <summary>
         /// Checks if all user changes are valid. Presents relevant message boxes for every different case.
         /// </summary>
         /// <param name="fields"></param>
         /// <returns>Returns a list of borders representing the state of each field in the task window.</returns>
-        public List<Border> ConfirmChangesValidity(params Brush[] fields) {
-            List<Border> validFields = ValidFields(fields.Take(fields.Length - 1));
-            if (validFields.Contains(Border.Red)) //Checks all fields except TaskAssignee
+        public List<BorderColor> ConfirmChangesValidity(params Brush[] fields) {
+            List<BorderColor> validFields = ValidFields(fields.Take(fields.Length - 1));
+            if (validFields.Contains(BorderColor.Red)) //Checks all fields except TaskAssignee
             {
                 MessageBox.Show("Some fields were assigned invalid values. \n" +
                 "Please review your changes and try again.", "Invalid fields", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -144,15 +144,15 @@ namespace Presentation.ViewModel
                     "Would you like to proceed?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Information, MessageBoxResult.Cancel);
                     if (Result == MessageBoxResult.OK)
                     {
-                        validFields.Add(Border.Green);
+                        validFields.Add(BorderColor.Green);
                         MessageBox.Show("Task Assignee was changed successfully.", "", MessageBoxButton.OK);
                         MessageBox.Show("Task data was updated successfully!", "", MessageBoxButton.OK);
                     }
                     else
-                        validFields.Add(Border.Red);
+                        validFields.Add(BorderColor.Red);
                 }
                 else
-                    validFields.Add(Border.Blue);
+                    validFields.Add(BorderColor.Blue);
             }
             return validFields;
         }
@@ -162,15 +162,15 @@ namespace Presentation.ViewModel
         /// </summary>
         /// <param name="fields">The fields' list to check.</param>
         /// <returns>Returns a list of borders representing the state of each field in the task window.</returns>
-        private List<Border> ValidFields(IEnumerable<Brush> fields) {
-            List<Border> validFields = new List<Border>();
+        private List<BorderColor> ValidFields(IEnumerable<Brush> fields) {
+            List<BorderColor> validFields = new List<BorderColor>();
             foreach (Brush brush in fields) {
                 if (brush.Equals(Brushes.Red))
-                    validFields.Add(Border.Red);
+                    validFields.Add(BorderColor.Red);
                 else if (brush.Equals(Brushes.Green))
-                    validFields.Add(Border.Green);
+                    validFields.Add(BorderColor.Green);
                 else
-                    validFields.Add(Border.Blue);
+                    validFields.Add(BorderColor.Blue);
             }     
             return validFields;
         }

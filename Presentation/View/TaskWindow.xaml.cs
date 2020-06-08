@@ -33,9 +33,9 @@ namespace Presentation.View
         /// <param name="e"></param>
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            List<TaskViewModel.Border> validFields = ViewModel.ConfirmChangesValidity(txtTitle.BorderBrush, txtDescription.BorderBrush,
+            List<TaskViewModel.BorderColor> validFields = ViewModel.ConfirmChangesValidity(txtTitle.BorderBrush, txtDescription.BorderBrush,
                                                                                   dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
-            if (!validFields.Contains(TaskViewModel.Border.Red))
+            if (!validFields.Contains(TaskViewModel.BorderColor.Red))
             {
                 ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate, txtTaskAssignee.Text);
                 this.Close();
