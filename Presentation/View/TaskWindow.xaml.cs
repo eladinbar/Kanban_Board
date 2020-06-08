@@ -74,7 +74,7 @@ namespace Presentation.View
         }
 
         /// <summary>
-        /// Update the "dpDueDate" TextBox state according to the changes made to the field.
+        /// Update the "dpDueDate" SelectedDate state according to the changes made to the field.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
