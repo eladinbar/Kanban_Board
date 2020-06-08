@@ -65,27 +65,94 @@
         </Menu>
         
         
-        <Grid HorizontalAlignment="Left" Height="343" Margin="40,50,0,0" VerticalAlignment="Top" Width="721">
-            <StackPanel Orientation="Horizontal">
+        <Grid HorizontalAlignment="Left" Height="343" Margin="40,45,0,0" VerticalAlignment="Top" Width="721">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-                <ListBox ItemsSource="{Binding Board.Columns}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,-9,0,9.4" Width="720" >
-                    <!--<SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource Mode=FindAncestor, AncestorType=x:Type Window}}}">-->
+                <ListBox ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="721">
+                    <!-- <SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource Mode=FindAncestor, AncestorType=x:Type Window}}}">-->
                     <!--"BoardWindowColumns"-->
 
-                    <ListBox.ItemsPanel>
+                    <!--<ListBox.Template>
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="True">
+                                <Grid DockPanel.Dock="Top" Height="30">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="2"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0">Column 1</Label>
+                                    <Label Grid.Column="1">Column 2</Label>
+                                    <Label Grid.Column="2">Column 3</Label>
+                                    <Label Grid.Column="3">Column 4</Label>
+                                </Grid>
+                                <ItemsPresenter></ItemsPresenter>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </ListBox.Template>-->
+                    
+                    <ListBox.ItemsPanel>                        
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
+
                     <ListBox.ItemTemplate>
-                        <DataTemplate>                            
+
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" ></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBox Grid.Row="0" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+                                
+                                <ListBox Grid.Row="1" ItemsSource="{Binding SimpleTasks}" ScrollViewer.CanContentScroll="False" BorderBrush="Green" BorderThickness="1" >
+
+                                <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                            <!--<WrapPanel Orientation="Vertical" />-->
+                                            <!--<Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="80"></ColumnDefinition>
+                                                    <ColumnDefinition Width="80"></ColumnDefinition>
+                                                    <ColumnDefinition Width="80"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                            </Grid>-->
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+
+                                <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="Purple" BorderThickness="1" >
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" FontWeight="Bold" FontStyle="Italic"/>
+                                                    <TextBlock Text="{Binding ShortTaskDate}" />
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+
+
+                                </ListBox>
+                            </Grid>
+                        </DataTemplate>
+
+                    </ListBox.ItemTemplate>
+
+                    <!--<ListBox.ItemTemplate>
+                       <DataTemplate>                            
                             <Border BorderBrush="Black" BorderThickness="1">                                
-                                <!--<TextBox Text="{Binding Path=Name}" />-->
+                                <TextBox Text="{Binding Path=Name}" />
                                 <ListBox ItemsSource="{Binding Board.Columns.SimpleTasks}" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" >
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Vertical"/>
-                                        </ItemsPanelTemplate>
+                                        </ItemsPanelTemplate> 
                                     </ListBox.ItemsPanel>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -97,8 +164,8 @@
 
                                 </ListBox>
                             </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate> 
+                        </DataTemplate> 
+                    </ListBox.ItemTemplate> --> 
                 </ListBox>
             </StackPanel>
         </Grid>

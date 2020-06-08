@@ -10,7 +10,13 @@ namespace Presentation.Model
     {
 
         public string Title { get; set; }//???????
-        public DateTime DueDate { get; set; }//???????????
+        private DateTime DueDate { get; set; } //???????????
+        public string ShortTaskDate
+        {
+            get => this.DueDate.ToShortDateString();
+            set { ShortTaskDate = this.DueDate.ToShortDateString(); }
+        }
+        
 
         //properties of border and backgrounfd colors
 
