@@ -30,6 +30,7 @@ namespace Presentation.View
         public string CreatorEmail { get; private set; }
 
 
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! burn after reading ==>
         private static BackendController controller = new BackendController();
         private static string tempUser1Email = "maze1@mapo.com";
         private static string tempPass = "123Abc";
@@ -66,6 +67,7 @@ namespace Presentation.View
             service.AdvanceTask(tempUser1Email, 0, 3);
             service.AdvanceTask(tempUser1Email, 0, 4);
         }
+        //  <== burn after reading!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
