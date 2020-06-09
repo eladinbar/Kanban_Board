@@ -476,7 +476,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         /// <returns>Returns the respective string of the desired SQL command.</returns>
         private string CommandTextUpdate(string attributeName, params string[] keyArgs)
         {
-            string command = $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE {DalObject<T>.EmailColumnName}=\"{keyArgs[0]}\"";
+            string command = $"PRAGMA foreign_keys = ON;" +
+                $"UPDATE {_tableName} SET [{attributeName}] = @{attributeName} WHERE {DalObject<T>.EmailColumnName}=\"{keyArgs[0]}\"";
 
             switch (keyArgs.Length)
             {

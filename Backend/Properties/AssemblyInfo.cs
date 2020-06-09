@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: InternalsVisibleToAttribute("KanbanTests")]
 [assembly: InternalsVisibleTo("KanbanBoardTests")]
+[assembly: InternalsVisibleTo("BackendTesting")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
