@@ -16,6 +16,7 @@ using Presentation.Model;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using System.IO;
 
 namespace Presentation.View
 {
@@ -37,6 +38,15 @@ namespace Presentation.View
 
         private static IService service = controller.Service;
         private void CreateData() {
+            MessageBoxResult result = MessageBox.Show("Wipe dataBase?", "Clear DataBase", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    service.DeleteData();
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
             service.Register(tempUser1Email, tempPass, tempUser1Nick);
             service.Login(tempUser1Email, tempPass);
             DateTime dTime = new DateTime(2030, 03, 26);
@@ -47,14 +57,14 @@ namespace Presentation.View
             service.AddTask(tempUser1Email, "title5", "desc5", dTime);
             service.AddTask(tempUser1Email, "title6", "desc6", dTime);
 
-            service.AdvanceTask(tempUser1Email, 0, 29);
-            service.AdvanceTask(tempUser1Email, 1, 29);
+            service.AdvanceTask(tempUser1Email, 0, 1);
+            service.AdvanceTask(tempUser1Email, 1, 1);
 
-            service.AdvanceTask(tempUser1Email, 0, 30);
-            service.AdvanceTask(tempUser1Email, 1, 30);
+            service.AdvanceTask(tempUser1Email, 0, 2);
+            service.AdvanceTask(tempUser1Email, 1, 2);
 
-            service.AdvanceTask(tempUser1Email, 0, 31);
-            service.AdvanceTask(tempUser1Email, 0, 32);
+            service.AdvanceTask(tempUser1Email, 0, 3);
+            service.AdvanceTask(tempUser1Email, 0, 4);
         }
 
 

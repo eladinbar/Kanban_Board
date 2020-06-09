@@ -4,27 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="BoardWindow" Height="450" Width="800">
+        Title="BoardWindow" Height="700" Width="1300">
     <Grid>
         
         
-        <TextBox Name="SearchBox" Text="Search for a task..." FontSize="10" FontStyle="Italic" BorderThickness="1" Height="20" Width="170" VerticalAlignment="Top" Margin="-450,5,0,0" 
+        <TextBox Name="SearchBox" Text="Search for a task..." FontSize="12" FontStyle="Italic" BorderThickness="1" Height="25" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" 
                  Foreground="Gray" Background="{Binding}" TextChanged="SearchBox_TextChanged"/>
         <!--(Search: binding->grey->whiteOnClick, also for a text)-->
         
         
-        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Height="50" Width="120" Margin="337,-6,336.6,0">
-            <Label Name="MainTitleLabel" Content="Kanban Board" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" />
-            <Label x:Name="CurrentBoardEmailLabel" Content="{Binding Board.CreatorEmail}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Opacity="0.75" FontSize="10" Width="160" Height="30" Margin="0,-20"/>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Height="60" Width="200" Margin="0,-10,0,0">
+            <Label Name="MainTitleLabel" Content="Kanban Board" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="20"/>
+            <Label x:Name="CurrentBoardEmailLabel" Content="{Binding Board.CreatorEmail}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Opacity="0.75" FontSize="12" Width="160" Height="30" Margin="0,-20"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="30" >
-            <Label Name="CurrentUserEmailLabel1" Content="Current User:" FontWeight="Bold" />
-            <Label Name="CurrentUserEmailLabel2" Content="{Binding CurrentUser.Email}" HorizontalAlignment="Left"/>
+            <Label Name="CurrentUserEmailLabel1" Content="Current User:" FontWeight="Bold" FontSize="15" />
+            <Label Name="CurrentUserEmailLabel2" Content="{Binding CurrentUser.Email}" HorizontalAlignment="Left" FontSize="15"/>
         </StackPanel>
 
         
-        <Button Name="AddNewTaskButton" Content="+" FontWeight="ExtraBold" FontSize="30" FontFamily="David" Height="35" Width="35" Margin="0,0,749.6,0" VerticalAlignment="Top" BorderThickness="2" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black">
+        <Button Name="AddNewTaskButton" Content="+" FontWeight="ExtraBold" FontSize="40" FontFamily="David" Height="40" Width="40" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="2" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black">
             <Button.BitmapEffect>
                 <DropShadowBitmapEffect />
             </Button.BitmapEffect>
@@ -45,7 +45,7 @@
         </Button>
         
         
-        <Menu Height="30" Width="30" Margin="745,-5,9.6,370" Background="#FF7EEA08" Foreground="Black">            
+        <Menu Height="40" Width="40" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#FF7EEA08" Foreground="Black">            
             <Menu.ToolTip>
                 <ToolTip>
                     <TextBlock Text="{Binding CurrentUser.Nickname}" />
@@ -53,9 +53,9 @@
             </Menu.ToolTip>
             
             <MenuItem x:Name="UserMenu" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="UltraBold" 
-                  Background="{x:Null}" Height="30" Width="30" FontSize="30" FontFamily="David" >
+                  Background="{x:Null}" Height="40" Width="40" FontFamily="David" BorderBrush="Black" >
                 <MenuItem.Header>
-                    <TextBlock Text="{Binding CurrentUser.Nickname[0]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
+                    <TextBlock Text="{Binding CurrentUser.Nickname[0]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
                 </MenuItem.Header>
                 <MenuItem Header="Change password" IsCheckable="True" FontSize="12" FontWeight="Regular" />
                 <Separator />
@@ -63,16 +63,17 @@
 
             </MenuItem>
         </Menu>
-        
-        
-        <Grid HorizontalAlignment="Left" Height="343" Margin="40,45,0,0" VerticalAlignment="Top" Width="721">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
-                <ListBox ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="721">
-                    <!-- <SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource Mode=FindAncestor, AncestorType=x:Type Window}}}">-->
-                    <!--"BoardWindowColumns"-->
 
-                    <!--<ListBox.Template>
+        <!--<Grid HorizontalAlignment="Center" Height="575" Width="600" Margin="0,0,0,0" VerticalAlignment="Center">-->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="575" Width="1250">
+            <!--<DockPanel>-->
+
+            <ListBox ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250">
+                <!-- <SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource Mode=FindAncestor, AncestorType=x:Type Window}}}">-->
+                <!--"BoardWindowColumns"-->
+
+                <!--<ListBox.Template>
                         <ControlTemplate>
                             <DockPanel LastChildFill="True">
                                 <Grid DockPanel.Dock="Top" Height="30">
@@ -91,60 +92,56 @@
                             </DockPanel>
                         </ControlTemplate>
                     </ListBox.Template>-->
-                    
-                    <ListBox.ItemsPanel>                        
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
 
-                    <ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30" ></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-                                
-                                <TextBox Grid.Row="0" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
-                                
-                                <ListBox Grid.Row="1" ItemsSource="{Binding SimpleTasks}" ScrollViewer.CanContentScroll="False" BorderBrush="Green" BorderThickness="1" >
+                <ListBox.ItemTemplate>
+
+                    <DataTemplate>
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" ></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <TextBox Grid.Row="0" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+
+                            <ListBox Grid.Row="1" ItemsSource="{Binding SimpleTasks}" BorderBrush="Green" BorderThickness="1" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
 
                                 <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Vertical"/>
-                                            <!--<WrapPanel Orientation="Vertical" />-->
-                                            <!--<Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="80"></ColumnDefinition>
-                                                    <ColumnDefinition Width="80"></ColumnDefinition>
-                                                    <ColumnDefinition Width="80"></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                            </Grid>-->
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" Width="300" Height="525"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
 
                                 <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Purple" BorderThickness="1" >
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" FontWeight="Bold" FontStyle="Italic"/>
-                                                    <TextBlock Text="{Binding ShortTaskDate}" />
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="Purple" BorderThickness="1" Height="50" Width="90">
+                                            <Grid>
+                                                <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task"/>
+                                                <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
+                                                <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" />
+                                                <TextBlock Text="{Binding ShortTaskDate}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
                                 </ListBox.ItemTemplate>
 
+                            </ListBox>
 
+                        </Grid>
+                    </DataTemplate>
 
-                                </ListBox>
-                            </Grid>
-                        </DataTemplate>
+                    <!--<WrapPanel Orientation="Vertical" />-->
 
-                    </ListBox.ItemTemplate>
+                </ListBox.ItemTemplate>
 
-                    <!--<ListBox.ItemTemplate>
+                <!--<ListBox.ItemTemplate>
                        <DataTemplate>                            
                             <Border BorderBrush="Black" BorderThickness="1">                                
                                 <TextBox Text="{Binding Path=Name}" />
@@ -165,9 +162,12 @@
                                 </ListBox>
                             </Border>
                         </DataTemplate> 
-                    </ListBox.ItemTemplate> --> 
-                </ListBox>
-            </StackPanel>
-        </Grid>
+                    </ListBox.ItemTemplate> -->
+            </ListBox>
+            <!--</DockPanel>-->
+        </StackPanel>
+        <!--</Grid>-->
+        
+        
     </Grid>
 </Window>
