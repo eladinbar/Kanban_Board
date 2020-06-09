@@ -14,12 +14,26 @@ namespace Presentation.ViewModel
         private BackendController Controller;
         public UserModel CurrentUser { get; private set; }
         public BoardModel Board { get; private set; }
+        private TaskModel _selectedTask;
+        public TaskModel SelectedTask
+        {
+            get
+            {
+                return _selectedTask;
+            }
+            set
+            {
+                _selectedTask = value;
+                RaisePropertyChanged("SelectedTask");
+            }
+        }
 
         public BoardViewModel(BackendController controller, UserModel currentUser, string creatorEmail)
         {
             this.Controller = controller;
             this.CurrentUser = currentUser;
             this.Board = new BoardModel(controller, creatorEmail);
+            this._selectedTask = null;
         }
 
         public void Logout()

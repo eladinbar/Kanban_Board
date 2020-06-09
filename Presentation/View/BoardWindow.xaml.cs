@@ -89,6 +89,14 @@ namespace Presentation.View
             this.CreatorEmail = creatorEmail;            
         }
 
+        public void EditTask_Click(object sender, RoutedEventArgs e)
+        {
+            TaskModel taskToEdit = this.viewModel.SelectedTask; //how to get the object
+            if (taskToEdit == null) return;
+            TaskWindow taskEditWindow = new TaskWindow(taskToEdit, taskToEdit.ColumnOrdinal, (taskToEdit.AssigneeEmail == this.viewModel.CurrentUser.Email));
+            taskEditWindow.ShowDialog();
+            
+        }
 
         public void LogoutVerificationMessageBox(object sender, RoutedEventArgs e)
         {

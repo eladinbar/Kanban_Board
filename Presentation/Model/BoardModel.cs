@@ -30,13 +30,11 @@ namespace Presentation.Model
             {
                 var c = this.Controller.GetColumn(creatorEmail, cName);
                 ObservableCollection<TaskModel> tasks = new ObservableCollection<TaskModel>();
-                ObservableCollection<SimpleTaskModel> simpleTasks = new ObservableCollection<SimpleTaskModel>();
                 foreach (var t in c.Tasks)
                 {
-                    tasks.Add(new TaskModel(t.Id, t.Title, t.Description, t.CreationTime, t.DueDate, t.emailAssignee));
-                    simpleTasks.Add(new SimpleTaskModel(this.Controller, t.Title, t.DueDate));
+                    tasks.Add(new TaskModel(Controller,t.Id, t.Title, t.Description, t.CreationTime, t.DueDate, t.CreationTime, t.emailAssignee, i));
                 }
-                tempColumns.Add(new ColumnModel(tasks, c.Limit, c.Name, i, simpleTasks));
+                tempColumns.Add(new ColumnModel(tasks, c.Limit, c.Name, i));
                 i++;
             }
             return tempColumns;
