@@ -42,6 +42,23 @@ namespace Presentation.Model
         }
 
         /// <summary>
+        /// Add a new task.
+        /// </summary>
+        /// <param name="email">Email of the user. The user must be logged in.</param>
+        /// <param name="title">Title of the new task</param>
+        /// <param name="description">Description of the new task</param>
+        /// <param name="dueDate">The due date if the new task</param>
+        /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
+        public void AddTask(string email, string title, string description, DateTime dueDate)
+        {
+            Controller.AddTask(email, title, description, dueDate);
+            this.AssigneeEmail = email;
+            this.Title = title;
+            this.Description = Description;
+            this.DueDate = dueDate;
+        }
+
+        /// <summary>
         /// Update task title.
         /// </summary>
         /// <param name="title">New title for the task</param>
@@ -49,7 +66,6 @@ namespace Presentation.Model
         {
             Controller.UpdateTaskTitle(AssigneeEmail, ColumnOrdinal, ID, title);
             this.Title = title;
-            RaisePropertyChanged("Title");
         }
 
         /// <summary>
@@ -60,7 +76,6 @@ namespace Presentation.Model
         {
             Controller.UpdateTaskDescription(AssigneeEmail, ColumnOrdinal, ID, description);
             this.Description = description;
-            RaisePropertyChanged("Description");
         }
 
         /// <summary>
@@ -75,7 +90,6 @@ namespace Presentation.Model
         {
             Controller.UpdateTaskDueDate(AssigneeEmail, ColumnOrdinal, ID, dueDate);
             this.DueDate = dueDate;
-            RaisePropertyChanged("DueDate");
         }
 
         /// <summary>
@@ -86,7 +100,6 @@ namespace Presentation.Model
         {
             Controller.AssignTask(AssigneeEmail, ColumnOrdinal, ID, emailAssignee);
             this.AssigneeEmail = emailAssignee;
-            RaisePropertyChanged("TaskAssignee");
         }
     }
 }

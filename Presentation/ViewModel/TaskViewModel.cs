@@ -29,7 +29,7 @@ namespace Presentation.ViewModel
         public DateTime CreationTime { get; }
         public DateTime DueDate { get; set; }
         public DateTime LastChangedDate { get; }
-        public string TaskAssigneeUsername { get; set; }
+        public string AssigneeEmail { get; set; }
         public bool IsAssignee { get; set; }
         private string _message;
         public string Message { get => _message; set { _message = value; RaisePropertyChanged("Message"); } }
@@ -49,7 +49,7 @@ namespace Presentation.ViewModel
              this.CreationTime = Task.CreationTime;
              this.DueDate = Task.DueDate;
              this.LastChangedDate = Task.LastChangedDate;
-             this.TaskAssigneeUsername = Task.AssigneeEmail;
+             this.AssigneeEmail = Task.AssigneeEmail;
              this.IsAssignee = isAssignee;
              this.Message = "";
         }
@@ -105,15 +105,38 @@ namespace Presentation.ViewModel
                 try
                 {
                     Task.AssignTask(taskAssignee);
-                    this.TaskAssigneeUsername = taskAssignee;
+                    this.AssigneeEmail = taskAssignee;
                     RaisePropertyChanged("TaskAssigneeUsername");
                 }
                 catch(Exception ex) {
                     Message += " " + ex.Message;
                 }
             }
+            if (Message.Length > 0)
+                MessageBox.Show(Message);
         }
-        
+
+        /// <summary>
+        /// Adds a new task to the Kanban board.
+        /// </summary>
+        /// <param name="assigneeEmail">The email associated with the user to assign this task to.</param>
+        /// <param name="title">The title to add this task with.</param>
+        /// <param name="description">The description to add this task with.</param>
+        /// <param name="dueDate">The due date this task will be due by.</param>
+        public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate)
+        {
+            try {
+                Task.AddTask(assigneeEmail, title, description, dueDate);
+                this.AssigneeEmail = assigneeEmail; RaisePropertyChanged("TaskAssignee");
+                this.Title = title;                 RaisePropertyChanged("Title");
+                this.Description = description;     RaisePropertyChanged("Description");
+                this.DueDate = dueDate;             RaisePropertyChanged("DueDate");
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         /// <summary>
         /// An enum used to represent 
         /// </summary>
@@ -250,7 +273,7 @@ namespace Presentation.ViewModel
         /// <param name="txtTaskAssignee">The text box to assign the state to.</param>
         internal void ChangedTaskAssignee(TextBox txtTaskAssignee, Label assigneeMessage)
         {
-            if (!txtTaskAssignee.Text.Equals(TaskAssigneeUsername))
+            if (!txtTaskAssignee.Text.Equals(AssigneeEmail))
                 txtTaskAssignee.BorderBrush = VALID_BORDER_COLOR;
             else
                 txtTaskAssignee.BorderBrush = ORIGINAL_BORDER_COLOR;

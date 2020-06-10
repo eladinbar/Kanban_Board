@@ -19,11 +19,15 @@ namespace Presentation.View
         /// <param name="taskModel">The task this window represents.</param>
         /// <param name="columnOrdinal">The column ordinal the task this window represents belongs to.</param>
         /// <param name="isAssignee">The token used to decide whether the current user can make any task modifications.</param>
-        public TaskWindow(TaskModel taskModel, int columnOrdinal, bool isAssignee)
+        public TaskWindow(TaskModel taskModel, int columnOrdinal, bool isAssignee, bool newTask)
         {
             InitializeComponent();
             ViewModel = new TaskViewModel(taskModel, columnOrdinal, isAssignee);
             DataContext = ViewModel;
+            if (newTask) {
+                Confirm.Visibility = Visibility.Collapsed;
+                AddTask.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -39,8 +43,7 @@ namespace Presentation.View
             {
                 ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate, txtTaskAssignee.Text);
                 this.Close();
-            }
-            
+            }     
         }
 
         /// <summary>
@@ -51,6 +54,22 @@ namespace Presentation.View
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        /// <summary>
+        /// Adds a new task to the Kanban Board.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddTask_Click(object sender, RoutedEventArgs e)
+        {
+            List<TaskViewModel.BorderColor> validFields = ViewModel.ConfirmChangesValidity(txtTitle.BorderBrush, txtDescription.BorderBrush,
+                                                                                      dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
+            if (!validFields.Contains(TaskViewModel.BorderColor.Red))
+            {
+                ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate);
+                this.Close();
+            }
         }
 
         /// <summary>
