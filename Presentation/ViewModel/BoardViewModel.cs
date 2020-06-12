@@ -17,14 +17,23 @@ namespace Presentation.ViewModel
         private TaskModel _selectedTask;
         public TaskModel SelectedTask
         {
-            get
-            {
-                return _selectedTask;
-            }
+            get =>  _selectedTask;
             set
             {
                 _selectedTask = value;
+                IsSelected = value != null;
                 RaisePropertyChanged("SelectedTask");
+            }
+        }
+
+        private bool _isSelected = false;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                RaisePropertyChanged("IsSelected");
             }
         }
 
@@ -34,6 +43,19 @@ namespace Presentation.ViewModel
             this.CurrentUser = currentUser;
             this.Board = new BoardModel(controller, creatorEmail);
             this._selectedTask = null;
+        }
+
+        public void AdvanceTask(int columnOrdinal, int taskId)
+        {
+            try
+            {
+                this.Controller.AdvanceTask(Board.CreatorEmail, columnOrdinal, taskId);
+                this.Board.AdvanceTask(this.SelectedTask, columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public void Logout()

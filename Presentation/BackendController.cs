@@ -70,6 +70,14 @@ namespace Presentation
             }
         }
 
+        internal void AdvanceTask(string email, int columnOrdinal, int taskId)
+        {
+            Response r = this.Service.AdvanceTask(email, columnOrdinal, taskId);
+            if (r.ErrorOccured) throw new Exception(r.ErrorMessage);
+
+
+        }
+
         /// <summary>
         /// Update the due date of a task
         /// </summary>

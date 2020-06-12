@@ -40,11 +40,20 @@ namespace Presentation.Model
             return tempColumns;
         }
 
+        public void AdvanceTask(TaskModel taskToAdvance, int columnOrdinal)
+        {
+            this.Columns.ElementAt(columnOrdinal).Tasks.Remove(taskToAdvance);
+            this.Columns.ElementAt(columnOrdinal + 1).Tasks.Add(taskToAdvance);
+            taskToAdvance.ColumnOrdinal = taskToAdvance.ColumnOrdinal + 1;
+            //RaisePropertChanged("Columns")??????????????????????????????????????????????????????????????????
+        }
+      
+
         //private void HandleChange(object sender, NotifyCollectionChangedEventArgs e) //?????? dont know if needed??????????????
         //{
         //    if (e.Action == NotifyCollectionChangedAction.Remove)
         //    {
-                
+
         //        foreach (ColumnModel tempColumn in e.OldItems) //e.OldItems - the list of Objects that have been changed??????????
         //        {
         //            //Controller.RemoveMessage(user.Email, y.Id);

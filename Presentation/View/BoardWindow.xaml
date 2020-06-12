@@ -111,8 +111,8 @@
 
                             <TextBox Grid.Row="0" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
 
-                            <ListBox Grid.Row="1" ItemsSource="{Binding Tasks}" BorderBrush="Green" BorderThickness="1" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
-                                     SelectedItem="{Binding SelectedTask, Mode=TwoWay}">
+                            <ListBox Grid.Row="1" ItemsSource="{Binding Tasks, Mode=TwoWay}" BorderBrush="Green" BorderThickness="1" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
+                                     SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
 
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -124,9 +124,9 @@
                                     <DataTemplate>
                                         <Border BorderBrush="Purple" BorderThickness="1" Height="50" Width="90">
                                             <Grid>
-                                                <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task"/>
+                                                <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}" MouseDoubleClick="AdvanceTask_DoubleClick"/>
                                                 <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
-                                                <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" MouseDoubleClick="EditTask_Click" />
+                                                <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}" MouseDoubleClick="EditTask_DoubleClick" />
                                                 <TextBlock Text="{Binding ShortTaskDate}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                             </Grid>
                                         </Border>
