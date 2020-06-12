@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="BoardWindow" Height="700" Width="1300">
+        Title="BoardWindow" Height="700" Width="1300">    
     <Grid>
         
         
@@ -24,7 +24,8 @@
         </StackPanel>
 
         
-        <Button Name="AddNewTaskButton" Content="+" FontWeight="ExtraBold" FontSize="40" FontFamily="David" Height="40" Width="40" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="2" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black">
+        <Button Name="AddTaskButton" Content="+" FontWeight="ExtraBold" FontSize="40" FontFamily="David" Height="40" Width="40" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="2" 
+                Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black" MouseDoubleClick="AddTask_DoubleClick">
             <Button.BitmapEffect>
                 <DropShadowBitmapEffect />
             </Button.BitmapEffect>
@@ -45,14 +46,14 @@
         </Button>
         
         
-        <Menu Height="40" Width="40" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#FF7EEA08" Foreground="Black">            
+        <Menu Name="UserMenu" Height="40" Width="40" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#FF7EEA08" Foreground="Black">            
             <Menu.ToolTip>
                 <ToolTip>
                     <TextBlock Text="{Binding CurrentUser.Nickname}" />
                 </ToolTip>
             </Menu.ToolTip>
             
-            <MenuItem x:Name="UserMenu" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="UltraBold" 
+            <MenuItem x:Name="UserMenuItem" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="UltraBold" 
                   Background="{x:Null}" Height="40" Width="40" FontFamily="David" BorderBrush="Black" >
                 <MenuItem.Header>
                     <TextBlock Text="{Binding CurrentUser.Nickname[0]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
@@ -66,43 +67,73 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="575" Width="1250">
 
-            <ListBox ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250">
-
+            <ListBox Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        <StackPanel Name="ColumnsListBoxPresentationDefinition" Orientation="Horizontal" HorizontalAlignment="Center" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
+
+                <!--Selection border of each Column won't be visible-->
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Focusable" Value="False"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
 
                 <ListBox.ItemTemplate>
 
                     <DataTemplate>
-                        <Grid>
+                        <Grid Name="TasksGrid">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" ></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <TextBox Grid.Row="0" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+                            <TextBox Name="ColumnName" Grid.Row="0" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
 
-                            <ListBox Grid.Row="1" ItemsSource="{Binding Tasks, Mode=TwoWay}" BorderBrush="Green" BorderThickness="1" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
-                                     SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                            <ListBox Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding Tasks, Mode=TwoWay}" BorderBrush="Green" BorderThickness="1" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+
+                                <!--SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"-->
 
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Vertical" Width="300" Height="525"/>
+                                        <StackPanel Name="TasksListBoxPresentationDefinition" Orientation="Vertical" Width="300" Height="525"/>
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
 
+                                <!--Selection border of each Column won't be visible-->
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Focusable" Value="False"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border BorderBrush="Purple" BorderThickness="1" Height="50" Width="90">
+                                        <Border Name="TaskInColumnBorder" BorderBrush="Purple" BorderThickness="1" Height="50" Width="290" HorizontalAlignment="Center">
                                             <Grid>
-                                                <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}" MouseDoubleClick="AdvanceTask_DoubleClick"/>
-                                                <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
-                                                <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}" MouseDoubleClick="EditTask_DoubleClick" />
-                                                <TextBlock Text="{Binding DueDate}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                                                <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" MouseDoubleClick="AdvanceTask_DoubleClick"/>
+                                                <!--IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}"-->
+                                                
+                                                <TextBlock x:Name="TaskTitle" Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" >                                                    
+                                                    
+                                                    <!--<TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="{Binding Title}" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding ElementName=EditTask_Button}" Value="" >
+                                                                    <Setter Property="Text" Value="{Binding Title}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>-->
+                                                </TextBlock>
+                                                
+                                                <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" MouseDoubleClick="EditTask_DoubleClick" />
+                                                <TextBlock Name="TaskDueDate" Text="{Binding DueDate, StringFormat=dd/MM/yyyy}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>

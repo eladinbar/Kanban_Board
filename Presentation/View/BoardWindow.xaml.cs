@@ -66,6 +66,11 @@ namespace Presentation.View
 
             service.AdvanceTask(tempUser1Email, 0, 3);
             service.AdvanceTask(tempUser1Email, 0, 4);
+            service.AddColumn(tempUser1Email, 3, "added1");
+            service.AddColumn(tempUser1Email, 4, "added2");
+            service.AddColumn(tempUser1Email, 5, "added3");
+
+
         }
         //  <== burn after reading!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -89,20 +94,22 @@ namespace Presentation.View
             this.CreatorEmail = creatorEmail;            
         }
 
-        public void EditTask_DoubleClick(object sender, RoutedEventArgs e)
+        public void AddTask_DoubleClick(object sender, RoutedEventArgs e)
         {
-            TaskModel taskToEdit = this.viewModel.SelectedTask; //how to get the object
-            if (taskToEdit == null) return;
-            TaskWindow taskEditWindow = new TaskWindow(taskToEdit, taskToEdit.ColumnOrdinal, (taskToEdit.AssigneeEmail == this.viewModel.CurrentUser.Email), false);
-            taskEditWindow.ShowDialog();
-            
+            this.viewModel.AddTask();
         }
 
-        public void AdvanceTask_DoubleClick(object sender, RoutedEventArgs e)
+
+        public void EditTask_DoubleClick(object sender, RoutedEventArgs e) //move to BoardViewModel
         {
-            TaskModel taskToEdit = this.viewModel.SelectedTask; //how to get the object
-            if (taskToEdit == null) return;
-            this.viewModel.AdvanceTask(taskToEdit.ColumnOrdinal, taskToEdit.ID);
+            TaskModel taskToEdit = ((Button)sender).DataContext as TaskModel;
+            this.viewModel.EditTask(taskToEdit);           
+        }
+
+        public void AdvanceTask_DoubleClick(object sender, RoutedEventArgs e) //move to BoardViewModel
+        {
+            TaskModel taskToAdvance = ((Button)sender).DataContext as TaskModel;
+            this.viewModel.AdvanceTask(taskToAdvance);       
 
         }
 
@@ -138,6 +145,7 @@ namespace Presentation.View
         {
 
         }
+
 
         /*private void EditTaskButton_Click((object sender, RoutedEventArgs e){
           TaskWindow tW = new TaskWindow (controller, currentUser, creatorEmail);

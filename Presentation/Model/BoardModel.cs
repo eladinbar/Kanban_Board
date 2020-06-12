@@ -18,11 +18,9 @@ namespace Presentation.Model
         {
             this.CreatorEmail = creatorEmail;
             this.Columns = this.CreateColumns(creatorEmail);
-            //this.Columns.CollectionChanged += HandleChange; //do we realy need HandleChange?????????????????
         }
 
         private ObservableCollection<ColumnModel> CreateColumns(string creatorEmail)  //receives SL.Columns and its list of Tasks and transform them into PL.Columns - 
-            //has to be here or in ViewModel / BackendControlller??????????
         {
             ObservableCollection<ColumnModel> tempColumns = new ObservableCollection<ColumnModel>();
             int i = 0;
@@ -45,23 +43,11 @@ namespace Presentation.Model
             this.Columns.ElementAt(columnOrdinal).Tasks.Remove(taskToAdvance);
             this.Columns.ElementAt(columnOrdinal + 1).Tasks.Add(taskToAdvance);
             taskToAdvance.ColumnOrdinal = taskToAdvance.ColumnOrdinal + 1;
-            //RaisePropertChanged("Columns")??????????????????????????????????????????????????????????????????
         }
-      
 
-        //private void HandleChange(object sender, NotifyCollectionChangedEventArgs e) //?????? dont know if needed??????????????
-        //{
-        //    if (e.Action == NotifyCollectionChangedAction.Remove)
-        //    {
-
-        //        foreach (ColumnModel tempColumn in e.OldItems) //e.OldItems - the list of Objects that have been changed??????????
-        //        {
-        //            //Controller.RemoveMessage(user.Email, y.Id);
-        //        }
-
-        //    }
-        //}
-
-
+        internal void AddNewTask(TaskModel newTask)
+        {
+            this.Columns.ElementAt(0).Tasks.Add(newTask);
+        }
     }
 }
