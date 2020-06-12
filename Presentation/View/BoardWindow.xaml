@@ -64,34 +64,9 @@
             </MenuItem>
         </Menu>
 
-
-        <!--<Grid HorizontalAlignment="Center" Height="575" Width="600" Margin="0,0,0,0" VerticalAlignment="Center">-->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="575" Width="1250">
-            <!--<DockPanel>-->
 
             <ListBox ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250">
-                <!-- <SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource Mode=FindAncestor, AncestorType=x:Type Window}}}">-->
-                <!--"BoardWindowColumns"-->
-
-                <!--<ListBox.Template>
-                        <ControlTemplate>
-                            <DockPanel LastChildFill="True">
-                                <Grid DockPanel.Dock="Top" Height="30">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100"></ColumnDefinition>
-                                        <ColumnDefinition Width="30"></ColumnDefinition>
-                                        <ColumnDefinition Width="2"></ColumnDefinition>
-                                        <ColumnDefinition Width="30"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0">Column 1</Label>
-                                    <Label Grid.Column="1">Column 2</Label>
-                                    <Label Grid.Column="2">Column 3</Label>
-                                    <Label Grid.Column="3">Column 4</Label>
-                                </Grid>
-                                <ItemsPresenter></ItemsPresenter>
-                            </DockPanel>
-                        </ControlTemplate>
-                    </ListBox.Template>-->
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -127,7 +102,7 @@
                                                 <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}" MouseDoubleClick="AdvanceTask_DoubleClick"/>
                                                 <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic"/>
                                                 <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}" MouseDoubleClick="EditTask_DoubleClick" />
-                                                <TextBlock Text="{Binding ShortTaskDate}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                                                <TextBlock Text="{Binding DueDate}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
@@ -138,37 +113,10 @@
                         </Grid>
                     </DataTemplate>
 
-                    <!--<WrapPanel Orientation="Vertical" />-->
-
                 </ListBox.ItemTemplate>
 
-                <!--<ListBox.ItemTemplate>
-                       <DataTemplate>                            
-                            <Border BorderBrush="Black" BorderThickness="1">                                
-                                <TextBox Text="{Binding Path=Name}" />
-                                <ListBox ItemsSource="{Binding Board.Columns.SimpleTasks}" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" >
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Vertical"/>
-                                        </ItemsPanelTemplate> 
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="1">
-                                                <TextBox Text="{Binding Path=Title}" />
-                                            </Border>
-                                            </DataTemplate>
-                                    </ListBox.ItemTemplate>
-
-                                </ListBox>
-                            </Border>
-                        </DataTemplate> 
-                    </ListBox.ItemTemplate> -->
             </ListBox>
-            <!--</DockPanel>-->
         </StackPanel>
-        <!--</Grid>-->
-        
-        
+
     </Grid>
 </Window>

@@ -93,7 +93,7 @@ namespace Presentation.View
         {
             TaskModel taskToEdit = this.viewModel.SelectedTask; //how to get the object
             if (taskToEdit == null) return;
-            TaskWindow taskEditWindow = new TaskWindow(taskToEdit, taskToEdit.ColumnOrdinal, (taskToEdit.AssigneeEmail == this.viewModel.CurrentUser.Email));
+            TaskWindow taskEditWindow = new TaskWindow(taskToEdit, taskToEdit.ColumnOrdinal, (taskToEdit.AssigneeEmail == this.viewModel.CurrentUser.Email), false);
             taskEditWindow.ShowDialog();
             
         }
