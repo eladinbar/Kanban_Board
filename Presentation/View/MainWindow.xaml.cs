@@ -1,5 +1,6 @@
-﻿using Presentation.Model;
-using Presentation.ViewModel;
+﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using Presentation.Model;
+using Presentation.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,50 +16,31 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Presentation.View
+namespace Presentation
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        private MainViewModal viewModal;
-
+        TaskWindow window;
+        BackendController Controller;
+        
+        //Mock MainWindow for testing only
         public MainWindow()
         {
             InitializeComponent();
-            viewModal = new MainViewModal();
-            DataContext = viewModal;
-        }
-        public MainWindow(BackendController controller)
-        {
-            InitializeComponent();
-            viewModal = new MainViewModal(controller);
-            DataContext = viewModal;
+            this.Controller = new BackendController();
+            UserModel user = new UserModel(Controller, "username", "nickname");
+            window = null;
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private void Open_Click(object sender, RoutedEventArgs e)
         {
-            UserModel user = viewModal.Login();
-            if(user != null)
-            {
-                //BoardWindow bw = new BoardWindow(user);
-                //bw.Show();
-                Close();
-            }
-        }
-
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
-        {
-            RegistrationWindow registration = new RegistrationWindow(viewModal.Controller);
-            registration.Show();
-            this.Close();
-        }
-
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            viewModal.Password = PasswordBox.Password;
+            //if (window.Closed())
+            window = new TaskWindow(new TaskModel(new BackendController(), 1, "title", "description",
+            DateTime.Now, new DateTime(2021, 2, 1), DateTime.Now, "email", 0), 0, true, true);
+            window.ShowDialog();
         }
     }
 }

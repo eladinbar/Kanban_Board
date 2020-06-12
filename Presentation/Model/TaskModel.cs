@@ -12,14 +12,9 @@ namespace Presentation.Model
         public string Description { get; set; }
         public DateTime CreationTime { get; }
         public DateTime DueDate { get; set; }
-        public DateTime LastChangedDate { get; }
+        public DateTime LastChangedDate{ get; }
         public string AssigneeEmail { get; set; }
         public int ColumnOrdinal { get; set; }
-        public string ShortTaskDate
-        {
-            get => this.DueDate.ToShortDateString();
-            set { ShortTaskDate = this.DueDate.ToShortDateString(); }
-        }
 
         /// <summary>
         /// The task model constructor. Initializes all task relevant fields in addition to
@@ -34,9 +29,8 @@ namespace Presentation.Model
         /// <param name="LastChangedDate">The task's last changed date.</param>
         /// <param name="AssigneeEmail">The task assignee's email address.</param>
         /// <param name="columnOrdinal">The column ordinal this task is associated with.</param>
-        public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate,
-        DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal) : base(Controller)
-        {
+        public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate, 
+        DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal) : base(Controller) {
             this.ID = ID;
             this.Title = Title;
             this.Description = Description;
@@ -48,6 +42,23 @@ namespace Presentation.Model
         }
 
         /// <summary>
+        /// Add a new task.
+        /// </summary>
+        /// <param name="email">Email of the user. The user must be logged in.</param>
+        /// <param name="title">Title of the new task</param>
+        /// <param name="description">Description of the new task</param>
+        /// <param name="dueDate">The due date if the new task</param>
+        /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
+        public void AddTask(string email, string title, string description, DateTime dueDate)
+        {
+            Controller.AddTask(email, title, description, dueDate);
+            this.AssigneeEmail = email;
+            this.Title = title;
+            this.Description = Description;
+            this.DueDate = dueDate;
+        }
+
+        /// <summary>
         /// Update task title.
         /// </summary>
         /// <param name="title">New title for the task</param>
@@ -55,7 +66,6 @@ namespace Presentation.Model
         {
             Controller.UpdateTaskTitle(AssigneeEmail, ColumnOrdinal, ID, title);
             this.Title = title;
-            RaisePropertyChanged("Title");
         }
 
         /// <summary>
@@ -66,7 +76,6 @@ namespace Presentation.Model
         {
             Controller.UpdateTaskDescription(AssigneeEmail, ColumnOrdinal, ID, description);
             this.Description = description;
-            RaisePropertyChanged("Description");
         }
 
         /// <summary>
@@ -81,7 +90,6 @@ namespace Presentation.Model
         {
             Controller.UpdateTaskDueDate(AssigneeEmail, ColumnOrdinal, ID, dueDate);
             this.DueDate = dueDate;
-            RaisePropertyChanged("DueDate");
         }
 
         /// <summary>
@@ -92,7 +100,6 @@ namespace Presentation.Model
         {
             Controller.AssignTask(AssigneeEmail, ColumnOrdinal, ID, emailAssignee);
             this.AssigneeEmail = emailAssignee;
-            RaisePropertyChanged("TaskAssignee");
         }
     }
 }

@@ -5,49 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Presentation.View"
         mc:Ignorable="d"
-        Title="Task Window" Height="500" Width="800">
+        Title="Task Window" Height="680" Width="800">
     <Grid Margin="10">
         <StackPanel Orientation="Vertical">
             <Grid Margin="0,0,-0.4,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="145"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="500"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="300"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <Label Content="ID" FontSize="16" Grid.Column="0" Grid.Row="0"/>
-                <Label Content="{Binding Path=ID}"  Grid.Column="1" Grid.Row="0" Margin="0,5,0,5"/>
+                <Label Content="Task ID" FontSize="16" Grid.Column="0" Grid.Row="0"/>
+                <Label Content="{Binding Path=ID}" Grid.Row="0" Margin="64,2,9.8,8"/>
                 <Label Name="idMessage" Foreground="Red" Grid.Column="2" Grid.Row="0"/>
-                <Label Content="Title" FontSize="16" Grid.Column="0" Grid.Row="1"/>
-                <TextBox Name="txtTitle" Text="{Binding Path=Title, Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Title_Changed" BorderBrush="{Binding Path=TitleBorder}" Grid.Column="1" Grid.Row="1" Margin="0,5,0,5"/>
-                <Label Name="titleMessage" Foreground="Red" Grid.Column="2" Grid.Row="1"/>
-                <Label Content="Description" FontSize="16" Grid.Column="0" Grid.Row="2"/>
-                <TextBox Name="txtDescription" Text="{Binding Path=Description, Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Description_Changed" BorderBrush="{Binding Path=DescriptionBorder}" Grid.Column="1" Grid.Row="2" Margin="0,5,0,5"/>
-                <Label Name="descMessage" Foreground="Red" Grid.Column="2" Grid.Row="2"/>
-                <Label Content="Due Date" FontSize="16" Grid.Column="0" Grid.Row="3"/>
-                <DatePicker Name="dpDueDate" SelectedDate="{Binding Path=DueDate, StringFormat='dd/mm/yyyy', Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" SelectedDateChanged="DueDate_Changed" Grid.Column="1" Grid.Row="3" Margin="0,5,0,5"/>
+                <Label Content="Title" FontSize="16" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="71.2,0,329.4,0"/>
+                <TextBox Name="txtTitle" Text="{Binding Path=Title, Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Title_Changed" BorderBrush="{Binding Path=TitleBorder}" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="0" Margin="134.2,5,329.4,5" Grid.ColumnSpan="2"/>
+                <Label Name="titleMessage" Foreground="Red" Grid.Column="1" Grid.ColumnSpan="2" Margin="499.2,0,0.4,0"/>
+                <Label Content="Description" FontSize="16" Grid.Column="1" Grid.Row="1" Margin="0.2,0,354.8,0"/>
+                <TextBox Name="txtDescription" Text="{Binding Path=Description, Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Description_Changed" BorderBrush="{Binding Path=DescriptionBorder}" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="1" Margin="0.2,39,9.8,0"/>
+                <Label Name="descMessage" Foreground="Red" Grid.Column="1" Grid.Row="1" Margin="499.2,260,1.4,0" Grid.ColumnSpan="2"/>
+                <Label Content="Due Date" FontSize="16" Grid.Column="0" Grid.Row="3" RenderTransformOrigin="2.718,5.24" Grid.ColumnSpan="2" Margin="0,0,499.8,0"/>
+                <DatePicker Name="dpDueDate" SelectedDate="{Binding Path=DueDate, StringFormat='dd/mm/yyyy', Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" SelectedDateChanged="DueDate_Changed" Grid.Column="1" Grid.Row="3" Margin="0.2,6,199.8,4"/>
                 <Label Name="dueMessage" Content="{Binding Path=dpMessage}" Foreground="Red" Grid.Column="2" Grid.Row="3"/>
-                <Label Content="Creation Time" FontSize="16" Grid.Column="0" Grid.Row="4"/>
-                <Label Content="{Binding Path=CreationTime}" ContentStringFormat="dd/MM/yyyy" Grid.Column="1" Grid.Row="4" Margin="0,5,0,5"/>
-                <Label Content="Last Changed Date" FontSize="16" Grid.Column="0" Grid.Row="5"/>
-                <Label Content="{Binding Path=LastChangedDate}" ContentStringFormat="dd/MM/yyyy" Grid.Column="1" Grid.Row="5" Margin="0,5,0,5"/>
-                <Label Content="Task Assignee" FontSize="16" Grid.Column="0" Grid.Row="7"/>
-                <TextBox Name="txtTaskAssignee" Text="{Binding Path=TaskAssigneeUsername, Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" TextChanged="TaskAssignee_Changed" Grid.Column="1" Grid.Row="7" Margin="0,5,0,5"/>
+                <Label Content="Creation Time" FontSize="16" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,499.8,35" Grid.RowSpan="2"/>
+                <Label Content="{Binding Path=CreationTime}" ContentStringFormat="dd/MM/yyyy" Grid.Row="2" Margin="144,8,342.8,2" Grid.ColumnSpan="2"/>
+                <Label Content="Last Changed Date" FontSize="16" Grid.Column="1" Grid.Row="2" Margin="350.2,5,4.8,35" Grid.RowSpan="2"/>
+                <Label Content="{Binding Path=LastChangedDate}" ContentStringFormat="dd/MM/yyyy" Grid.Column="2" Grid.Row="2" Margin="0.2,9,20.4,1"/>
+                <Label Content="Task Assignee" FontSize="16" Grid.Column="1" Grid.Row="5" Margin="5.2,0,349.8,0"/>
+                <TextBox Name="txtTaskAssignee" Text="{Binding Path=TaskAssigneeUsername, Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" TextChanged="TaskAssignee_Changed" Grid.Column="1" Grid.Row="5" Margin="134.2,6,9.8,4"/>
                 <Label Name="assigneeMessage" Foreground="Red" Grid.Column="2" Grid.Row="7"/>
-                <Label Name="lMessage" Content="{Binding Path=Message}" Foreground="Red" Grid.Column="1" Grid.Row="8"/>
+                <Label Name="lMessage" Content="{Binding Path=Message}" Foreground="Red" Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2" Margin="0.2,0,329.4,0"/>
             </Grid>
             <StackPanel Orientation="Horizontal" Margin="243,30,240.6,0">
-                <Button Content="Confirm Changes" x:Name="Confirm" Click="Confirm_Click" Margin="15" FontSize="16" Width="130"/>
+                <Button Content="Save Task" x:Name="AddTask" Click="AddTask_Click" Visibility="Collapsed" Margin="15" FontSize="16" Width="130"/>
+                <Button Content="Confirm Changes" x:Name="Confirm" Click="Confirm_Click" Visibility="{Binding NewTask}" Margin="15" FontSize="16" Width="130"/>
                 <Button Content="Cancel" x:Name="Cancel" Click="Cancel_Click" Margin="15" FontSize="16" Width="100" IsDefault="True"/>
             </StackPanel>
         </StackPanel>
