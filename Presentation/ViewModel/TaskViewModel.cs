@@ -23,35 +23,44 @@ namespace Presentation.ViewModel
 
         private BackendController Controller;
         private TaskModel Task;
-        public int ID { get; }
+        public int ID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime CreationTime { get; }
+        public DateTime CreationTime { get; set; }
         public DateTime DueDate { get; set; }
-        public DateTime LastChangedDate { get; }
+        public DateTime LastChangedDate { get; set; }
         public string AssigneeEmail { get; set; }
         public bool IsAssignee { get; set; }
-        private string _message;
-        public string Message { get => _message; set { _message = value; RaisePropertyChanged("Message"); } }
 
         /// <summary>
-        /// The TaskViewModel constructor. Initializes all bound fields as well as its respective TaskModel and BackendController.
+        /// A TaskViewModel constructor for an existing task. Initializes all bound fields as well as its respective TaskModel and BackendController.
         /// </summary>
-        /// <param name="Task">The TaskModel representing this TaskViewModel.</param>
-        /// <param name="columnOrdinal">The column ordinal that contains the task this view model represents.</param>
+        /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
+        /// <param name="task">The TaskModel representing this TaskViewModel.</param>
         /// <param name="isAssignee">A verification variable to ensure task editing can only be performed by its assignee.</param>
-        public TaskViewModel(TaskModel Task, int columnOrdinal, bool isAssignee) {
-             this.Controller = Task.Controller;
-             this.Task = Task;
-             this.ID = Task.ID;
-             this.Title = Task.Title;
-             this.Description = Task.Description;
-             this.CreationTime = Task.CreationTime;
-             this.DueDate = Task.DueDate;
-             this.LastChangedDate = Task.LastChangedDate;
-             this.AssigneeEmail = Task.AssigneeEmail;
+        public TaskViewModel(BackendController backendController, TaskModel task, bool isAssignee) { //columnOrdinal is unnecessary?
+             this.Controller = backendController;
+             this.Task = task;
+             this.ID = task.ID;
+             this.Title = task.Title;
+             this.Description = task.Description;
+             this.CreationTime = task.CreationTime;
+             this.DueDate = task.DueDate;
+             this.LastChangedDate = task.LastChangedDate;
+             this.AssigneeEmail = task.AssigneeEmail;
              this.IsAssignee = isAssignee;
-             this.Message = "";
+        }
+
+        /// <summary>
+        /// A TaskViewModel constructor for a new task. Assigns default values to all bound fields and initializes the BackendController field.
+        /// </summary>
+        /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
+        /// <param name="assigneeEmail">The email of the creator of the task.</param>
+        public TaskViewModel(BackendController backendController, string assigneeEmail)
+        {
+            this.Controller = backendController;
+            this.AssigneeEmail = assigneeEmail;
+            this.IsAssignee = true;
         }
 
         /// <summary>
@@ -63,17 +72,16 @@ namespace Presentation.ViewModel
         /// <param name="dueDate">The due date of the task to update.</param>
         /// <param name="taskAssignee">The assignee of the task to update.</param>
         public void UpdateTask(List<BorderColor> validFields, string title, string description, DateTime dueDate, string taskAssignee) {
-            Message = "";
+            string message = "";
             if (validFields[Convert.ToInt32(Update.Title)] == BorderColor.Green)
             {
                 try
                 {
                     Task.UpdateTaskTitle(title);
                     this.Title = title;
-                    RaisePropertyChanged("Title");
                 }
                 catch(Exception ex) {
-                    Message += ex.Message;
+                    message += ex.Message;
                 }
             }
             if (validFields[Convert.ToInt32(Update.Description)] == BorderColor.Green)
@@ -81,10 +89,9 @@ namespace Presentation.ViewModel
                 try {
                     Task.UpdateTaskDescription(description);
                     this.Description = description;
-                    RaisePropertyChanged("Description");
                 }
                 catch(Exception ex) {
-                    Message += " " + ex.Message;
+                    message += "\n" + ex.Message;
                 }
 
             }
@@ -94,10 +101,9 @@ namespace Presentation.ViewModel
                 {
                     Task.UpdateTaskDueDate(dueDate);
                     this.DueDate = dueDate;
-                    RaisePropertyChanged("DueDate");
                 }
                 catch(Exception ex) {
-                    Message += " " + ex.Message;
+                    message += "\n" + ex.Message;
                 }
             }
             if (validFields[(int)Update.TaskAssignee] == BorderColor.Green)
@@ -106,14 +112,13 @@ namespace Presentation.ViewModel
                 {
                     Task.AssignTask(taskAssignee);
                     this.AssigneeEmail = taskAssignee;
-                    RaisePropertyChanged("TaskAssigneeUsername");
                 }
                 catch(Exception ex) {
-                    Message += " " + ex.Message;
+                    message += "\n" + ex.Message;
                 }
             }
-            if (Message.Length > 0)
-                MessageBox.Show(Message);
+            if (message.Length > 0)
+                MessageBox.Show(message);
         }
 
         /// <summary>
@@ -126,11 +131,14 @@ namespace Presentation.ViewModel
         public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate)
         {
             try {
-                Task.AddTask(assigneeEmail, title, description, dueDate);
-                this.AssigneeEmail = assigneeEmail; RaisePropertyChanged("TaskAssignee");
-                this.Title = title;                 RaisePropertyChanged("Title");
-                this.Description = description;     RaisePropertyChanged("Description");
-                this.DueDate = dueDate;             RaisePropertyChanged("DueDate");
+                Task = Controller.AddTask(assigneeEmail, title, description, dueDate);
+                this.ID = Task.ID;                               RaisePropertyChanged("ID");
+                this.AssigneeEmail = Task.AssigneeEmail;         RaisePropertyChanged("TaskAssignee");
+                this.Title = Task.Title;                         RaisePropertyChanged("Title");
+                this.Description = Task.Description;             RaisePropertyChanged("Description");
+                this.DueDate = Task.DueDate;                     RaisePropertyChanged("DueDate");
+                this.CreationTime = Task.CreationTime;           RaisePropertyChanged("CreationTime");
+                this.LastChangedDate = Task.LastChangedDate;     RaisePropertyChanged("LastChangedDate");
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);
@@ -138,7 +146,7 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// An enum used to represent 
+        /// An enum used to represent which update function should be called.
         /// </summary>
         private enum Update { Title=0, Description=1, DueDate=2, TaskAssignee=3 }
         
@@ -150,7 +158,7 @@ namespace Presentation.ViewModel
         /// <summary>
         /// Checks if all user changes are valid. Presents relevant message boxes for every different case.
         /// </summary>
-        /// <param name="fields"></param>
+        /// <param name="fields">An array representing the state of each of the Task Window's fields.</param>
         /// <returns>Returns a list of borders representing the state of each field in the task window.</returns>
         public List<BorderColor> ConfirmChangesValidity(params Brush[] fields) {
             List<BorderColor> validFields = ValidFields(fields.Take(fields.Length - 1));
@@ -168,8 +176,8 @@ namespace Presentation.ViewModel
                     if (Result == MessageBoxResult.OK)
                     {
                         validFields.Add(BorderColor.Green);
-                        MessageBox.Show("Task Assignee was changed successfully.", "", MessageBoxButton.OK);
-                        MessageBox.Show("Task data was updated successfully!", "", MessageBoxButton.OK);
+                        MessageBox.Show("Task Assignee was changed successfully.");
+                        MessageBox.Show("Task data was updated successfully!");
                     }
                     else
                         validFields.Add(BorderColor.Red);
@@ -202,8 +210,14 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "txtTitle" text box according to its state.
         /// </summary>
         /// <param name="txtTitle">The text box to assign the state to.</param>
-        internal void ChangedTitle(TextBox txtTitle, Label titleMessage)
+        /// <param name="titleMessage">The message to present to the user in case the 'Title' field is invalid.</param>
+        /// <param name="txtHintTitle">The text block displayed to hint at the desired field content.</param>
+        internal void ChangedTitle(TextBox txtTitle, Label titleMessage, TextBlock txtHintTitle)
         {
+            txtHintTitle.Visibility = Visibility.Visible;
+            if (txtTitle.Text.Length > 0)
+                txtHintTitle.Visibility = Visibility.Hidden;
+
             if (txtTitle.Text.Length > MAXIMUM_TITLE_LENGTH | txtTitle.Text.Length == MINIMUM_TITLE_LENGTH)
             {
                 txtTitle.BorderBrush = INVALID_BORDER_COLOR;
@@ -225,8 +239,13 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "txtDescription" text box according to its state.
         /// </summary>
         /// <param name="txtDescription">The text box to assign the state to.</param>
-        internal void ChangedDescription(TextBox txtDescription, Label descMessage)
+        /// <param name="descMessage">The message to present to the user in case the 'Description' field is invalid.</param>
+        /// <param name="txtHintDescription">The text block displayed to hint at the desired field content.</param>
+        internal void ChangedDescription(TextBox txtDescription, Label descMessage, TextBlock txtHintDescription)
         {
+            txtHintDescription.Visibility = Visibility.Visible;
+            if (txtDescription.Text.Length > 0)
+                txtHintDescription.Visibility = Visibility.Hidden;
             if (txtDescription.Text.Length > MAXIMUM_DESCRIPTION_LENGTH)
             {
                 txtDescription.BorderBrush = INVALID_BORDER_COLOR;
@@ -248,6 +267,7 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "dpDueDate" date picker according to its state.
         /// </summary>
         /// <param name="dpDueDate">The date picker to assign the state to.</param>
+        /// <param name="dueMessage">The message to present to the user in case the 'Due Date' field is invalid.</param>
         internal void ChangedDueDate(DatePicker dpDueDate, Label dueMessage)
         {
             if (dpDueDate.SelectedDate?.CompareTo(DateTime.Now) < 0)
@@ -271,7 +291,7 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "txtTaskAssignee" text box according to its state.
         /// </summary>
         /// <param name="txtTaskAssignee">The text box to assign the state to.</param>
-        internal void ChangedTaskAssignee(TextBox txtTaskAssignee, Label assigneeMessage)
+        internal void ChangedTaskAssignee(TextBox txtTaskAssignee)
         {
             if (!txtTaskAssignee.Text.Equals(AssigneeEmail))
                 txtTaskAssignee.BorderBrush = VALID_BORDER_COLOR;
