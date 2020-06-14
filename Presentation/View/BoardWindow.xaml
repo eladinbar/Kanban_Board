@@ -101,7 +101,10 @@
 
 
                                 <Button Name="SortTasksByDueDate_Button" Content="V" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="Sort tasks by due date" Click="SortTasksByDueDate_Click" Tag="{Binding Ordinal}" />
-                                <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+                                <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" DataContextChanged="{Binding ChangeColumnName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" ToolTip="{Binding DataContext.ChangeColumnNameToolTip, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                         IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+                                <!--<TextBox Name="txtTitle" Text="{Binding Path=Title, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Title_Changed" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="0" Margin="134,5,2,5" Grid.ColumnSpan="2"/>-->
+
 
                             </Grid>
                             
@@ -128,7 +131,7 @@
                                     <DataTemplate>
                                         <Border Name="TaskInColumnBorder" BorderBrush="Purple" BorderThickness="1" Height="50" Width="290" HorizontalAlignment="Center">
                                             <Grid>
-                                                <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" MouseDoubleClick="AdvanceTask_DoubleClick"/>
+                                                <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" Click="AdvanceTask_Click"/>
                                                 <!--IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}"-->
                                                 
                                                 <TextBlock x:Name="TaskTitle" Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" >                                                    
@@ -147,7 +150,7 @@
                                                     
                                                 </TextBlock>
                                                 
-                                                <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" MouseDoubleClick="EditTask_DoubleClick" />
+                                                <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" Click="EditTask_Click" />
                                                 <TextBlock Name="TaskDueDate" Text="{Binding DueDate, StringFormat=dd/MM/yyyy}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                             </Grid>
                                         </Border>

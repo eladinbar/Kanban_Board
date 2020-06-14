@@ -46,6 +46,12 @@ namespace Presentation
             return column.Value;
         }
 
+        internal void ChangeColumnName(string creatorEmail, int columnOrdinal, string newName)
+        {
+            Response rsp = Service.ChangeColumnName(creatorEmail, columnOrdinal, newName);
+            if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
+        }
+
         internal string Logout(string emailToLogout)
         {
             Response rsp = Service.Logout(emailToLogout);

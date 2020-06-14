@@ -20,7 +20,7 @@ namespace Presentation.Model
             this.Columns = this.CreateColumns(creatorEmail);
         }
 
-        private ObservableCollection<ColumnModel> CreateColumns(string creatorEmail)  //receives SL.Columns and its list of Tasks and transform them into PL.Columns - 
+        private ObservableCollection<ColumnModel> CreateColumns(string creatorEmail)  //receives SL.Columns and its list of Tasks and transform them into PL.Columns - move this logic to viewModel 
         {
             ObservableCollection<ColumnModel> tempColumns = new ObservableCollection<ColumnModel>();
             int i = 0;
@@ -32,7 +32,7 @@ namespace Presentation.Model
                 {
                     tasks.Add(new TaskModel(Controller,t.Id, t.Title, t.Description, t.CreationTime, t.DueDate, t.CreationTime, t.emailAssignee, i));
                 }
-                tempColumns.Add(new ColumnModel(tasks, c.Limit, c.Name, i));
+                tempColumns.Add(new ColumnModel(Controller, tasks, c.Limit, c.Name, i, CreatorEmail));
                 i++;
             }
             return tempColumns;

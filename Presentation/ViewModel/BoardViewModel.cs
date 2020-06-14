@@ -14,10 +14,19 @@ namespace Presentation.ViewModel
     {
         private BackendController Controller;
         public UserModel CurrentUser { get; private set; }
+        public bool IsCreator { get; private set; } 
         public BoardModel Board { get; private set; }
-        public TaskViewModel CurrentTask { get; private set; } //not needed????????????????????????????????????????
+        public string ChangeColumnNameToolTip { get; private set; }
+        public bool notCreator { get => !IsCreator; }
+        private string ColumnNameToolTip()
+        {
+            if (IsCreator) return "Column name";
+            else return "Column name - can be changed only by board creator";
+        }
 
 
+
+        //public TaskViewModel CurrentTask { get; private set; } //not needed????????????????????????????????????????
         //private bool _isSelected = false;
         //public bool IsSelected
         //{
@@ -34,7 +43,9 @@ namespace Presentation.ViewModel
             this.Controller = controller;
             this.CurrentUser = currentUser;
             this.Board = new BoardModel(controller, creatorEmail);
-            this.CurrentTask = null;
+            this.IsCreator = false;  //(this.CurrentUser.Email.Equals(this.Board.CreatorEmail));
+            ChangeColumnNameToolTip = this.ColumnNameToolTip();
+
         }
 
         public void EditTask(TaskModel taskToEdit)
@@ -88,5 +99,6 @@ namespace Presentation.ViewModel
             tasks.Clear();
             foreach (TaskModel t in tempTasksCollection) tasks.Add(t);
         }
+
     }
 }

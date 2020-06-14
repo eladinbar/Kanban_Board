@@ -96,6 +96,7 @@
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="NotifiableObject.cs" />
     <Compile Include="ViewModel\BoardViewModel.cs" />
+    <Compile Include="ViewModel\ColumnViewModel.cs" />
     <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="View\BoardWindow.xaml.cs">
       <DependentUpon>BoardWindow.xaml</DependentUpon>

@@ -26,7 +26,7 @@ namespace Presentation.View
     public partial class BoardWindow : Window
     {
         private BoardViewModel viewModel;
-
+        
         public string CreatorEmail { get; private set; }
 
 
@@ -94,6 +94,7 @@ namespace Presentation.View
             this.CreatorEmail = creatorEmail;            
         }
 
+
         public void SortTasksByDueDate_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.SortTasksByDueDate((int)((Button)sender).Tag);            
@@ -105,16 +106,27 @@ namespace Presentation.View
         }
 
 
-        public void EditTask_DoubleClick(object sender, RoutedEventArgs e) 
+        public void EditTask_Click(object sender, RoutedEventArgs e) 
         {
             TaskModel taskToEdit = ((Button)sender).DataContext as TaskModel;
             this.viewModel.EditTask(taskToEdit);           
         }
 
-        public void AdvanceTask_DoubleClick(object sender, RoutedEventArgs e) 
+        public void AdvanceTask_Click(object sender, RoutedEventArgs e) 
         {
-            TaskModel taskToAdvance = ((Button)sender).DataContext as TaskModel;
-            this.viewModel.AdvanceTask(taskToAdvance);       
+            MessageBoxResult result = MessageBox.Show("               Advance this task? \n                    (Irreversible!)", "Advance Task", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    TaskModel taskToAdvance = ((Button)sender).DataContext as TaskModel;
+                    this.viewModel.AdvanceTask(taskToAdvance);
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+
+
+     
 
         }
 
