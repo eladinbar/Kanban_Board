@@ -146,11 +146,7 @@ namespace Presentation.ViewModel
                     "Confirming your changes will prevent you from making any further adjustments to this task. \n" +
                     "Would you like to proceed?", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Information, MessageBoxResult.Cancel);
                     if (Result == MessageBoxResult.OK)
-                    {
                         validFields.Add(BorderColor.Green);
-                        MessageBox.Show("Task Assignee was changed successfully.");
-                        MessageBox.Show("Task data was updated successfully!");
-                    }
                     else
                         validFields.Add(BorderColor.Red);
                 }

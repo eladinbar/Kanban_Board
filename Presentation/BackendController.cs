@@ -98,12 +98,11 @@ namespace Presentation
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public TaskModel AddTask(string email, string title, string description, DateTime dueDate)
         {
-            Response<IntroSE.Kanban.Backend.ServiceLayer.Task> response = Service.AddTask(email, title, description, dueDate);
-            string ErrorMessage = response.ErrorMessage;
-            if (ErrorMessage != null)
-                throw new Exception(ErrorMessage);
-            TaskModel task = new TaskModel(this, response.Value.Id, response.Value.Title, response.Value.Description, response.Value.CreationTime, response.Value.DueDate,
-                                            response.Value.CreationTime, response.Value.emailAssignee, 0);
+            Response<IntroSE.Kanban.Backend.ServiceLayer.Task> res = Service.AddTask(email, title, description, dueDate);
+            if (res.ErrorOccured)
+                throw new Exception(res.ErrorMessage);
+            TaskModel task = new TaskModel(this, res.Value.Id, res.Value.Title, res.Value.Description, res.Value.CreationTime, res.Value.DueDate,
+                                            res.Value.CreationTime, res.Value.emailAssignee, 0);
             return task;
         }
 

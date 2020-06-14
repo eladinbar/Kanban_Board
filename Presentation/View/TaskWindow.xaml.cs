@@ -59,6 +59,7 @@ namespace Presentation.View
                 try
                 {
                     ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate, txtTaskAssignee.Text);
+                    MessageBox.Show("Task data was updated successfully!");
                     this.Close();
                 }
                 catch (Exception ex) {
@@ -90,6 +91,7 @@ namespace Presentation.View
             {
                 try {
                     ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate);
+                    MessageBox.Show("Task was added successfully to the board!");
                     this.Close();
                 }
                 catch (Exception ex) {
