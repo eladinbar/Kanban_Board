@@ -59,7 +59,8 @@ namespace Presentation.View
                 try
                 {
                     ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate, txtTaskAssignee.Text);
-                    MessageBox.Show("Task data was updated successfully!");
+                    if (validFields.Contains(TaskViewModel.BorderColor.Green))
+                        MessageBox.Show("Task data was updated successfully!");
                     this.Close();
                 }
                 catch (Exception ex) {
@@ -91,7 +92,7 @@ namespace Presentation.View
             {
                 try {
                     ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate);
-                    MessageBox.Show("Task was added successfully to the board!");
+                    MessageBox.Show("Task was added successfully to board " + txtTaskAssignee.Text);
                     this.Close();
                 }
                 catch (Exception ex) {

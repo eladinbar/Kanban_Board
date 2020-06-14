@@ -60,9 +60,9 @@ namespace Presentation.ViewModel
         {
             this.Controller = backendController;
             this.AssigneeEmail = assigneeEmail;
-            this.DueDate = DateTime.Today.AddDays(1);
-            this.CreationTime = DateTime.Today;
-            this.LastChangedDate = DateTime.Today;
+            this.DueDate = DateTime.Now.AddDays(1);
+            this.CreationTime = DateTime.Now;
+            this.LastChangedDate = DateTime.Now;
             this.IsAssignee = true;
         }
 
@@ -107,7 +107,9 @@ namespace Presentation.ViewModel
         /// <param name="dueDate">The due date this task will be due by.</param>
         public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate)
         {
-            Task = Controller.AddTask(assigneeEmail, title, description, dueDate);
+            Task = Controller.AddTask(AssigneeEmail, title, description, dueDate);
+            if (AssigneeEmail != assigneeEmail)
+                Controller.AssignTask(AssigneeEmail, 0, Task.ID, assigneeEmail);
             this.ID = Task.ID;                               RaisePropertyChanged("ID");
             this.AssigneeEmail = Task.AssigneeEmail;         RaisePropertyChanged("TaskAssignee");
             this.Title = Task.Title;                         RaisePropertyChanged("Title");
