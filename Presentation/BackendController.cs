@@ -99,8 +99,8 @@ namespace Presentation
         public TaskModel AddTask(string email, string title, string description, DateTime dueDate)
         {
             Response<IntroSE.Kanban.Backend.ServiceLayer.Task> response = Service.AddTask(email, title, description, dueDate);
-            string ErrorMessage = Service.AddTask(email, title, description, dueDate).ErrorMessage;
-            if (ErrorMessage.Length > 0)
+            string ErrorMessage = response.ErrorMessage;
+            if (ErrorMessage != null)
                 throw new Exception(ErrorMessage);
             TaskModel task = new TaskModel(this, response.Value.Id, response.Value.Title, response.Value.Description, response.Value.CreationTime, response.Value.DueDate,
                                             response.Value.CreationTime, response.Value.emailAssignee, 0);

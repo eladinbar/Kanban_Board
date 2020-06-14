@@ -58,11 +58,11 @@ namespace Presentation.View
             {
                 try
                 {
-                    ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate, txtTaskAssignee.Text);
+                    ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate, txtTaskAssignee.Text);
                     this.Close();
                 }
                 catch (Exception ex) {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }     
         }
@@ -89,11 +89,11 @@ namespace Presentation.View
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))
             {
                 try {
-                    ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate);
+                    ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate);
                     this.Close();
                 }
                 catch (Exception ex) {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
