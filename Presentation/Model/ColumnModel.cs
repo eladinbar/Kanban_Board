@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace Presentation.Model
 {
@@ -20,7 +23,17 @@ namespace Presentation.Model
             set
             {
                 _name = value;
-                this.Controller.ChangeColumnName(CreatorEmail, Ordinal, _name);
+                try
+                {
+                    this.Controller.ChangeColumnName(CreatorEmail, Ordinal, _name);
+                    RaisePropertyChanged("Name");
+                    MessageBox.Show("Column name changed successfully", "Info");
+
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Invalid Action");
+                }
             }
         }
         public int Ordinal { get; private set; }
@@ -32,6 +45,14 @@ namespace Presentation.Model
             this._name = name;
             this.Ordinal = ordinal;
             this.CreatorEmail = creatorEmail;
+        }
+
+        public void OnKeyUpHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Name = ((Button)sender).Content.ToString();
+            }
         }
     }
 }

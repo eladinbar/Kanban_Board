@@ -43,7 +43,7 @@ namespace Presentation.ViewModel
             this.Controller = controller;
             this.CurrentUser = currentUser;
             this.Board = new BoardModel(controller, creatorEmail);
-            this.IsCreator = false;  //(this.CurrentUser.Email.Equals(this.Board.CreatorEmail));
+            this.IsCreator = true;  //(this.CurrentUser.Email.Equals(this.Board.CreatorEmail));
             ChangeColumnNameToolTip = this.ColumnNameToolTip();
 
         }

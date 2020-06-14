@@ -67,7 +67,8 @@
 
         <StackPanel Name="ColumnsStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="575" Width="1250">
 
-            <ListBox Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  ScrollViewer.VerticalScrollBarVisibility="Hidden">
+            <ListBox Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Name="ColumnsListBoxPresentationDefinition" Orientation="Horizontal" HorizontalAlignment="Center" />
@@ -100,9 +101,15 @@
                                 </Grid.ColumnDefinitions>
 
 
-                                <Button Name="SortTasksByDueDate_Button" Content="V" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="Sort tasks by due date" Click="SortTasksByDueDate_Click" Tag="{Binding Ordinal}" />
-                                <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=TwoWay}" DataContextChanged="{Binding ChangeColumnName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" ToolTip="{Binding DataContext.ChangeColumnNameToolTip, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
-                                         IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+                                <Button Name="SortTasksByDueDate_Button" Content="V" 
+                                        FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                        ToolTip="Sort tasks by due date" 
+                                        Click="SortTasksByDueDate_Click" Tag="{Binding Ordinal}" />
+                                <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                         KeyUp="ColumnName_KeyUp"
+                                         ToolTip="{Binding DataContext.ChangeColumnNameToolTip, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                         IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                         Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1" />
                                 <!--<TextBox Name="txtTitle" Text="{Binding Path=Title, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Title_Changed" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="0" Margin="134,5,2,5" Grid.ColumnSpan="2"/>-->
 
 

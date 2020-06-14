@@ -16,6 +16,7 @@ namespace Presentation
             Service = new Service();
         }
 
+
         internal UserModel Login(string email, string password)
         {
             Response<User> user = Service.Login(email, password);
@@ -25,6 +26,7 @@ namespace Presentation
             }
             return new UserModel(this, email, user.Value.Nickname);
         }
+
 
         internal Column GetColumn(string creatorEmail, string columnName)
         {
@@ -36,6 +38,7 @@ namespace Presentation
             return column.Value;
         }
 
+
         internal Column GetColumn(string creatorEmail, int columnOrdinal)
         {
             Response<Column> column = Service.GetColumn(creatorEmail, 0);
@@ -46,11 +49,13 @@ namespace Presentation
             return column.Value;
         }
 
+
         internal void ChangeColumnName(string creatorEmail, int columnOrdinal, string newName)
         {
             Response rsp = Service.ChangeColumnName(creatorEmail, columnOrdinal, newName);
             if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
         }
+
 
         internal string Logout(string emailToLogout)
         {
@@ -62,6 +67,7 @@ namespace Presentation
             return "User was logged out successfully.";
         }
 
+
         internal Board GetBoard(string creatorEmail)
         {
             Response<Board> board = Service.GetBoard(creatorEmail);
@@ -71,6 +77,7 @@ namespace Presentation
             }
             return board.Value;
         }
+
 
         internal void Register(string email, string password, string nickname, string hostEmail)
         {
@@ -86,6 +93,7 @@ namespace Presentation
             }
         }
 
+
         internal void AdvanceTask(string email, int columnOrdinal, int taskId)
         {
             Response r = this.Service.AdvanceTask(email, columnOrdinal, taskId);
@@ -93,6 +101,7 @@ namespace Presentation
 
 
         }
+
 
         /// <summary>
         /// Add a new task.

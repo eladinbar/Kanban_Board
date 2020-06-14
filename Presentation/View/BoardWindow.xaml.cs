@@ -124,11 +124,9 @@ namespace Presentation.View
                 case MessageBoxResult.No:
                     break;
             }
-
-
-     
-
         }
+
+
 
         public void LogoutVerificationMessageBox(object sender, RoutedEventArgs e)
         {
@@ -158,6 +156,11 @@ namespace Presentation.View
         private void SearchBox_TextChanged(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ColumnName_KeyUp(object sender, KeyEventArgs e)
+        {
+            ((ColumnModel)((Control)sender).Parent).OnKeyUpHandler;
         }
 
 
