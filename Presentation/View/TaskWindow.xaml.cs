@@ -53,7 +53,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            LastClickedButton = Confirm.ToString();
+            LastClickedButton = Confirm.Content.ToString();
             List<TaskViewModel.BorderColor> validFields = ViewModel.ConfirmChangesValidity(txtTitle.BorderBrush, txtDescription.BorderBrush,
                                                                                   dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))
@@ -78,7 +78,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            LastClickedButton = Cancel.ToString();
+            LastClickedButton = Cancel.Content.ToString();
             this.Close();
         }
 
@@ -89,7 +89,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
-            LastClickedButton = AddTask.ToString();
+            LastClickedButton = AddTask.Content.ToString();
             List<TaskViewModel.BorderColor> validFields = ViewModel.ConfirmChangesValidity(txtTitle.BorderBrush, txtDescription.BorderBrush,
                                                                                       dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))

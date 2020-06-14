@@ -72,9 +72,18 @@ namespace Presentation.ViewModel
         {
             TaskWindow taskAddWindow = new TaskWindow(this.Controller, this.CurrentUser.Email);
             taskAddWindow.ShowDialog();
-            var tempTask = this.Controller.GetColumn(this.Board.CreatorEmail, 0).Tasks.Last();
-            TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, tempTask.CreationTime, CurrentUser.Email, 0);
-            this.Board.AddNewTask(newTask);
+            string lastButton = taskAddWindow.LastClickedButton;
+            if (!lastButton.Equals("Cancel"))
+            {
+                var tempTask = this.Controller.GetColumn(this.Board.CreatorEmail, 0).Tasks.Last();
+                TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, tempTask.CreationTime, CurrentUser.Email, 0);
+                this.Board.AddNewTask(newTask);
+            }
+        }
+
+        internal void SortTasksByDueDate()
+        {
+            //this.Board.Columns.ElementAt() .Items.SortDescriptions.Add(New SortDescription("", ListSortDirection.Ascending))
         }
     }
 }

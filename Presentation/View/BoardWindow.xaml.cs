@@ -94,19 +94,24 @@ namespace Presentation.View
             this.CreatorEmail = creatorEmail;            
         }
 
+        public void SortTasksByDueDate_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SortTasksByDueDate();
+        }
+
         public void AddTask_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.AddTask();
         }
 
 
-        public void EditTask_DoubleClick(object sender, RoutedEventArgs e) //move to BoardViewModel
+        public void EditTask_DoubleClick(object sender, RoutedEventArgs e) 
         {
             TaskModel taskToEdit = ((Button)sender).DataContext as TaskModel;
             this.viewModel.EditTask(taskToEdit);           
         }
 
-        public void AdvanceTask_DoubleClick(object sender, RoutedEventArgs e) //move to BoardViewModel
+        public void AdvanceTask_DoubleClick(object sender, RoutedEventArgs e) 
         {
             TaskModel taskToAdvance = ((Button)sender).DataContext as TaskModel;
             this.viewModel.AdvanceTask(taskToAdvance);       
@@ -132,9 +137,6 @@ namespace Presentation.View
         {
             this.viewModel.ChangePassword();
         }
-
-
-
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

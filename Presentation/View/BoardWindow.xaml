@@ -84,15 +84,28 @@
                 <ListBox.ItemTemplate>
 
                     <DataTemplate>
-                        <Grid Name="TasksGrid">
+                        <Grid Name="ColumnGrid">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" ></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <TextBox Name="ColumnName" Grid.Row="0" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+                            <Grid Name="ColumnHeaderGrid" Grid.Row="0">
 
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+
+                                <Button Name="SortTasksByDueDate_Button" Content="V" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="Sort tasks by due date" Click="SortTasksByDueDate_Click"/>
+                                <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+
+                            </Grid>
+                            
+                            <!--************************ Task List*******************************************************************-->
                             <ListBox Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding Tasks, Mode=TwoWay}" BorderBrush="Green" BorderThickness="1" 
                                      ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
 
@@ -130,6 +143,8 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </TextBlock.Style>-->
+                                                    
+                                                    
                                                 </TextBlock>
                                                 
                                                 <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" MouseDoubleClick="EditTask_DoubleClick" />
