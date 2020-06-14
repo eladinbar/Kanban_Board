@@ -36,6 +36,16 @@ namespace Presentation
             return column.Value;
         }
 
+        internal Column GetColumn(string creatorEmail, int columnOrdinal)
+        {
+            Response<Column> column = Service.GetColumn(creatorEmail, 0);
+            if (column.ErrorOccured)
+            {
+                throw new Exception(column.ErrorMessage);
+            }
+            return column.Value;
+        }
+
         internal string Logout(string emailToLogout)
         {
             Response rsp = Service.Logout(emailToLogout);

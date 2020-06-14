@@ -25,7 +25,7 @@
 
         
         <Button Name="AddTaskButton" Content="+" FontWeight="ExtraBold" FontSize="40" FontFamily="David" Height="40" Width="40" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="2" 
-                Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black" MouseDoubleClick="AddTask_DoubleClick">
+                Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black" Click="AddTask_Click">
             <Button.BitmapEffect>
                 <DropShadowBitmapEffect />
             </Button.BitmapEffect>

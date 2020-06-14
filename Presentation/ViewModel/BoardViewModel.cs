@@ -40,7 +40,7 @@ namespace Presentation.ViewModel
         public void EditTask(TaskModel taskToEdit)
         {
             if (taskToEdit == null) return;
-            TaskWindow taskEditWindow = new TaskWindow(taskToEdit, taskToEdit.ColumnOrdinal, (taskToEdit.AssigneeEmail == this.CurrentUser.Email), false);
+            TaskWindow taskEditWindow = new TaskWindow(this.Controller, taskToEdit, (taskToEdit.AssigneeEmail == this.CurrentUser.Email));
             taskEditWindow.ShowDialog();
         }
 
@@ -70,10 +70,11 @@ namespace Presentation.ViewModel
 
         internal void AddTask()
         {
-            //TaskWindow taskEditWindow = new TaskWindow();
-            //taskEditWindow.ShowDialog();
-            //TaskModel newTask = taskEditWindow.viewModel.Task;
-            //this.Board.AddNewTask(newTask);
+            TaskWindow taskAddWindow = new TaskWindow(this.Controller, this.CurrentUser.Email);
+            taskAddWindow.ShowDialog();
+            var tempTask = this.Controller.GetColumn(this.Board.CreatorEmail, 0).Tasks.Last();
+            TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, tempTask.CreationTime, CurrentUser.Email, 0);
+            this.Board.AddNewTask(newTask);
         }
     }
 }

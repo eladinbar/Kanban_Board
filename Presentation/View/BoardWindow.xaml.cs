@@ -94,7 +94,7 @@ namespace Presentation.View
             this.CreatorEmail = creatorEmail;            
         }
 
-        public void AddTask_DoubleClick(object sender, RoutedEventArgs e)
+        public void AddTask_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.AddTask();
         }
