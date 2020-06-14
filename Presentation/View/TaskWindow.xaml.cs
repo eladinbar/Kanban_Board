@@ -14,6 +14,7 @@ namespace Presentation.View
     {
         private TaskViewModel ViewModel;
         private BackendController Controller;
+        public string LastClickedButton { get; private set; }
 
         /// <summary>
         /// The task window constructor. Initializes the window and creates its respective data context with the required information given from the board window.
@@ -52,6 +53,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
+            LastClickedButton = Confirm.ToString();
             List<TaskViewModel.BorderColor> validFields = ViewModel.ConfirmChangesValidity(txtTitle.BorderBrush, txtDescription.BorderBrush,
                                                                                   dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))
@@ -76,6 +78,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            LastClickedButton = Cancel.ToString();
             this.Close();
         }
 
@@ -86,6 +89,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
+            LastClickedButton = AddTask.ToString();
             List<TaskViewModel.BorderColor> validFields = ViewModel.ConfirmChangesValidity(txtTitle.BorderBrush, txtDescription.BorderBrush,
                                                                                       dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))
