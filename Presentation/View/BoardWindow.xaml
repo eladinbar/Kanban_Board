@@ -65,7 +65,7 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="575" Width="1250">
+        <StackPanel Name="ColumnsStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="575" Width="1250">
 
             <ListBox Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <ListBox.ItemsPanel>
@@ -100,7 +100,7 @@
                                 </Grid.ColumnDefinitions>
 
 
-                                <Button Name="SortTasksByDueDate_Button" Content="V" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="Sort tasks by due date" Click="SortTasksByDueDate_Click"/>
+                                <Button Name="SortTasksByDueDate_Button" Content="V" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="Sort tasks by due date" Click="SortTasksByDueDate_Click" Tag="{Binding Ordinal}" />
                                 <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name}" Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
 
                             </Grid>

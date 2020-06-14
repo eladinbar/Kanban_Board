@@ -96,7 +96,7 @@ namespace Presentation.View
 
         public void SortTasksByDueDate_Click(object sender, RoutedEventArgs e)
         {
-            this.viewModel.SortTasksByDueDate();
+            this.viewModel.SortTasksByDueDate((int)((Button)sender).Tag);            
         }
 
         public void AddTask_Click(object sender, RoutedEventArgs e)

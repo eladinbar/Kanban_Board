@@ -15,7 +15,7 @@ namespace Presentation.ViewModel
         private BackendController Controller;
         public UserModel CurrentUser { get; private set; }
         public BoardModel Board { get; private set; }
-        public TaskViewModel CurrentTask { get; private set; }
+        public TaskViewModel CurrentTask { get; private set; } //not needed????????????????????????????????????????
 
 
         //private bool _isSelected = false;
@@ -81,9 +81,12 @@ namespace Presentation.ViewModel
             }
         }
 
-        internal void SortTasksByDueDate()
+        internal void SortTasksByDueDate(int columnOrdinal)
         {
-            //this.Board.Columns.ElementAt() .Items.SortDescriptions.Add(New SortDescription("", ListSortDirection.Ascending))
+            ObservableCollection<TaskModel> tasks = this.Board.Columns.ElementAt(columnOrdinal).Tasks;
+            ObservableCollection<TaskModel> tempTasksCollection = new ObservableCollection<TaskModel>(tasks.OrderBy(t => t.DueDate));
+            tasks.Clear();
+            foreach (TaskModel t in tempTasksCollection) tasks.Add(t);
         }
     }
 }

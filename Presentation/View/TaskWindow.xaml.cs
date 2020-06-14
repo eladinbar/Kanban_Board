@@ -14,7 +14,8 @@ namespace Presentation.View
     {
         private TaskViewModel ViewModel;
         private BackendController Controller;
-        public string LastClickedButton { get; private set; }
+        private string _lastClickedButton = "";
+        public string LastClickedButton { get => _lastClickedButton; private set { _lastClickedButton = value; } }
 
         /// <summary>
         /// The task window constructor. Initializes the window and creates its respective data context with the required information given from the board window.
