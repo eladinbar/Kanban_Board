@@ -75,53 +75,27 @@ namespace Presentation.ViewModel
         /// <param name="dueDate">The due date of the task to update.</param>
         /// <param name="taskAssignee">The assignee of the task to update.</param>
         public void UpdateTask(List<BorderColor> validFields, string title, string description, DateTime dueDate, string taskAssignee) {
-            string message = "";
             if (validFields[Convert.ToInt32(Update.Title)] == BorderColor.Green)
             {
-                try
-                {
-                    Task.UpdateTaskTitle(title);
-                    this.Title = title;
-                }
-                catch(Exception ex) {
-                    message += ex.Message;
-                }
+                Task.UpdateTaskTitle(title);
+                this.Title = title;
             }
             if (validFields[Convert.ToInt32(Update.Description)] == BorderColor.Green)
             {
-                try {
-                    Task.UpdateTaskDescription(description);
-                    this.Description = description;
-                }
-                catch(Exception ex) {
-                    message += "\n" + ex.Message;
-                }
+                Task.UpdateTaskDescription(description);
+                this.Description = description;
 
             }
             if (validFields[(int)Update.DueDate] == BorderColor.Green)
             {
-                try
-                {
-                    Task.UpdateTaskDueDate(dueDate);
-                    this.DueDate = dueDate;
-                }
-                catch(Exception ex) {
-                    message += "\n" + ex.Message;
-                }
+                Task.UpdateTaskDueDate(dueDate);
+                this.DueDate = dueDate;
             }
             if (validFields[(int)Update.TaskAssignee] == BorderColor.Green)
             {
-                try
-                {
-                    Task.AssignTask(taskAssignee);
-                    this.AssigneeEmail = taskAssignee;
-                }
-                catch(Exception ex) {
-                    message += "\n" + ex.Message;
-                }
+                Task.AssignTask(taskAssignee);
+                this.AssigneeEmail = taskAssignee;
             }
-            if (message.Length > 0)
-                MessageBox.Show(message);
         }
 
         /// <summary>
@@ -133,19 +107,14 @@ namespace Presentation.ViewModel
         /// <param name="dueDate">The due date this task will be due by.</param>
         public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate)
         {
-            try {
-                Task = Controller.AddTask(assigneeEmail, title, description, dueDate);
-                this.ID = Task.ID;                               RaisePropertyChanged("ID");
-                this.AssigneeEmail = Task.AssigneeEmail;         RaisePropertyChanged("TaskAssignee");
-                this.Title = Task.Title;                         RaisePropertyChanged("Title");
-                this.Description = Task.Description;             RaisePropertyChanged("Description");
-                this.DueDate = Task.DueDate;                     RaisePropertyChanged("DueDate");
-                this.CreationTime = Task.CreationTime;           RaisePropertyChanged("CreationTime");
-                this.LastChangedDate = Task.LastChangedDate;     RaisePropertyChanged("LastChangedDate");
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message);
-            }
+            Task = Controller.AddTask(assigneeEmail, title, description, dueDate);
+            this.ID = Task.ID;                               RaisePropertyChanged("ID");
+            this.AssigneeEmail = Task.AssigneeEmail;         RaisePropertyChanged("TaskAssignee");
+            this.Title = Task.Title;                         RaisePropertyChanged("Title");
+            this.Description = Task.Description;             RaisePropertyChanged("Description");
+            this.DueDate = Task.DueDate;                     RaisePropertyChanged("DueDate");
+            this.CreationTime = Task.CreationTime;           RaisePropertyChanged("CreationTime");
+            this.LastChangedDate = Task.LastChangedDate;     RaisePropertyChanged("LastChangedDate");
         }
 
         /// <summary>

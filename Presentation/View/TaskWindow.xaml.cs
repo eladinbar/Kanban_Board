@@ -1,5 +1,6 @@
 ﻿using Presentation.Model;
 using Presentation.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,8 +56,14 @@ namespace Presentation.View
                                                                                   dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))
             {
-                ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate, txtTaskAssignee.Text);
-                this.Close();
+                try
+                {
+                    ViewModel.UpdateTask(validFields, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate, txtTaskAssignee.Text);
+                    this.Close();
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
             }     
         }
 
@@ -81,8 +88,13 @@ namespace Presentation.View
                                                                                       dpDueDate.BorderBrush, txtTaskAssignee.BorderBrush);
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))
             {
-                ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate);
-                this.Close();
+                try {
+                    ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, dpDueDate.DisplayDate);
+                    this.Close();
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
