@@ -61,6 +61,8 @@ namespace Presentation.ViewModel
             this.Controller = backendController;
             this.AssigneeEmail = assigneeEmail;
             this.DueDate = DateTime.Today.AddDays(1);
+            this.CreationTime = DateTime.Today;
+            this.LastChangedDate = DateTime.Today;
             this.IsAssignee = true;
         }
 
