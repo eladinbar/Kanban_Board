@@ -38,8 +38,10 @@ namespace Presentation
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             //if (window.Closed())
-            window = new TaskWindow(new TaskModel(new BackendController(), 1, "title", "description",
-            DateTime.Now, new DateTime(2021, 2, 1), DateTime.Now, "email", 0), 0, true, true);
+            BackendController controller = new BackendController();
+            TaskModel task = new TaskModel(controller, 1, "title", "description", DateTime.Now, new DateTime(2021, 2, 1), DateTime.Now, "email", 0);
+            //window = new TaskWindow(controller, task, 0, true); //edit
+            window = new TaskWindow(controller, "email"); //add
             window.ShowDialog();
         }
     }

@@ -86,11 +86,15 @@ namespace Presentation
         /// <param name="description">Description of the new task</param>
         /// <param name="dueDate">The due date if the new task</param>
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
-        public void AddTask(string email, string title, string description, DateTime dueDate)
+        public TaskModel AddTask(string email, string title, string description, DateTime dueDate)
         {
+            Response<IntroSE.Kanban.Backend.ServiceLayer.Task> response = Service.AddTask(email, title, description, dueDate);
             string ErrorMessage = Service.AddTask(email, title, description, dueDate).ErrorMessage;
             if (ErrorMessage.Length > 0)
                 throw new Exception(ErrorMessage);
+            TaskModel task = new TaskModel(this, response.Value.Id, response.Value.Title, response.Value.Description, response.Value.CreationTime, response.Value.DueDate,
+                                            response.Value.CreationTime, response.Value.emailAssignee, 0);
+            return task;
         }
 
         /// <summary>
