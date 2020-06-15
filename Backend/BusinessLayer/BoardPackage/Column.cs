@@ -11,18 +11,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         private const int INITIALIZE_MAXIMUM_NUMBER_OF_TASKS = 100; //unlimited
 
-        public string Name { get; private set; }
+        public virtual string Name { get; internal set; }
         public int Limit { get; private set; }
         public List<Task> Tasks { get; }
-        public DalColumn DalCopyColumn { get; private set; }
+        public virtual DalColumn DalCopyColumn { get; internal set; }
 
+        /// <summary>
+        /// A constractor for Test Only.
+        /// </summary>
+        public Column() { }
         /// <summary>
         /// A public contructor that creates a new column and initializes its fields.
         /// </summary>
         /// <param name="name">The name the column will be created with.</param>
         /// <param name="email">The email of the board user.</param>
         /// <param name="columnOrdinal">Ordinal the column will be created with.</param>
-        public Column(string name, string email, int columnOrdinal) 
+        public Column(string name, int columnOrdinal) 
         {
             Name = name;
             Limit = INITIALIZE_MAXIMUM_NUMBER_OF_TASKS;

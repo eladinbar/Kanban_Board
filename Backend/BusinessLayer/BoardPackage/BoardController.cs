@@ -357,7 +357,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Column AddColumn(string email, int columnOrdinal, string Name) 
         {
             Board b = GetBoard(email);
-            Column newColumn = b.AddColumn(email, columnOrdinal, Name);
+            Column newColumn = b.AddColumn(columnOrdinal, Name);
             newColumn.Save(email, columnOrdinal);
             return newColumn;
         }
