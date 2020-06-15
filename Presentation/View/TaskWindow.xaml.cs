@@ -12,6 +12,8 @@ namespace Presentation.View
     /// </summary>
     public partial class TaskWindow : Window
     {
+        private const bool NEW_TASK = true;
+
         private TaskViewModel ViewModel;
         private BackendController Controller;
         private string _lastClickedButton = "";
@@ -30,6 +32,7 @@ namespace Presentation.View
             Controller = backendController;
             ViewModel = new TaskViewModel(backendController, taskModel, isAssignee);
             DataContext = ViewModel;
+            ControlButtonsVisiblity(!NEW_TASK);
         }
 
         /// <summary>
@@ -43,8 +46,11 @@ namespace Presentation.View
             Controller = backendController;
             ViewModel = new TaskViewModel(backendController, assigneeEmail);
             DataContext = ViewModel;
-            Confirm.Visibility = Visibility.Collapsed;
-            AddTask.Visibility = Visibility.Visible;
+            ControlButtonsVisiblity(NEW_TASK);
+        }
+
+        private void ControlButtonsVisiblity(bool newTask) {
+            ViewModel.ControlButtonsVisibility(newTask, Confirm, Cancel, OK, AddTask);
         }
 
         /// <summary>
@@ -113,7 +119,7 @@ namespace Presentation.View
         /// <param name="e">Provides data for the TextBoxBase.TextChanged event.</param>
         private void Title_Changed(object sender, TextChangedEventArgs e)
         {
-            ViewModel.ChangedTitle(txtTitle, titleMessage, txtHintTitle);
+            ViewModel.ChangedTitle(txtTitle, titleMessage, txtHintTitle, txtBlockTitle);
         }
 
         /// <summary>
@@ -123,7 +129,7 @@ namespace Presentation.View
         /// <param name="e">Provides data for the TextBoxBase.TextChanged event.</param>
         private void Description_Changed(object sender, TextChangedEventArgs e)
         {
-            ViewModel.ChangedDescription(txtDescription, descMessage, txtHintDescription);
+            ViewModel.ChangedDescription(txtDescription, descMessage, txtHintDescription, txtBlockDescription);
         }
 
         /// <summary>
@@ -133,7 +139,7 @@ namespace Presentation.View
         /// <param name="e">Provides data for the Selector.SelctionChanged event.</param>
         private void DueDate_Changed(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.ChangedDueDate(dpDueDate, dueMessage);
+            ViewModel.ChangedDueDate(dpDueDate, dueMessage, txtBlockDueDate);
         }
 
         /// <summary>
@@ -142,7 +148,7 @@ namespace Presentation.View
         /// <param name="sender">The object that invoked the event and fired the event handler.</param>
         /// <param name="e">Provides data for the TextBoxBase.TextChanged event.</param>
         private void TaskAssignee_Changed(object sender, TextChangedEventArgs e) {
-            ViewModel.ChangedTaskAssignee(txtTaskAssignee);
+            ViewModel.ChangedTaskAssignee(txtTaskAssignee, txtBlockTaskAssignee);
         }
     }
 }

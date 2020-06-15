@@ -66,6 +66,18 @@ namespace Presentation.ViewModel
             this.IsAssignee = true;
         }
 
+        public void ControlButtonsVisibility(bool newTask, Button confirm, Button cancel, Button ok, Button addTask) {
+            if (newTask) {
+                confirm.Visibility = Visibility.Collapsed;
+                addTask.Visibility = Visibility.Visible;
+            }
+            if (!IsAssignee) {
+                confirm.Visibility = Visibility.Collapsed;
+                cancel.Visibility = Visibility.Collapsed;
+                ok.Visibility = Visibility.Visible;
+            }
+        }
+
         /// <summary>
         /// Updates all task fields that were modified by the user in the GUI.
         /// </summary>
@@ -183,12 +195,15 @@ namespace Presentation.ViewModel
         /// <param name="txtTitle">The text box to assign the state to.</param>
         /// <param name="titleMessage">The message to present to the user in case the 'Title' field is invalid.</param>
         /// <param name="txtHintTitle">The text block displayed to hint at the desired field content.</param>
-        internal void ChangedTitle(TextBox txtTitle, Label titleMessage, TextBlock txtHintTitle)
+        internal void ChangedTitle(TextBox txtTitle, Label titleMessage, TextBlock txtHintTitle, TextBlock txtBlockTitle)
         {
             txtHintTitle.Visibility = Visibility.Visible;
             if (txtTitle.Text.Length > 0)
                 txtHintTitle.Visibility = Visibility.Hidden;
-
+            if (!IsAssignee) {
+                txtBlockTitle.Visibility = Visibility.Visible;
+                txtTitle.Visibility = Visibility.Collapsed;
+            }
             if (txtTitle.Text.Length > MAXIMUM_TITLE_LENGTH | txtTitle.Text.Length == MINIMUM_TITLE_LENGTH)
             {
                 txtTitle.BorderBrush = INVALID_BORDER_COLOR;
@@ -212,11 +227,16 @@ namespace Presentation.ViewModel
         /// <param name="txtDescription">The text box to assign the state to.</param>
         /// <param name="descMessage">The message to present to the user in case the 'Description' field is invalid.</param>
         /// <param name="txtHintDescription">The text block displayed to hint at the desired field content.</param>
-        internal void ChangedDescription(TextBox txtDescription, Label descMessage, TextBlock txtHintDescription)
+        internal void ChangedDescription(TextBox txtDescription, Label descMessage, TextBlock txtHintDescription, TextBlock txtBlockDescription)
         {
             txtHintDescription.Visibility = Visibility.Visible;
             if (txtDescription.Text.Length > 0)
                 txtHintDescription.Visibility = Visibility.Hidden;
+            if (!IsAssignee)
+            {
+                txtBlockDescription.Visibility = Visibility.Visible;
+                txtDescription.Visibility = Visibility.Collapsed;
+            }
             if (txtDescription.Text.Length > MAXIMUM_DESCRIPTION_LENGTH)
             {
                 txtDescription.BorderBrush = INVALID_BORDER_COLOR;
@@ -239,8 +259,13 @@ namespace Presentation.ViewModel
         /// </summary>
         /// <param name="dpDueDate">The date picker to assign the state to.</param>
         /// <param name="dueMessage">The message to present to the user in case the 'Due Date' field is invalid.</param>
-        internal void ChangedDueDate(DatePicker dpDueDate, Label dueMessage)
+        internal void ChangedDueDate(DatePicker dpDueDate, Label dueMessage, TextBlock txtBlockDueDate)
         {
+            if (!IsAssignee)
+            {
+                txtBlockDueDate.Visibility = Visibility.Visible;
+                dpDueDate.Visibility = Visibility.Collapsed;
+            }
             if (dpDueDate.SelectedDate?.CompareTo(DateTime.Now) < 0)
             {
                 dpDueDate.BorderBrush = INVALID_BORDER_COLOR;
@@ -262,8 +287,12 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "txtTaskAssignee" text box according to its state.
         /// </summary>
         /// <param name="txtTaskAssignee">The text box to assign the state to.</param>
-        internal void ChangedTaskAssignee(TextBox txtTaskAssignee)
+        internal void ChangedTaskAssignee(TextBox txtTaskAssignee, TextBlock txtBlockTaskAssignee)
         {
+            if (!IsAssignee) {
+                txtBlockTaskAssignee.Visibility = Visibility.Visible;
+                txtTaskAssignee.Visibility = Visibility.Collapsed;
+            }
             if (!txtTaskAssignee.Text.Equals(AssigneeEmail))
                 txtTaskAssignee.BorderBrush = VALID_BORDER_COLOR;
             else
