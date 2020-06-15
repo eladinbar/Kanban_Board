@@ -107,16 +107,17 @@ namespace Presentation.ViewModel
         /// <param name="dueDate">The due date this task will be due by.</param>
         public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate)
         {
-            Task = Controller.AddTask(AssigneeEmail, title, description, dueDate, this.Task.CurrentUserEmail);
+            Task = Controller.AddTask(AssigneeEmail, title, description, dueDate);
             if (AssigneeEmail != assigneeEmail)
                 Controller.AssignTask(AssigneeEmail, 0, Task.ID, assigneeEmail);
+            this.Task.CurrentUserEmail = this.AssigneeEmail;
             this.ID = Task.ID;                               RaisePropertyChanged("ID");
             this.AssigneeEmail = Task.AssigneeEmail;         RaisePropertyChanged("TaskAssignee");
             this.Title = Task.Title;                         RaisePropertyChanged("Title");
             this.Description = Task.Description;             RaisePropertyChanged("Description");
             this.DueDate = Task.DueDate;                     RaisePropertyChanged("DueDate");
             this.CreationTime = Task.CreationTime;           RaisePropertyChanged("CreationTime");
-            this.LastChangedDate = Task.LastChangedDate;     RaisePropertyChanged("LastChangedDate");
+            this.LastChangedDate = Task.LastChangedDate;     RaisePropertyChanged("LastChangedDate");            
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace Presentation.Model
         private DispatcherTimer dispatcherTimer;
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            RaisePropertyChanged("TaskBorderColor");
+            RaisePropertyChanged("TaskBorderColor"); //needed?????????????????????????????????????????????
             RaisePropertyChanged("TaskBackgroundColor");
         }
 
@@ -78,7 +78,7 @@ namespace Presentation.Model
         /// <param name="AssigneeEmail">The task assignee's email address.</param>
         /// <param name="columnOrdinal">The column ordinal this task is associated with.</param>
         public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate, 
-        DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal, string CurrentUserEmail) : base(Controller) {
+        DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal) : base(Controller) {
             this.ID = ID;
             this.Title = Title;
             this.Description = Description;
@@ -87,7 +87,7 @@ namespace Presentation.Model
             this.LastChangedDate = LastChangedDate;
             this.AssigneeEmail = AssigneeEmail;
             this.ColumnOrdinal = columnOrdinal;
-            this.CurrentUserEmail = CurrentUserEmail;
+            this.CurrentUserEmail = "";
             this.dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 3);

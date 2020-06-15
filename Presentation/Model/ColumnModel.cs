@@ -29,7 +29,7 @@ namespace Presentation.Model
             }
         }
 
-        private int _limit; //maybe make it a property which will appear at the bottom part of a columnModel and will be a changable box????????????????
+        private int _limit; 
         public string Limit
         {
             get => _limit.ToString();

@@ -32,7 +32,7 @@ namespace Presentation.Model
                 ObservableCollection<TaskModel> tasks = new ObservableCollection<TaskModel>();
                 foreach (var t in c.Tasks)
                 {
-                    tasks.Add(new TaskModel(Controller,t.Id, t.Title, t.Description, t.CreationTime, t.DueDate, t.CreationTime, t.emailAssignee, i, this.CurrentUser.Email));
+                    tasks.Add(new TaskModel(Controller,t.Id, t.Title, t.Description, t.CreationTime, t.DueDate, t.CreationTime, t.emailAssignee, i));
                 }
                 tempColumns.Add(new ColumnModel(Controller, tasks, c.Limit, c.Name, i, CreatorEmail));
                 i++;
