@@ -165,7 +165,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to remove.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public void RemoveColumn(string email, int columnOrdinal) 
+        public void RemoveColumn(int columnOrdinal) 
         {
             if (columnOrdinal >= 0 & columnOrdinal < this.Columns.Count)
             {
@@ -232,7 +232,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to move.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public Column MoveColumnRight(string email, int columnOrdinal) 
+        public Column MoveColumnRight(int columnOrdinal) 
         {
             if (columnOrdinal == (this.Columns.Count - 1)) //in case of the last column
             {
@@ -263,7 +263,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to move.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public Column MoveColumnLeft(string email, int columnOrdinal) 
+        public Column MoveColumnLeft(int columnOrdinal) 
         {
             if (columnOrdinal == 0) //in case of the first column
             {

@@ -11,14 +11,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private const int MINIMUM_TITLE_LENGTH = 0;
         private const int MAXIMUM_DESCRIPTION_LENGTH = 300; 
 
-        public int Id { get; }
+        public virtual int Id { get; internal set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public string EmailAssignee { get; private set; }
         public DateTime CreationTime { get; }
         public DateTime DueDate { get; private set; }
         public DateTime LastChangedDate { get; private set; }
-        public DalTask DalCopyTask { get; private set; }
+        public virtual DalTask DalCopyTask { get; internal set; }
 
         /// <summary>
         /// A public constructor that creates a new task and intializes all of its fields.
@@ -77,6 +77,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             DalCopyTask = dalTask;
             log.Info("Task " + id + " was Loaded from memory");
         }
+
+        /// <summary>
+        /// For testing only.
+        /// </summary>
+        internal Task() { }
 
         /// <summary>
         /// Changes the task's title.

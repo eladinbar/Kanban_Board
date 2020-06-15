@@ -12,8 +12,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private const int INITIALIZE_MAXIMUM_NUMBER_OF_TASKS = 100; //unlimited
 
         public virtual string Name { get; internal set; }
-        public int Limit { get; private set; }
-        public List<Task> Tasks { get; }
+        public virtual int Limit { get; internal set; }
+        public List<Task> Tasks { get; internal set; }
         public virtual DalColumn DalCopyColumn { get; internal set; }
 
         /// <summary>
