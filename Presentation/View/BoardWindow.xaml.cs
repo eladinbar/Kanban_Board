@@ -118,7 +118,7 @@ namespace Presentation.View
             this.viewModel.EditTask(taskToEdit);
 
             //not so pretty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            this.DataContext = null;
+            this.DataContext = null; //maybe to change the color of a border
             this.DataContext = this.viewModel;
         }
 
@@ -175,17 +175,6 @@ namespace Presentation.View
             
         }
 
-        private void ColumnName_KeyUp(object sender, KeyEventArgs e)
-        {
-            TextBox currentTextBox = ((TextBox)sender);
-            int columnOrdinal = (int)currentTextBox.Tag;
-            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyUpHandler(sender, e))
-            {
-                currentTextBox.IsUndoEnabled = false;
-                currentTextBox.IsUndoEnabled = true;
-                Keyboard.ClearFocus();
-            }
-        }
 
         private void RemoveColumn_Click(object sender, RoutedEventArgs e)
         {
@@ -199,6 +188,18 @@ namespace Presentation.View
                     break;
                 case MessageBoxResult.No:
                     break;
+            }
+        }
+
+        private void ColumnName_KeyUp(object sender, KeyEventArgs e)
+        {
+            TextBox currentTextBox = ((TextBox)sender);
+            int columnOrdinal = (int)currentTextBox.Tag;
+            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyUpHandler(sender, e))
+            {
+                currentTextBox.IsUndoEnabled = false;
+                currentTextBox.IsUndoEnabled = true;
+                Keyboard.ClearFocus();
             }
         }
 
