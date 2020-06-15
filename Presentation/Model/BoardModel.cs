@@ -52,6 +52,19 @@ namespace Presentation.Model
             this.Columns.ElementAt(0).Tasks.Add(newTask);
         }
 
+        internal void AddColumn(int newColumnOrdinal, string newColumnName)
+        {
+            ColumnModel newColumn = new ColumnModel(this.Controller, new ObservableCollection<TaskModel>(), 100, newColumnName, newColumnOrdinal, CreatorEmail);
+            this.Columns.Insert(newColumnOrdinal, newColumn);
+            for (int i = newColumnOrdinal + 1; i < this.Columns.Count; i++)
+            {
+                ColumnModel cm = this.Columns.ElementAt(i);
+                cm.Ordinal = i + 1;
+                foreach (TaskModel tm in cm.Tasks) tm.ColumnOrdinal = i + 1;
+            }
+            RaisePropertyChanged("Columns");
+        }
+
         internal void MoveColumnLeft(int columnOrdinal)
         {
             ColumnModel columnToMove = this.Columns.ElementAt(columnOrdinal);

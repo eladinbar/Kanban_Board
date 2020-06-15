@@ -193,8 +193,8 @@ namespace Presentation.View
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    Button currentTextBox = ((Button)sender);
-                    int columnOrdinal = (int)currentTextBox.Tag;
+                    Button currentButton = ((Button)sender);
+                    int columnOrdinal = (int)currentButton.Tag;
                     this.viewModel.RemoveColumn(CreatorEmail, columnOrdinal);
                     break;
                 case MessageBoxResult.No:
@@ -211,6 +211,20 @@ namespace Presentation.View
                 currentTextBox.IsUndoEnabled = false;
                 currentTextBox.IsUndoEnabled = true;
             }
+        }
+
+        private void AddColumnToTheRightMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem currentMenuItem = ((MenuItem)sender);
+            int columnOrdinal = (int)currentMenuItem.Tag;
+            this.viewModel.AddColumn(CreatorEmail, columnOrdinal + 1);
+        }
+
+        private void AddColumnToTheLeftMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem currentMenuItem = ((MenuItem)sender);
+            int columnOrdinal = (int)currentMenuItem.Tag;
+            this.viewModel.AddColumn(CreatorEmail, columnOrdinal);
         }
 
 

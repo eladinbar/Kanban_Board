@@ -57,6 +57,13 @@ namespace Presentation
         }
 
 
+        internal void AddColumn(string email, int newColumnOrdinal, string newColumnName)
+        {
+            Response rsp = Service.AddColumn(email, newColumnOrdinal, newColumnName);
+            if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
+        }
+
+
         internal string Logout(string emailToLogout)
         {
             Response rsp = Service.Logout(emailToLogout);

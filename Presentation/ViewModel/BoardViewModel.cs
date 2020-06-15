@@ -55,6 +55,23 @@ namespace Presentation.ViewModel
             taskEditWindow.ShowDialog();
         }
 
+        public void AddColumn(string email, int newColumnOrdinal)
+        {
+            try
+            {
+                InputDialog columnNameDialog = new InputDialog("Enter the new column name:");
+                columnNameDialog.ShowDialog();
+                string newColumnName = columnNameDialog.Answer;
+                this.Controller.AddColumn(email, newColumnOrdinal, newColumnName);
+                this.Board.AddColumn(newColumnOrdinal, newColumnName);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Add column error");
+            }
+
+        }
+
         public void MoveColumnLeft(string email, int columnOrdinal)
         {
             try
@@ -86,7 +103,7 @@ namespace Presentation.ViewModel
             try
             {
                 this.Controller.RemoveColumn(email, columnOrdinal);
-                this.Board.UpdateColumns();
+                this.Board.UpdateColumns(); //this or update manually???????????????????????????
                 MessageBox.Show("Column has been removed successfully.", "Remove Column");
 
             }
