@@ -13,9 +13,11 @@ namespace Presentation.Model
 
         public string CreatorEmail { get; set; }
         public ObservableCollection<ColumnModel> Columns { get; set; }
+        private UserModel CurrentUser;
 
-        public BoardModel(BackendController controller, string creatorEmail) : base(controller)
+        public BoardModel(BackendController controller, string creatorEmail, UserModel currentUser) : base(controller)
         {
+            this.CurrentUser = currentUser;
             this.CreatorEmail = creatorEmail;
             this.Columns = this.CreateColumns(creatorEmail);
         }
@@ -30,7 +32,7 @@ namespace Presentation.Model
                 ObservableCollection<TaskModel> tasks = new ObservableCollection<TaskModel>();
                 foreach (var t in c.Tasks)
                 {
-                    tasks.Add(new TaskModel(Controller,t.Id, t.Title, t.Description, t.CreationTime, t.DueDate, t.CreationTime, t.emailAssignee, i));
+                    tasks.Add(new TaskModel(Controller,t.Id, t.Title, t.Description, t.CreationTime, t.DueDate, t.CreationTime, t.emailAssignee, i, this.CurrentUser.Email));
                 }
                 tempColumns.Add(new ColumnModel(Controller, tasks, c.Limit, c.Name, i, CreatorEmail));
                 i++;
@@ -48,6 +50,36 @@ namespace Presentation.Model
         internal void AddNewTask(TaskModel newTask)
         {
             this.Columns.ElementAt(0).Tasks.Add(newTask);
+        }
+
+        internal void MoveColumnLeft(int columnOrdinal)
+        {
+            ColumnModel columnToMove = this.Columns.ElementAt(columnOrdinal);
+            ColumnModel columnToUpdateOrdinal = this.Columns.ElementAt(columnOrdinal - 1);
+            this.Columns.RemoveAt(columnOrdinal);
+            this.Columns.Insert(columnOrdinal - 1, columnToMove);
+            columnToMove.Ordinal = columnOrdinal - 1;
+            columnToUpdateOrdinal.Ordinal = columnOrdinal;
+            foreach (TaskModel t in columnToMove.Tasks) t.ColumnOrdinal = columnToMove.Ordinal;
+            foreach (TaskModel t in columnToUpdateOrdinal.Tasks) t.ColumnOrdinal = columnToUpdateOrdinal.Ordinal;
+        }
+
+        internal void MoveColumnRight(int columnOrdinal)
+        {
+            ColumnModel columnToMove = this.Columns.ElementAt(columnOrdinal);
+            ColumnModel columnToUpdateOrdinal = this.Columns.ElementAt(columnOrdinal+1);
+            this.Columns.RemoveAt(columnOrdinal);
+            this.Columns.Insert(columnOrdinal + 1, columnToMove);
+            columnToMove.Ordinal = columnOrdinal + 1;
+            columnToUpdateOrdinal.Ordinal = columnOrdinal;
+            foreach (TaskModel t in columnToMove.Tasks) t.ColumnOrdinal = columnToMove.Ordinal;
+            foreach (TaskModel t in columnToUpdateOrdinal.Tasks) t.ColumnOrdinal = columnToUpdateOrdinal.Ordinal;
+        }
+
+        internal void UpdateColumns()
+        {
+            this.Columns = CreateColumns(this.CreatorEmail);
+            RaisePropertyChanged("Columns");
         }
     }
 }

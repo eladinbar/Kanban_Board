@@ -18,6 +18,7 @@ namespace Presentation.ViewModel
         public BoardModel Board { get; private set; }
         public string ChangeColumnNameToolTip { get; private set; }
         public bool notCreator { get => !IsCreator; }
+
         private string ColumnNameToolTip()
         {
             if (IsCreator) return "Column name";
@@ -42,10 +43,9 @@ namespace Presentation.ViewModel
         {
             this.Controller = controller;
             this.CurrentUser = currentUser;
-            this.Board = new BoardModel(controller, creatorEmail);
+            this.Board = new BoardModel(controller, creatorEmail, currentUser);
             this.IsCreator = true;  //(this.CurrentUser.Email.Equals(this.Board.CreatorEmail));
             ChangeColumnNameToolTip = this.ColumnNameToolTip();
-
         }
 
         public void EditTask(TaskModel taskToEdit)
@@ -55,7 +55,49 @@ namespace Presentation.ViewModel
             taskEditWindow.ShowDialog();
         }
 
-        public void AdvanceTask(TaskModel taskToAdvance)
+        public void MoveColumnLeft(string email, int columnOrdinal)
+        {
+            try
+            {
+                this.Controller.MoveColumnLeft(email, columnOrdinal);
+                this.Board.MoveColumnLeft(columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error occured");
+            }
+        }
+
+        public void MoveColumnRight(string email, int columnOrdinal)
+        {
+            try
+            {
+                this.Controller.MoveColumnRight(email, columnOrdinal);
+                this.Board.MoveColumnRight(columnOrdinal);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error occured");
+            }
+        }
+
+        public void RemoveColumn(string email, int columnOrdinal)
+        {
+            try
+            {
+                this.Controller.RemoveColumn(email, columnOrdinal);
+                this.Board.UpdateColumns();
+                MessageBox.Show("Column has been removed successfully.", "Remove Column");
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error occured");
+            }
+        }
+
+
+            public void AdvanceTask(TaskModel taskToAdvance)
         {
             try
             {
@@ -87,7 +129,7 @@ namespace Presentation.ViewModel
             if (!lastButton.Equals("Cancel"))
             {
                 var tempTask = this.Controller.GetColumn(this.Board.CreatorEmail, 0).Tasks.Last();
-                TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, tempTask.CreationTime, CurrentUser.Email, 0);
+                TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, tempTask.CreationTime, CurrentUser.Email, 0, this.CurrentUser.Email);
                 this.Board.AddNewTask(newTask);
             }
         }

@@ -67,6 +67,31 @@ namespace Presentation
             return "User was logged out successfully.";
         }
 
+        internal void LimitColumnTasks(string email, int columnOrdinal, int limit)
+        {
+            Response rsp = Service.LimitColumnTasks(email, columnOrdinal, limit);
+            if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
+        }
+
+        internal void MoveColumnLeft(string email, int columnOrdinal)
+        {
+            Response rsp = this.Service.MoveColumnLeft(email, columnOrdinal);
+            if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
+        }
+
+
+        internal void MoveColumnRight(string email, int columnOrdinal)
+        {
+            Response rsp = this.Service.MoveColumnRight(email, columnOrdinal);
+            if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
+        }
+
+        internal void RemoveColumn(string email, int columnOrdinal)
+        {
+            Response rsp = Service.RemoveColumn(email, columnOrdinal);
+            if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
+        }
+
 
         internal Board GetBoard(string creatorEmail)
         {
@@ -111,13 +136,13 @@ namespace Presentation
         /// <param name="description">Description of the new task</param>
         /// <param name="dueDate">The due date if the new task</param>
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
-        public TaskModel AddTask(string email, string title, string description, DateTime dueDate)
+        public TaskModel AddTask(string email, string title, string description, DateTime dueDate, string currentUserEmail)
         {
             Response<IntroSE.Kanban.Backend.ServiceLayer.Task> res = Service.AddTask(email, title, description, dueDate);
             if (res.ErrorOccured)
                 throw new Exception(res.ErrorMessage);
             TaskModel task = new TaskModel(this, res.Value.Id, res.Value.Title, res.Value.Description, res.Value.CreationTime, res.Value.DueDate,
-                                            res.Value.CreationTime, res.Value.emailAssignee, 0);
+                                            res.Value.CreationTime, res.Value.emailAssignee, 0, currentUserEmail);
             return task;
         }
 

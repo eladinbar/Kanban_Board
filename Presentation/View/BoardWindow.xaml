@@ -9,7 +9,7 @@
         
         
         <TextBox Name="SearchBox" Text="Search for a task..." FontSize="12" FontStyle="Italic" BorderThickness="1" Height="25" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" 
-                 Foreground="Gray" Background="{Binding}" TextChanged="SearchBox_TextChanged"/>
+                 Foreground="Gray" Background="White" TextChanged="SearchBox_TextChanged"/>
         <!--(Search: binding->grey->whiteOnClick, also for a text)-->
         
         
@@ -67,8 +67,9 @@
 
         <StackPanel Name="ColumnsStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="575" Width="1250">
 
+            <!--************************ Columns List*******************************************************************-->
             <ListBox Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  
-                     ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Visible">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Name="ColumnsListBoxPresentationDefinition" Orientation="Horizontal" HorizontalAlignment="Center" />
@@ -85,11 +86,12 @@
                 <ListBox.ItemTemplate>
 
                     <DataTemplate>
-                        <Grid Name="ColumnGrid">
+                        <Grid Name="ColumnGrid" Height="575">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" ></RowDefinition>
-                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="475"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
                             </Grid.RowDefinitions>
 
                             <Grid Name="ColumnHeaderGrid" Grid.Row="0">
@@ -102,17 +104,20 @@
 
 
                                 <Button Name="SortTasksByDueDate_Button" Content="V" 
-                                        FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                        FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="0"
                                         ToolTip="Sort tasks by due date" 
                                         Click="SortTasksByDueDate_Click" Tag="{Binding Ordinal}" />
-                                <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                         KeyUp="ColumnName_KeyUp"
+                                <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=OneWay}"
+                                         Tag="{Binding Ordinal}" KeyUp="ColumnName_KeyUp" LostFocus="ColumnName_LostFocus"
                                          ToolTip="{Binding DataContext.ChangeColumnNameToolTip, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                          IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
-                                         Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1" />
+                                         Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
                                 <!--<TextBox Name="txtTitle" Text="{Binding Path=Title, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Title_Changed" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="0" Margin="134,5,2,5" Grid.ColumnSpan="2"/>-->
-
-
+                                <Button Name="DeleteColumn" Content="X" 
+                                        FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Column="2"
+                                        ToolTip="Delete this column" 
+                                        IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                        Click="RemoveColumn_Click" Tag="{Binding Ordinal}" />
                             </Grid>
                             
                             <!--************************ Task List*******************************************************************-->
@@ -136,7 +141,8 @@
 
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Name="TaskInColumnBorder" BorderBrush="Purple" BorderThickness="1" Height="50" Width="290" HorizontalAlignment="Center">
+                                        <Border Name="TaskInColumnBorder" BorderBrush="{Binding TaskBorderColor, Mode=OneWay}" Background="{Binding TaskBackgroundColor,Mode=OneWay}" 
+                                                BorderThickness="2" Height="50" Width="290" HorizontalAlignment="Center">
                                             <Grid>
                                                 <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" Click="AdvanceTask_Click"/>
                                                 <!--IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}"-->
@@ -166,7 +172,56 @@
 
                             </ListBox>
 
-                        </Grid>
+                            <Grid Name="ColumnBottomGrid" Grid.Row="2" Height="30" Background="Yellow">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Name="MoveColumnLeftButton" Content="moveLeft" 
+                                        FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"
+                                        ToolTip="Move a column to its left" 
+                                        IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                        Click="MoveColumnLeftClick" Tag="{Binding Ordinal}" />
+
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Name="AmountOfTasks" Grid.Column="0" Text="{Binding CurrentAmountOfTasks}"
+                                         ToolTip="Current amount of tasks" 
+                                         Height="20" HorizontalAlignment="Center" FontWeight="Bold" />
+                                    <Label Content=" / " Grid.Column="1" />
+                                    <TextBox Name="LimitOfTasks" Grid.Column="2" Text="{Binding Limit, Mode=TwoWay}"
+                                         ToolTip="Maximal amount of tasks" 
+                                         IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                         Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
+
+
+                                    <!--<TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=OneWay}"
+                                         Tag="{Binding Ordinal}" KeyUp="ColumnName_KeyUp" LostFocus="ColumnName_LostFocus"
+                                         ToolTip="{Binding DataContext.ChangeColumnNameToolTip, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                         IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                         Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>-->
+
+
+
+                                </Grid>
+
+                                <Button Name="MoveColumnRightButton" Content="moveRight" 
+                                        FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"
+                                        ToolTip="Move a column to its right" 
+                                        IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                        Click="MoveColumnRightClick" Tag="{Binding Ordinal}" />
+
+
+                            </Grid>
+
+
+                            </Grid>
                     </DataTemplate>
 
                 </ListBox.ItemTemplate>

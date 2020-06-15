@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using IntroSE.Kanban.Backend.ServiceLayer;
 using System.IO;
+using System.Windows.Threading;
 
 namespace Presentation.View
 {
@@ -25,9 +26,9 @@ namespace Presentation.View
     /// </summary>
     public partial class BoardWindow : Window
     {
-        private BoardViewModel viewModel;
-        
+        private BoardViewModel viewModel;        
         public string CreatorEmail { get; private set; }
+        private UserModel CurrentUser;
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! burn after reading ==>
@@ -49,6 +50,9 @@ namespace Presentation.View
                     break;
             }
             service.Register(tempUser1Email, tempPass, tempUser1Nick);
+            string tempUser2Email = "maze2@mapo.com";
+            service.Register(tempUser2Email, tempPass, tempUser1Nick, tempUser1Email);
+
             service.Login(tempUser1Email, tempPass);
             DateTime dTime = new DateTime(2030, 03, 26);
             Console.WriteLine("this is not the droids: {0}", service.AddTask(tempUser1Email, "title1", "desc1", dTime).ErrorOccured);
@@ -84,6 +88,7 @@ namespace Presentation.View
             this.viewModel = new BoardViewModel(controller, tempUserModel1, tempUser1Email);
             this.DataContext = this.viewModel;
             this.CreatorEmail = tempUser1Email;
+            this.CurrentUser = tempUserModel1;
         }
 
         public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) //need to receive from login window those parameters
@@ -91,13 +96,14 @@ namespace Presentation.View
             InitializeComponent();
             this.viewModel = new BoardViewModel(controller, currentUser, creatorEmail);
             this.DataContext = this.viewModel;
-            this.CreatorEmail = creatorEmail;            
+            this.CreatorEmail = creatorEmail;
+            this.CurrentUser = currentUser;
         }
 
 
         public void SortTasksByDueDate_Click(object sender, RoutedEventArgs e)
         {
-            this.viewModel.SortTasksByDueDate((int)((Button)sender).Tag);            
+            this.viewModel.SortTasksByDueDate((int)((Button)sender).Tag);
         }
 
         public void AddTask_Click(object sender, RoutedEventArgs e)
@@ -109,11 +115,16 @@ namespace Presentation.View
         public void EditTask_Click(object sender, RoutedEventArgs e) 
         {
             TaskModel taskToEdit = ((Button)sender).DataContext as TaskModel;
-            this.viewModel.EditTask(taskToEdit);           
+            this.viewModel.EditTask(taskToEdit);
+
+            //not so pretty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            this.DataContext = null;
+            this.DataContext = this.viewModel;
         }
 
         public void AdvanceTask_Click(object sender, RoutedEventArgs e) 
         {
+            //not so pretty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             MessageBoxResult result = MessageBox.Show("               Advance this task? \n                    (Irreversible!)", "Advance Task", MessageBoxButton.YesNo);
             switch (result)
             {
@@ -125,8 +136,6 @@ namespace Presentation.View
                     break;
             }
         }
-
-
 
         public void LogoutVerificationMessageBox(object sender, RoutedEventArgs e)
         {
@@ -143,24 +152,65 @@ namespace Presentation.View
             }
         }
 
+
+        public void MoveColumnLeftClick(object sender, RoutedEventArgs e)
+        {
+            int columnOrdinal = ((int)((Button)sender).Tag);
+            this.viewModel.MoveColumnLeft(CreatorEmail, columnOrdinal);            
+        }
+
+        public void MoveColumnRightClick(object sender, RoutedEventArgs e)
+        {
+            int columnOrdinal = ((int)((Button)sender).Tag);
+            this.viewModel.MoveColumnRight(CreatorEmail, columnOrdinal);
+        }
+
         public void ChangePassword(object sender, RoutedEventArgs e)
         {
             this.viewModel.ChangePassword();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void SearchBox_TextChanged(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void ColumnName_KeyUp(object sender, KeyEventArgs e)
         {
-            ((ColumnModel)((Control)sender).Parent).OnKeyUpHandler;
+            TextBox currentTextBox = ((TextBox)sender);
+            int columnOrdinal = (int)currentTextBox.Tag;
+            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyUpHandler(sender, e))
+            {
+                currentTextBox.IsUndoEnabled = false;
+                currentTextBox.IsUndoEnabled = true;
+                Keyboard.ClearFocus();
+            }
+        }
+
+        private void RemoveColumn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Remove this column?", "Remove Column", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    Button currentTextBox = ((Button)sender);
+                    int columnOrdinal = (int)currentTextBox.Tag;
+                    this.viewModel.RemoveColumn(CreatorEmail, columnOrdinal);
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+        }
+
+        private void ColumnName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox currentTextBox = ((TextBox)sender);
+            if (currentTextBox.CanUndo == true)
+            {
+                currentTextBox.Undo();
+                currentTextBox.IsUndoEnabled = false;
+                currentTextBox.IsUndoEnabled = true;
+            }
         }
 
 

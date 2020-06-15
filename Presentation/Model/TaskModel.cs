@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Presentation.Model
 {
@@ -7,6 +9,49 @@ namespace Presentation.Model
     /// </summary>
     public class TaskModel : NotifiableModelObject
     {
+        private DispatcherTimer dispatcherTimer;
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            RaisePropertyChanged("TaskBorderColor");
+            RaisePropertyChanged("TaskBackgroundColor");
+        }
+
+        public readonly SolidColorBrush ALMOST_DUE_DATE_BACKGROUND_COLOR = Brushes.Orange;
+        public readonly SolidColorBrush PAST_DUE_DATE_BACKGROUND_COLOR = Brushes.Red;
+        public readonly SolidColorBrush ORIGINAL_BACKGROUND_COLOR = Brushes.Khaki;
+        public readonly SolidColorBrush CURRENT_USER_BORDER_COLOR = Brushes.Blue;
+        public readonly SolidColorBrush ORIGINAL_BORDER_COLOR = Brushes.Black;
+
+        public SolidColorBrush TaskBorderColor
+        {
+            get => calculateTaskBorderColor();
+            private set { }
+        }
+
+        public SolidColorBrush TaskBackgroundColor
+        {
+            get => calculateTaskBackgroundColor();
+            private set { }
+        }
+
+        private SolidColorBrush calculateTaskBorderColor()
+        {
+            if (this.AssigneeEmail.Equals(this.CurrentUserEmail)) return CURRENT_USER_BORDER_COLOR;
+            else return ORIGINAL_BORDER_COLOR;
+        }
+
+        private SolidColorBrush calculateTaskBackgroundColor()
+        {
+            long totalTime = this.DueDate.Ticks - this.CreationTime.Ticks;
+            long remainingTime = this.DueDate.Ticks - DateTime.Now.Ticks;
+            if (remainingTime <= 0) return PAST_DUE_DATE_BACKGROUND_COLOR;
+            else
+            {
+                if (remainingTime > (totalTime/4)) return ORIGINAL_BACKGROUND_COLOR; 
+                else return ALMOST_DUE_DATE_BACKGROUND_COLOR;
+            }
+        }
+
         public int ID { get; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -14,7 +59,10 @@ namespace Presentation.Model
         public DateTime DueDate { get; set; }
         public DateTime LastChangedDate{ get; }
         public string AssigneeEmail { get; set; }
-        public int ColumnOrdinal { get; set; }
+        public string CurrentUserEmail;
+        private int _columnOrdinal;
+        public int ColumnOrdinal { get => _columnOrdinal; set { _columnOrdinal = value; RaisePropertyChanged("ColumnOrdinal"); } }
+
 
         /// <summary>
         /// The task model constructor. Initializes all task relevant fields in addition to
@@ -30,7 +78,7 @@ namespace Presentation.Model
         /// <param name="AssigneeEmail">The task assignee's email address.</param>
         /// <param name="columnOrdinal">The column ordinal this task is associated with.</param>
         public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate, 
-        DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal) : base(Controller) {
+        DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal, string CurrentUserEmail) : base(Controller) {
             this.ID = ID;
             this.Title = Title;
             this.Description = Description;
@@ -39,6 +87,11 @@ namespace Presentation.Model
             this.LastChangedDate = LastChangedDate;
             this.AssigneeEmail = AssigneeEmail;
             this.ColumnOrdinal = columnOrdinal;
+            this.CurrentUserEmail = CurrentUserEmail;
+            this.dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 3);
+            dispatcherTimer.Start();
         }
 
         /// <summary>
