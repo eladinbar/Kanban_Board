@@ -125,7 +125,7 @@
                                     <Menu Name="AddColumnMenu" Height="20" Width="45" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" ToolTip="Add a new column" >
 
                                         <MenuItem x:Name="AddColumnItem" Header="Add..." VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="UltraBold" Height="20" Width="45" 
-                                              FontFamily="David" BorderBrush="Black" >
+                                              FontFamily="David" BorderBrush="Black">
                                             <MenuItem Name="AddColumnToTheLeftMenuItem" Header="...a column to the left" IsCheckable="False" FontSize="12" FontWeight="Regular" 
                                                   Click="AddColumnToTheLeftMenuItem_Click" Tag="{Binding Ordinal}" />
                                             <Separator />
@@ -145,13 +145,13 @@
 
                             <!--************************ Task List*******************************************************************-->
                             <ListBox Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding Tasks, Mode=TwoWay}" BorderBrush="Green" BorderThickness="1" 
-                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" >
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
 
                                 <!--SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"-->
 
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Name="TasksListBoxPresentationDefinition" Orientation="Vertical" Width="300" Height="525"/>
+                                        <StackPanel Name="TasksListBoxPresentationDefinition" Orientation="Vertical" Width="300" Height="475"/>
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
 
