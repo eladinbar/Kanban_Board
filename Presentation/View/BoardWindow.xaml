@@ -70,6 +70,7 @@
             <!--************************ Columns List*******************************************************************-->
             <ListBox Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  
                      ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Name="ColumnsListBoxPresentationDefinition" Orientation="Horizontal" HorizontalAlignment="Center" />
