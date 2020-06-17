@@ -13,9 +13,10 @@ namespace Presentation.Model
 {
     public class ColumnModel : NotifiableModelObject
     {
+        private readonly int MAX_COLUMN_NAME_LENGTH = 15;
+        public int MaxColumnNameLength { get => MAX_COLUMN_NAME_LENGTH; }
         public ObservableCollection<TaskModel> Tasks { get; set; }
-        public string CreatorEmail;
-
+        public string CreatorEmail;        
         public int CurrentAmountOfTasks { get => this.Tasks.Count; }
 
         private int _ordinal;
@@ -56,17 +57,9 @@ namespace Presentation.Model
             get => _name;
             set
             {
-                try
-                {
-                    this.Controller.ChangeColumnName(CreatorEmail, Ordinal, value);
-                    _name = value;
-                    RaisePropertyChanged("Name");
-                    MessageBox.Show("Column name changed successfully", "Info");
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message, "Invalid Action");
-                }
+                this.Controller.ChangeColumnName(CreatorEmail, Ordinal, value);
+                _name = value;
+                RaisePropertyChanged("Name");
             }
         }
 
@@ -80,14 +73,26 @@ namespace Presentation.Model
         }
 
 
-        public bool OnKeyUpHandler(object sender, KeyEventArgs e)
+
+
+        //doesn work properklyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy!~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public bool OnKeyUpHandler(object sender, KeyEventArgs e) //column name changes
         {
             if (e.Key == Key.Return)
             {
-                Name = ((TextBox)sender).Text;
-                return true;
+                try
+                {
+                    Name = ((TextBox)sender).Text;
+                    MessageBox.Show("Column name changed successfully", "Info");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Invalid Action");
+                    return false;
+                }
             }
-            return false;
+            return false;                       
         }
     }
 }

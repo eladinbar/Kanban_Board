@@ -109,7 +109,7 @@
                                         ToolTip="Sort tasks by due date" 
                                         Click="SortTasksByDueDate_Click" Tag="{Binding Ordinal}" />
                                 <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=OneWay}"
-                                         Tag="{Binding Ordinal}" KeyUp="ColumnName_KeyUp" LostFocus="ColumnName_LostFocus"
+                                         Tag="{Binding Ordinal}" KeyUp="ColumnName_KeyUp" LostFocus="ColumnName_LostFocus" MaxLength="{Binding MaxColumnNameLength}"
                                          ToolTip="{Binding DataContext.ChangeColumnNameToolTip, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                          IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                          Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>

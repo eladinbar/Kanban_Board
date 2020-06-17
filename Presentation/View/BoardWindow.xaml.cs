@@ -26,9 +26,10 @@ namespace Presentation.View
     /// </summary>
     public partial class BoardWindow : Window
     {
+       
         private BoardViewModel viewModel;        
         public string CreatorEmail { get; private set; }
-        private UserModel CurrentUser;
+        private UserModel CurrentUser;         
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! burn after reading ==>
