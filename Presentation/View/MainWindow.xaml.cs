@@ -23,24 +23,24 @@ namespace Presentation.View
     public partial class MainWindow : Window
     {
 
-        private MainViewModal viewModal;
+        private MainViewModel viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-            viewModal = new MainViewModal();
-            DataContext = viewModal;
+            viewModel = new MainViewModal();
+            DataContext = viewModel;
         }
         public MainWindow(BackendController controller)
         {
             InitializeComponent();
-            viewModal = new MainViewModal(controller);
-            DataContext = viewModal;
+            viewModel = new MainViewModal(controller);
+            DataContext = viewModel;
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            UserModel user = viewModal.Login();
+            UserModel user = viewModel.Login();
             if(user != null)
             {
                 //BoardWindow bw = new BoardWindow(user);
@@ -51,7 +51,7 @@ namespace Presentation.View
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            RegistrationWindow registration = new RegistrationWindow(viewModal.Controller);
+            RegistrationWindow registration = new RegistrationWindow(viewModel.Controller);
             registration.Show();
             this.Close();
         }
