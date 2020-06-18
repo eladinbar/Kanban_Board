@@ -49,30 +49,5 @@ namespace Presentation.View
             HostEmailPanal.Visibility = Visibility.Hidden;
             HostEmailBox.Clear();
         }
-
-        private void PasswordTextBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            viewModal.Password = PasswordTextBox.Password;
-            PasswordTextBox.PasswordChar = RandomizeCher();
-        }
-
-        private void PasswordConfirmTexBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            viewModal.PasswordConfirm = PasswordConfirmTexBox.Password;
-            PasswordConfirmTexBox.PasswordChar = RandomizeCher();
-        }
-
-        private char RandomizeCher()
-        {
-            Random rnd = new Random();
-            return (char) rnd.Next(0, 65536);
-        }
-
-        private void CancelRegistration_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow main = new MainWindow(viewModal.Controller);
-            main.Show();
-            this.Close();
-        }
     }
 }

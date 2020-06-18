@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
-using Presentation.Model;
+using Presentation.Modal;
 
 namespace Presentation
 {

@@ -1,6 +1,5 @@
-﻿using IntroSE.Kanban.Backend.ServiceLayer;
-using Presentation.Model;
-using Presentation.View;
+﻿using Presentation.Model;
+using Presentation.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,33 +15,45 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Presentation
+namespace Presentation.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        TaskWindow window;
-        BackendController Controller;
-        
-        //Mock MainWindow for testing only
+
+        private MainViewModal viewModal;
+
         public MainWindow()
         {
             InitializeComponent();
-            this.Controller = new BackendController();
-            UserModel user = new UserModel(Controller, "username", "nickname");
-            window = null;
+            viewModal = new MainViewModal();
+            DataContext = viewModal;
+        }
+        public MainWindow(BackendController controller)
+        {
+            InitializeComponent();
+            viewModal = new MainViewModal(controller);
+            DataContext = viewModal;
         }
 
-        private void Open_Click(object sender, RoutedEventArgs e)
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (window.Closed())
-            BackendController controller = new BackendController();
-            TaskModel task = new TaskModel(controller, 1, "title", "description", DateTime.Now, new DateTime(2021, 2, 1), DateTime.Now, "email", 0);
-            //window = new TaskWindow(controller, task, 0, true); //edit
-            window = new TaskWindow(controller, "email"); //add
-            window.ShowDialog();
+            UserModel user = viewModal.Login();
+            if(user != null)
+            {
+                //BoardWindow bw = new BoardWindow(user);
+                //bw.Show();
+                Close();
+            }
+        }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            RegistrationWindow registration = new RegistrationWindow(viewModal.Controller);
+            registration.Show();
+            this.Close();
         }
     }
 }
