@@ -10,6 +10,7 @@
 
         <TextBox Name="SearchBox" Text="Search for a task..." FontSize="12" FontStyle="Italic" BorderThickness="1" Height="25" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" 
                  Foreground="Gray" Background="White" TextChanged="SearchBox_TextChanged"/>
+        <!--UpdateSourceTrigger=PropertyChanged-->
         <!--(Search: binding->grey->whiteOnClick, also for a text)-->
 
 
@@ -70,7 +71,14 @@
             <!--************************ Columns List*******************************************************************-->
             <ListBox Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  
                      ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Visible">
-                
+
+                <ListBox.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer Collection="{Binding Board.Columns}"/>
+                        <CollectionContainer Collection="{Binding Board.MyFilteredItems}"/>
+                    </CompositeCollection>
+                </ListBox.ItemsSource>
+
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Name="ColumnsListBoxPresentationDefinition" Orientation="Horizontal" HorizontalAlignment="Center" />
