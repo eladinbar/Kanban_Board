@@ -7,11 +7,21 @@ using Presentation.Model;
 using System.Collections.ObjectModel;
 using Presentation.View;
 using System.Windows;
+using System.Windows.Threading;
+
 
 namespace Presentation.ViewModel
 {
     class BoardViewModel : NotifiableObject
     {
+        private DispatcherTimer dispatcherTimer;
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            foreach (ColumnModel c in this.Board.Columns)
+                foreach (TaskModel t in c.Tasks)
+                    t.RaiseProperty("TaskBackgroundColor");
+        }
+
         private BackendController Controller;
         public UserModel CurrentUser { get; private set; }
         public bool IsCreator { get; private set; } 
@@ -46,6 +56,10 @@ namespace Presentation.ViewModel
             this.Board = new BoardModel(controller, creatorEmail, currentUser);
             this.IsCreator = true;  //(this.CurrentUser.Email.Equals(this.Board.CreatorEmail));
             ChangeColumnNameToolTip = this.ColumnNameToolTip();
+            this.dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 3); //change to greater period (maybe a minute) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            dispatcherTimer.Start();
         }
 
         public void EditTask(TaskModel taskToEdit)
@@ -147,7 +161,7 @@ namespace Presentation.ViewModel
             {
                 var tempTask = this.Controller.GetColumn(this.Board.CreatorEmail, 0).Tasks.Last();
                 TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, tempTask.CreationTime, CurrentUser.Email, 0);
-                this.Board.AddNewTask(newTask);
+                this.Board.AddNewTask(newTask);                
             }
         }
 
@@ -158,6 +172,5 @@ namespace Presentation.ViewModel
             tasks.Clear();
             foreach (TaskModel t in tempTasksCollection) tasks.Add(t);
         }
-
     }
 }

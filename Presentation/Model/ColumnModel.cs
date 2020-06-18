@@ -73,10 +73,14 @@ namespace Presentation.Model
         }
 
 
-
+        public void RaiseProperty(string propertyName)
+        {
+            RaisePropertyChanged(propertyName);
+        }
+        
 
         //doesn work properklyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy!~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        public bool OnKeyUpHandler(object sender, KeyEventArgs e) //column name changes
+        public bool OnKeyDownHandler(object sender, KeyEventArgs e) //column name changes
         {
             if (e.Key == Key.Return)
             {
@@ -87,8 +91,9 @@ namespace Presentation.Model
                     return true;
                 }
                 catch (Exception ex)
-                {
+                {                    
                     MessageBox.Show(ex.Message, "Invalid Action");
+                    ((TextBox)sender).Undo();
                     return false;
                 }
             }

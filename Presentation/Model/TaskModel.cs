@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace Presentation.Model
 {
@@ -9,13 +8,6 @@ namespace Presentation.Model
     /// </summary>
     public class TaskModel : NotifiableModelObject
     {
-        private DispatcherTimer dispatcherTimer;
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            RaisePropertyChanged("TaskBorderColor"); //needed?????????????????????????????????????????????
-            RaisePropertyChanged("TaskBackgroundColor");
-        }
-
         public readonly SolidColorBrush ALMOST_DUE_DATE_BACKGROUND_COLOR = Brushes.Orange;
         public readonly SolidColorBrush PAST_DUE_DATE_BACKGROUND_COLOR = Brushes.Red;
         public readonly SolidColorBrush ORIGINAL_BACKGROUND_COLOR = Brushes.Khaki;
@@ -88,10 +80,6 @@ namespace Presentation.Model
             this.AssigneeEmail = AssigneeEmail;
             this.ColumnOrdinal = columnOrdinal;
             this.CurrentUserEmail = "";
-            this.dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 3);
-            dispatcherTimer.Start();
         }
 
         /// <summary>
@@ -136,6 +124,11 @@ namespace Presentation.Model
             Controller.AssignTask(AssigneeEmail, ColumnOrdinal, ID, emailAssignee);
             this.AssigneeEmail = emailAssignee;
             RaisePropertyChanged("TaskAssigneeUsername");
+        }
+
+        public void RaiseProperty(string propertyName)
+        {
+
         }
     }
 }

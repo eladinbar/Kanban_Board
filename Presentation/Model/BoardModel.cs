@@ -42,14 +42,19 @@ namespace Presentation.Model
 
         public void AdvanceTask(TaskModel taskToAdvance, int columnOrdinal)
         {
-            this.Columns.ElementAt(columnOrdinal).Tasks.Remove(taskToAdvance);
-            this.Columns.ElementAt(columnOrdinal + 1).Tasks.Add(taskToAdvance);
-            taskToAdvance.ColumnOrdinal = taskToAdvance.ColumnOrdinal + 1;
+            ColumnModel sourceColumn = this.Columns.ElementAt(columnOrdinal);
+            sourceColumn.Tasks.Remove(taskToAdvance);
+            sourceColumn.RaiseProperty("CurrentAmountOfTasks");
+            ColumnModel targetColumn = this.Columns.ElementAt(columnOrdinal + 1);
+            targetColumn.Tasks.Add(taskToAdvance);
+            targetColumn.RaiseProperty("CurrentAmountOfTasks");
+            taskToAdvance.ColumnOrdinal = taskToAdvance.ColumnOrdinal + 1;        
         }
 
         internal void AddNewTask(TaskModel newTask)
         {
             this.Columns.ElementAt(0).Tasks.Add(newTask);
+            this.Columns.ElementAt(0).RaiseProperty("CurrentAmountOfTasks");
         }
 
         internal void AddColumn(int newColumnOrdinal, string newColumnName)

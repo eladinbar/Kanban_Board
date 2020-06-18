@@ -109,7 +109,8 @@ namespace Presentation.View
 
         public void AddTask_Click(object sender, RoutedEventArgs e)
         {
-            this.viewModel.AddTask();
+            this.viewModel.AddTask();            
+            
         }
 
 
@@ -192,11 +193,11 @@ namespace Presentation.View
             }
         }
 
-        private void ColumnName_KeyUp(object sender, KeyEventArgs e)
+        private void ColumnName_KeyDown(object sender, KeyEventArgs e)
         {
             TextBox currentTextBox = ((TextBox)sender);
             int columnOrdinal = (int)currentTextBox.Tag;
-            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyUpHandler(sender, e))
+            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyDownHandler(sender, e))
             {
                 currentTextBox.IsUndoEnabled = false;
                 currentTextBox.IsUndoEnabled = true;
