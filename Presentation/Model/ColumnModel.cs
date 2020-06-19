@@ -37,16 +37,9 @@ namespace Presentation.Model
             get => _limit.ToString();
             set
             {
-                try
-                {
-                    this.Controller.LimitColumnTasks(CreatorEmail, Ordinal, Int32.Parse(value));
-                    this._limit = Int32.Parse(value);
-                    RaisePropertyChanged("Limit");
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message, "Invalid Action");
-                }
+                this.Controller.LimitColumnTasks(CreatorEmail, Ordinal, Int32.Parse(value));
+                this._limit = Int32.Parse(value);
+                RaisePropertyChanged("Limit");
 
             }
         }
