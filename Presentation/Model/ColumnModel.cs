@@ -16,6 +16,7 @@ namespace Presentation.Model
         private readonly int MAX_COLUMN_NAME_LENGTH = 15;
         public int MaxColumnNameLength { get => MAX_COLUMN_NAME_LENGTH; }
         public ObservableCollection<TaskModel> Tasks { get; set; }
+        public ObservableCollection<TaskModel> TasksToView { get; set; }
         public string CreatorEmail;        
         public int CurrentAmountOfTasks { get => this.Tasks.Count; }
 
@@ -70,6 +71,7 @@ namespace Presentation.Model
             this._name = name;
             this._ordinal = ordinal;
             this.CreatorEmail = creatorEmail;
+            this.TasksToView = this.Tasks;
         }
 
 
@@ -98,6 +100,25 @@ namespace Presentation.Model
                 }
             }
             return false;                       
+        }
+
+        internal void SearchBox_TextChanged(string senderText)
+        {
+            string txtOrig = senderText;
+            string upper = txtOrig.ToUpper();
+            string lower = txtOrig.ToLower();
+            var tskFiltered = from Tsk in this.Tasks
+                              let tTitle = Tsk.Title
+                              where
+                               tTitle.StartsWith(lower)
+                               || tTitle.StartsWith(upper)
+                               || tTitle.Contains(txtOrig)
+                              select Tsk;
+
+            this.TasksToView = new ObservableCollection<TaskModel>(tskFiltered); //update tasks source
+            RaisePropertyChanged("TasksToView");
+
+
         }
     }
 }

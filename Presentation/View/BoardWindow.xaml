@@ -74,7 +74,11 @@
 
                 <!--<ListBox.ItemsSource>
                     <CompositeCollection>
-                        <CollectionContainer Collection="{Binding Board.Columns}"/>
+                        <CollectionContainer Collection="{Binding Board.Columns}" >
+                            <CollectionContainer.Collection>
+                                <S
+                            </CollectionContainer.Collection>
+                        </CollectionContainer>
                         <CollectionContainer Collection="{Binding Board.MyFilteredItems}"/>
                     </CompositeCollection>
                 </ListBox.ItemsSource>-->
@@ -152,7 +156,7 @@
                             </Grid>
 
                             <!--************************ Task List*******************************************************************-->
-                            <ListBox Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding Tasks, Mode=TwoWay}" BorderBrush="Green" BorderThickness="1" 
+                            <ListBox Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding TasksToView, Mode=TwoWay}" BorderBrush="Green" BorderThickness="1" 
                                      ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
 
                                 <!--SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"-->

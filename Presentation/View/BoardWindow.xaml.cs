@@ -172,9 +172,9 @@ namespace Presentation.View
             this.viewModel.ChangePassword();
         }
 
-        private void SearchBox_TextChanged(object sender, RoutedEventArgs e)
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            if (this.viewModel != null) this.viewModel.SearchBox_TextChanged(((TextBox)sender).Text);
         }
 
 
@@ -227,8 +227,9 @@ namespace Presentation.View
         {
             MenuItem currentMenuItem = ((MenuItem)sender);
             int columnOrdinal = (int)currentMenuItem.Tag;
-            this.viewModel.AddColumn(CreatorEmail, columnOrdinal);
-        }
+            this.viewModel.AddColumn(CreatorEmail, columnOrdinal);            
+        }       
+
 
 
         /*private void EditTaskButton_Click((object sender, RoutedEventArgs e){

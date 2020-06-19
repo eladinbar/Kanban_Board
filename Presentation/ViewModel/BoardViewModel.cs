@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using Presentation.View;
 using System.Windows;
 using System.Windows.Threading;
-
+using System.Windows.Controls;
 
 namespace Presentation.ViewModel
 {
@@ -171,6 +171,14 @@ namespace Presentation.ViewModel
             ObservableCollection<TaskModel> tempTasksCollection = new ObservableCollection<TaskModel>(tasks.OrderBy(t => t.DueDate));
             tasks.Clear();
             foreach (TaskModel t in tempTasksCollection) tasks.Add(t);
+        }
+
+        internal void SearchBox_TextChanged(string senderText)
+        {
+            foreach (ColumnModel cm in this.Board.Columns)
+            {
+                cm.SearchBox_TextChanged(senderText);
+            }
         }
     }
 }
