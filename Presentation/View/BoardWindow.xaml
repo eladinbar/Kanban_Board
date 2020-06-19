@@ -8,8 +8,11 @@
     <Grid>
 
 
-        <TextBox Name="SearchBox" Text="Search for a task..." FontSize="12" FontStyle="Italic" BorderThickness="1" Height="25" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" 
-                 Foreground="Gray" Background="White" TextChanged="SearchBox_TextChanged"/>
+        <TextBox Name="SearchBox" Text="Search for a task..." FontSize="12" FontStyle="Italic" BorderThickness="1" Foreground="Gray" Background="White"
+                 Height="25" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" 
+                 TextChanged="SearchBox_TextChanged" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus"/>
+        
+        
         <!--UpdateSourceTrigger=PropertyChanged-->
         <!--(Search: binding->grey->whiteOnClick, also for a text)-->
 

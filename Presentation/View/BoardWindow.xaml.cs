@@ -29,7 +29,8 @@ namespace Presentation.View
        
         private BoardViewModel viewModel;        
         public string CreatorEmail { get; private set; }
-        private UserModel CurrentUser;         
+        private UserModel CurrentUser;
+        private bool CanChangeSearchBox = false;
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! burn after reading ==>
@@ -172,11 +173,6 @@ namespace Presentation.View
             this.viewModel.ChangePassword();
         }
 
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (this.viewModel != null) this.viewModel.SearchBox_TextChanged(((TextBox)sender).Text);
-        }
-
 
         private void RemoveColumn_Click(object sender, RoutedEventArgs e)
         {
@@ -228,7 +224,27 @@ namespace Presentation.View
             MenuItem currentMenuItem = ((MenuItem)sender);
             int columnOrdinal = (int)currentMenuItem.Tag;
             this.viewModel.AddColumn(CreatorEmail, columnOrdinal);            
-        }       
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (this.viewModel != null & this.CanChangeSearchBox) this.viewModel.SearchBox_TextChanged(((TextBox)sender).Text);
+        }
+
+        private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            this.SearchBox.Text = "";
+            this.SearchBox.Foreground = Brushes.Black;
+            this.CanChangeSearchBox = true;
+        }
+
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.CanChangeSearchBox = false;
+            this.SearchBox.Foreground = Brushes.Gray;
+            this.SearchBox.Text = "Search for a task...";
+            this.viewModel.SearchBox_TextChanged("");
+        }
 
 
 
