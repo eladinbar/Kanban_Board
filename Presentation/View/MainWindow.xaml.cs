@@ -23,18 +23,18 @@ namespace Presentation.View
     public partial class MainWindow : Window
     {
 
-        private MainViewModal viewModal;
+        private MainViewModel viewModal;
 
         public MainWindow()
         {
             InitializeComponent();
-            viewModal = new MainViewModal();
+            viewModal = new MainViewModel();
             DataContext = viewModal;
         }
         public MainWindow(BackendController controller)
         {
             InitializeComponent();
-            viewModal = new MainViewModal(controller);
+            viewModal = new MainViewModel(controller);
             DataContext = viewModal;
         }
 
