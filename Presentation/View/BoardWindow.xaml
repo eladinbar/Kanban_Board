@@ -62,8 +62,8 @@
                 <MenuItem.Header>
                     <TextBlock Text="{Binding CurrentUser.Nickname[0]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
                 </MenuItem.Header>
-                <MenuItem Header="Change password" IsCheckable="False" FontSize="12" FontWeight="Regular" />
-                <Separator />
+                <!--<MenuItem Header="Change password" IsCheckable="False" FontSize="12" FontWeight="Regular" />
+                <Separator />-->
                 <MenuItem Header="Logout" IsCheckable="False" FontSize="12" FontWeight="Regular" Click="LogoutVerificationMessageBox"/>
 
             </MenuItem>
