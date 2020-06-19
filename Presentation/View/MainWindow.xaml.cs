@@ -43,8 +43,8 @@ namespace Presentation.View
             UserModel user = viewModal.Login();
             if(user != null)
             {
-                //BoardWindow bw = new BoardWindow(user);
-                //bw.Show();
+                BoardWindow bw = new BoardWindow(user);
+                bw.Show();
                 Close();
             }
         }

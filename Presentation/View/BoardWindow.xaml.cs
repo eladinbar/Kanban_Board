@@ -34,65 +34,65 @@ namespace Presentation.View
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! burn after reading ==>
-        private static BackendController controller = new BackendController();
-        private static string tempUser1Email = "maze1@mapo.com";
-        private static string tempPass = "123Abc";
-        private static string tempUser1Nick = "maze1Nick";
-        private static UserModel tempUserModel1 = new UserModel(controller, tempUser1Email, tempUser1Nick);
+        //private static BackendController controller = new BackendController();
+        //private static string tempUser1Email = "maze1@mapo.com";
+        //private static string tempPass = "123Abc";
+        //private static string tempUser1Nick = "maze1Nick";
+        //private static UserModel tempUserModel1 = new UserModel(controller, tempUser1Email, tempUser1Nick);
 
-        private static IService service = controller.Service;
-        private void CreateData() {
-            MessageBoxResult result = MessageBox.Show("Wipe dataBase?", "Clear DataBase", MessageBoxButton.YesNo);
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                    service.DeleteData();
-                    break;
-                case MessageBoxResult.No:
-                    break;
-            }
-            service.Register(tempUser1Email, tempPass, tempUser1Nick);
-            string tempUser2Email = "maze2@mapo.com";
-            service.Register(tempUser2Email, tempPass, tempUser1Nick, tempUser1Email);
+        //private static IService service = controller.Service;
+        //private void CreateData() {
+        //    MessageBoxResult result = MessageBox.Show("Wipe dataBase?", "Clear DataBase", MessageBoxButton.YesNo);
+        //    switch (result)
+        //    {
+        //        case MessageBoxResult.Yes:
+        //            service.DeleteData();
+        //            break;
+        //        case MessageBoxResult.No:
+        //            break;
+        //    }
+        //    service.Register(tempUser1Email, tempPass, tempUser1Nick);
+        //    string tempUser2Email = "maze2@mapo.com";
+        //    service.Register(tempUser2Email, tempPass, tempUser1Nick, tempUser1Email);
 
-            service.Login(tempUser1Email, tempPass);
-            DateTime dTime = new DateTime(2030, 03, 26);
-            Console.WriteLine("this is not the droids: {0}", service.AddTask(tempUser1Email, "title1", "desc1", dTime).ErrorOccured);
-            service.AddTask(tempUser1Email, "title2", "desc2", dTime);
-            service.AddTask(tempUser1Email, "title3", "desc3", dTime);
-            service.AddTask(tempUser1Email, "title4", "desc4", dTime);
-            service.AddTask(tempUser1Email, "title5", "desc5", dTime);
-            service.AddTask(tempUser1Email, "title6", "desc6", dTime);
+        //    service.Login(tempUser1Email, tempPass);
+        //    DateTime dTime = new DateTime(2030, 03, 26);
+        //    Console.WriteLine("this is not the droids: {0}", service.AddTask(tempUser1Email, "title1", "desc1", dTime).ErrorOccured);
+        //    service.AddTask(tempUser1Email, "title2", "desc2", dTime);
+        //    service.AddTask(tempUser1Email, "title3", "desc3", dTime);
+        //    service.AddTask(tempUser1Email, "title4", "desc4", dTime);
+        //    service.AddTask(tempUser1Email, "title5", "desc5", dTime);
+        //    service.AddTask(tempUser1Email, "title6", "desc6", dTime);
 
-            service.AdvanceTask(tempUser1Email, 0, 1);
-            service.AdvanceTask(tempUser1Email, 1, 1);
+        //    service.AdvanceTask(tempUser1Email, 0, 1);
+        //    service.AdvanceTask(tempUser1Email, 1, 1);
 
-            service.AdvanceTask(tempUser1Email, 0, 2);
-            service.AdvanceTask(tempUser1Email, 1, 2);
+        //    service.AdvanceTask(tempUser1Email, 0, 2);
+        //    service.AdvanceTask(tempUser1Email, 1, 2);
 
-            service.AdvanceTask(tempUser1Email, 0, 3);
-            service.AdvanceTask(tempUser1Email, 0, 4);
-            service.AddColumn(tempUser1Email, 3, "added1");
-            service.AddColumn(tempUser1Email, 4, "added2");
-            service.AddColumn(tempUser1Email, 5, "added3");
+        //    service.AdvanceTask(tempUser1Email, 0, 3);
+        //    service.AdvanceTask(tempUser1Email, 0, 4);
+        //    service.AddColumn(tempUser1Email, 3, "added1");
+        //    service.AddColumn(tempUser1Email, 4, "added2");
+        //    service.AddColumn(tempUser1Email, 5, "added3");
 
 
-        }
+        //}
         //  <== burn after reading!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
 
-        public BoardWindow() // tha whats starting before merging with login window 
-        {
-            this.CreateData();
-            InitializeComponent();
-            this.viewModel = new BoardViewModel(controller, tempUserModel1, tempUser1Email);
-            this.DataContext = this.viewModel;
-            this.CreatorEmail = tempUser1Email;
-            this.CurrentUser = tempUserModel1;
-            this.CanChangeSearchBox = false;
-        }
+        //public BoardWindow() // tha whats starting before merging with login window 
+        //{
+        //    this.CreateData();
+        //    InitializeComponent();
+        //    this.viewModel = new BoardViewModel(controller, tempUserModel1, tempUser1Email);
+        //    this.DataContext = this.viewModel;
+        //    this.CreatorEmail = tempUser1Email;
+        //    this.CurrentUser = tempUserModel1;
+        //    this.CanChangeSearchBox = false;
+        //}
 
         public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) //need to receive from login window those parameters
         {
