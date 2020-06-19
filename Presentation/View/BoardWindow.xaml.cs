@@ -94,7 +94,7 @@ namespace Presentation.View
         //    this.CanChangeSearchBox = false;
         //}
 
-        public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) //need to receive from login window those parameters
+        public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) 
         {
             InitializeComponent();
             this.viewModel = new BoardViewModel(controller, currentUser, creatorEmail);
@@ -166,7 +166,8 @@ namespace Presentation.View
             {
                 case MessageBoxResult.Yes:
                     this.viewModel.Logout();
-                    //LoginWindow invoke()
+                    MainWindow mw = new MainWindow(CurrentUser.Controller);
+                    mw.Show();
                     this.Close();
                     break;
                 case MessageBoxResult.No:

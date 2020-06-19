@@ -8,6 +8,7 @@ namespace Presentation.Model
 {
     public class UserModel: NotifiableModelObject
     {
+        public string AssociatedBoard;
         private string _email;
         public string Email
         {
@@ -30,10 +31,11 @@ namespace Presentation.Model
             }
         }
 
-        public UserModel(BackendController controller, string email, string nickname): base(controller)
+        public UserModel(BackendController controller, string email, string nickname, string associatedBoard) : base(controller)
         {
             _email = email;
             _nickname = nickname;
+            this.AssociatedBoard = associatedBoard;
         }
     }
 }

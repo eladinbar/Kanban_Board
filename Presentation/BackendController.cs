@@ -24,7 +24,7 @@ namespace Presentation
             {
                 throw new Exception(user.ErrorMessage);
             }
-            return new UserModel(this, email, user.Value.Nickname);
+            return new UserModel(this, email, user.Value.Nickname, user.Value.AssociatedBoard);
         }
 
 
