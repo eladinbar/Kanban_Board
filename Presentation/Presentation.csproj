@@ -99,19 +99,23 @@
     <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="View\BoardWindow.xaml.cs">
       <DependentUpon>BoardWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\NotifiableModelObject.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RegistrationViewModel.cs" />
-    <Compile Include="View\RegistrationWindow.xaml.cs">
-      <DependentUpon>RegistrationWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="View\ColumnNameInputWindow.xaml.cs">
       <DependentUpon>ColumnNameInputWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RegistrationWindow.xaml.cs">
+      <DependentUpon>RegistrationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TaskWindow.xaml.cs">
       <DependentUpon>TaskWindow.xaml</DependentUpon>
@@ -121,6 +125,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ColumnNameInputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="View\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\RegistrationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
