@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Presentation.Model
 {
-    public class NotifiableModalObject : NotifiableObject
+    public class NotifiableModelObject : NotifiableObject
     {
         public BackendController Controller { get; private set; }
-        protected NotifiableModalObject(BackendController controller)
-        {
-            Controller = controller;
+
+        protected NotifiableModelObject(BackendController Controller) {
+            this.Controller = Controller;
         }
     }
 }
