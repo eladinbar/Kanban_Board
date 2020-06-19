@@ -157,7 +157,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DELETE FROM {TaskTableName} WHERE email=\"{task.Email}\" AND Name=\"{task.ColumnName}\" AND ID={task.TaskId}"
+                    CommandText = $"DELETE FROM {TaskTableName} WHERE {DalTask.EmailColumnName}=\"{task.Email}\" AND {DalTask.ContainingTaskColumnNameColumnName}=\"{task.ColumnName}\" AND {DalTask.TaskIDColumnName}={task.TaskId}"
                 };
                 try
                 {
