@@ -54,7 +54,7 @@ namespace Presentation.ViewModel
             this.Controller = controller;
             this.CurrentUser = currentUser;
             this.Board = new BoardModel(controller, creatorEmail, currentUser);
-            this.IsCreator = true;  //(this.CurrentUser.Email.Equals(this.Board.CreatorEmail));
+            this.IsCreator = (this.CurrentUser.Email.Equals(this.Board.CreatorEmail));
             ChangeColumnNameToolTip = this.ColumnNameToolTip();
             this.dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
