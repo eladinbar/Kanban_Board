@@ -60,7 +60,7 @@
             <MenuItem x:Name="UserMenuItem" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="UltraBold" 
                   Background="{x:Null}" Height="40" Width="40" FontFamily="David" BorderBrush="Black" >
                 <MenuItem.Header>
-                    <TextBlock Text="{Binding CurrentUser.Nickname[0]}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30"/>
+                    <TextBlock Text="{Binding CurrentUser.Nickname[0], Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="50"/>
                 </MenuItem.Header>
                 <!--<MenuItem Header="Change password" IsCheckable="False" FontSize="12" FontWeight="Regular" />
                 <Separator />-->
