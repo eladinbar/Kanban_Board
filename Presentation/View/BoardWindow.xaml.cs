@@ -30,7 +30,7 @@ namespace Presentation.View
         private BoardViewModel viewModel;        
         public string CreatorEmail { get; private set; }
         private UserModel CurrentUser;
-        private bool CanChangeSearchBox = false;
+        private bool CanChangeSearchBox;
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! burn after reading ==>
@@ -83,7 +83,7 @@ namespace Presentation.View
 
 
 
-        public BoardWindow() 
+        public BoardWindow() // tha whats starting before merging with login window 
         {
             this.CreateData();
             InitializeComponent();
@@ -91,6 +91,7 @@ namespace Presentation.View
             this.DataContext = this.viewModel;
             this.CreatorEmail = tempUser1Email;
             this.CurrentUser = tempUserModel1;
+            this.CanChangeSearchBox = false;
         }
 
         public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) //need to receive from login window those parameters
@@ -100,6 +101,7 @@ namespace Presentation.View
             this.DataContext = this.viewModel;
             this.CreatorEmail = creatorEmail;
             this.CurrentUser = currentUser;
+            this.CanChangeSearchBox = false;
         }
 
 
@@ -213,7 +215,7 @@ namespace Presentation.View
         {
             TextBox currentTextBox = ((TextBox)sender);
             int columnOrdinal = (int)currentTextBox.Tag;
-            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyDownHandler(sender, e))
+            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyDownHandlerName(sender, e))
             {
                 currentTextBox.IsUndoEnabled = false;
                 currentTextBox.IsUndoEnabled = true;
@@ -266,10 +268,33 @@ namespace Presentation.View
 
         private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
         {
+            this.viewModel.SearchBox_TextChanged("");
             this.CanChangeSearchBox = false;
             this.SearchBox.Foreground = Brushes.Gray;
             this.SearchBox.Text = "Search for a task...";
-            this.viewModel.SearchBox_TextChanged("");
+        }
+
+        private void LimitOfTasks_KeyDown(object sender, KeyEventArgs e)
+        {
+            TextBox currentTextBox = ((TextBox)sender);
+            int columnOrdinal = (int)currentTextBox.Tag;
+            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyDownHandlerLimit(sender, e))
+            {
+                currentTextBox.IsUndoEnabled = false;
+                currentTextBox.IsUndoEnabled = true;
+                Keyboard.ClearFocus();
+            }
+        }
+
+        private void LimitOfTasks_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox currentTextBox = ((TextBox)sender);
+            if (currentTextBox.CanUndo == true)
+            {
+                currentTextBox.Undo();
+                currentTextBox.IsUndoEnabled = false;
+                currentTextBox.IsUndoEnabled = true;
+            }
         }
 
 

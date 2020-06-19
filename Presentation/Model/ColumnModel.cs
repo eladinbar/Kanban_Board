@@ -16,7 +16,7 @@ namespace Presentation.Model
         private readonly int MAX_COLUMN_NAME_LENGTH = 15;
         public int MaxColumnNameLength { get => MAX_COLUMN_NAME_LENGTH; }
         public ObservableCollection<TaskModel> Tasks { get; set; }
-        public ObservableCollection<TaskModel> TasksToView { get; set; }
+        public ObservableCollection<TaskModel> TasksToView { get; private set; }
         public string CreatorEmail;        
         public int CurrentAmountOfTasks { get => this.Tasks.Count; }
 
@@ -42,7 +42,6 @@ namespace Presentation.Model
                     this.Controller.LimitColumnTasks(CreatorEmail, Ordinal, Int32.Parse(value));
                     this._limit = Int32.Parse(value);
                     RaisePropertyChanged("Limit");
-                    MessageBox.Show("Column limit changed successfully", "Info");
                 }
                 catch (Exception e)
                 {
@@ -77,7 +76,7 @@ namespace Presentation.Model
 
         private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            this.TasksToView = this.Tasks;
+            this.TasksToView = new ObservableCollection<TaskModel>(this.Tasks);
             RaisePropertyChanged("TasksToView");
         }
 
@@ -87,8 +86,7 @@ namespace Presentation.Model
         }
         
 
-        //doesn work properklyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy!~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        public bool OnKeyDownHandler(object sender, KeyEventArgs e) //column name changes
+        public bool OnKeyDownHandlerName(object sender, KeyEventArgs e) //column name changes
         {
             if (e.Key == Key.Return)
             {
@@ -107,6 +105,29 @@ namespace Presentation.Model
             }
             return false;                       
         }
+
+        
+        internal bool OnKeyDownHandlerLimit(object sender, KeyEventArgs e)
+        {
+            //if (e.Key > 57 | e.Key < 48) maybe restrict letters input?????????????????????????????????????
+            if (e.Key == Key.Return)
+            {
+                try
+                {
+                    this.Limit = ((TextBox)sender).Text;
+                    MessageBox.Show("Column limit changed successfully", "Info");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Invalid Action");
+                    ((TextBox)sender).Undo();
+                    return false;
+                }
+            }
+            return false;
+        }
+
 
         internal void SearchBox_TextChanged(string senderText)
         {
@@ -130,5 +151,6 @@ namespace Presentation.Model
 
 
         }
+
     }
 }

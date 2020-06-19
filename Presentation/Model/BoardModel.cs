@@ -56,6 +56,7 @@ namespace Presentation.Model
         {
             this.Columns.ElementAt(0).Tasks.Add(newTask);
             this.Columns.ElementAt(0).RaiseProperty("CurrentAmountOfTasks");
+            this.Columns.ElementAt(0).RaiseProperty("TasksToView");
         }
 
         internal void AddColumn(int newColumnOrdinal, string newColumnName)
@@ -70,6 +71,13 @@ namespace Presentation.Model
             }
             RaisePropertyChanged("Columns");
         }
+
+
+        internal void RemoveTask(TaskModel taskToRemove)
+        {
+            this.Columns.ElementAt(taskToRemove.ColumnOrdinal).Tasks.Remove(taskToRemove);
+        }
+
 
         internal void MoveColumnLeft(int columnOrdinal)
         {

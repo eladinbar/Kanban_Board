@@ -137,7 +137,9 @@
                                         <ColumnDefinition Width="30"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
-                                    <Menu Name="AddColumnMenu" Height="20" Width="45" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" ToolTip="Add a new column" >
+                                    <Menu Name="AddColumnMenu" Height="20" Width="45" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" 
+                                          ToolTip="Add a new column (only by a board creator)" ToolTipService.ShowOnDisabled="True"
+                                          IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" >
 
                                         <MenuItem x:Name="AddColumnItem" Header="Add..." VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="UltraBold" Height="20" Width="45" 
                                               FontFamily="David" BorderBrush="Black">
@@ -152,14 +154,14 @@
 
                                     <Button Name="DeleteColumn" Content="X" 
                                         FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Column="1"
-                                        ToolTip="Delete this column" 
+                                        ToolTip="Delete this column (only by a board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                         Click="RemoveColumn_Click" Tag="{Binding Ordinal}" />
                                 </Grid>
                             </Grid>
 
                             <!--************************ Task List*******************************************************************-->
-                            <ListBox Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding TasksToView, Mode=TwoWay}" BorderBrush="Green" BorderThickness="1" 
+                            <ListBox Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding TasksToView, Mode=OneWay}" BorderBrush="Green" BorderThickness="1" 
                                      ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
 
                                 <!--SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"-->
@@ -214,7 +216,6 @@
                                                     </MenuItem>
                                                 </Menu>
 
-                                                <!--<Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" Click="EditTask_Click" />-->
                                                 <TextBlock Name="TaskDueDate" Text="{Binding DueDate, StringFormat=dd/MM/yyyy}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                             </Grid>
                                         </Border>
@@ -232,7 +233,7 @@
 
                                 <Button Name="MoveColumnLeftButton" Content="moveLeft" 
                                         FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"
-                                        ToolTip="Move a column to its left" 
+                                        ToolTip="Move a column to its left (only by a board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                         Click="MoveColumnLeftClick" Tag="{Binding Ordinal}" />
 
@@ -246,8 +247,8 @@
                                          ToolTip="Current amount of tasks" 
                                          Height="20" HorizontalAlignment="Center" FontWeight="Bold" />
                                     <Label Content=" / " Grid.Column="1" ToolTip="Current amount of tasks" />
-                                    <TextBox Name="LimitOfTasks" Grid.Column="2" Text="{Binding Limit, Mode=TwoWay}"
-                                         ToolTip="Maximal amount of tasks" 
+                                    <TextBox Name="LimitOfTasks" Grid.Column="2" Text="{Binding Limit, Mode=OneWay}" KeyDown="LimitOfTasks_KeyDown" LostFocus="LimitOfTasks_LostFocus"
+                                         ToolTip="Maximal amount of tasks (can be changed only by a board creator)" Tag="{Binding Ordinal}"
                                          IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                          Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
 
@@ -264,7 +265,7 @@
 
                                 <Button Name="MoveColumnRightButton" Content="moveRight" 
                                         FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"
-                                        ToolTip="Move a column to its right" 
+                                        ToolTip="Move a column to its right (only by a board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                         Click="MoveColumnRightClick" Tag="{Binding Ordinal}" />
 

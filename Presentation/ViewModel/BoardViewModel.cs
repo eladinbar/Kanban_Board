@@ -75,6 +75,7 @@ namespace Presentation.ViewModel
             try
             {
                 this.Controller.RemoveTask(this.Board.CreatorEmail, taskToRemove.ColumnOrdinal, taskToRemove.ID);
+                this.Board.RemoveTask(taskToRemove);
             }
             catch (Exception e)
             {
