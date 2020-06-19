@@ -93,7 +93,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (!SecurityController.UserValidation(email)) return new Response<Task>("Invalid current user.");
             try
             {
-                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate, email);
+                BusinessLayer.BoardPackage.Task tempTask = SecurityController.BoardController.AddTask(email, title, description, dueDate, this.SecurityController.CurrentUser.Email);
                 Task tempStructTask = new Task(tempTask.Id, tempTask.CreationTime,dueDate, title, tempTask.Description, tempTask.EmailAssignee);
                 log.Info("Task added successfully.");
                 return new Response<Task>(tempStructTask);

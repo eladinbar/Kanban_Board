@@ -65,7 +65,7 @@ namespace Presentation.ViewModel
         public void EditTask(TaskModel taskToEdit)
         {
             if (taskToEdit == null) return;
-            TaskWindow taskEditWindow = new TaskWindow(this.Controller, taskToEdit, (taskToEdit.AssigneeEmail == this.CurrentUser.Email));
+            TaskWindow taskEditWindow = new TaskWindow(this.Controller, taskToEdit, (taskToEdit.AssigneeEmail == this.CurrentUser.Email), this.CurrentUser);
             taskEditWindow.ShowDialog();
         }
 
@@ -171,7 +171,7 @@ namespace Presentation.ViewModel
 
         internal void AddTask()
         {
-            TaskWindow taskAddWindow = new TaskWindow(this.Controller, this.CurrentUser.Email);//?????????????????????????????????
+            TaskWindow taskAddWindow = new TaskWindow(this.Controller, this.CurrentUser);
             taskAddWindow.ShowDialog();
             string lastButton = taskAddWindow.LastClickedButton;
             if (lastButton.Equals("Save Task"))

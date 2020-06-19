@@ -18,7 +18,6 @@ namespace Presentation.View
         private BackendController Controller;
         private string _lastClickedButton = "";
         public string LastClickedButton { get => _lastClickedButton; private set { _lastClickedButton = value; } }
-        private string CurrentUserEmail;
 
         /// <summary>
         /// The task window constructor. Initializes the window and creates its respective data context with the required information given from the board window.
@@ -27,11 +26,11 @@ namespace Presentation.View
         /// <param name="taskModel">The task this window represents.</param>
         /// <param name="columnOrdinal">The column ordinal the task this window represents belongs to.</param>
         /// <param name="isAssignee">The token used to decide whether the current user can make any task modifications.</param>
-        public TaskWindow(BackendController backendController, TaskModel taskModel, bool isAssignee) //newTask and columnOrdinal unncessary?
+        public TaskWindow(BackendController backendController, TaskModel taskModel, bool isAssignee, UserModel currentUser) //newTask and columnOrdinal unncessary?
         {
             InitializeComponent();
             Controller = backendController;
-            ViewModel = new TaskViewModel(backendController, taskModel, isAssignee);
+            ViewModel = new TaskViewModel(backendController, taskModel, isAssignee, currentUser);
             DataContext = ViewModel;
             ControlButtonsVisiblity(!NEW_TASK);
         }
@@ -41,14 +40,13 @@ namespace Presentation.View
         /// </summary>
         /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
         /// <param name="assigneeEmail">The email of the creator of the task.</param>
-        public TaskWindow(BackendController backendController, string currentUserEmail) //newTask unnecessary?
+        public TaskWindow(BackendController backendController, UserModel currentUser) //newTask unnecessary?
         {
             InitializeComponent();
             Controller = backendController;
-            ViewModel = new TaskViewModel(backendController, currentUserEmail);
+            ViewModel = new TaskViewModel(backendController, currentUser);
             DataContext = ViewModel;
             ControlButtonsVisiblity(NEW_TASK);
-            this.CurrentUserEmail = currentUserEmail;
         }
 
         private void ControlButtonsVisiblity(bool newTask) {
@@ -104,7 +102,7 @@ namespace Presentation.View
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))
             {
                 try {
-                    ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate, this.CurrentUserEmail);
+                    ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate);
                     MessageBox.Show("Task was added successfully to board " + txtTaskAssignee.Text);
                     this.Close();
                 }

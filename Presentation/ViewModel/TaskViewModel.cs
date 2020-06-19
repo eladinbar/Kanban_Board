@@ -31,6 +31,9 @@ namespace Presentation.ViewModel
         public DateTime LastChangedDate { get; set; }
         public string AssigneeEmail { get; set; }
         public bool IsAssignee { get; set; }
+        private UserModel CurrentUser;
+
+
 
         /// <summary>
         /// A TaskViewModel constructor for an existing task. Initializes all bound fields as well as its respective TaskModel and BackendController.
@@ -38,7 +41,7 @@ namespace Presentation.ViewModel
         /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
         /// <param name="task">The TaskModel representing this TaskViewModel.</param>
         /// <param name="isAssignee">A verification variable to ensure task editing can only be performed by its assignee.</param>
-        public TaskViewModel(BackendController backendController, TaskModel task, bool isAssignee) { //columnOrdinal is unnecessary?
+        public TaskViewModel(BackendController backendController, TaskModel task, bool isAssignee, UserModel currentUser) { //columnOrdinal is unnecessary?
              this.Controller = backendController;
              this.Task = task;
              this.ID = task.ID;
@@ -49,6 +52,7 @@ namespace Presentation.ViewModel
              this.LastChangedDate = task.LastChangedDate;
              this.AssigneeEmail = task.AssigneeEmail;
              this.IsAssignee = isAssignee;
+            this.CurrentUser = currentUser;
         }
 
         /// <summary>
@@ -56,14 +60,15 @@ namespace Presentation.ViewModel
         /// </summary>
         /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
         /// <param name="assigneeEmail">The email of the creator of the task.</param>
-        public TaskViewModel(BackendController backendController, string  currentUserEmail)
+        public TaskViewModel(BackendController backendController, UserModel currentUser)
         {
             this.Controller = backendController;
             this.DueDate = DateTime.Now.AddDays(1);
             this.CreationTime = DateTime.Now;
             this.LastChangedDate = DateTime.Now;
             this.IsAssignee = true;
-            this.AssigneeEmail = currentUserEmail;
+            this.AssigneeEmail = currentUser.Email;
+            this.CurrentUser = currentUser;
         }
 
         public void ControlButtonsVisibility(bool newTask, Button confirm, Button cancel, Button ok, Button addTask) {
@@ -117,12 +122,12 @@ namespace Presentation.ViewModel
         /// <param name="title">The title to add this task with.</param>
         /// <param name="description">The description to add this task with.</param>
         /// <param name="dueDate">The due date this task will be due by.</param>
-        public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate, string currentUserEmail)
+        public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate)
         {
-            Task = Controller.AddTask(AssigneeEmail, title, description, dueDate, currentUserEmail);
+            Task = Controller.AddTask(this.CurrentUser.AssociatedBoard, title, description, dueDate, this.CurrentUser.Email);
             if (AssigneeEmail != assigneeEmail)
                 Controller.AssignTask(AssigneeEmail, 0, Task.ID, assigneeEmail);
-            this.Task.CurrentUserEmail = currentUserEmail;
+            this.Task.CurrentUserEmail = this.CurrentUser.Email;
             this.ID = Task.ID;                               RaisePropertyChanged("ID");
             this.AssigneeEmail = Task.AssigneeEmail;         RaisePropertyChanged("TaskAssignee");
             this.Title = Task.Title;                         RaisePropertyChanged("Title");
