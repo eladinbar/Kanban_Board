@@ -171,13 +171,14 @@ namespace Presentation.ViewModel
 
         internal void AddTask()
         {
-            TaskWindow taskAddWindow = new TaskWindow(this.Controller, this.CurrentUser.Email);
+            TaskWindow taskAddWindow = new TaskWindow(this.Controller, this.CurrentUser.Email);//?????????????????????????????????
             taskAddWindow.ShowDialog();
             string lastButton = taskAddWindow.LastClickedButton;
             if (lastButton.Equals("Save Task"))
             {
                 var tempTask = this.Controller.GetColumn(this.Board.CreatorEmail, 0).Tasks.Last();
-                TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, tempTask.CreationTime, CurrentUser.Email, 0);
+                TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, 
+                    tempTask.CreationTime, tempTask.emailAssignee, 0, CurrentUser.Email);
                 this.Board.AddNewTask(newTask);                
             }
         }

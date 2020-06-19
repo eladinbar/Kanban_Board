@@ -18,6 +18,7 @@ namespace Presentation.View
         private BackendController Controller;
         private string _lastClickedButton = "";
         public string LastClickedButton { get => _lastClickedButton; private set { _lastClickedButton = value; } }
+        private string CurrentUserEmail;
 
         /// <summary>
         /// The task window constructor. Initializes the window and creates its respective data context with the required information given from the board window.
@@ -40,13 +41,14 @@ namespace Presentation.View
         /// </summary>
         /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
         /// <param name="assigneeEmail">The email of the creator of the task.</param>
-        public TaskWindow(BackendController backendController, string assigneeEmail) //newTask unnecessary?
+        public TaskWindow(BackendController backendController, string currentUserEmail) //newTask unnecessary?
         {
             InitializeComponent();
             Controller = backendController;
-            ViewModel = new TaskViewModel(backendController, assigneeEmail);
+            ViewModel = new TaskViewModel(backendController, currentUserEmail);
             DataContext = ViewModel;
             ControlButtonsVisiblity(NEW_TASK);
+            this.CurrentUserEmail = currentUserEmail;
         }
 
         private void ControlButtonsVisiblity(bool newTask) {
@@ -102,7 +104,7 @@ namespace Presentation.View
             if (!validFields.Contains(TaskViewModel.BorderColor.Red))
             {
                 try {
-                    ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate);
+                    ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate, this.CurrentUserEmail);
                     MessageBox.Show("Task was added successfully to board " + txtTaskAssignee.Text);
                     this.Close();
                 }

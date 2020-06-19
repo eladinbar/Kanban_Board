@@ -56,14 +56,14 @@ namespace Presentation.ViewModel
         /// </summary>
         /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
         /// <param name="assigneeEmail">The email of the creator of the task.</param>
-        public TaskViewModel(BackendController backendController, string assigneeEmail)
+        public TaskViewModel(BackendController backendController, string  currentUserEmail)
         {
             this.Controller = backendController;
-            this.AssigneeEmail = assigneeEmail;
             this.DueDate = DateTime.Now.AddDays(1);
             this.CreationTime = DateTime.Now;
             this.LastChangedDate = DateTime.Now;
             this.IsAssignee = true;
+            this.AssigneeEmail = currentUserEmail;
         }
 
         public void ControlButtonsVisibility(bool newTask, Button confirm, Button cancel, Button ok, Button addTask) {
@@ -117,12 +117,12 @@ namespace Presentation.ViewModel
         /// <param name="title">The title to add this task with.</param>
         /// <param name="description">The description to add this task with.</param>
         /// <param name="dueDate">The due date this task will be due by.</param>
-        public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate)
+        public void NewTask(string assigneeEmail, string title, string description, DateTime dueDate, string currentUserEmail)
         {
-            Task = Controller.AddTask(AssigneeEmail, title, description, dueDate);
+            Task = Controller.AddTask(AssigneeEmail, title, description, dueDate, currentUserEmail);
             if (AssigneeEmail != assigneeEmail)
                 Controller.AssignTask(AssigneeEmail, 0, Task.ID, assigneeEmail);
-            this.Task.CurrentUserEmail = this.AssigneeEmail;
+            this.Task.CurrentUserEmail = currentUserEmail;
             this.ID = Task.ID;                               RaisePropertyChanged("ID");
             this.AssigneeEmail = Task.AssigneeEmail;         RaisePropertyChanged("TaskAssignee");
             this.Title = Task.Title;                         RaisePropertyChanged("Title");
