@@ -174,7 +174,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Update the Name of the column
         /// </summary>
         /// <param name="newName"> The updated name</param>
-        internal void ChangeName(string newName)
+        internal virtual void ChangeName(string newName)
         {
             Name = newName;
             DalCopyColumn.Name = newName;

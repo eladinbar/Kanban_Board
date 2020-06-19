@@ -204,7 +204,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             catch (Exception ex)
             {
                 log.Error(ex.Message, ex);
-                return new Response(ex.Message);
+                string Message = ex.Message;
+                return new Response(Message);
             }
         }
 
