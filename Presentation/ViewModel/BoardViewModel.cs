@@ -69,6 +69,20 @@ namespace Presentation.ViewModel
             taskEditWindow.ShowDialog();
         }
 
+
+        internal void RemoveTask(TaskModel taskToRemove)
+        {
+            try
+            {
+                this.Controller.RemoveTask(this.Board.CreatorEmail, taskToRemove.ColumnOrdinal, taskToRemove.ID);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error occured");
+            }
+        }
+
+
         public void AddColumn(string email, int newColumnOrdinal)
         {
             try
@@ -147,10 +161,12 @@ namespace Presentation.ViewModel
             MessageBox.Show(this.Controller.Logout(CurrentUser.Email), "Logout", MessageBoxButton.OK);            
         }
 
+
         internal void ChangePassword()
         {
             MessageBox.Show(this.Controller.Logout(CurrentUser.Email), "Change password", MessageBoxButton.OK);
         }
+
 
         internal void AddTask()
         {

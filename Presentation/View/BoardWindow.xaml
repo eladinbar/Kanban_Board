@@ -201,7 +201,20 @@
 
                                                 </TextBlock>
 
-                                                <Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" Click="EditTask_Click" />
+                                                <Menu Name="TaskOptions_Menu" Height="20" Width="25" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" ToolTip="Task actions" >
+
+                                                    <MenuItem x:Name="TaskOptionsMenuItem" Header="☰" VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="UltraBold" Height="20" Width="25" 
+                                              FontFamily="David" BorderBrush="Black">
+                                                        <MenuItem Name="EditTaskMenuItem" Header="Edit Task" IsCheckable="False" FontSize="12" FontWeight="Regular" 
+                                                  Click="EditTask_Click" Tag="{Binding Ordinal}" />
+                                                        <Separator />
+                                                        <MenuItem Name="RemoveTaskMenuItem" Header="Remove Task" IsCheckable="False" FontSize="12" FontWeight="Regular" 
+                                                  Click="RemoveTaskMenuItem_Click" Tag="{Binding Ordinal}" />
+
+                                                    </MenuItem>
+                                                </Menu>
+
+                                                <!--<Button Name="EditTask_Button" Content="***" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Edit task" Click="EditTask_Click" />-->
                                                 <TextBlock Name="TaskDueDate" Text="{Binding DueDate, StringFormat=dd/MM/yyyy}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                                             </Grid>
                                         </Border>

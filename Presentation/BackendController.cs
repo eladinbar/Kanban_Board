@@ -80,6 +80,7 @@ namespace Presentation
             if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
         }
 
+
         internal void MoveColumnLeft(string email, int columnOrdinal)
         {
             Response rsp = this.Service.MoveColumnLeft(email, columnOrdinal);
@@ -93,9 +94,17 @@ namespace Presentation
             if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
         }
 
+
         internal void RemoveColumn(string email, int columnOrdinal)
         {
             Response rsp = Service.RemoveColumn(email, columnOrdinal);
+            if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
+        }
+
+
+        internal void RemoveTask(string creatorEmail, int columnOrdinal, int taskId)
+        {
+            Response rsp =  this.Service.DeleteTask(creatorEmail, columnOrdinal, taskId);
             if (rsp.ErrorOccured) throw new Exception(rsp.ErrorMessage);
         }
 

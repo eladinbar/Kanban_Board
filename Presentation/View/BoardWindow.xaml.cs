@@ -108,22 +108,38 @@ namespace Presentation.View
             this.viewModel.SortTasksByDueDate((int)((Button)sender).Tag);
         }
 
+
         public void AddTask_Click(object sender, RoutedEventArgs e)
         {
-            this.viewModel.AddTask();            
-            
+            this.viewModel.AddTask();                        
         }
 
 
         public void EditTask_Click(object sender, RoutedEventArgs e) 
         {
-            TaskModel taskToEdit = ((Button)sender).DataContext as TaskModel;
+            TaskModel taskToEdit = ((MenuItem)sender).DataContext as TaskModel;
             this.viewModel.EditTask(taskToEdit);
 
             //not so pretty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             this.DataContext = null; //maybe to change the color of a border
             this.DataContext = this.viewModel;
         }
+
+
+        public void RemoveTaskMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("               Remove this task? \n                    (Irreversible!)", "Remove Task", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    TaskModel taskToRemove = ((MenuItem)sender).DataContext as TaskModel;
+                    this.viewModel.RemoveTask(taskToRemove);
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+        }
+
 
         public void AdvanceTask_Click(object sender, RoutedEventArgs e) 
         {
@@ -139,6 +155,7 @@ namespace Presentation.View
                     break;
             }
         }
+
 
         public void LogoutVerificationMessageBox(object sender, RoutedEventArgs e)
         {
@@ -162,11 +179,13 @@ namespace Presentation.View
             this.viewModel.MoveColumnLeft(CreatorEmail, columnOrdinal);            
         }
 
+
         public void MoveColumnRightClick(object sender, RoutedEventArgs e)
         {
             int columnOrdinal = ((int)((Button)sender).Tag);
             this.viewModel.MoveColumnRight(CreatorEmail, columnOrdinal);
         }
+
 
         public void ChangePassword(object sender, RoutedEventArgs e)
         {
@@ -189,6 +208,7 @@ namespace Presentation.View
             }
         }
 
+
         private void ColumnName_KeyDown(object sender, KeyEventArgs e)
         {
             TextBox currentTextBox = ((TextBox)sender);
@@ -201,6 +221,7 @@ namespace Presentation.View
             }
         }
 
+
         private void ColumnName_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox currentTextBox = ((TextBox)sender);
@@ -212,12 +233,14 @@ namespace Presentation.View
             }
         }
 
+
         private void AddColumnToTheRightMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem currentMenuItem = ((MenuItem)sender);
             int columnOrdinal = (int)currentMenuItem.Tag;
             this.viewModel.AddColumn(CreatorEmail, columnOrdinal + 1);
         }
+
 
         private void AddColumnToTheLeftMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -226,10 +249,12 @@ namespace Presentation.View
             this.viewModel.AddColumn(CreatorEmail, columnOrdinal);            
         }
 
+
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (this.viewModel != null & this.CanChangeSearchBox) this.viewModel.SearchBox_TextChanged(((TextBox)sender).Text);
         }
+
 
         private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -238,6 +263,7 @@ namespace Presentation.View
             this.CanChangeSearchBox = true;
         }
 
+
         private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
         {
             this.CanChangeSearchBox = false;
@@ -245,6 +271,9 @@ namespace Presentation.View
             this.SearchBox.Text = "Search for a task...";
             this.viewModel.SearchBox_TextChanged("");
         }
+
+
+
 
 
 

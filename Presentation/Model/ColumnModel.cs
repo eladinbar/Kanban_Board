@@ -72,8 +72,14 @@ namespace Presentation.Model
             this._ordinal = ordinal;
             this.CreatorEmail = creatorEmail;
             this.TasksToView = this.Tasks;
+            this.Tasks.CollectionChanged += HandleChange;
         }
 
+        private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.TasksToView = this.Tasks;
+            RaisePropertyChanged("TasksToView");
+        }
 
         public void RaiseProperty(string propertyName)
         {
@@ -109,10 +115,14 @@ namespace Presentation.Model
             string lower = txtOrig.ToLower();
             var tskFiltered = from Tsk in this.Tasks
                               let tTitle = Tsk.Title
+                              let tDescription = Tsk.Description
                               where
                                tTitle.StartsWith(lower)
                                || tTitle.StartsWith(upper)
                                || tTitle.Contains(txtOrig)
+                               || tDescription.StartsWith(upper)
+                               || tDescription.StartsWith(lower)
+                               || tDescription.Contains(txtOrig)
                               select Tsk;
 
             this.TasksToView = new ObservableCollection<TaskModel>(tskFiltered); //update tasks source
