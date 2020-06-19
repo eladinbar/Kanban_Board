@@ -28,7 +28,7 @@ namespace Presentation.Model
 
         private SolidColorBrush calculateTaskBorderColor()
         {
-            if (this.AssigneeEmail.Equals(this.CurrentUserEmail)) return CURRENT_USER_BORDER_COLOR;
+            if (this.AssigneeEmail.Equals(this.CurrentUser.Email)) return CURRENT_USER_BORDER_COLOR;
             else return ORIGINAL_BORDER_COLOR;
         }
 
@@ -51,7 +51,7 @@ namespace Presentation.Model
         public DateTime DueDate { get; set; }
         public DateTime LastChangedDate{ get; }
         public string AssigneeEmail { get; set; }
-        public string CurrentUserEmail;
+        public UserModel CurrentUser;
         private int _columnOrdinal;
         public int ColumnOrdinal { get => _columnOrdinal; set { _columnOrdinal = value; RaisePropertyChanged("ColumnOrdinal"); } }
 
@@ -70,7 +70,7 @@ namespace Presentation.Model
         /// <param name="AssigneeEmail">The task assignee's email address.</param>
         /// <param name="columnOrdinal">The column ordinal this task is associated with.</param>
         public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate, 
-        DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal, string currentUserEmail) : base(Controller) {
+        DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal, UserModel currentUser) : base(Controller) {
             this.ID = ID;
             this.Title = Title;
             this.Description = Description;
@@ -79,7 +79,7 @@ namespace Presentation.Model
             this.LastChangedDate = LastChangedDate;
             this.AssigneeEmail = AssigneeEmail;
             this.ColumnOrdinal = columnOrdinal;
-            this.CurrentUserEmail = currentUserEmail;
+            this.CurrentUser = currentUser;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Presentation.Model
         /// <param name="title">New title for the task</param>
         public void UpdateTaskTitle(string title)
         {
-            Controller.UpdateTaskTitle(AssigneeEmail, ColumnOrdinal, ID, title);
+            Controller.UpdateTaskTitle(CurrentUser.AssociatedBoard, ColumnOrdinal, ID, title);
             this.Title = title;
             RaisePropertyChanged("Title");
         }
@@ -99,7 +99,7 @@ namespace Presentation.Model
         /// <param name="description">New description for the task</param>
         public void UpdateTaskDescription(string description)
         {
-            Controller.UpdateTaskDescription(AssigneeEmail, ColumnOrdinal, ID, description);
+            Controller.UpdateTaskDescription(CurrentUser.AssociatedBoard, ColumnOrdinal, ID, description);
             this.Description = description;
             RaisePropertyChanged("Description");
         }
@@ -110,7 +110,7 @@ namespace Presentation.Model
         /// <param name="dueDate">The new due date of the column.</param>
         public void UpdateTaskDueDate(DateTime dueDate)
         {
-            Controller.UpdateTaskDueDate(AssigneeEmail, ColumnOrdinal, ID, dueDate);
+            Controller.UpdateTaskDueDate(this.CurrentUser.AssociatedBoard, ColumnOrdinal, ID, dueDate);
             this.DueDate = dueDate;
             RaisePropertyChanged("DueDate");
         }
@@ -121,7 +121,7 @@ namespace Presentation.Model
         /// <param name="emailAssignee">The email of the user to assign the task to.</param>
         public void AssignTask(string emailAssignee)
         {
-            Controller.AssignTask(AssigneeEmail, ColumnOrdinal, ID, emailAssignee);
+            Controller.AssignTask(CurrentUser.AssociatedBoard, ColumnOrdinal, ID, emailAssignee);
             this.AssigneeEmail = emailAssignee;
             RaisePropertyChanged("TaskAssigneeUsername");
         }

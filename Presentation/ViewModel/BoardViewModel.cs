@@ -178,7 +178,7 @@ namespace Presentation.ViewModel
             {
                 var tempTask = this.Controller.GetColumn(this.Board.CreatorEmail, 0).Tasks.Last();
                 TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, 
-                    tempTask.CreationTime, tempTask.emailAssignee, 0, CurrentUser.Email);
+                    tempTask.CreationTime, tempTask.emailAssignee, 0, CurrentUser);
                 this.Board.AddNewTask(newTask);                
             }
         }
