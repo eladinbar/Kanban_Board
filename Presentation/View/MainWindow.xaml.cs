@@ -6,7 +6,7 @@ using System.Windows.Controls;
 namespace Presentation.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml. Used to login existing users open the registration window for new ones.
     /// </summary>
     public partial class MainWindow : Window
     {

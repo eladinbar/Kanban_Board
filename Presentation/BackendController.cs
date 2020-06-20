@@ -25,7 +25,7 @@ namespace Presentation
         /// </summary>
         /// <param name="email">Current user email.</param>
         /// <param name="password">Current user password.</param>
-        /// <returns>UserModel object with loge in user parameters.</returns>
+        /// <returns>UserModel object with login user parameters.</returns>
         /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
         internal UserModel Login(string email, string password)
         {
@@ -38,12 +38,12 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to receive an Service.Response with demanded Column by its name.
+        /// Allows to receive a Service.Response with the demanded column by its name.
         /// </summary>
-        /// <param name="creatorEmail">Current board creator email.</param>
+        /// <param name="creatorEmail">Board creator email.</param>
         /// <param name="columnName">Demanded column name.</param>
         /// <returns>Service.Column object with demanded column parameters.</returns>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal Column GetColumn(string creatorEmail, string columnName)
         {
             Response<Column> column = Service.GetColumn(creatorEmail, columnName);
@@ -55,12 +55,12 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to receive an Service.Response with demanded Column by its ordinal.
+        /// Allows to receive a Service.Response with the demanded column by its ordinal.
         /// </summary>
         /// <param name="creatorEmail">Current board creator email.</param>
         /// <param name="columnOrdinal">Demanded column ordinal.</param>
         /// <returns>Service.Column object with all the demanded column parameters.</returns>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal Column GetColumn(string creatorEmail, int columnOrdinal)
         {
             Response<Column> column = Service.GetColumn(creatorEmail, 0);
@@ -74,10 +74,10 @@ namespace Presentation
         /// <summary>
         /// Allows to change the selected column name.
         /// </summary>
-        /// <param name="creatorEmail">Current board creator email.</param>
+        /// <param name="creatorEmail">Board creator email.</param>
         /// <param name="columnOrdinal">Demanded column ordinal.</param>
         /// <param name="newName">The new column name.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void ChangeColumnName(string creatorEmail, int columnOrdinal, string newName)
         {
             Response rsp = Service.ChangeColumnName(creatorEmail, columnOrdinal, newName);
@@ -85,12 +85,12 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to add new column at the demanded ordinal.
+        /// Allows to add a new column at the desired ordinal.
         /// </summary>
-        /// <param name="email">Current board creator email.</param>
+        /// <param name="email">Board creator email.</param>
         /// <param name="newColumnOrdinal">The ordinal of the new column.</param>
         /// <param name="newColumnName">The name of the new column.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void AddColumn(string email, int newColumnOrdinal, string newColumnName)
         {
             Response rsp = Service.AddColumn(email, newColumnOrdinal, newColumnName);
@@ -98,7 +98,7 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to perform a logout action of the current user.
+        /// Logs out the current user.
         /// </summary>
         /// <param name="emailToLogout">Email of the current user to logout.</param>
         /// <returns>Appropriate message of the logout action.</returns>
@@ -113,12 +113,12 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to change the selected column limit.
+        /// Changes the column limit to the specified limit.
         /// </summary>
-        /// <param name="email">Current board creator email.</param>
-        /// <param name="columnOrdinal">Ordinal of the column to change its limit.</param>
+        /// <param name="email">Board creator email.</param>
+        /// <param name="columnOrdinal">The ordinal of the column to change its limit.</param>
         /// <param name="limit">The new limit.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
             Response rsp = Service.LimitColumnTasks(email, columnOrdinal, limit);
@@ -126,11 +126,11 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to move the selected column to its left.
+        /// Moves the selected column to its left.
         /// </summary>
-        /// <param name="email">Current board creator email.</param>
+        /// <param name="email">Board creator email.</param>
         /// <param name="columnOrdinal">Ordinal of the column to move.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void MoveColumnLeft(string email, int columnOrdinal)
         {
             Response rsp = this.Service.MoveColumnLeft(email, columnOrdinal);
@@ -138,11 +138,11 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to move the selected column to its right.
+        /// Moves the selected column to its right.
         /// </summary>
-        /// <param name="email">Current board creator email.</param>
+        /// <param name="email">Board creator email.</param>
         /// <param name="columnOrdinal">Ordinal of the column to move.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void MoveColumnRight(string email, int columnOrdinal)
         {
             Response rsp = this.Service.MoveColumnRight(email, columnOrdinal);
@@ -150,11 +150,11 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to remove the selected column from the Data Base.
+        /// Removes the selected column from the database.
         /// </summary>
-        /// <param name="email">Current board creator email.</param>
+        /// <param name="email">Board creator email.</param>
         /// <param name="columnOrdinal">Ordinal of the column to remove.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void RemoveColumn(string email, int columnOrdinal)
         {
             Response rsp = Service.RemoveColumn(email, columnOrdinal);
@@ -162,12 +162,12 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to remove the selected task from the Data Base.
+        /// Removes the selected task from the database.
         /// </summary>
-        /// <param name="creatorEmail">Current board creator email.</param>
+        /// <param name="creatorEmail">Board creator email.</param>
         /// <param name="columnOrdinal">Ordinal of the column that contains the task.</param>
-        /// <param name="taskId">The id of the task to remove.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <param name="taskId">The ID of the task to remove.</param>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void RemoveTask(string creatorEmail, int columnOrdinal, int taskId)
         {
             Response rsp =  this.Service.DeleteTask(creatorEmail, columnOrdinal, taskId);
@@ -175,11 +175,11 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to receive the demanded board from the Data Base.
+        /// Receives the specified board from the database.
         /// </summary>
-        /// <param name="creatorEmail">Current board creator email.</param>
+        /// <param name="creatorEmail">Board creator email.</param>
         /// <returns>Service.Board object with all the demanded board parameters.</returns>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal Board GetBoard(string creatorEmail)
         {
             Response<Board> board = Service.GetBoard(creatorEmail);
@@ -191,13 +191,13 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to register a new user to the system.
+        /// Registers a new user to the system.
         /// </summary>
         /// <param name="email">New user email.</param>
         /// <param name="password">New user password.</param>
         /// <param name="nickname">New user nickname.</param>
         /// <param name="hostEmail">Email of the board the new user is associated with.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void Register(string email, string password, string nickname, string hostEmail)
         {
             Response r;
@@ -213,12 +213,12 @@ namespace Presentation
         }
 
         /// <summary>
-        /// Allows to advance the selected task.
+        /// Advances the selected task.
         /// </summary>
-        /// <param name="email">Current board creator email.</param>
+        /// <param name="email">Board creator email.</param>
         /// <param name="columnOrdinal">The ordinal of the column that contains the task.</param>
-        /// <param name="taskId">Id of the task to advance.</param>
-        /// <exception cref="Exception">Thrown when an error in Backend logic appears.</exception>
+        /// <param name="taskId">ID of the task to advance.</param>
+        /// <exception cref="Exception">Thrown when an error in the backend logic appears.</exception>
         internal void AdvanceTask(string email, int columnOrdinal, int taskId)
         {
             Response r = this.Service.AdvanceTask(email, columnOrdinal, taskId);
@@ -230,10 +230,10 @@ namespace Presentation
         /// Add a new task.
         /// </summary>
         /// <param name="email">Email of the user. The user must be logged in.</param>
-        /// <param name="title">Title of the new task</param>
-        /// <param name="description">Description of the new task</param>
-        /// <param name="dueDate">The due date if the new task</param>
-        /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
+        /// <param name="title">Title of the new task.</param>
+        /// <param name="description">Description of the new task.</param>
+        /// <param name="dueDate">The due date of the new task.</param>
+        /// <returns>A response object with a value set to the Task, instead the response should contain an error message in case of an error.</returns>
         public TaskModel AddTask(string email, string title, string description, DateTime dueDate, UserModel currentUser)
         {
             Response<Task> res = Service.AddTask(email, title, description, dueDate);
