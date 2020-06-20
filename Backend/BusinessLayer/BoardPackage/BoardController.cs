@@ -405,7 +405,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Column MoveColumnRight(string email, int columnOrdinal) 
         {
             Board b = GetBoard(email);
-            return b.MoveColumnRight(email, columnOrdinal);
+            return b.MoveColumnRight(columnOrdinal);
         }
 
         /// <summary>
