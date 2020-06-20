@@ -38,7 +38,7 @@ namespace Presentation.ViewModel
         /// A BoardViewModel constructor for an existing board. Initializes an DispatcherTimer for runtime content update.
         /// </summary>
         /// <param name="controller">The controller this view model uses to communicate with the backend.</param>
-        /// <param name="currentUser">The current user viewing the task.</param>
+        /// <param name="currentUser">The current loged in user.</param>
         /// <param name="creatorEmail">An email of current board creator.</param>
         public BoardViewModel(BackendController controller, UserModel currentUser, string creatorEmail)
         {
@@ -82,7 +82,7 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Receives the new column name from the user through InputDialog. Allows to add it to the current board.
+        /// Allows to add new column to the current board at the demanded index. Receives the new column name from the user through InputDialog.
         /// </summary>
         /// <param name="email">Board creator email.</param>
         /// <param name="newColumnOrdinal">Future index of the new column.</param>
