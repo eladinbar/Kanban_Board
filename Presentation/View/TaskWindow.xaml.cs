@@ -16,8 +16,7 @@ namespace Presentation.View
 
         private TaskViewModel ViewModel;
         private BackendController Controller;
-        private string _lastClickedButton = "";
-        public string LastClickedButton { get => _lastClickedButton; private set { _lastClickedButton = value; } }
+        public string LastClickedButton { get; private set; }
 
         /// <summary>
         /// The task window constructor. Initializes the window and creates its respective data context with the required information given from the board window.
@@ -32,7 +31,7 @@ namespace Presentation.View
             Controller = backendController;
             ViewModel = new TaskViewModel(backendController, taskModel, isAssignee, currentUser);
             DataContext = ViewModel;
-            ControlButtonsVisiblity(!NEW_TASK);
+            ControlDataVisiblity(!NEW_TASK);
         }
 
         /// <summary>
@@ -46,10 +45,15 @@ namespace Presentation.View
             Controller = backendController;
             ViewModel = new TaskViewModel(backendController, currentUser);
             DataContext = ViewModel;
-            ControlButtonsVisiblity(NEW_TASK);
+            ControlDataVisiblity(NEW_TASK);
         }
 
-        private void ControlButtonsVisiblity(bool newTask) {
+        /// <summary>
+        /// Adjusts the task window's relevant fields' and buttons' visibility on creation according to task status and ownership.
+        /// </summary>
+        /// <param name="newTask"></param>
+        private void ControlDataVisiblity(bool newTask) {
+            ViewModel.ControlFieldVisibility(newTask, txtOwnership, lTaskID, txtHintDescription, txtBlockDescription);
             ViewModel.ControlButtonsVisibility(newTask, Confirm, Cancel, OK, AddTask);
         }
 
@@ -103,7 +107,7 @@ namespace Presentation.View
             {
                 try {
                     ViewModel.NewTask(txtTaskAssignee.Text, txtTitle.Text, txtDescription.Text, (DateTime)dpDueDate.SelectedDate);
-                    MessageBox.Show("Task was added successfully to board " + txtTaskAssignee.Text);
+                    MessageBox.Show("Task was added successfully to board " + ViewModel.CurrentUser.AssociatedBoard);
                     this.Close();
                 }
                 catch (Exception ex) {

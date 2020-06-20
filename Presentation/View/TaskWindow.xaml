@@ -24,11 +24,10 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="1" Margin="98.2,0,14.8,0" Foreground="CornflowerBlue" Grid.ColumnSpan="2">    <Run Text="You are currently viewing"/>    <Run Text="{Binding Path=AssigneeEmail}"/>    <Run Text="'s task."/></TextBlock>
+                <TextBlock Name="txtOwnership" Grid.Column="1" Margin="98.2,0,14.8,0" Foreground="CornflowerBlue" Grid.ColumnSpan="2">    <Run Text="You are currently viewing"/>    <Run Text="{Binding Path=AssigneeEmail}"/>    <Run Text="'s task."/></TextBlock>
 
                 <Label Content="Task ID" FontSize="16" Grid.Column="0" Grid.Row="1"/>
-                <Label Content="{Binding Path=ID}" Grid.Row="1" Margin="64,4,9.8,6"/>
-                <Label Name="idMessage" Foreground="Red" Grid.Column="3" Grid.Row="1"/>
+                <Label Name="lTaskID" Content="{Binding Path=ID}" Grid.Row="1" Margin="64,4,9.8,6"/>
 
                 <Label Content="Title" FontSize="16" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="1.2,0,71.8,0"/>
                 <TextBlock Name="txtHintTitle" Text="Please enter a title..." Foreground="Gray" Grid.Column="1" Grid.Row="1" Margin="52.2,7,183.4,3"/>
@@ -38,7 +37,7 @@
 
                 <Label Content="Description" FontSize="16" Grid.Column="1" Grid.Row="2" Margin="0,0,252.245,0"/>
                 <TextBlock Name="txtHintDescription" Text="Please enter a description..." Foreground="Gray" Grid.Column="1" Grid.Row="2" Margin="3,39,7,0" Grid.ColumnSpan="3"/>
-                <TextBox Name="txtDescription" Text="{Binding Path=Description, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Description_Changed" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="2" Margin="0,39,10,0" Grid.ColumnSpan="2"/>
+                <TextBox Name="txtDescription" Text="{Binding Path=Description, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Description_Changed" TextWrapping="Wrap" AcceptsReturn="True" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="2" Margin="0,39,10,0" Grid.ColumnSpan="2"/>
                 <TextBlock Name="txtBlockDescription" Text="{Binding Path=Description}" Visibility="Collapsed" Grid.Column="1" Grid.Row="2" Margin="3,39,7,0" Grid.ColumnSpan="3"/>
                 <Label Name="descMessage" Foreground="Red" Grid.Column="1" Grid.Row="3" Margin="0.2,0,68.4,0"/>
 

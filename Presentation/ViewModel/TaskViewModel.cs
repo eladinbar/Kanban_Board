@@ -31,9 +31,7 @@ namespace Presentation.ViewModel
         public DateTime LastChangedDate { get; set; }
         public string AssigneeEmail { get; set; }
         public bool IsAssignee { get; set; }
-        private UserModel CurrentUser;
-
-
+        public UserModel CurrentUser { get; private set; }
 
         /// <summary>
         /// A TaskViewModel constructor for an existing task. Initializes all bound fields as well as its respective TaskModel and BackendController.
@@ -41,7 +39,8 @@ namespace Presentation.ViewModel
         /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
         /// <param name="task">The TaskModel representing this TaskViewModel.</param>
         /// <param name="isAssignee">A verification variable to ensure task editing can only be performed by its assignee.</param>
-        public TaskViewModel(BackendController backendController, TaskModel task, bool isAssignee, UserModel currentUser) { //columnOrdinal is unnecessary?
+        /// <param name="currentUser">The current user viewing the task.</param>
+        public TaskViewModel(BackendController backendController, TaskModel task, bool isAssignee, UserModel currentUser) {
              this.Controller = backendController;
              this.Task = task;
              this.ID = task.ID;
@@ -59,7 +58,7 @@ namespace Presentation.ViewModel
         /// A TaskViewModel constructor for a new task. Assigns default values to all bound fields and initializes the BackendController field.
         /// </summary>
         /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
-        /// <param name="assigneeEmail">The email of the creator of the task.</param>
+        /// <param name="currentUser">The current user adding a new task.</param>
         public TaskViewModel(BackendController backendController, UserModel currentUser)
         {
             this.Controller = backendController;
@@ -71,6 +70,37 @@ namespace Presentation.ViewModel
             this.CurrentUser = currentUser;
         }
 
+        /// <summary>
+        /// Adjusts the task window's relevant fields' visibility on creation according to task status and ownership.
+        /// </summary>
+        /// <param name="newTask">Defines whether the task window being opened is that of a new task.</param>
+        /// <param name="txtOwnership">The text block that is displayed when the current user is not the task assignee.</param>
+        /// <param name="lTaskID">The label containing the task ID value.</param>
+        /// <param name="txtHintDescription">The text block to indicate where the description is expected to be adjusted.</param>
+        /// <param name="txtBlockDescription">The text block to show the description in case the current user is not the task assignee.</param>
+        internal void ControlFieldVisibility(bool newTask, TextBlock txtOwnership, Label lTaskID, TextBlock txtHintDescription, TextBlock txtBlockDescription)
+        {
+            if (newTask)
+            {
+                txtOwnership.Visibility = Visibility.Collapsed;
+                lTaskID.Visibility = Visibility.Collapsed;
+            }
+            else if (IsAssignee)
+                txtOwnership.Visibility = Visibility.Collapsed;
+            else if (Description=="") {
+                txtHintDescription.Visibility = Visibility.Collapsed;
+                txtBlockDescription.Visibility = Visibility.Visible;
+            }
+        }
+
+        /// <summary>
+        /// Adjusts the task window's buttons' visibility according to the task status and ownership.
+        /// </summary>
+        /// <param name="newTask">Defines whether the task window being opened is that of a new task.</param>
+        /// <param name="confirm">The button used to confirm all changes made to the task.</param>
+        /// <param name="cancel">The button used to discard any and all changes made to the task.</param>
+        /// <param name="ok">The button to show in case the user is not the task assignee.</param>
+        /// <param name="addTask">The button displayed when adding a new task.</param>
         public void ControlButtonsVisibility(bool newTask, Button confirm, Button cancel, Button ok, Button addTask) {
             if (newTask) {
                 confirm.Visibility = Visibility.Collapsed;
@@ -92,12 +122,12 @@ namespace Presentation.ViewModel
         /// <param name="dueDate">The due date of the task to update.</param>
         /// <param name="taskAssignee">The assignee of the task to update.</param>
         public void UpdateTask(List<BorderColor> validFields, string title, string description, DateTime dueDate, string taskAssignee) {
-            if (validFields[Convert.ToInt32(Update.Title)] == BorderColor.Green)
+            if (validFields[(int)Update.Title] == BorderColor.Green)
             {
                 Task.UpdateTaskTitle(title);
                 this.Title = title;
             }
-            if (validFields[Convert.ToInt32(Update.Description)] == BorderColor.Green)
+            if (validFields[(int)Update.Description] == BorderColor.Green)
             {
                 Task.UpdateTaskDescription(description);
                 this.Description = description;
@@ -113,6 +143,7 @@ namespace Presentation.ViewModel
                 Task.AssignTask(taskAssignee);
                 this.AssigneeEmail = taskAssignee;
             }
+            this.LastChangedDate = DateTime.Now; RaisePropertyChanged("LastChangedDate");
         }
 
         /// <summary>
@@ -200,6 +231,7 @@ namespace Presentation.ViewModel
         /// <param name="txtTitle">The text box to assign the state to.</param>
         /// <param name="titleMessage">The message to present to the user in case the 'Title' field is invalid.</param>
         /// <param name="txtHintTitle">The text block displayed to hint at the desired field content.</param>
+        /// <param name="txtBlockTitle">The text block displayed when the current user is not the task assignee.</param>
         internal void ChangedTitle(TextBox txtTitle, Label titleMessage, TextBlock txtHintTitle, TextBlock txtBlockTitle)
         {
             txtHintTitle.Visibility = Visibility.Visible;
@@ -232,6 +264,7 @@ namespace Presentation.ViewModel
         /// <param name="txtDescription">The text box to assign the state to.</param>
         /// <param name="descMessage">The message to present to the user in case the 'Description' field is invalid.</param>
         /// <param name="txtHintDescription">The text block displayed to hint at the desired field content.</param>
+        /// <param name="txtBlockDescription">The text block displayed when the current user is not the task assignee.</param>
         internal void ChangedDescription(TextBox txtDescription, Label descMessage, TextBlock txtHintDescription, TextBlock txtBlockDescription)
         {
             txtHintDescription.Visibility = Visibility.Visible;
@@ -239,6 +272,7 @@ namespace Presentation.ViewModel
                 txtHintDescription.Visibility = Visibility.Hidden;
             if (!IsAssignee)
             {
+                txtHintDescription.Visibility = Visibility.Collapsed;
                 txtBlockDescription.Visibility = Visibility.Visible;
                 txtDescription.Visibility = Visibility.Collapsed;
             }
@@ -264,6 +298,7 @@ namespace Presentation.ViewModel
         /// </summary>
         /// <param name="dpDueDate">The date picker to assign the state to.</param>
         /// <param name="dueMessage">The message to present to the user in case the 'Due Date' field is invalid.</param>
+        /// <param name="txtBlockDueDate">The text block displayed when the current user is not the task assignee.</param>
         internal void ChangedDueDate(DatePicker dpDueDate, Label dueMessage, TextBlock txtBlockDueDate)
         {
             if (!IsAssignee)
@@ -292,6 +327,7 @@ namespace Presentation.ViewModel
         /// Assigns the appropriate border to the "txtTaskAssignee" text box according to its state.
         /// </summary>
         /// <param name="txtTaskAssignee">The text box to assign the state to.</param>
+        /// <param name="txtBlockTaskAssignee">The text block displayed when the current user is not the task assignee.</param>
         internal void ChangedTaskAssignee(TextBox txtTaskAssignee, TextBlock txtBlockTaskAssignee)
         {
             if (!IsAssignee) {
