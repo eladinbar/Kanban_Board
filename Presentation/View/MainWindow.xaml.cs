@@ -74,8 +74,8 @@ namespace Presentation.View
         /// <summary>
         /// Mothod binding to resive the typed password.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             viewModal.Password = PasswordBox.Password;
