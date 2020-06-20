@@ -101,7 +101,7 @@ namespace Presentation.ViewModel
         /// <param name="cancel">The button used to discard any and all changes made to the task.</param>
         /// <param name="ok">The button to show in case the user is not the task assignee.</param>
         /// <param name="addTask">The button displayed when adding a new task.</param>
-        public void ControlButtonsVisibility(bool newTask, Button confirm, Button cancel, Button ok, Button addTask) {
+        internal void ControlButtonsVisibility(bool newTask, Button confirm, Button cancel, Button ok, Button addTask) {
             if (newTask) {
                 confirm.Visibility = Visibility.Collapsed;
                 addTask.Visibility = Visibility.Visible;

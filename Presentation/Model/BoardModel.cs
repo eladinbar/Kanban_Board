@@ -8,20 +8,16 @@ namespace Presentation.Model
     /// </summary>
     public class BoardModel : NotifiableModelObject
     {
-
         public string CreatorEmail { get; set; }
         public ObservableCollection<ColumnModel> Columns { get; set; }
         private UserModel CurrentUser;
 
         /// <summary>
-        /// Board model constructor. Pulles all the data (columns and tasks) of the current board from the Data Base.
+        /// The board model constructor. Pulls all the data (columns and tasks) of the current board from the database.
         /// </summary>
-        /// <param name="controller"></param>
-        /// <param name="creatorEmail"></param>
-        /// <param name="currentUser"></param>
         /// <param name="controller">The controller this model uses to communicate with the backend.</param>
-        /// <param name="currentUser">The current loged in user.</param>
-        /// <param name="creatorEmail">An email of current board creator.</param>
+        /// <param name="creatorEmail">The email of the board creator.</param>
+        /// <param name="currentUser">The current logged in user.</param>
         public BoardModel(BackendController controller, string creatorEmail, UserModel currentUser) : base(controller)
         {
             this.CurrentUser = currentUser;
@@ -30,11 +26,11 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Pulls all the required data (columns and tasks) from the Data Base.
+        /// Pulls all the required data (columns and tasks) from the database.
         /// </summary>
-        /// <param name="creatorEmail">Current board creator email.</param>
-        /// <returns>Returns ObservableCollection of ColumnModels.</returns>
-        private ObservableCollection<ColumnModel> CreateColumns(string creatorEmail)  //receives SL.Columns and its list of Tasks and transform them into PL.Columns - move this logic to viewModel 
+        /// <param name="creatorEmail">The email of the board creator.</param>
+        /// <returns>Returns an ObservableCollection of ColumnModels.</returns>
+        private ObservableCollection<ColumnModel> CreateColumns(string creatorEmail) //receives SL.Columns and its list of Tasks and transform them into PL.Columns - move this logic to viewModel 
         {
             ObservableCollection<ColumnModel> tempColumns = new ObservableCollection<ColumnModel>();
             int i = 0;
@@ -53,10 +49,10 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Allows to advance the selected task to the next column.
+        /// Advances the selected task to the next column.
         /// </summary>
-        /// <param name="taskToAdvance">A task that user demanded to advance.</param>
-        /// <param name="columnOrdinal">The index of the column that the selected task placed in it.</param>
+        /// <param name="taskToAdvance">The task that the user desires to advance.</param>
+        /// <param name="columnOrdinal">The index of the column containing the selected task.</param>
         public void AdvanceTask(TaskModel taskToAdvance, int columnOrdinal)
         {
             ColumnModel sourceColumn = this.Columns.ElementAt(columnOrdinal);
@@ -69,7 +65,7 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Allows to add new task to the current board. 
+        /// Adds a new task to the board. 
         /// </summary>
         /// <param name="newTask">The new task to add. Contains the new task information.</param>
         internal void AddNewTask(TaskModel newTask)
@@ -79,12 +75,11 @@ namespace Presentation.Model
             this.Columns.ElementAt(0).RaiseProperty("TasksToView");
         }
 
-
         /// <summary>
-        /// Allows to add new column to the current board at the demanded index.
+        /// Adds a new column to the current board at the given index.
         /// </summary>
-        /// <param name="newColumnOrdinal">The index to add the new column at it.</param>
-        /// <param name="newColumnName">The name of the new column. Received from the user.</param>
+        /// <param name="newColumnOrdinal">The index to add the new column at.</param>
+        /// <param name="newColumnName">The name of the new column.</param>
         internal void AddColumn(int newColumnOrdinal, string newColumnName)
         {
             ColumnModel newColumn = new ColumnModel(this.Controller, new ObservableCollection<TaskModel>(), 100, newColumnName, newColumnOrdinal, CreatorEmail);
@@ -99,16 +94,16 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Allows to remove the selected task from the board.
+        /// Removes the selected task from the board.
         /// </summary>
-        /// <param name="taskToRemove">A task that was selected to be removed.</param>
+        /// <param name="taskToRemove">The task to remove.</param>
         internal void RemoveTask(TaskModel taskToRemove)
         {
             this.Columns.ElementAt(taskToRemove.ColumnOrdinal).Tasks.Remove(taskToRemove);
         }
 
         /// <summary>
-        /// Allows to move a selected column to its left.
+        /// Moves the selected column to its left.
         /// </summary>
         /// <param name="columnOrdinal">The index of the selected column.</param>
         internal void MoveColumnLeft(int columnOrdinal)
@@ -124,7 +119,7 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Allows to move a selected column to its right.
+        /// Moves the selected column to its right.
         /// </summary>
         /// <param name="columnOrdinal">The index of the selected column.</param>
         internal void MoveColumnRight(int columnOrdinal)
@@ -140,7 +135,7 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// An help-method that allows to update GUI content of the board (specifically).
+        /// Updates the GUI content of the board (specifically).
         /// </summary>
         internal void UpdateColumns()
         {

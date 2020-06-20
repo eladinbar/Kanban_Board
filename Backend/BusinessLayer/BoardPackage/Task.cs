@@ -29,7 +29,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="id">The unique ID that will be associated with this task.</param>
         /// <param name="email">The email of current board user.</param>
         /// <param name="columnName">The ordinal of the column the task should be added to.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the title or description given are invalid.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the title or description given do not comply with the requirements.</exception>
+        /// <exception cref="ArgumentException">Thrown when given a date before the current time.</exception>
         public Task(string title, string description, DateTime dueDate, int id, string email, string columnName, string emailAssignee) 
         {
             if (title.Length > MINIMUM_TITLE_LENGTH && title.Length <= MAXIMUM_TITLE_LENGTH)
@@ -83,6 +84,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="title">The new title to be given to the task.</param>
         /// <exception cref="ArgumentException">Thrown if the new title is empty or is more than 50 characters long.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when attempting to set a null title.</exception>
         public void UpdateTaskTitle(string title) 
         {
             if(title == null)
@@ -129,6 +131,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="duedate">The new due date for the task.</param>
         /// <exception cref="ArgumentException">Thrown when the new due date is earlier than the current time.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when attempting to set a null due date.</exception>
         public void UpdateTaskDuedate(DateTime duedate) 
         {
             if (duedate == null)

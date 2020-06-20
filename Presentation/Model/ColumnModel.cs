@@ -9,7 +9,7 @@ using System.Windows.Controls;
 namespace Presentation.Model
 {
     /// <summary>
-    /// The model that represents an column of the Board. Used by Board window.
+    /// The model that represents a column of the Board. Used by the board window.
     /// </summary>
     public class ColumnModel : NotifiableModelObject
     {
@@ -60,7 +60,7 @@ namespace Presentation.Model
         /// <summary>
         /// Column model constructor.
         /// </summary>
-        /// <param name="controller">A controller this model uses to communicate with the backend</param>
+        /// <param name="controller">The controller this model uses to communicate with the backend.</param>
         /// <param name="tasks">An ObservableCollection of TaskModels.</param>
         /// <param name="limit">Column limit of the tasks.</param>
         /// <param name="name">Column name.</param>
@@ -81,7 +81,7 @@ namespace Presentation.Model
         /// Updates the viewable content of the tasks in the GUI.
         /// </summary>
         /// <param name="sender">The object that invoked the event and fired the event handler.</param>
-        /// <param name="e">Contains state information and event data associated with an change of the collection.</param>
+        /// <param name="e">Contains state information and event data associated with a change of the collection.</param>
         private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.TasksToView = new ObservableCollection<TaskModel>(this.Tasks);
@@ -89,9 +89,9 @@ namespace Presentation.Model
         }
 
         /// <summary>
-        /// Allows to raise a property of the current class from another class.
+        /// Raises a property of the current class from another class.
         /// </summary>
-        /// <param name="propertyName">Name of an changed property.</param>
+        /// <param name="propertyName">Name of the changed property.</param>
         public void RaiseProperty(string propertyName)
         {
             RaisePropertyChanged(propertyName);
@@ -176,6 +176,5 @@ namespace Presentation.Model
             RaisePropertyChanged("TasksToView");
 
         }
-
     }
 }
