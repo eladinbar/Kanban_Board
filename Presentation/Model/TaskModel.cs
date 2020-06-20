@@ -16,32 +16,14 @@ namespace Presentation.Model
 
         public SolidColorBrush TaskBorderColor
         {
-            get => calculateTaskBorderColor();
+            get => CalculateTaskBorderColor();
             private set { }
         }
 
         public SolidColorBrush TaskBackgroundColor
         {
-            get => calculateTaskBackgroundColor();
+            get => CalculateTaskBackgroundColor();
             private set { }
-        }
-
-        private SolidColorBrush calculateTaskBorderColor()
-        {
-            if (this.AssigneeEmail.Equals(this.CurrentUser.Email)) return CURRENT_USER_BORDER_COLOR;
-            else return ORIGINAL_BORDER_COLOR;
-        }
-
-        private SolidColorBrush calculateTaskBackgroundColor()
-        {
-            long totalTime = this.DueDate.Ticks - this.CreationTime.Ticks;
-            long remainingTime = this.DueDate.Ticks - DateTime.Now.Ticks;
-            if (remainingTime <= 0) return PAST_DUE_DATE_BACKGROUND_COLOR;
-            else
-            {
-                if (remainingTime > (totalTime/4)) return ORIGINAL_BACKGROUND_COLOR; 
-                else return ALMOST_DUE_DATE_BACKGROUND_COLOR;
-            }
         }
 
         public int ID { get; }
@@ -51,10 +33,9 @@ namespace Presentation.Model
         public DateTime DueDate { get; set; }
         public DateTime LastChangedDate{ get; }
         public string AssigneeEmail { get; set; }
-        public UserModel CurrentUser;
+        public UserModel CurrentUser { get; private set; }
         private int _columnOrdinal;
         public int ColumnOrdinal { get => _columnOrdinal; set { _columnOrdinal = value; RaisePropertyChanged("ColumnOrdinal"); } }
-
 
         /// <summary>
         /// The task model constructor. Initializes all task relevant fields in addition to
@@ -125,6 +106,24 @@ namespace Presentation.Model
             Controller.AssignTask(CurrentUser.AssociatedBoard, ColumnOrdinal, ID, emailAssignee);
             this.AssigneeEmail = emailAssignee;
             RaisePropertyChanged("TaskAssigneeUsername");
+        }
+
+        private SolidColorBrush CalculateTaskBorderColor()
+        {
+            if (this.AssigneeEmail.Equals(this.CurrentUser.Email)) return CURRENT_USER_BORDER_COLOR;
+            else return ORIGINAL_BORDER_COLOR;
+        }
+
+        private SolidColorBrush CalculateTaskBackgroundColor()
+        {
+            long totalTime = this.DueDate.Ticks - this.CreationTime.Ticks;
+            long remainingTime = this.DueDate.Ticks - DateTime.Now.Ticks;
+            if (remainingTime <= 0) return PAST_DUE_DATE_BACKGROUND_COLOR;
+            else
+            {
+                if (remainingTime > (totalTime / 4)) return ORIGINAL_BACKGROUND_COLOR;
+                else return ALMOST_DUE_DATE_BACKGROUND_COLOR;
+            }
         }
 
         public void RaiseProperty(string propertyName)

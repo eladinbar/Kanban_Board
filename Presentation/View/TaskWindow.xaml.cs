@@ -96,7 +96,7 @@ namespace Presentation.View
         /// <param name="sender">The object that invoked the event and fired the event handler.</param>
         /// <param name="e">Contains state information and event data associated with a cancel event.</param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            LastClickedButton = Cancel.Content.ToString();
+            if (LastClickedButton==null) LastClickedButton = Cancel.Content.ToString();
         }
 
         /// <summary>
