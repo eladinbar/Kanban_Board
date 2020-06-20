@@ -42,15 +42,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     $"{DalTask.TaskIDColumnName} INTEGER NOT NULL," +
                     $"{DalTask.TaskTitleColumnName} TEXT NOT NULL," +
                     $"{DalTask.TaskDescriptionColumnName} TEXT NOT NULL," +
+                    $"{DalTask.TaskAssigneeColumnName} TEXT NOT NULL," +
                     $"{DalTask.TaskDueDateColumnName} INTEGER NOT NULL," +
                     $"{DalTask.TaskCreationDateColumnName} INTEGER NOT NULL," +
                     $"{DalTask.TaskLastChangedDateColumnName} INTEGER NOT NULL," +
                     $"PRIMARY KEY({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName},{DalTask.TaskIDColumnName})" +
-                    $"FOREIGN KEY({DalTask.EmailColumnName})" +
-                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName})" +
-                     $"FOREIGN KEY({DalTask.ContainingTaskColumnNameColumnName})" +
-                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.ColumnNameColumnName})" +
-                    $");";
+                    $"FOREIGN KEY({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName})" +
+                    $"  REFERENCES {ColumnDalController.ColumnTableName} ({DalColumn.EmailColumnName}, {DalColumn.ColumnNameColumnName})" +
+                    $" ON UPDATE CASCADE);";
+
                 SQLiteCommand tableExistence = new SQLiteCommand(null, connection);
                 tableExistence.CommandText = $"SELECT name FROM sqlite_master WHERE type=\"table\" AND name=\"{_tableName}\"";
                 try
@@ -84,7 +84,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
         internal override DalTask ConvertReaderToObject(SQLiteDataReader reader)
         {
             DalTask result = new DalTask(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetString(3), 
-                reader.GetString(4), DateTime.Parse(reader.GetString(5)), DateTime.Parse(reader.GetString(6)), DateTime.Parse(reader.GetString(7)));
+                reader.GetString(4), reader.GetString(5), DateTime.Parse(reader.GetString(6)), DateTime.Parse(reader.GetString(7)), DateTime.Parse(reader.GetString(8)));
             return result;
         }
 
@@ -105,14 +105,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     connection.Open();
                     command.CommandText = $"INSERT INTO {TaskTableName} " +
                         $"({DalTask.EmailColumnName}, {DalTask.ContainingTaskColumnNameColumnName}, {DalTask.TaskIDColumnName}, {DalTask.TaskTitleColumnName}," +
-                        $" {DalTask.TaskDescriptionColumnName}, {DalTask.TaskDueDateColumnName},{DalTask.TaskCreationDateColumnName}, {DalTask.TaskLastChangedDateColumnName})" +
-                        $"VALUES (@emailVal, @ordinalVal, @idVal, @titleVal, @descriptionVal, @dueDateVal, @creationDateVal, @lastChangedDateVal);";
+                        $" {DalTask.TaskDescriptionColumnName},{DalTask.TaskAssigneeColumnName}, {DalTask.TaskDueDateColumnName},{DalTask.TaskCreationDateColumnName}, {DalTask.TaskLastChangedDateColumnName})" +
+                        $"VALUES (@emailVal, @ordinalVal, @idVal, @titleVal, @descriptionVal, @assigneeVal, @dueDateVal, @creationDateVal, @lastChangedDateVal);";
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", task.Email);
                     SQLiteParameter ordinalParam = new SQLiteParameter(@"ordinalVal", task.ColumnName);
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", task.TaskId);
                     SQLiteParameter titleParam = new SQLiteParameter(@"titleVal", task.Title);
                     SQLiteParameter descriptionParam = new SQLiteParameter(@"descriptionVal", task.Description);
+                    SQLiteParameter assigneeParam = new SQLiteParameter(@"assigneeVal", task.EmailAssignee);
                     SQLiteParameter dueDateParam = new SQLiteParameter(@"dueDateVal", task.DueDate.ToString());
                     SQLiteParameter CreationDateParam = new SQLiteParameter(@"creationDateVal", task.CreationDate.ToString());
                     SQLiteParameter lastChangedDateParam = new SQLiteParameter(@"lastChangedDateVal", task.LastChangedDate.ToString());
@@ -122,6 +123,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                     command.Parameters.Add(idParam);
                     command.Parameters.Add(titleParam);
                     command.Parameters.Add(descriptionParam);
+                    command.Parameters.Add(assigneeParam);
                     command.Parameters.Add(dueDateParam);
                     command.Parameters.Add(CreationDateParam);
                     command.Parameters.Add(lastChangedDateParam);
@@ -155,7 +157,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DalControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DELETE FROM {TaskTableName} WHERE email=\"{task.Email}\" AND Name=\"{task.ColumnName}\" AND ID={task.TaskId}"
+                    CommandText = $"DELETE FROM {TaskTableName} WHERE {DalTask.EmailColumnName}=\"{task.Email}\" AND {DalTask.ContainingTaskColumnNameColumnName}=\"{task.ColumnName}\" AND {DalTask.TaskIDColumnName}={task.TaskId}"
                 };
                 try
                 {

@@ -1,4 +1,5 @@
-﻿using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
+﻿using IntroSE.Kanban.Backend.BusinessLayer.BoardPackage;
+using IntroSE.Kanban.Backend.DataAccessLayer.DalControllers;
 using System;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
@@ -12,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public UserPackage.UserController UserController { get; }
         public BoardPackage.BoardController BoardController { get; }
-        private UserPackage.User CurrentUser;
+        public UserPackage.User CurrentUser { get; internal set; }
 
         /// <summary>
         /// Public constructor. Initializes UserController and BoardController classes.
@@ -37,7 +38,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="email">User's email to Login with.</param>
         /// <param name="password">User's password to Login with.</param>
-        /// <exception cref="AccessViolationException">Thrown if there is a user logged in already.</exception>
+        /// <exception cref="AccessViolationException">Thrown if there is already a user logged into the system.</exception>
         /// <returns>A BussinesLayer.UserPackage.User object.</returns>
         public UserPackage.User Login(string email, string password) 
         {
@@ -68,7 +69,28 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public bool UserValidation(string email) 
         {
             if (CurrentUser == null) return false;
-            return CurrentUser.Email.Equals(email);
+            return CurrentUser.AssociatedBoard.Equals(email);
+        }
+
+        /// <summary>
+        /// Validates if the current user is the Host of the Board.
+        /// </summary>
+        /// <returns>Returns true if the user validation succeeded, otherwise returns false.</returns>
+        public bool ValidateHost()
+        {
+            if (CurrentUser == null) return false;
+            return CurrentUser.Email.Equals(CurrentUser.AssociatedBoard);
+        }
+
+        /// <summary>
+        /// Checks if a board exists with the given email.
+        /// </summary>
+        /// <param name="email">The email associated with the board.</param>
+        /// <exception cref="ArgumentException">Thrown in case the board ID given is not associated with any existing board.</exception>
+        public void BoardExistence(string boardId)
+        {
+            if (!BoardController.BoardExistence(boardId))
+                throw new ArgumentException($"{boardId} does not exist in the system, please re-evaluate your information and try again.");
         }
     }
 }

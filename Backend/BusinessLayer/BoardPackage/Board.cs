@@ -15,12 +15,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         private const int MAXIMUM_COLUMN_NAME_LENGTH = 15;
         private const int MINIMUM_COLUMN_NAME_LENGTH = 0;
 
-        public List<Column> Columns { get; }
+        public List<Column> Columns { get; set; }
         public string UserEmail { get; }
         public int TaskCounter { get; set; }
+        public Dictionary<string,string> Members { get; private set; }
         public DalBoard DalCopyBoard { get; private set; }
 
-
+        /// <summary>
+        /// Constractor for test only.
+        /// </summary>
+        public Board()
+        {
+            Columns = new List<Column>();
+            TaskCounter = 0;
+            Members = new Dictionary<string, string>();
+        }
         /// <summary>
         /// A public constructor that creates a new board and initializes all of its fields.
         /// </summary>
@@ -30,6 +39,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             UserEmail = email;
             TaskCounter = 0;
             Columns = new List<Column>();
+            Members = new Dictionary<string, string>();
             log.Info("New board created");
         }
 
@@ -40,12 +50,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskCounter">The amount of tasks that the board contains.</param>
         /// <param name="columns">The list of columns the board contains.</param>
         /// <param name="dalBoard">The DAL appearance of the current board.</param>
-        internal Board(string email, int taskCounter, List<Column> columns, DalBoard dalBoard) 
+        internal Board(string email, int taskCounter, List<Column> columns, Dictionary<string,string> members ,DalBoard dalBoard) 
         {
             UserEmail = email;
             TaskCounter = taskCounter;
             Columns = columns;
+            Members = members;
             DalCopyBoard = dalBoard;
+            Members = members;
             log.Info("load - Board " + email + " was loaded from memory");
         }
 
@@ -54,7 +66,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="columnName">The column name to return.</param>
         /// <returns>Returns the column with the given name.</returns>
-        /// <exception cref="ArgumentException">Thrown when the Column with the given name does not exist.</exception>
+        /// <exception cref="ArgumentException">Thrown when the column with the given name does not exist.</exception>
         public Column GetColumn(string columnName) 
         {
             if (Columns.Exists(c => c.Name.Equals(columnName)))
@@ -70,7 +82,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="columnOrdinal">The index of the column to return.</param>
         /// <returns>Returns the column with the given ordinal.</returns>
-        /// <exception cref="ArgumentException">Thrown when the ordinal given doesn't point to any valid Column.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the ordinal given doesn't point to any valid Column.</exception>
         public Column GetColumn(int columnOrdinal) 
         {
             if (columnOrdinal >= Columns.Count || columnOrdinal<0)
@@ -85,14 +97,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Get the names of the board's columns as a list.
         /// </summary>
         /// <returns>Returns a List of strings with the column names.</returns>
-        public List<string> getColumnNames() 
+        public List<string> GetColumnNames() 
         {
             List<string> columnNames = new List<string>();
             foreach(Column c in Columns)
             {
                 columnNames.Add(c.Name);
             }
-            log.Debug("Returned columns' names");
+            log.Debug("Returned columns' names.");
             return columnNames;
         }
 
@@ -113,22 +125,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnOrdinal">The index of the column to add at.</param>
         /// <param name="Name">The name of the new column.</param>
         /// <returns>Returns the added column.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public Column AddColumn(string email, int columnOrdinal, string Name) 
+        /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.
+        /// Alternatively thrown in case a column of the same name already exists.</exception>
+        public Column AddColumn(int columnOrdinal, string Name) 
         {
-            if (columnOrdinal < 0 | columnOrdinal > this.Columns.Count)
+            if (columnOrdinal < MINIMUM_COLUMN_NAME_LENGTH | columnOrdinal > this.Columns.Count)
             {
                 log.Warn("New column ordinal was out of range.");
-                throw new InvalidOperationException("New column ordinal is invalid.");
+                throw new IndexOutOfRangeException("New column ordinal is invalid.");
             }
-            if (Name.Length > 15 | Name.Length == MINIMUM_COLUMN_NAME_LENGTH)
+            if (Name.Length > MAXIMUM_COLUMN_NAME_LENGTH | Name.Length == MINIMUM_COLUMN_NAME_LENGTH)
             {
-                log.Warn("New column name was invalid (null or longer than 15 characters).");
+                log.Warn($"New column name was invalid (null or longer than {MAXIMUM_COLUMN_NAME_LENGTH} characters).");
                 throw new InvalidOperationException("New column name is invalid.");
             }
             if (!this.Columns.Exists(c => c.Name.Equals(Name)))
             {
-                Column newColumn = new Column(Name, email, columnOrdinal);
+                Column newColumn = new Column(Name, columnOrdinal);
                 if (columnOrdinal == this.Columns.Count) //in case of adding to the end 
                 {
                     this.Columns.Add(newColumn);
@@ -153,7 +166,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to remove.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public void RemoveColumn(string email, int columnOrdinal) 
+        public void RemoveColumn(int columnOrdinal) 
         {
             if (columnOrdinal >= 0 & columnOrdinal < this.Columns.Count)
             {
@@ -185,13 +198,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 }
 
                 //in case the column on the left reached its limit:
-                else if (!this.Columns[columnOrdinal - 1].CheckLimit()) { 
+                else if (!this.Columns[columnOrdinal - 1].CheckLimit() & toRemove.Tasks.Count>0) { 
                     log.Warn("Left column at index '" + (columnOrdinal - 1) + "' was full.");
                     throw new InvalidOperationException("Left column is full. Update '" + this.Columns[columnOrdinal-1].Name +"' column limit and try again.");
                 }
 
                 //in case the column on the left doesn't have enough space:
-                else if ((this.Columns[columnOrdinal-1].Tasks.Count+toRemove.Tasks.Count)> this.Columns[columnOrdinal - 1].Limit) 
+                else if ((this.Columns[columnOrdinal-1].Tasks.Count + toRemove.Tasks.Count)> this.Columns[columnOrdinal - 1].Limit) 
                 {
                     log.Warn("Left column at index '" + (columnOrdinal - 1) + "' didn't have enough space.");
                     throw new InvalidOperationException("Left column doesn't have enough space. Update '" + this.Columns[columnOrdinal - 1].Name + "' column limit and try again.");
@@ -210,7 +223,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 for (int i = columnOrdinal; i < this.Columns.Count; i++) //updating the DAL.Columns ordinals 
                     this.Columns[i].DalCopyColumn.Ordinal = this.Columns[i].DalCopyColumn.Ordinal - 1;
             }
-            else throw new InvalidOperationException("Index to remove column from is invalid.");
+            else throw new IndexOutOfRangeException("Index to remove column from is invalid.");
         }
 
 
@@ -220,7 +233,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to move.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public Column MoveColumnRight(string email, int columnOrdinal) 
+        public Column MoveColumnRight(int columnOrdinal) 
         {
             if (columnOrdinal == (this.Columns.Count - 1)) //in case of the last column
             {
@@ -251,7 +264,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="email">The email of the board's user.</param>
         /// <param name="columnOrdinal">The index of the column to move.</param>
         /// <exception cref="InvalidOperationException">Thrown when the ordinal given is not in the valid range.</exception>
-        public Column MoveColumnLeft(string email, int columnOrdinal) 
+        public Column MoveColumnLeft(int columnOrdinal) 
         {
             if (columnOrdinal == 0) //in case of the first column
             {
@@ -274,6 +287,45 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
             log.Debug("Column '" + toMove.Name + "' has been moved to its left (" + (columnOrdinal - 1) + ") successfully.");
             return toMove;
+        }
+
+        /// <summary>
+        /// Change the name of a specific column
+        /// </summary>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="newName">The new name.</param>
+        /// <exception cref="ArgumentException">Thrown a column of the same name already exists.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the column name or ordinal given are invalid.</exception>
+        public void ChangeColumnName(int columnOrdinal, string newName)
+        {
+            if(Columns.Exists(x => x.Name.Equals(newName)))
+            {
+                throw new ArgumentException("A column with this name already exists");
+            }
+            if (columnOrdinal < MINIMUM_COLUMN_NAME_LENGTH | columnOrdinal > this.Columns.Count)
+            {
+                log.Warn("New column ordinal was out of range.");
+                throw new InvalidOperationException("New column ordinal is invalid.");
+            }
+            if (newName.Length > MAXIMUM_COLUMN_NAME_LENGTH | newName.Length == MINIMUM_COLUMN_NAME_LENGTH)
+            {
+                log.Warn($"New column name was invalid (null or longer than {MAXIMUM_COLUMN_NAME_LENGTH} characters).");
+                throw new InvalidOperationException("New column name is invalid.");
+            }
+            Columns[columnOrdinal].ChangeName(newName);
+        }
+
+        /// <summary>
+        /// Adds a member to the board.
+        /// </summary>
+        /// <param name="email">The email of the new member.</param>
+        /// <param name="nickname">The nickname of the new member.</param>
+        /// <exception cref="ArgumentException">Thrown when attempting to add a board member that is already a member.</exception>
+        public void AddMember(string email, string nickname)
+        {
+            if (Members.ContainsKey(email))
+                throw new ArgumentException($"{email} is already a member of board {this.UserEmail}.");
+            Members.Add(email, nickname);
         }
 
         /// <summary>

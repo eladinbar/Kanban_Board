@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 SecurityController.UserController.Register(email, password, nickname);
-                SecurityController.BoardController.AddNewBoard(email);
+                SecurityController.BoardController.AddNewBoard(email, nickname);
                 
                 Response r = new Response();
                 log.Info("Registered with " + email);
@@ -48,6 +48,31 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
         /// <summary>
+        /// Registers a new user and joins the user to an existing board.
+        /// </summary>
+        /// <param name="email">The email address of the user to register</param>
+        /// <param name="password">The password of the user to register</param>
+        /// <param name="nickname">The nickname of the user to register</param>
+        /// <param name="hostEmail">The email address of the host user which owns the board.</param>
+        /// <returns>A response object. The response should contain a error message in case of an error<returns>
+        public Response Register(string email, string password, string nickname, string hostEmail)
+        {
+            try
+            {
+                SecurityController.BoardExistence(hostEmail);
+                SecurityController.UserController.Register(email, password, nickname, hostEmail);
+                SecurityController.BoardController.JoinBoard(email, nickname, hostEmail);
+                log.Info($"{email} register successfully and joined {hostEmail} Board");
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                log.Warn(e.Message, e);
+                return new Response(e.Message);
+            }
+        }
+
+        /// <summary>
         /// Performs a validated Login action.
         /// </summary>
         /// <param name="email">User's email to login with.</param>
@@ -58,7 +83,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 BusinessLayer.UserPackage.User tempUser = SecurityController.Login(email, password);
-                User tempStructUser = new User(tempUser.Email,tempUser.Nickname);
+                User tempStructUser = new User(tempUser.Email,tempUser.Nickname,tempUser.AssociatedBoard);
                 Response<User> r = new Response<User>(tempStructUser);
                 log.Info("Successful login action.");
                 return r;
