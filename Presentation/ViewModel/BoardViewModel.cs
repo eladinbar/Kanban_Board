@@ -31,20 +31,12 @@ namespace Presentation.ViewModel
             else return "Column name - can only be changed by the board creator.";
         }
 
-
-
-        //public TaskViewModel CurrentTask { get; private set; } //not needed????????????????????????????????????????
-        //private bool _isSelected = false;
-        //public bool IsSelected
-        //{
-        //    get => _isSelected;
-        //    set
-        //    {
-        //        _isSelected = value;
-        //        RaisePropertyChanged("IsSelected");
-        //    }
-        //}
-
+        /// <summary>
+        /// A BoardViewModel constructor for an existing board. Initializes an DispatcherTimer for runtime content update.
+        /// </summary>
+        /// <param name="controller">The controller this view model uses to communicate with the backend.</param>
+        /// <param name="currentUser">The current user viewing the task.</param>
+        /// <param name="creatorEmail">An email of current board creator.</param>
         public BoardViewModel(BackendController controller, UserModel currentUser, string creatorEmail)
         {
             this.Controller = controller;
@@ -54,10 +46,14 @@ namespace Presentation.ViewModel
             ChangeColumnNameToolTip = this.ColumnNameToolTip();
             this.dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 3); //change to greater period (maybe a minute) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 3); //changable period of time. Current value: every 3 seconds
             dispatcherTimer.Start();
         }
 
+        /// <summary>
+        /// Declares and initializes a TaskWindow with values of the task which user requests to edit.
+        /// </summary>
+        /// <param name="taskToEdit">An task which exists in DataBase and user requests to edit it.</param>
         public void EditTask(TaskModel taskToEdit)
         {
             if (taskToEdit == null) return;
@@ -65,7 +61,10 @@ namespace Presentation.ViewModel
             taskEditWindow.ShowDialog();
         }
 
-
+        /// <summary>
+        /// Allows to remove an existing task according to user request.
+        /// </summary>
+        /// <param name="taskToRemove">An task which exists in DataBase and user requests to delete it.</param>
         internal void RemoveTask(TaskModel taskToRemove)
         {
             try
