@@ -108,12 +108,20 @@ namespace Presentation.Model
             RaisePropertyChanged("TaskAssigneeUsername");
         }
 
+        /// <summary>
+        /// Defines current task border color accordingly to current user.
+        /// </summary>
+        /// <returns>SolidBrushColor object with current task appropriate border color.</returns>
         private SolidColorBrush CalculateTaskBorderColor()
         {
             if (this.AssigneeEmail.Equals(this.CurrentUser.Email)) return CURRENT_USER_BORDER_COLOR;
             else return ORIGINAL_BORDER_COLOR;
         }
 
+        /// <summary>
+        /// Defines current task background color accordingly to its creation date and due date.
+        /// </summary>
+        /// <returns>SolidBrushColor object with current task appropriate background color.</returns>
         private SolidColorBrush CalculateTaskBackgroundColor()
         {
             long totalTime = this.DueDate.Ticks - this.CreationTime.Ticks;
@@ -126,9 +134,13 @@ namespace Presentation.Model
             }
         }
 
+        /// <summary>
+        /// Allows to raise a property in this class from another class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property to raise.</param>
         public void RaiseProperty(string propertyName)
         {
-
+            RaisePropertyChanged(propertyName);
         }
     }
 }
