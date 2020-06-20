@@ -174,7 +174,7 @@ namespace Presentation.ViewModel
             TaskWindow taskAddWindow = new TaskWindow(this.Controller, this.CurrentUser);
             taskAddWindow.ShowDialog();
             string lastButton = taskAddWindow.LastClickedButton;
-            if (lastButton!=null && lastButton.Equals("Save Task"))
+            if (lastButton!= null && lastButton.Equals("Save Task"))
             {
                 var tempTask = this.Controller.GetColumn(this.Board.CreatorEmail, 0).Tasks.Last();
                 TaskModel newTask = new TaskModel(this.Controller, tempTask.Id, tempTask.Title, tempTask.Description, tempTask.CreationTime, tempTask.DueDate, 

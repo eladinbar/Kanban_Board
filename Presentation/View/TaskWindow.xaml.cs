@@ -15,7 +15,6 @@ namespace Presentation.View
         private const bool NEW_TASK = true;
 
         private TaskViewModel ViewModel;
-        private BackendController Controller;
         public string LastClickedButton { get; private set; }
 
         /// <summary>
@@ -28,7 +27,6 @@ namespace Presentation.View
         public TaskWindow(BackendController backendController, TaskModel taskModel, bool isAssignee, UserModel currentUser)
         {
             InitializeComponent();
-            Controller = backendController;
             ViewModel = new TaskViewModel(backendController, taskModel, isAssignee, currentUser);
             DataContext = ViewModel;
             ControlDataVisiblity(!NEW_TASK);
@@ -42,7 +40,6 @@ namespace Presentation.View
         public TaskWindow(BackendController backendController, UserModel currentUser)
         {
             InitializeComponent();
-            Controller = backendController;
             ViewModel = new TaskViewModel(backendController, currentUser);
             DataContext = ViewModel;
             ControlDataVisiblity(NEW_TASK);
@@ -91,6 +88,15 @@ namespace Presentation.View
         {
             LastClickedButton = Cancel.Content.ToString();
             this.Close();
+        }
+
+        /// <summary>
+        /// Discards all changes made to the task and closes.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a cancel event.</param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            LastClickedButton = Cancel.Content.ToString();
         }
 
         /// <summary>
