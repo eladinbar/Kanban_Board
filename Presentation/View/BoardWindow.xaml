@@ -7,15 +7,9 @@
         Title="BoardWindow" Height="700" Width="1300">
     <Grid>
 
-
         <TextBox Name="SearchBox" Text="Search for a task..." FontSize="12" FontStyle="Italic" BorderThickness="1" Foreground="Gray" Background="White"
                  Height="25" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" 
                  TextChanged="SearchBox_TextChanged" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus"/>
-        
-        
-        <!--UpdateSourceTrigger=PropertyChanged-->
-        <!--(Search: binding->grey->whiteOnClick, also for a text)-->
-
 
         <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Height="60" Width="200" Margin="0,-10,0,0">
             <Label Name="MainTitleLabel" Content="Kanban Board" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="20"/>
@@ -27,7 +21,6 @@
             <Label Name="CurrentUserEmailLabel2" Content="{Binding CurrentUser.Email}" HorizontalAlignment="Left" FontSize="15"/>
         </StackPanel>
 
-
         <Button Name="AddTaskButton" Content="+" FontWeight="ExtraBold" FontSize="40" FontFamily="David" Height="40" Width="40" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="2" 
                 Background="{x:Null}" RenderTransformOrigin="0.5,0.5" BorderBrush="{x:Null}" Foreground="Black" Click="AddTask_Click">
             <Button.BitmapEffect>
@@ -36,19 +29,7 @@
             <Button.ToolTip>
                 <ToolTip>Add a new task</ToolTip>
             </Button.ToolTip>
-            <!--<ContextMenu>
-                <ContextMenu.Resources>
-                    <Style TargetType="{x:Type Menu}">
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True" >
-                                <Setter Property="Background" Value="Transparent" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ContextMenu.Resources>-->
-            <!--</ContextMenu>-->
         </Button>
-
 
         <Menu Name="UserMenu" Height="40" Width="40" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#FF7EEA08" Foreground="Black">
             <Menu.ToolTip>
@@ -62,33 +43,18 @@
                 <MenuItem.Header>
                     <TextBlock Text="{Binding CurrentUser.Nickname[0], Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="50"/>
                 </MenuItem.Header>
-                <!--<MenuItem Header="Change password" IsCheckable="False" FontSize="12" FontWeight="Regular" />
-                <Separator />-->
                 <MenuItem Header="Logout" IsCheckable="False" FontSize="12" FontWeight="Regular" Click="LogoutVerificationMessageBox"/>
 
             </MenuItem>
         </Menu>
 
         <StackPanel Name="ColumnsStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Height="575" Width="1250">
-
-            <!--************************ Columns List*******************************************************************-->
-            <ListBox Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  
-                     ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Visible">
-
-                <!--<ListBox.ItemsSource>
-                    <CompositeCollection>
-                        <CollectionContainer Collection="{Binding Board.Columns}" >
-                            <CollectionContainer.Collection>
-                                <S
-                            </CollectionContainer.Collection>
-                        </CollectionContainer>
-                        <CollectionContainer Collection="{Binding Board.MyFilteredItems}"/>
-                    </CompositeCollection>
-                </ListBox.ItemsSource>-->
+            <ListBox x:Name="ColumnsListBox" ItemsSource="{Binding Board.Columns}" VerticalContentAlignment="Top" HorizontalContentAlignment="Stretch" BorderBrush="Red" BorderThickness="1" Width="1250"  
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Visible" Margin="0,0,0,0.2">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Name="ColumnsListBoxPresentationDefinition" Orientation="Horizontal" HorizontalAlignment="Center" />
+                        <StackPanel x:Name="ColumnsListBoxPresentationDefinition" Orientation="Horizontal" HorizontalAlignment="Center" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
@@ -102,57 +68,55 @@
                 <ListBox.ItemTemplate>
 
                     <DataTemplate>
-                        <Grid Name="ColumnGrid" Height="575">
+                        <Grid x:Name="ColumnGrid" Height="575">
 
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30" ></RowDefinition>
-                                <RowDefinition Height="475"></RowDefinition>
-                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="475"/>
+                                <RowDefinition Height="30"/>
                             </Grid.RowDefinitions>
 
-                            <Grid Name="ColumnHeaderGrid" Grid.Row="0">
+                            <Grid x:Name="ColumnHeaderGrid" Grid.Row="0">
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
 
-                                <Button Name="SortTasksByDueDate_Button" Content="Sort" 
+                                <Button x:Name="SortTasksByDueDate_Button" Content="Sort" 
                                         FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="0"
                                         ToolTip="Sort tasks by due date" 
                                         Click="SortTasksByDueDate_Click" Tag="{Binding Ordinal}" />
-                                <TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=OneWay}"
+                                <TextBox x:Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=OneWay}"
                                          Tag="{Binding Ordinal}" KeyDown="ColumnName_KeyDown" LostFocus="ColumnName_LostFocus" MaxLength="{Binding MaxColumnNameLength}"
                                          ToolTip="{Binding DataContext.ChangeColumnNameToolTip, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                          IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                          Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
-                                <!--<TextBox Name="txtTitle" Text="{Binding Path=Title, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Title_Changed" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="0" Margin="134,5,2,5" Grid.ColumnSpan="2"/>-->
 
-
-                                <Grid Name="SubColumnHeaderGrid" Grid.Column="2" HorizontalAlignment="Right">
+                                <Grid x:Name="SubColumnHeaderGrid" Grid.Column="2" HorizontalAlignment="Right">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="30"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Menu Name="AddColumnMenu" Height="20" Width="45" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" 
+                                    <Menu x:Name="AddColumnMenu" Height="20" Width="45" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" 
                                           ToolTip="Add a new column (only by the board creator)" ToolTipService.ShowOnDisabled="True"
                                           IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" >
 
                                         <MenuItem x:Name="AddColumnItem" Header="Add..." VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="UltraBold" Height="20" Width="45" 
                                               FontFamily="David" BorderBrush="Black">
-                                            <MenuItem Name="AddColumnToTheLeftMenuItem" Header="...a column to the left" IsCheckable="False" FontSize="12" FontWeight="Regular" 
+                                            <MenuItem x:Name="AddColumnToTheLeftMenuItem" Header="...a column to the left" IsCheckable="False" FontSize="12" FontWeight="Regular" 
                                                   Click="AddColumnToTheLeftMenuItem_Click" Tag="{Binding Ordinal}" />
                                             <Separator />
-                                            <MenuItem Name="AddColumnToTheRightMenuItem" Header="a column to the right..." IsCheckable="False" FontSize="12" FontWeight="Regular" 
+                                            <MenuItem x:Name="AddColumnToTheRightMenuItem" Header="a column to the right..." IsCheckable="False" FontSize="12" FontWeight="Regular" 
                                                   Click="AddColumnToTheRightMenuItem_Click" Tag="{Binding Ordinal}" />
 
                                         </MenuItem>
                                     </Menu>
 
-                                    <Button Name="DeleteColumn" Background="Red" Content="X" 
+                                    <Button x:Name="DeleteColumn" Background="Red" Content="X" 
                                         FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Column="1"
                                         ToolTip="Delete this column (only by the board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
@@ -160,19 +124,16 @@
                                 </Grid>
                             </Grid>
 
-                            <!--************************ Task List*******************************************************************-->
-                            <ListBox Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding TasksToView, Mode=OneWay}" BorderBrush="Green" BorderThickness="1" 
+                            <ListBox x:Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding TasksToView, Mode=OneWay}" BorderBrush="Green" BorderThickness="1" 
                                      ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
-
-                                <!--SelectedItem="{Binding Path=DataContext.SelectedTask, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"-->
 
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Name="TasksListBoxPresentationDefinition" Orientation="Vertical" Width="300" Height="475"/>
+                                        <StackPanel x:Name="TasksListBoxPresentationDefinition" Orientation="Vertical" Width="300" Height="475"/>
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
 
-                                <!--Selection border of each Column won't be visible-->
+                                <!--Selection border of each Task won't be visible-->
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ListBoxItem}">
                                         <Setter Property="Focusable" Value="False"/>
@@ -181,42 +142,27 @@
 
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Name="TaskInColumnBorder" BorderBrush="{Binding TaskBorderColor, Mode=OneWay}" Background="{Binding TaskBackgroundColor,Mode=OneWay}" 
+                                        <Border x:Name="TaskInColumnBorder" BorderBrush="{Binding TaskBorderColor, Mode=OneWay}" Background="{Binding TaskBackgroundColor, Mode=OneWay}" 
                                                 BorderThickness="2" Height="50" Width="290" HorizontalAlignment="Center">
                                             <Grid>
-                                                <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" Click="AdvanceTask_Click"/>
-                                                <!--IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}"-->
+                                                <Button x:Name="AdvanceTask_Button" Content="-&gt;" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" Click="AdvanceTask_Click"/>
 
-                                                <TextBlock x:Name="TaskTitle" Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" >                                                    
-                                                    
-                                                    <!--<TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Text" Value="{Binding Title}" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding ElementName=EditTask_Button}" Value="" >
-                                                                    <Setter Property="Text" Value="{Binding Title}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>-->
+                                                <TextBlock x:Name="TaskTitle" Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" />
 
-
-                                                </TextBlock>
-
-                                                <Menu Name="TaskOptions_Menu" Height="20" Width="25" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" ToolTip="Task actions" >
+                                                <Menu x:Name="TaskOptions_Menu" Height="20" Width="25" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" ToolTip="Task actions" >
 
                                                     <MenuItem x:Name="TaskOptionsMenuItem" Header="☰" VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="UltraBold" Height="20" Width="25" 
-                                              FontFamily="David" BorderBrush="Black">
-                                                        <MenuItem Name="EditTaskMenuItem" Header="Edit Task" IsCheckable="False" FontSize="12" FontWeight="Regular" 
-                                                  Click="EditTask_Click" Tag="{Binding Ordinal}" />
+                                                              FontFamily="David" BorderBrush="Black">
+                                                        <MenuItem x:Name="EditTaskMenuItem" Header="Edit Task" IsCheckable="False" FontSize="12" FontWeight="Regular" 
+                                                                  Click="EditTask_Click" Tag="{Binding Ordinal}" />
                                                         <Separator />
-                                                        <MenuItem Name="RemoveTaskMenuItem" Header="Remove Task" IsCheckable="False" FontSize="12" FontWeight="Regular" 
-                                                  Click="RemoveTaskMenuItem_Click" Tag="{Binding Ordinal}" />
-
+                                                        <MenuItem x:Name="RemoveTaskMenuItem" Header="Remove Task" IsCheckable="False" FontSize="12" FontWeight="Regular" 
+                                                                  Click="RemoveTaskMenuItem_Click" Tag="{Binding Ordinal}" />
                                                     </MenuItem>
                                                 </Menu>
 
-                                                <TextBlock Name="TaskDueDate" Text="{Binding DueDate, StringFormat=dd/MM/yyyy}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                                                <TextBlock x:Name="TaskDueDate" Text="{Binding DueDate, StringFormat=dd/MM/yyyy}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
@@ -224,14 +170,14 @@
 
                             </ListBox>
 
-                            <Grid Name="ColumnBottomGrid" Grid.Row="2" Height="30" Background="Yellow">
+                            <Grid x:Name="ColumnBottomGrid" Grid.Row="2" Height="30" Background="Yellow">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Button Name="MoveColumnLeftButton" Content="&lt;-" 
+                                <Button x:Name="MoveColumnLeftButton" Content="&lt;-" 
                                         FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"
                                         ToolTip="Move a column to its left (only by the board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
@@ -239,31 +185,22 @@
 
                                 <Grid Grid.Column="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Name="AmountOfTasks" Grid.Column="0" Text="{Binding CurrentAmountOfTasks}"
+                                    <TextBlock x:Name="AmountOfTasks" Grid.Column="0" Text="{Binding CurrentAmountOfTasks}"
                                          ToolTip="Current amount of tasks" 
                                          Height="20" HorizontalAlignment="Center" FontWeight="Bold" />
                                     <Label Content=" / " Grid.Column="1" ToolTip="Current amount of tasks" />
-                                    <TextBox Name="LimitOfTasks" Grid.Column="2" Text="{Binding Limit, Mode=OneWay}" KeyDown="LimitOfTasks_KeyDown" LostFocus="LimitOfTasks_LostFocus"
+                                    <TextBox x:Name="LimitOfTasks" Grid.Column="2" Text="{Binding Limit, Mode=OneWay}" KeyDown="LimitOfTasks_KeyDown" LostFocus="LimitOfTasks_LostFocus"
                                          ToolTip="Maximal amount of tasks (can only be changed by the board creator)" Tag="{Binding Ordinal}"
                                          IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                          Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
 
-
-                                    <!--<TextBox Name="ColumnName" Grid.Column="1" Text="{Binding Name, Mode=OneWay}"
-                                         Tag="{Binding Ordinal}" KeyUp="ColumnName_KeyUp" LostFocus="ColumnName_LostFocus"
-                                         ToolTip="{Binding DataContext.ChangeColumnNameToolTip, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
-                                         IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
-                                         Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>-->
-
-
-
                                 </Grid>
 
-                                <Button Name="MoveColumnRightButton" Content="->" 
+                                <Button x:Name="MoveColumnRightButton" Content="-&gt;" 
                                         FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"
                                         ToolTip="Move a column to its right (only by the board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
@@ -271,15 +208,10 @@
 
 
                             </Grid>
-
-
                         </Grid>
                     </DataTemplate>
-
                 </ListBox.ItemTemplate>
-
             </ListBox>
         </StackPanel>
-
     </Grid>
 </Window>
