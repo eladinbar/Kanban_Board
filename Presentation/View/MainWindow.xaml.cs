@@ -11,7 +11,7 @@ namespace Presentation.View
     public partial class MainWindow : Window
     {
 
-        private MainViewModel viewModal;
+        private MainViewModel ViewModel;
 
         /// <summary>
         /// A main constructer for the program start up.
@@ -19,8 +19,8 @@ namespace Presentation.View
         public MainWindow()
         {
             InitializeComponent();
-            viewModal = new MainViewModel();
-            DataContext = viewModal;
+            ViewModel = new MainViewModel();
+            DataContext = ViewModel;
         }
         /// <summary>
         /// A constructor to re-open the main window form registration or board Window.
@@ -29,8 +29,8 @@ namespace Presentation.View
         public MainWindow(BackendController controller)
         {
             InitializeComponent();
-            viewModal = new MainViewModel(controller);
-            DataContext = viewModal;
+            ViewModel = new MainViewModel(controller);
+            DataContext = ViewModel;
         }
         /// <summary>
         /// Method binding for on click event for login.
@@ -39,7 +39,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            UserModel user = viewModal.Login();
+            UserModel user = ViewModel.Login();
             if(user != null)
             {
                 BoardWindow bw = new BoardWindow(user.Controller, user, user.AssociatedBoard);
@@ -55,7 +55,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            RegistrationWindow registration = new RegistrationWindow(viewModal.Controller);
+            RegistrationWindow registration = new RegistrationWindow(ViewModel.Controller);
             registration.Show();
             this.Close();
         }
@@ -66,7 +66,7 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            viewModal.Password = PasswordBox.Password;
+            ViewModel.Password = PasswordBox.Password;
         }
     }
 }
