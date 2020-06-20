@@ -19,68 +19,12 @@ namespace Presentation.View
         private UserModel CurrentUser;
         private bool CanChangeSearchBox;
 
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! burn after reading ==>
-        //private static BackendController controller = new BackendController();
-        //private static string tempUser1Email = "maze1@mapo.com";
-        //private static string tempPass = "123Abc";
-        //private static string tempUser1Nick = "maze1Nick";
-        //private static UserModel tempUserModel1 = new UserModel(controller, tempUser1Email, tempUser1Nick);
-
-        //private static IService service = controller.Service;
-        //private void CreateData() {
-        //    MessageBoxResult result = MessageBox.Show("Wipe dataBase?", "Clear DataBase", MessageBoxButton.YesNo);
-        //    switch (result)
-        //    {
-        //        case MessageBoxResult.Yes:
-        //            service.DeleteData();
-        //            break;
-        //        case MessageBoxResult.No:
-        //            break;
-        //    }
-        //    service.Register(tempUser1Email, tempPass, tempUser1Nick);
-        //    string tempUser2Email = "maze2@mapo.com";
-        //    service.Register(tempUser2Email, tempPass, tempUser1Nick, tempUser1Email);
-
-        //    service.Login(tempUser1Email, tempPass);
-        //    DateTime dTime = new DateTime(2030, 03, 26);
-        //    Console.WriteLine("this is not the droids: {0}", service.AddTask(tempUser1Email, "title1", "desc1", dTime).ErrorOccured);
-        //    service.AddTask(tempUser1Email, "title2", "desc2", dTime);
-        //    service.AddTask(tempUser1Email, "title3", "desc3", dTime);
-        //    service.AddTask(tempUser1Email, "title4", "desc4", dTime);
-        //    service.AddTask(tempUser1Email, "title5", "desc5", dTime);
-        //    service.AddTask(tempUser1Email, "title6", "desc6", dTime);
-
-        //    service.AdvanceTask(tempUser1Email, 0, 1);
-        //    service.AdvanceTask(tempUser1Email, 1, 1);
-
-        //    service.AdvanceTask(tempUser1Email, 0, 2);
-        //    service.AdvanceTask(tempUser1Email, 1, 2);
-
-        //    service.AdvanceTask(tempUser1Email, 0, 3);
-        //    service.AdvanceTask(tempUser1Email, 0, 4);
-        //    service.AddColumn(tempUser1Email, 3, "added1");
-        //    service.AddColumn(tempUser1Email, 4, "added2");
-        //    service.AddColumn(tempUser1Email, 5, "added3");
-
-
-        //}
-        //  <== burn after reading!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-
-        //public BoardWindow() // tha whats starting before merging with login window 
-        //{
-        //    this.CreateData();
-        //    InitializeComponent();
-        //    this.viewModel = new BoardViewModel(controller, tempUserModel1, tempUser1Email);
-        //    this.DataContext = this.viewModel;
-        //    this.CreatorEmail = tempUser1Email;
-        //    this.CurrentUser = tempUserModel1;
-        //    this.CanChangeSearchBox = false;
-        //}
-
+        /// <summary>
+        /// A Board window constructor for an existing board. Initializes the Data Context view model.
+        /// </summary>
+        /// <param name="controller">The controller this constructor uses to initialize the Data Context with it.</param>
+        /// <param name="currentUser">The current loged in user.</param>
+        /// <param name="creatorEmail">An email of current board creator.</param>
         public BoardWindow(BackendController controller, UserModel currentUser, string creatorEmail) 
         {
             InitializeComponent();
@@ -91,30 +35,44 @@ namespace Presentation.View
             this.CanChangeSearchBox = false;
         }
 
-
+        /// <summary>
+        /// Allows to sort the tasks by due date in the selected column.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         public void SortTasksByDueDate_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.SortTasksByDueDate((int)((Button)sender).Tag);
         }
 
-
+        /// <summary>
+        /// Allows to add new task to the current board.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         public void AddTask_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.AddTask();                        
         }
 
-
+        /// <summary>
+        /// Allows to edit the selected task.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         public void EditTask_Click(object sender, RoutedEventArgs e) 
         {
             TaskModel taskToEdit = ((MenuItem)sender).DataContext as TaskModel;
             this.viewModel.EditTask(taskToEdit);
-
-            //not so pretty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            this.DataContext = null; //maybe to change the color of a border
+            this.DataContext = null; 
             this.DataContext = this.viewModel;
         }
 
-
+        /// <summary>
+        /// Allows to remove the selected task. Validates user's request with an Yes/No message box.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         public void RemoveTaskMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("               Remove this task? \n                    (Irreversible!)", "Remove Task", MessageBoxButton.YesNo);
@@ -130,9 +88,13 @@ namespace Presentation.View
         }
 
 
+        /// <summary>
+        /// Allows to advance the selected task. Validates user request with an Yes/No message box.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         public void AdvanceTask_Click(object sender, RoutedEventArgs e) 
         {
-            //not so pretty!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             MessageBoxResult result = MessageBox.Show("               Advance this task? \n                    (Irreversible!)", "Advance Task", MessageBoxButton.YesNo);
             switch (result)
             {
@@ -145,7 +107,11 @@ namespace Presentation.View
             }
         }
 
-
+        /// <summary>
+        /// Allows to logout current user from the system. Validates user request with an Yes/No message box.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         public void LogoutVerificationMessageBox(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Do you want to leave? :( ", "Logout", MessageBoxButton.YesNo);
@@ -162,7 +128,11 @@ namespace Presentation.View
             }
         }
 
-
+        /// <summary>
+        /// Allows to move the selected column to its left.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         public void MoveColumnLeftClick(object sender, RoutedEventArgs e)
         {
             int columnOrdinal = ((int)((Button)sender).Tag);
@@ -170,6 +140,11 @@ namespace Presentation.View
         }
 
 
+        /// <summary>
+        /// Allows to move the selected column to its right.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         public void MoveColumnRightClick(object sender, RoutedEventArgs e)
         {
             int columnOrdinal = ((int)((Button)sender).Tag);
@@ -177,12 +152,11 @@ namespace Presentation.View
         }
 
 
-        public void ChangePassword(object sender, RoutedEventArgs e)
-        {
-            this.viewModel.ChangePassword();
-        }
-
-
+        /// <summary>
+        /// Allows to remove the selected column from current board without removing its content (tasks). Validates user request with an Yes/No message box.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void RemoveColumn_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Remove this column?", "Remove Column", MessageBoxButton.YesNo);
@@ -199,6 +173,11 @@ namespace Presentation.View
         }
 
 
+        /// <summary>
+        /// Tracks which keys were pressed while the focus was on 'ColumnName' header property (TextBox). 
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a key event.</param>
         private void ColumnName_KeyDown(object sender, KeyEventArgs e)
         {
             TextBox currentTextBox = ((TextBox)sender);
@@ -211,7 +190,11 @@ namespace Presentation.View
             }
         }
 
-
+        /// <summary>
+        /// Tracks the focus changes on 'ColumnName' property (TextBox). 
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a key event.</param>
         private void ColumnName_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox currentTextBox = ((TextBox)sender);
@@ -224,6 +207,11 @@ namespace Presentation.View
         }
 
 
+        /// <summary>
+        /// Allows to add new column to the current board at the demanded index.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void AddColumnToTheRightMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem currentMenuItem = ((MenuItem)sender);
@@ -232,6 +220,11 @@ namespace Presentation.View
         }
 
 
+        /// <summary>
+        /// Allows to add new column to the current board at the demanded index.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void AddColumnToTheLeftMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem currentMenuItem = ((MenuItem)sender);
@@ -240,12 +233,22 @@ namespace Presentation.View
         }
 
 
+        /// <summary>
+        /// Part of the 'search for task' logic: transfers the input from the search box to the Data Context.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Provides data for the TextBoxBase.TextChanged event.</param>
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (this.viewModel != null & this.CanChangeSearchBox) this.viewModel.SearchBox_TextChanged(((TextBox)sender).Text);
         }
 
 
+        /// <summary>
+        /// Part of the 'search for task' logic: track the focus changes on 'SearchBox' property (TextBox).
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
         {
             this.SearchBox.Text = "";
@@ -254,6 +257,11 @@ namespace Presentation.View
         }
 
 
+        /// <summary>
+        /// Part of the 'search for task' logic: track the focus changes on 'SearchBox' property (TextBox).
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
         {
             this.viewModel.SearchBox_TextChanged("");
@@ -262,6 +270,12 @@ namespace Presentation.View
             this.SearchBox.Text = "Search for a task...";
         }
 
+
+        /// <summary>
+        /// Part of changing the column limit logic: tracks which keys were pressed while the focus was on 'ColumnLimit' property (TextBox).
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a key event.</param>
         private void LimitOfTasks_KeyDown(object sender, KeyEventArgs e)
         {
             TextBox currentTextBox = ((TextBox)sender);
@@ -274,6 +288,12 @@ namespace Presentation.View
             }
         }
 
+
+        /// <summary>
+        /// Part of changing the column limit logic: track the focus changes on 'ColumnLimit' property (TextBox).
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void LimitOfTasks_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox currentTextBox = ((TextBox)sender);
@@ -284,16 +304,5 @@ namespace Presentation.View
                 currentTextBox.IsUndoEnabled = true;
             }
         }
-
-
-
-
-
-
-        /*private void EditTaskButton_Click((object sender, RoutedEventArgs e){
-          TaskWindow tW = new TaskWindow (controller, currentUser, creatorEmail);
-          tW.ShowDialog();
-        }
-        */
     }
 }

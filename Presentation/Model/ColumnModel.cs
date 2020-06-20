@@ -8,6 +8,9 @@ using System.Windows.Controls;
 
 namespace Presentation.Model
 {
+    /// <summary>
+    /// The model that represents an column of the Board. Used by Board window.
+    /// </summary>
     public class ColumnModel : NotifiableModelObject
     {
         private readonly int MAX_COLUMN_NAME_LENGTH = 15;
@@ -53,6 +56,16 @@ namespace Presentation.Model
             }
         }
 
+
+        /// <summary>
+        /// Column model constructor.
+        /// </summary>
+        /// <param name="controller">A controller this model uses to communicate with the backend</param>
+        /// <param name="tasks">An ObservableCollection of TaskModels.</param>
+        /// <param name="limit">Column limit of the tasks.</param>
+        /// <param name="name">Column name.</param>
+        /// <param name="ordinal">Column ordinal in the board.</param>
+        /// <param name="creatorEmail">Current board creator email.</param>
         public ColumnModel(BackendController controller, ObservableCollection<TaskModel> tasks, int limit, string name, int ordinal, string creatorEmail) : base(controller)
         {
             this.Tasks = tasks;
@@ -64,18 +77,33 @@ namespace Presentation.Model
             this.Tasks.CollectionChanged += HandleChange;
         }
 
+        /// <summary>
+        /// Updates the viewable content of the tasks in the GUI.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with an change of the collection.</param>
         private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
         {
             this.TasksToView = new ObservableCollection<TaskModel>(this.Tasks);
             RaisePropertyChanged("TasksToView");
         }
 
+        /// <summary>
+        /// Allows to raise a property of the current class from another class.
+        /// </summary>
+        /// <param name="propertyName">Name of an changed property.</param>
         public void RaiseProperty(string propertyName)
         {
             RaisePropertyChanged(propertyName);
         }
-        
 
+
+        /// <summary>
+        /// Tracks which keys were pressed while the focus was on 'ColumnName' header property (TextBox). Updates column name accordingly.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a key event.</param>
+        /// <returns>Returns 'true' if the 'Enter' key was pressed. Otherwise returns 'false'.</returns>       
         public bool OnKeyDownHandlerName(object sender, KeyEventArgs e) //column name changes
         {
             if (e.Key == Key.Return)
@@ -96,10 +124,15 @@ namespace Presentation.Model
             return false;                       
         }
 
-        
+
+        /// <summary>
+        /// Tracks which keys were pressed while the focus was on 'ColumnLimit' property (TextBox). Updates column limit accordingly.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a key event.</param>
+        /// <returns>Returns 'true' if the 'Enter' key was pressed. Otherwise returns 'false'.</returns>  
         internal bool OnKeyDownHandlerLimit(object sender, KeyEventArgs e)
         {
-            //if (e.Key > 57 | e.Key < 48) maybe restrict letters input?????????????????????????????????????
             if (e.Key == Key.Return)
             {
                 try
@@ -118,7 +151,10 @@ namespace Presentation.Model
             return false;
         }
 
-
+        /// <summary>
+        /// Updates the GUI content of the columns accordingly to the search box input.
+        /// </summary>
+        /// <param name="senderText">The input of the search box.</param>
         internal void SearchBox_TextChanged(string senderText)
         {
             string txtOrig = senderText;
@@ -138,7 +174,6 @@ namespace Presentation.Model
 
             this.TasksToView = new ObservableCollection<TaskModel>(tskFiltered); //update tasks source
             RaisePropertyChanged("TasksToView");
-
 
         }
 
