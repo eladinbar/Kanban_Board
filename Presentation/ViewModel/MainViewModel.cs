@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.ViewModel
 {
+
     public class MainViewModel : NotifiableObject
     {
         public BackendController Controller { get; private set; }
@@ -44,6 +45,10 @@ namespace Presentation.ViewModel
             }
         }
 
+        /// <summary>
+        /// Invokes a login quary to the backend.
+        /// </summary>
+        /// <returns>A UserModel if login is successfull.</returns>
         internal UserModel Login()
         {
             Message = "";
@@ -63,6 +68,9 @@ namespace Presentation.ViewModel
             }
         }
 
+        /// <summary>
+        /// A constructor for startup.
+        /// </summary>
         public MainViewModel()
         {
             Controller = new BackendController();
@@ -71,7 +79,10 @@ namespace Presentation.ViewModel
             Message = "";
         }
 
-
+        /// <summary>
+        /// A constructor when reopening the mainWindow.
+        /// </summary>
+        /// <param name="controller"></param>
         public MainViewModel(BackendController controller)
         {
             Controller = controller;

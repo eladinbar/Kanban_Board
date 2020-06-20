@@ -89,6 +89,11 @@ namespace Presentation.ViewModel
             this.Controller = controller;
         }
 
+
+        /// <summary>
+        /// Invokes the Register in the Backend
+        /// </summary>
+        /// <returns>if registraion is successful return true</returns>
         public bool Register()
         {
             try

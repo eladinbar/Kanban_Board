@@ -25,19 +25,30 @@ namespace Presentation.View
 
         private MainViewModel viewModal;
 
+        /// <summary>
+        /// A main constructer for the program start up.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
             viewModal = new MainViewModel();
             DataContext = viewModal;
         }
+        /// <summary>
+        /// A constructor to re-open the main window form registration or board Window.
+        /// </summary>
+        /// <param name="controller">controller for the backend service</param>
         public MainWindow(BackendController controller)
         {
             InitializeComponent();
             viewModal = new MainViewModel(controller);
             DataContext = viewModal;
         }
-
+        /// <summary>
+        /// Method binding for on click event for login.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             UserModel user = viewModal.Login();
@@ -49,13 +60,22 @@ namespace Presentation.View
             }
         }
 
+        /// <summary>
+        /// Method binding for on click event for opening regestration window.
+        /// </summary>
+        /// <param name="sender">The object that invoked the event and fired the event handler.</param>
+        /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             RegistrationWindow registration = new RegistrationWindow(viewModal.Controller);
             registration.Show();
             this.Close();
         }
-
+        /// <summary>
+        /// Mothod binding to resive the typed password.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             viewModal.Password = PasswordBox.Password;
