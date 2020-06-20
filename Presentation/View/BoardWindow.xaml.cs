@@ -177,12 +177,6 @@ namespace Presentation.View
         }
 
 
-        public void ChangePassword(object sender, RoutedEventArgs e)
-        {
-            this.viewModel.ChangePassword();
-        }
-
-
         private void RemoveColumn_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Remove this column?", "Remove Column", MessageBoxButton.YesNo);

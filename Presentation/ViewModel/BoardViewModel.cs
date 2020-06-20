@@ -8,6 +8,9 @@ using System.Windows.Threading;
 
 namespace Presentation.ViewModel
 {
+    /// <summary>
+    /// The Data Context of the Board window.
+    /// </summary>
     class BoardViewModel : NotifiableObject
     {
         private DispatcherTimer dispatcherTimer;
@@ -78,7 +81,11 @@ namespace Presentation.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Receives the new column name from the user through InputDialog. Allows to add it to the current board.
+        /// </summary>
+        /// <param name="email">Board creator email.</param>
+        /// <param name="newColumnOrdinal">Future index of the new column.</param>
         public void AddColumn(string email, int newColumnOrdinal)
         {
             try
@@ -96,6 +103,11 @@ namespace Presentation.ViewModel
 
         }
 
+        /// <summary>
+        /// Allows to move the selected column to its left.
+        /// </summary>
+        /// <param name="email">Current board creator email.</param>
+        /// <param name="columnOrdinal">Selected column index.</param>
         public void MoveColumnLeft(string email, int columnOrdinal)
         {
             try
@@ -109,6 +121,11 @@ namespace Presentation.ViewModel
             }
         }
 
+        /// <summary>
+        /// Allows to move the selected column to its right.
+        /// </summary>
+        /// <param name="email">Current board creator email.</param>
+        /// <param name="columnOrdinal">Selected column index.</param>
         public void MoveColumnRight(string email, int columnOrdinal)
         {
             try
@@ -122,12 +139,17 @@ namespace Presentation.ViewModel
             }
         }
 
+        /// <summary>
+        /// Allows to remove the selected column from current board without removing its content (tasks).
+        /// </summary>
+        /// <param name="email">Current board creator email.</param>
+        /// <param name="columnOrdinal">Selected column index.</param>
         public void RemoveColumn(string email, int columnOrdinal)
         {
             try
             {
                 this.Controller.RemoveColumn(email, columnOrdinal);
-                this.Board.UpdateColumns(); //this or update manually???????????????????????????
+                this.Board.UpdateColumns();
                 MessageBox.Show("Column has been removed successfully.", "Remove Column");
 
             }
@@ -137,8 +159,11 @@ namespace Presentation.ViewModel
             }
         }
 
-
-            public void AdvanceTask(TaskModel taskToAdvance)
+        /// <summary>
+        /// Allows to advance the selected task to the next column. 
+        /// </summary>
+        /// <param name="taskToAdvance">A task that user demanded to advance.</param>
+        public void AdvanceTask(TaskModel taskToAdvance)
         {
             try
             {
@@ -152,18 +177,17 @@ namespace Presentation.ViewModel
             }
         }
 
+        /// <summary>
+        /// Shows an logout confirming message.
+        /// </summary>
         public void Logout()
         {
             MessageBox.Show(this.Controller.Logout(CurrentUser.Email), "Logout", MessageBoxButton.OK);            
         }
 
-
-        internal void ChangePassword()
-        {
-            MessageBox.Show(this.Controller.Logout(CurrentUser.Email), "Change password", MessageBoxButton.OK);
-        }
-
-
+        /// <summary>
+        /// Declares and invokes a TaskWindow. Allows to add new task to the current board.
+        /// </summary>
         internal void AddTask()
         {
             TaskWindow taskAddWindow = new TaskWindow(this.Controller, this.CurrentUser);
@@ -178,6 +202,10 @@ namespace Presentation.ViewModel
             }
         }
 
+        /// <summary>
+        /// Allows to sort tasks by due date in the selected column.
+        /// </summary>
+        /// <param name="columnOrdinal"></param>
         internal void SortTasksByDueDate(int columnOrdinal)
         {
             ObservableCollection<TaskModel> tasks = this.Board.Columns.ElementAt(columnOrdinal).Tasks;
@@ -186,6 +214,10 @@ namespace Presentation.ViewModel
             foreach (TaskModel t in tempTasksCollection) tasks.Add(t);
         }
 
+        /// <summary>
+        /// Part of the 'search for task' logic: transfers the input from the search box to each column.
+        /// </summary>
+        /// <param name="senderText">The input (text) entered in the search box.</param>
         internal void SearchBox_TextChanged(string senderText)
         {
             foreach (ColumnModel cm in this.Board.Columns)
