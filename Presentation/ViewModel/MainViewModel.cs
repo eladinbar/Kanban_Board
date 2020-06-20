@@ -3,7 +3,9 @@ using System;
 
 namespace Presentation.ViewModel
 {
-
+    /// <summary>
+    /// The data context of the main window.
+    /// </summary>
     public class MainViewModel : NotifiableObject
     {
         public BackendController Controller { get; private set; }
@@ -42,15 +44,15 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Invokes a login quary to the backend.
+        /// Invokes a login query to the backend.
         /// </summary>
-        /// <returns>A UserModel if login is successfull.</returns>
+        /// <returns>Returns the requested UserModel if the login was successful.</returns>
         internal UserModel Login()
         {
             Message = "";
             try
             {
-                if(Email.Equals(String.Empty) || Password.Equals(String.Empty))
+                if(Email.Equals(string.Empty) || Password.Equals(string.Empty))
                 {
                     Message = "Please enter Email and Password";
                     return null;
@@ -76,9 +78,9 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// A constructor when reopening the mainWindow.
+        /// A constructor when reopening the main window.
         /// </summary>
-        /// <param name="controller"></param>
+        /// <param name="controller">The controller this view model uses to interact with the backend.</param>
         public MainViewModel(BackendController controller)
         {
             Controller = controller;

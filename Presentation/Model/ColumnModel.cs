@@ -117,7 +117,7 @@ namespace Presentation.Model
                 catch (Exception ex)
                 {                    
                     MessageBox.Show(ex.Message, "Invalid Action");
-                    ((TextBox)sender).Undo();
+                    RaisePropertyChanged("Name");                
                     return false;
                 }
             }
@@ -144,7 +144,7 @@ namespace Presentation.Model
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Invalid Action");
-                    ((TextBox)sender).Undo();
+                    RaisePropertyChanged("Limit");
                     return false;
                 }
             }

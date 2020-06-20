@@ -182,12 +182,8 @@ namespace Presentation.View
         {
             TextBox currentTextBox = ((TextBox)sender);
             int columnOrdinal = (int)currentTextBox.Tag;
-            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyDownHandlerName(sender, e))
-            {
-                currentTextBox.IsUndoEnabled = false;
-                currentTextBox.IsUndoEnabled = true;
-                Keyboard.ClearFocus();
-            }
+            this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyDownHandlerName(sender, e);
+            
         }
 
         /// <summary>
@@ -197,13 +193,9 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a key event.</param>
         private void ColumnName_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox currentTextBox = ((TextBox)sender);
-            if (currentTextBox.CanUndo == true)
-            {
-                currentTextBox.Undo();
-                currentTextBox.IsUndoEnabled = false;
-                currentTextBox.IsUndoEnabled = true;
-            }
+            int columnOrdinal = (int)((TextBox)sender).Tag;
+            ((TextBox)sender).Text = this.viewModel.Board.Columns.ElementAt(columnOrdinal).Name;
+            this.viewModel.Board.Columns.ElementAt(columnOrdinal).RaiseProperty("Name");
         }
 
 
@@ -280,12 +272,7 @@ namespace Presentation.View
         {
             TextBox currentTextBox = ((TextBox)sender);
             int columnOrdinal = (int)currentTextBox.Tag;
-            if (this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyDownHandlerLimit(sender, e))
-            {
-                currentTextBox.IsUndoEnabled = false;
-                currentTextBox.IsUndoEnabled = true;
-                Keyboard.ClearFocus();
-            }
+            this.viewModel.Board.Columns.ElementAt(columnOrdinal).OnKeyDownHandlerLimit(sender, e);
         }
 
 
@@ -296,13 +283,9 @@ namespace Presentation.View
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
         private void LimitOfTasks_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox currentTextBox = ((TextBox)sender);
-            if (currentTextBox.CanUndo == true)
-            {
-                currentTextBox.Undo();
-                currentTextBox.IsUndoEnabled = false;
-                currentTextBox.IsUndoEnabled = true;
-            }
+            int columnOrdinal = (int)((TextBox)sender).Tag;
+            ((TextBox)sender).Text = this.viewModel.Board.Columns.ElementAt(columnOrdinal).Limit;
+            this.viewModel.Board.Columns.ElementAt(columnOrdinal).RaiseProperty("Limit");
         }
     }
 }
