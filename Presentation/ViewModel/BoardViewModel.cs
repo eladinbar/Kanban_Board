@@ -28,12 +28,6 @@ namespace Presentation.ViewModel
         public string ChangeColumnNameToolTip { get; private set; }
         public bool NotCreator { get => !IsCreator; }
 
-        private string ColumnNameToolTip()
-        {
-            if (IsCreator) return "Column name";
-            else return "Column name - can only be changed by the board creator.";
-        }
-
         /// <summary>
         /// A BoardViewModel constructor for an existing board. Initializes an DispatcherTimer for runtime content update.
         /// </summary>
@@ -54,9 +48,19 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Declares and initializes a TaskWindow with values of the task which user requests to edit.
+        /// Determines the relevant tooltip to display to the user.
         /// </summary>
-        /// <param name="taskToEdit">An task which exists in DataBase and user requests to edit it.</param>
+        /// <returns>Returns the tooltip to display depending on whether the current user is the board creator or not.</returns>
+        private string ColumnNameToolTip()
+        {
+            if (IsCreator) return "Column name";
+            else return "Column name - can only be changed by the board creator.";
+        }
+
+        /// <summary>
+        /// Declares and initializes a TaskWindow to display all relevant task related information.
+        /// </summary>
+        /// <param name="taskToEdit">The task the user requests to edit.</param>
         public void EditTask(TaskModel taskToEdit)
         {
             if (taskToEdit == null) return;
@@ -65,9 +69,9 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Allows to remove an existing task according to user request.
+        /// Removes an existing task according to user request.
         /// </summary>
-        /// <param name="taskToRemove">An task which exists in DataBase and user requests to delete it.</param>
+        /// <param name="taskToRemove">The task which the user requests to delete.</param>
         internal void RemoveTask(TaskModel taskToRemove)
         {
             try
@@ -82,10 +86,10 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Allows to add new column to the current board at the demanded index. Receives the new column name from the user through InputDialog.
+        /// Adds a new column to the current board at the desired index. Receives the new column name from the user through InputDialog.
         /// </summary>
         /// <param name="email">Board creator email.</param>
-        /// <param name="newColumnOrdinal">Future index of the new column.</param>
+        /// <param name="newColumnOrdinal">The new index of the column to be added.</param>
         public void AddColumn(string email, int newColumnOrdinal)
         {
             try
@@ -100,11 +104,10 @@ namespace Presentation.ViewModel
             {
                 MessageBox.Show(e.Message, "Add column error");
             }
-
         }
 
         /// <summary>
-        /// Allows to move the selected column to its left.
+        /// Moves the selected column to its left.
         /// </summary>
         /// <param name="email">Current board creator email.</param>
         /// <param name="columnOrdinal">Selected column index.</param>
@@ -122,7 +125,7 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Allows to move the selected column to its right.
+        /// Moves the selected column to its right.
         /// </summary>
         /// <param name="email">Current board creator email.</param>
         /// <param name="columnOrdinal">Selected column index.</param>
@@ -140,7 +143,7 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Allows to remove the selected column from current board without removing its content (tasks).
+        /// Removes the selected column from the current board while moving all contained tasks to a column adjacent to it.
         /// </summary>
         /// <param name="email">Current board creator email.</param>
         /// <param name="columnOrdinal">Selected column index.</param>
@@ -160,9 +163,9 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Allows to advance the selected task to the next column. 
+        /// Advances the selected task to the next column. 
         /// </summary>
-        /// <param name="taskToAdvance">A task that user demanded to advance.</param>
+        /// <param name="taskToAdvance">The task the user desires to advance.</param>
         public void AdvanceTask(TaskModel taskToAdvance)
         {
             try
@@ -178,7 +181,7 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Shows an logout confirming message.
+        /// Shows a logout confirmation message then proceeds to log the user out of the system.
         /// </summary>
         public void Logout()
         {
@@ -186,7 +189,7 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Declares and invokes a TaskWindow. Allows to add new task to the current board.
+        /// Declares and invokes a TaskWindow. Adds a new task to the board.
         /// </summary>
         internal void AddTask()
         {
@@ -203,9 +206,9 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Allows to sort tasks by due date in the selected column.
+        /// Sorts tasks by due date in the selected column.
         /// </summary>
-        /// <param name="columnOrdinal"></param>
+        /// <param name="columnOrdinal">The column ordinal to sort.</param>
         internal void SortTasksByDueDate(int columnOrdinal)
         {
             ObservableCollection<TaskModel> tasks = this.Board.Columns.ElementAt(columnOrdinal).Tasks;
