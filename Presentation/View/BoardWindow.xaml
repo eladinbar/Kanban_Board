@@ -123,7 +123,7 @@
                                         Click="RemoveColumn_Click" Tag="{Binding Ordinal}" />
                                 </Grid>
                             </Grid>
-
+                            
                             <ListBox x:Name="TasksListBox" Grid.Row="1" ItemsSource="{Binding TasksToView, Mode=OneWay}" BorderBrush="Green" BorderThickness="1" 
                                      ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
 
@@ -143,7 +143,7 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border x:Name="TaskInColumnBorder" BorderBrush="{Binding TaskBorderColor, Mode=OneWay}" Background="{Binding TaskBackgroundColor, Mode=OneWay}" 
-                                                BorderThickness="2" Height="50" Width="290" HorizontalAlignment="Center">
+                                                BorderThickness="3" Height="50" Width="290" HorizontalAlignment="Center">
                                             <Grid>
                                                 <Button x:Name="AdvanceTask_Button" Content="-&gt;" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" Click="AdvanceTask_Click"/>
 
