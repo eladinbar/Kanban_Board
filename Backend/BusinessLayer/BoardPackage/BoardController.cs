@@ -373,7 +373,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Column AddColumn(string email, int columnOrdinal, string Name) 
         {
             Board b = GetBoard(email);
-            Column newColumn = b.AddColumn(email, columnOrdinal, Name);
+            Column newColumn = b.AddColumn(columnOrdinal, Name);
             newColumn.Save(email, columnOrdinal);
             return newColumn;
         }
@@ -393,7 +393,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns.");
                 throw new InvalidOperationException("The board has 2 columns. Cannot remove any more column.");
             }
-            b.RemoveColumn(email, columnOrdinal);
+            b.RemoveColumn(columnOrdinal);
             c.Delete();
         }
 
@@ -416,7 +416,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         public Column MoveColumnLeft(string email, int columnOrdinal) 
         {
             Board b = GetBoard(email);
-            return b.MoveColumnLeft(email, columnOrdinal);
+            return b.MoveColumnLeft(columnOrdinal);
         }
 
         /// <summary>

@@ -19,9 +19,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
         public const string TaskLastChangedDateColumnName = "LastChangedDate";
 
         private int _taskId;
-        public int TaskId { get => _taskId; set { _taskId = value; } }
+        public virtual int TaskId { get => _taskId; set { _taskId = value; } }
         private string _columnName;
-        public string ColumnName { get => _columnName; set { _controller.Update(Email, ColumnName, TaskId, ContainingTaskColumnNameColumnName, value); _columnName = value; } }
+        public virtual string ColumnName { get => _columnName; set { _controller.Update(Email, ColumnName, TaskId, ContainingTaskColumnNameColumnName, value); _columnName = value; } }
         private string _title;
         public string Title { get => _title; set { _title = value; _controller.Update(Email, ColumnName, TaskId, TaskTitleColumnName, value); } }
         private string _description;
@@ -60,5 +60,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALOs
 
         }
 
+        /// <summary>
+        /// For Test Only.
+        /// </summary>
+        public DalTask() : base(new TaskDalController()) { }
     }
 }
