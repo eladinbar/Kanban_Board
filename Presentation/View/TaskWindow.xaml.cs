@@ -25,7 +25,7 @@ namespace Presentation.View
         /// <param name="taskModel">The task this window represents.</param>
         /// <param name="columnOrdinal">The column ordinal the task this window represents belongs to.</param>
         /// <param name="isAssignee">The token used to decide whether the current user can make any task modifications.</param>
-        public TaskWindow(BackendController backendController, TaskModel taskModel, bool isAssignee, UserModel currentUser) //newTask and columnOrdinal unncessary?
+        public TaskWindow(BackendController backendController, TaskModel taskModel, bool isAssignee, UserModel currentUser)
         {
             InitializeComponent();
             Controller = backendController;
@@ -39,7 +39,7 @@ namespace Presentation.View
         /// </summary>
         /// <param name="backendController">The controller this task uses to communicate with the backend.</param>
         /// <param name="assigneeEmail">The email of the creator of the task.</param>
-        public TaskWindow(BackendController backendController, UserModel currentUser) //newTask unnecessary?
+        public TaskWindow(BackendController backendController, UserModel currentUser)
         {
             InitializeComponent();
             Controller = backendController;
