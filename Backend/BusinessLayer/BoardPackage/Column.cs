@@ -57,12 +57,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (limit == 0)
             {
                 log.Error("Attempt to set limit to 0");
-                throw new ArgumentOutOfRangeException("Column limit must be larger than 0.");
+                throw new ArgumentException("Column limit must be larger than 0.");
             }
             else if (limit < Tasks.Count)
             {
                 log.Error("The number of tasks in the column is greater than the limit given");
-                throw new ArgumentOutOfRangeException("The number of tasks in the column: " + Tasks.Count + ", is more than the desired limit: " + limit);
+                throw new ArgumentException("The number of tasks in the column: " + Tasks.Count + ", is more than the desired limit: " + limit);
             }
             else
             {
@@ -75,13 +75,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Inserts a task to this column.
         /// </summary>
         /// <param name="t">The task to insert.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if the column is full.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if the column is full.</exception>
         internal void InsertTask(Task t) 
         {
             if (!CheckLimit())
             {
                 log.Warn("The column '" + Name + "' was full - task insert failed.");
-                throw new ArgumentOutOfRangeException(Name + " column is full.");
+                throw new InvalidOperationException(Name + " column is full.");
             }
             else
             {

@@ -108,7 +108,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="columnOrdinal">The column's number of the board's column list.</param>
         /// <param name="taskId">The ID of the task to advance.</param>
         /// <param name="currentUserEmail">The current login user for assignee valedation</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if trying to advance from the 'done' column or if the next column is full.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if trying to advance from the 'done' column or if the next column is full.
+        /// Alternatively thrown when a user that is not the task assignee attempts to advance the task.</exception>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
         public void AdvanceTask(string email, int columnOrdinal, int taskId, string currentUserEmail) 
         {
@@ -119,12 +120,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (b.Columns.Count == (columnOrdinal+1))
             {
                 log.Error("Attempt to advance a task from the current last column");
-                throw new ArgumentOutOfRangeException("Cannot advance tasks from the last column.");
+                throw new InvalidOperationException("Cannot advance tasks from the last column.");
             }
             else if (!b.GetColumn(columnOrdinal + 1).CheckLimit())
             {
                 log.Error("Attempt to advance a task to a full column");
-                throw new ArgumentOutOfRangeException("The next column: '" + b.GetColumn(columnOrdinal+1).Name + "' is full. Please change the column limit and try again.");
+                throw new InvalidOperationException("The next column: '" + b.GetColumn(columnOrdinal+1).Name + "' is full. Please change the column limit and try again.");
             }
             else
             {
@@ -153,7 +154,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="dueDate">The due date the task will be added with.</param>
         /// <param name="emailAssignee">The email to assign the task to.</param>
         /// <returns>Returns the new task that was created.</returns>
-        /// <exception cref="Exception">Thrown if the 'backlog' column is full.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if the 'backlog' column is full.</exception>
+        /// <exception cref="ArgumentException">Thrown when attempting to assign the added task to a user who is not a member of the board.</exception>
         public Task AddTask(string email, string title, string description, DateTime dueDate, string emailAssignee) 
         {
             Board b = GetBoard(email);
@@ -161,10 +163,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (!c.CheckLimit())
             {
                 log.Error("Attempt to add a task when first column is full");
-                throw new Exception("The first column is full, please adjust the column limit accordingly and try again.");
+                throw new InvalidOperationException("The first column is full, please adjust the column limit accordingly and try again.");
             }
             if (!b.Members.ContainsKey(emailAssignee))
-                throw new ArgumentException("email Assignee is not a member of the board");
+                throw new ArgumentException("User " + emailAssignee + " is not a member of board " + b.UserEmail);
 
             Task newTask = new Task(title, description, dueDate, b.TaskCounter + 1, email, c.Name, emailAssignee);
             newTask.Save(email, c.Name);
@@ -185,7 +187,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <param name="currentUserEmail">The current login user for assignee valedation</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.
+        /// Alternatively thrown in case a user that is not the task assignee attempts to modify the task.</exception>
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskId, string newTitle, string currentUserEmail) 
         {
             Board b = GetBoard(email);
@@ -199,7 +202,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 if (toUpdate.AssigneeCheck(currentUserEmail))
                     toUpdate.UpdateTaskTitle(newTitle);
                 else
-                    throw new InvalidOperationException("Tasks can only be modified by its assignee. Current user is not the assigned to this task");
+                    throw new InvalidOperationException("A task can only be modified by its assignee. Current user is not assigned to this task.");
                
                 //field database updates are a part of the inner 'Task' functionality
                 log.Debug("Task #" + taskId + " title was updated.");
@@ -220,7 +223,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <param name="currentUserEmail">The current login user for assignee valedation</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.
+        /// Alternatively thrown in case a user that is not the task assignee attempts to modify the task.</exception>
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskId, string newDescription, string currentUserEmail) 
         {
             Board b = GetBoard(email);
@@ -234,7 +238,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 if (toUpdate.AssigneeCheck(currentUserEmail))
                     toUpdate.UpdateTaskDescription(newDescription);
                 else
-                    throw new InvalidOperationException("Tasks can only be modified by its assignee. Current user is not the assigned to this task");
+                    throw new InvalidOperationException("A task can only be modified by its assignee. Current user is not assigned to this task.");
                 
                 //field database updates are a part of the inner 'Task' functionality
                 log.Debug("Task #" + taskId + " description was updated.");
@@ -255,7 +259,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="newTitle">The new title to update the task with.</param>
         /// <param name="currentUserEmail">The current login user for assignee valedation</param>
         /// <exception cref="ArgumentException">Thrown in case task ID given is invalid.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.
+        /// Alternatively thrown in case a user that is not the task assignee attempts to modify the task.</exception>
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime newDueDate, string currentUserEmail) 
         {
             Board b = GetBoard(email);
@@ -269,7 +274,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 if (toUpdate.AssigneeCheck(currentUserEmail))
                     toUpdate.UpdateTaskDuedate(newDueDate);
                 else
-                    throw new InvalidOperationException("Tasks can only be modified by its assignee. Current user is not the assigned to this task");
+                    throw new InvalidOperationException("A task can only be modified by its assignee. Current user is not assigned to this task.");
                
                 //field database updates are a part of the inner 'Task' functionality
                 log.Debug("Task #" + taskId + " dueDate was updated.");
@@ -289,11 +294,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// <param name="taskId">The task to be updated identified task ID</param>        
         /// <param name="emailAssignee">Email of the user to assign to task to</param>
         /// <param name="currentUserEmail">The current login user for assignee valedation</param>
+        /// <exception cref = "ArgumentException"> Thrown in case task ID given is invalid.
+        /// Alternatively thrown in case an attempt is made to assign the task to a user who is not a member of the board.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if attempting to edit tasks in the 'done' column.
+        /// Alternatively thrown in case a user that is not the task assignee attempts to modify the task.</exception>
         public void AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee, string currentUserEmail)
         {
             Board b = GetBoard(email);
             if (!b.Members.ContainsKey(emailAssignee))
-                throw new ArgumentException($"{emailAssignee} is not a member of {email} board");
+                throw new ArgumentException($"{emailAssignee} is not a member of {email} board.");
             if (!b.TaskIdExistenceCheck(taskId))
                 throw new ArgumentException("A task does not exist with the given task ID - + " + taskId + " .");
 
@@ -304,7 +313,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 if (toUpdate.AssigneeCheck(currentUserEmail))
                     toUpdate.UpdateTaskAssignee(emailAssignee);
                 else
-                    throw new InvalidOperationException("Tasks can only be modified by its assignee. Current user is not the assigned to this task");
+                    throw new InvalidOperationException("A task can only be modified by its assignee. Current user is not assigned to this task.");
 
                 //field database updates are a part of the inner 'Task' functionality
                 log.Debug("Task #" + taskId + " Assignee was updated to " + emailAssignee + " .");
@@ -320,7 +329,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// Adds a new board.
         /// </summary>
         /// <param name="email">The user's email that the board is associated with.</param>
-        public void AddNewBoard(string email, string nickName) 
+        /// <param name="nickname">The user's nickname.</param>
+        public void AddNewBoard(string email, string nickname) 
         {
             Board newBoard = new Board(email);
             Boards.Add(email, newBoard);
@@ -329,13 +339,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             AddColumn(email, 0, "backlog");
             AddColumn(email, 1, "in progress");
             AddColumn(email, 2, "done");
-            newBoard.AddMember(email, nickName);
+            newBoard.AddMember(email, nickname);
             log.Info("New board was added with key " + email);
         }
 
+        /// <summary>
+        /// Adds a member to an existing board.
+        /// </summary>
+        /// <param name="newMemberEmail">The member's email to add to the board's members.</param>
+        /// <param name="newMemberNickname">The member's nickname to add to the board's members.</param>
+        /// <param name="boardToJoinEmail">The email of the host associated with the board to join.</param>
+        /// <exception cref="ArgumentException">Thrown in case of an attempt to join a non existing board.</exception>
         public void JoinBoard(string newMemberEmail, string newMemberNickname, string boardToJoinEmail)
         {
-            
             if(Boards.TryGetValue(boardToJoinEmail, out Board tmpBoard))
             {
                 log.Info("Adding a new member " + newMemberEmail + " to board " + boardToJoinEmail);
@@ -343,7 +359,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             }
             else
             {
-                throw new ArgumentException($"{boardToJoinEmail} does not exist, please check if the email was entered correctly.");
+                throw new ArgumentException($"{boardToJoinEmail} does not exist, please re-evaluate your information and try again.");
             }
         }
 
@@ -367,6 +383,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         /// </summary>
         /// <param name="email">The user's email that the board is associated with.</param>
         /// <param name="columnOrdinal">Ordinal of the column to delete.</param>
+        /// <exception cref="InvalidOperationException">Thrown when attempting to delete a column from a board with only 2 existing columns.</exception>
         public void RemoveColumn(string email, int columnOrdinal) 
         {
             Board b = GetBoard(email);
@@ -374,7 +391,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (b.Columns.Count == MINIMAL_NUMBER_OF_COLUMNS)
             {
                 log.Warn("Attempt to remopve a column from board (" + b.UserEmail + ") with 2 columns.");
-                throw new InvalidOperationException("The board has 2 columns. Can't remove another column.");
+                throw new InvalidOperationException("The board has 2 columns. Cannot remove any more column.");
             }
             b.RemoveColumn(email, columnOrdinal);
             c.Delete();
@@ -389,7 +406,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         {
             Board b = GetBoard(email);
             return b.MoveColumnRight(email, columnOrdinal);
-
         }
 
         /// <summary>
@@ -415,9 +431,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
         /// <summary>
-        /// Chacks if exist a board associated with email.
+        /// Checks if a board exists with the given email.
         /// </summary>
-        /// <param name="email">email associated with the baord.</param>
+        /// <param name="email">The email associated with the board.</param>
         /// <returns>Returns true if the board exists, otherwise returns false.</returns>
         public bool BoardExistence(string email)
         {
@@ -425,13 +441,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         }
 
         /// <summary>
-        /// Delete a task
+        /// Delete a task.
         /// </summary>
-        /// <param name="email">Email of the user. Must be logged in</param>
-        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-        /// <param name="taskId">The task to be updated identified task ID</param>  
-        /// <param name="currentUserEmail">The current login user for assignee valedation</param>
-        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        /// <param name="email">Email of the user. Must be logged in.</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column.</param>
+        /// <param name="taskId">The task to be deleted identifying ID.</param>  
+        /// <param name="currentUserEmail">The current logged in user for assignee validation.</param>
+        /// <exception cref="ArgumentException">Thrown in case the task ID given does not exist.</exception>
+        /// <exception cref="InvalidOperationException">Throw when attempting to delete a task from the last column.
+        /// Alternatively, thrown when the current user that is not the task assignee attempts to modify this task.</exception>
+        /// <returns>A response object. The response should contain an error message in case of an error.</returns>
         internal void DeleteTask(string email, int columnOrdinal, int taskId, string currentUserEmail)
         {
             Board b = GetBoard(email);
@@ -445,7 +464,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 if (toDelete.AssigneeCheck(currentUserEmail))
                     c.RemoveTask(taskId).Delete();
                 else
-                    throw new InvalidOperationException("Tasks can only be modified by its assignee. Current user is not the assigned to this task");
+                    throw new InvalidOperationException("A task can only be modified by its assignee. Current user is not assigned to this task.");
 
                 //field database updates are a part of the inner 'Task' functionality
                 log.Debug("Task #" + taskId + " was deleted");

@@ -182,7 +182,7 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border Name="TaskInColumnBorder" BorderBrush="{Binding TaskBorderColor, Mode=OneWay}" Background="{Binding TaskBackgroundColor,Mode=OneWay}" 
-                                                BorderThickness="2" Height="50" Width="290" HorizontalAlignment="Center">
+                                                BorderThickness="3" Height="50" Width="290" HorizontalAlignment="Center">
                                             <Grid>
                                                 <Button Name="AdvanceTask_Button" Content="->" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" Click="AdvanceTask_Click"/>
                                                 <!--IsEnabled="{Binding Path=DataContext.IsSelected, Mode=OneWay}"-->
