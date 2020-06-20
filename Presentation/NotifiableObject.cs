@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Presentation
 {
-    public class NotifiableObject : INotifyPropertyChanged, INotifyPropertyChanging
+    public class NotifiableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event PropertyChangingEventHandler PropertyChanging;
@@ -16,11 +11,5 @@ namespace Presentation
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
-
-        protected void RaisePropertyChanging(string property)
-        {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(property));
-        }
-
     }
 }

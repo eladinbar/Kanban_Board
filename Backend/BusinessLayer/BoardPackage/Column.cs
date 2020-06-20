@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Name = name;
             Limit = INITIALIZE_MAXIMUM_NUMBER_OF_TASKS;
             Tasks = new List<Task>();
-            log.Info("New column " + name + "created");
+            log.Info("New column " + name + "created.");
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Limit = limit;
             Tasks = tasks;
             DalCopyColumn = dalColumn;
-            log.Debug("load - Board " + name + " was loaded from memory");
+            log.Debug("Load - Board " + name + " was loaded from memory.");
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (limit == 0)
             {
                 log.Error("Attempt to set limit to 0");
-                throw new ArgumentOutOfRangeException("Cannot use negative numbers to limit the number of tasks");
+                throw new ArgumentOutOfRangeException("Column limit must be larger than 0.");
             }
             else if (limit < Tasks.Count)
             {
@@ -81,12 +81,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (!CheckLimit())
             {
                 log.Warn("The column '" + Name + "' was full - task insert failed.");
-                throw new ArgumentOutOfRangeException(Name + " column is full");
+                throw new ArgumentOutOfRangeException(Name + " column is full.");
             }
             else
             {
                 Tasks.Add(t);
-                log.Debug("The task " + t.Id + " was added to '" + Name + "' column");
+                log.Debug("The task " + t.Id + " was added to '" + Name + "' column.");
             }
         }
 
@@ -101,7 +101,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             Task toRemove = Tasks.Find(x => x.Id.Equals(taskId));
             if (Tasks.Remove(toRemove))
             {
-                log.Debug("The task " + taskId + " was removed from '" + Name+"' column");
+                log.Debug("The task " + taskId + " was removed from '" + Name+"' column.");
                 return toRemove;
             }
             else
@@ -121,7 +121,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             if (Tasks.Exists(x => x.Id == taskId))
                 return Tasks.Find(x => x.Id == taskId);
             else
-                throw new ArgumentException("Task #" + taskId + " does not exist in '" + Name + "' column");
+                throw new ArgumentException("Task #" + taskId + " does not exist in '" + Name + "' column.");
         }
 
         /// <summary>

@@ -44,7 +44,7 @@
                 <Label Content="Due Date" FontSize="16" Grid.Column="0" Grid.Row="5" RenderTransformOrigin="2.718,5.24"/>
                 <DatePicker Name="dpDueDate" SelectedDate="{Binding Path=DueDate, StringFormat='dd/mm/yyyy', Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" SelectedDateChanged="DueDate_Changed" Grid.Column="1" Grid.Row="5" Margin="0,6,97.245,4"/>
                 <TextBlock Name="txtBlockDueDate" Text="{Binding Path=DueDate, StringFormat='dd/MM/yyyy'}" Visibility="Collapsed" Grid.Row="5" Margin="4.2,8,93.4,2" Grid.Column="1"/>
-                <Label Name="dueMessage" Content="{Binding Path=dpMessage}" Foreground="Red" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" Margin="308,7,192,33" Grid.RowSpan="2"/>
+                <Label Name="dueMessage" Content="{Binding Path=dpMessage}" Foreground="Red" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" Margin="308.2,7,79.4,33" Grid.RowSpan="2"/>
 
                 <Label Content="Creation Time" FontSize="16" Grid.Column="0" Grid.Row="4" Margin="0,5,0,35" Grid.RowSpan="2"/>
                 <Label Content="{Binding Path=CreationTime}" ContentStringFormat="dd/MM/yyyy" Grid.Row="4" Margin="144,8,240.245,2" Grid.ColumnSpan="2"/>

@@ -119,7 +119,7 @@
                                 </Grid.ColumnDefinitions>
 
 
-                                <Button Name="SortTasksByDueDate_Button" Content="V" 
+                                <Button Name="SortTasksByDueDate_Button" Content="Sort" 
                                         FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="0"
                                         ToolTip="Sort tasks by due date" 
                                         Click="SortTasksByDueDate_Click" Tag="{Binding Ordinal}" />
@@ -138,7 +138,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Menu Name="AddColumnMenu" Height="20" Width="45" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" 
-                                          ToolTip="Add a new column (only by a board creator)" ToolTipService.ShowOnDisabled="True"
+                                          ToolTip="Add a new column (only by the board creator)" ToolTipService.ShowOnDisabled="True"
                                           IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" >
 
                                         <MenuItem x:Name="AddColumnItem" Header="Add..." VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="UltraBold" Height="20" Width="45" 
@@ -152,9 +152,9 @@
                                         </MenuItem>
                                     </Menu>
 
-                                    <Button Name="DeleteColumn" Content="X" 
+                                    <Button Name="DeleteColumn" Background="Red" Content="X" 
                                         FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Column="1"
-                                        ToolTip="Delete this column (only by a board creator)" ToolTipService.ShowOnDisabled="True"
+                                        ToolTip="Delete this column (only by the board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                         Click="RemoveColumn_Click" Tag="{Binding Ordinal}" />
                                 </Grid>
@@ -231,9 +231,9 @@
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
 
-                                <Button Name="MoveColumnLeftButton" Content="moveLeft" 
+                                <Button Name="MoveColumnLeftButton" Content="&lt;-" 
                                         FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0"
-                                        ToolTip="Move a column to its left (only by a board creator)" ToolTipService.ShowOnDisabled="True"
+                                        ToolTip="Move a column to its left (only by the board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                         Click="MoveColumnLeftClick" Tag="{Binding Ordinal}" />
 
@@ -248,7 +248,7 @@
                                          Height="20" HorizontalAlignment="Center" FontWeight="Bold" />
                                     <Label Content=" / " Grid.Column="1" ToolTip="Current amount of tasks" />
                                     <TextBox Name="LimitOfTasks" Grid.Column="2" Text="{Binding Limit, Mode=OneWay}" KeyDown="LimitOfTasks_KeyDown" LostFocus="LimitOfTasks_LostFocus"
-                                         ToolTip="Maximal amount of tasks (can be changed only by a board creator)" Tag="{Binding Ordinal}"
+                                         ToolTip="Maximal amount of tasks (can only be changed by the board creator)" Tag="{Binding Ordinal}"
                                          IsReadOnly="{Binding DataContext.notCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                          Height="20" HorizontalAlignment="Center" FontWeight="Bold" BorderBrush="Orange" BorderThickness="1"/>
 
@@ -263,9 +263,9 @@
 
                                 </Grid>
 
-                                <Button Name="MoveColumnRightButton" Content="moveRight" 
+                                <Button Name="MoveColumnRightButton" Content="->" 
                                         FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2"
-                                        ToolTip="Move a column to its right (only by a board creator)" ToolTipService.ShowOnDisabled="True"
+                                        ToolTip="Move a column to its right (only by the board creator)" ToolTipService.ShowOnDisabled="True"
                                         IsEnabled="{Binding DataContext.IsCreator, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
                                         Click="MoveColumnRightClick" Tag="{Binding Ordinal}" />
 

@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
 
         private const int MINIMAL_NUMBER_OF_COLUMNS = 2;
 
-        private Dictionary<String, Board> Boards;
+        private Dictionary<string, Board> Boards;
 
         /// <summary>
         /// The board controller constructor. Initializes the 'Boards' field by loading all existing data from memory, if no data exists, creates an empty dictionary.
@@ -58,7 +58,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
         if (Boards.TryGetValue(email, out tempBoard))
             return tempBoard;
         else
-            throw new ArgumentException("There are no boards associated with this email address");
+            throw new ArgumentException("There are no boards associated with this email address.");
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 //Business layer runtime list update 
                 Column c = b.GetColumn(columnOrdinal);
                 if (!c.GetTask(taskId).AssigneeCheck(currentUserEmail))
-                    throw new InvalidOperationException("Tasks can only be modified by its assignee. Current user is not the assigned to this task");
+                    throw new InvalidOperationException("Tasks can only be modified by their assignee.\nCurrent user is not the assignee of this task.");
 
                 Task toAdvance = c.RemoveTask(taskId);
                 Column targetColumn = b.GetColumn(columnOrdinal + 1);
@@ -140,7 +140,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 //DataAccess layer runtime list update 
                 toAdvance.DalCopyTask.ColumnName = targetColumn.Name;
 
-                log.Debug("Task #" + taskId + "-" + toAdvance.Title + " was advanced");
+                log.Debug("Task #" + taskId + "-" + toAdvance.Title + " was advanced.");
             }
         }
 
@@ -338,12 +338,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
             
             if(Boards.TryGetValue(boardToJoinEmail, out Board tmpBoard))
             {
-                log.Info("adding new member to board " + boardToJoinEmail);
+                log.Info("Adding a new member " + newMemberEmail + " to board " + boardToJoinEmail);
                 tmpBoard.AddMember(newMemberEmail, newMemberNickname);
             }
             else
             {
-                throw new ArgumentException($"{boardToJoinEmail} does not exist, check if email entered correctly");
+                throw new ArgumentException($"{boardToJoinEmail} does not exist, please check if the email was entered correctly.");
             }
         }
 

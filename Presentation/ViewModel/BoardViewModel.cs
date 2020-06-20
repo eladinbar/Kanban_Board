@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Presentation.Model;
 using System.Collections.ObjectModel;
 using Presentation.View;
 using System.Windows;
 using System.Windows.Threading;
-using System.Windows.Controls;
 
 namespace Presentation.ViewModel
 {
@@ -27,12 +23,12 @@ namespace Presentation.ViewModel
         public bool IsCreator { get; private set; } 
         public BoardModel Board { get; private set; }
         public string ChangeColumnNameToolTip { get; private set; }
-        public bool notCreator { get => !IsCreator; }
+        public bool NotCreator { get => !IsCreator; }
 
         private string ColumnNameToolTip()
         {
             if (IsCreator) return "Column name";
-            else return "Column name - can be changed only by board creator";
+            else return "Column name - can only be changed by the board creator.";
         }
 
 

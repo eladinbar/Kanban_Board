@@ -69,6 +69,7 @@ namespace Presentation.Model
         /// <param name="LastChangedDate">The task's last changed date.</param>
         /// <param name="AssigneeEmail">The task assignee's email address.</param>
         /// <param name="columnOrdinal">The column ordinal this task is associated with.</param>
+        /// <param name="currentUser">The current user viewing this task.</param>
         public TaskModel(BackendController Controller, int ID, string Title, string Description, DateTime CreationTime, DateTime DueDate, 
         DateTime LastChangedDate, string AssigneeEmail, int columnOrdinal, UserModel currentUser) : base(Controller) {
             this.ID = ID;

@@ -189,13 +189,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardPackage
                 }
 
                 //in case the column on the left reached its limit:
-                else if (!this.Columns[columnOrdinal - 1].CheckLimit()) { 
+                else if (!this.Columns[columnOrdinal - 1].CheckLimit() & toRemove.Tasks.Count>0) { 
                     log.Warn("Left column at index '" + (columnOrdinal - 1) + "' was full.");
                     throw new InvalidOperationException("Left column is full. Update '" + this.Columns[columnOrdinal-1].Name +"' column limit and try again.");
                 }
 
                 //in case the column on the left doesn't have enough space:
-                else if ((this.Columns[columnOrdinal-1].Tasks.Count+toRemove.Tasks.Count)> this.Columns[columnOrdinal - 1].Limit) 
+                else if ((this.Columns[columnOrdinal-1].Tasks.Count + toRemove.Tasks.Count)> this.Columns[columnOrdinal - 1].Limit) 
                 {
                     log.Warn("Left column at index '" + (columnOrdinal - 1) + "' didn't have enough space.");
                     throw new InvalidOperationException("Left column doesn't have enough space. Update '" + this.Columns[columnOrdinal - 1].Name + "' column limit and try again.");
