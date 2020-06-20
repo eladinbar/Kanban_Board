@@ -70,7 +70,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Info("Column limit has been updated successfully.");
                 return new Response();
             }
-            catch (ArgumentOutOfRangeException ex)
+            catch (ArgumentException ex)
             {
                 log.Error(ex.Message, ex);
                 return new Response(ex.Message);
