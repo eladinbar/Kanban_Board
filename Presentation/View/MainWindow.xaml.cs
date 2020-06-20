@@ -14,7 +14,7 @@ namespace Presentation.View
         private MainViewModel ViewModel;
 
         /// <summary>
-        /// A main constructer for the program start up.
+        /// A main constructor for the program start up.
         /// </summary>
         public MainWindow()
         {
@@ -23,7 +23,7 @@ namespace Presentation.View
             DataContext = ViewModel;
         }
         /// <summary>
-        /// A constructor to re-open the main window form registration or board Window.
+        /// A constructor to re-open the main window form registration or board window.
         /// </summary>
         /// <param name="controller">controller for the backend service</param>
         public MainWindow(BackendController controller)
@@ -49,7 +49,7 @@ namespace Presentation.View
         }
 
         /// <summary>
-        /// Method binding for on click event for opening regestration window.
+        /// Method binding for on click event for opening registration window.
         /// </summary>
         /// <param name="sender">The object that invoked the event and fired the event handler.</param>
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
@@ -60,7 +60,7 @@ namespace Presentation.View
             this.Close();
         }
         /// <summary>
-        /// Mothod binding to resive the typed password.
+        /// Method binding to receive the typed password.
         /// </summary>
         /// <param name="sender">The object that invoked the event and fired the event handler.</param>
         /// <param name="e">Contains state information and event data associated with a routed event.</param>
