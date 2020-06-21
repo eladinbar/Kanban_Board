@@ -50,7 +50,7 @@ namespace Presentation.View
         /// </summary>
         /// <param name="newTask"></param>
         private void ControlDataVisiblity(bool newTask) {
-            ViewModel.ControlFieldVisibility(newTask, txtOwnership, lTaskID, txtHintDescription, txtBlockDescription);
+            ViewModel.ControlFieldVisibility(newTask, txtOwnership, lTaskID, txtHintDescription, txtBlockDescription, dueMessage);
             ViewModel.ControlButtonsVisibility(newTask, Confirm, Cancel, OK, AddTask);
         }
 

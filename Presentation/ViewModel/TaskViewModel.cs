@@ -51,7 +51,7 @@ namespace Presentation.ViewModel
              this.LastChangedDate = task.LastChangedDate;
              this.AssigneeEmail = task.AssigneeEmail;
              this.IsAssignee = isAssignee;
-            this.CurrentUser = currentUser;
+             this.CurrentUser = currentUser;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Presentation.ViewModel
         /// <param name="lTaskID">The label containing the task ID value.</param>
         /// <param name="txtHintDescription">The text block to indicate where the description is expected to be adjusted.</param>
         /// <param name="txtBlockDescription">The text block to show the description in case the current user is not the task assignee.</param>
-        internal void ControlFieldVisibility(bool newTask, TextBlock txtOwnership, Label lTaskID, TextBlock txtHintDescription, TextBlock txtBlockDescription)
+        internal void ControlFieldVisibility(bool newTask, TextBlock txtOwnership, Label lTaskID, TextBlock txtHintDescription, TextBlock txtBlockDescription, Label dueMessage)
         {
             if (newTask)
             {
@@ -87,10 +87,13 @@ namespace Presentation.ViewModel
             }
             else if (IsAssignee)
                 txtOwnership.Visibility = Visibility.Collapsed;
-            else if (Description=="") {
+            else if (Description == "")
+            {
                 txtHintDescription.Visibility = Visibility.Collapsed;
                 txtBlockDescription.Visibility = Visibility.Visible;
             }
+            else
+                dueMessage.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
