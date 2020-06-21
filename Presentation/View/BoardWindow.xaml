@@ -149,11 +149,11 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border x:Name="TaskInColumnBorder" BorderBrush="{Binding TaskBorderColor, Mode=OneWay}" Background="{Binding TaskBackgroundColor, Mode=OneWay}" 
-                                                BorderThickness="4" Height="50" Width="290" HorizontalAlignment="Center">
+                                                BorderThickness="4" Height="55" Width="290" HorizontalAlignment="Center">
                                             <Grid>
                                                 <Button x:Name="AdvanceTask_Button" Content="⮚" Background="SeaShell" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Advance task" Click="AdvanceTask_Click"/>
 
-                                                <TextBlock x:Name="TaskTitle" Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontStyle="Italic" />
+                                                <TextBlock x:Name="TaskTitle" Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" TextAlignment="Center" TextWrapping="Wrap" FontWeight="Bold" FontStyle="Italic" />
 
                                                 <Menu x:Name="TaskOptions_Menu" Height="20" Width="25" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" ToolTip="Task actions" Background="SeaShell">
 
