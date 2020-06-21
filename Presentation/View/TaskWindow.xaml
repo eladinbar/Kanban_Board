@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Presentation.View"
         mc:Ignorable="d"
-        Title="Task Window" Height="680" Width="800" Closing="Window_Closing">
+        Title="Task Window" Height="680" Width="800" Background="Beige" Closing="Window_Closing">
     <Grid Margin="10">
         <StackPanel Orientation="Vertical">
-            <Grid Margin="0,0,-0.4,0">
+            <Grid Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="145"/>
                     <ColumnDefinition Width="397.245"/>
@@ -30,19 +30,19 @@
                 <Label Name="lTaskID" Content="{Binding Path=ID}" Grid.Row="1" Margin="64,4,9.8,6"/>
 
                 <Label Content="Title" FontSize="16" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="1.2,0,71.8,0"/>
-                <TextBlock Name="txtHintTitle" Text="Please enter a title..." Foreground="Gray" Grid.Column="1" Grid.Row="1" Margin="52.2,7,183.4,3"/>
+                <TextBlock Name="txtHintTitle" Text="Please enter a title..." Background="White" Foreground="Gray" Grid.Column="1" Grid.Row="1" Margin="52.2,7,85.8,3" Grid.ColumnSpan="2"/>
                 <TextBox Name="txtTitle" Text="{Binding Path=Title, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Title_Changed" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="1" Margin="50.2,7,85.8,3" Grid.ColumnSpan="2"/>
-                <TextBlock Name="txtBlockTitle" Text="{Binding Path=Title}" Visibility="Collapsed" Grid.Column="1" Grid.Row="1" Margin="50.2,9,169.4,1"/>
+                <TextBlock Name="txtBlockTitle" Text="{Binding Path=Title}" Visibility="Collapsed" Grid.Column="1" Grid.Row="1" Margin="50.2,9,85.8,1" Grid.ColumnSpan="2"/>
                 <Label Name="titleMessage" Foreground="Red" Grid.Column="1" Margin="90.2,34,48.8,278" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2"/>
 
                 <Label Content="Description" FontSize="16" Grid.Column="1" Grid.Row="2" Margin="0,0,252.245,0"/>
-                <TextBlock Name="txtHintDescription" Text="Please enter a description..." Foreground="Gray" Grid.Column="1" Grid.Row="2" Margin="3,39,7,0" Grid.ColumnSpan="3"/>
-                <TextBox Name="txtDescription" Text="{Binding Path=Description, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Description_Changed" TextWrapping="Wrap" AcceptsReturn="True" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="2" Margin="0,39,10,0" Grid.ColumnSpan="2"/>
+                <TextBlock Name="txtHintDescription" Text="Please enter a description..." Background="White" Foreground="Gray" Grid.Column="1" Grid.Row="2" Margin="3.2,39,0.4,0"/>
+                <TextBox Name="txtDescription" Text="{Binding Path=Description, Mode=OneWay}" Background="Transparent" IsEnabled="{Binding Path=IsAssignee}" TextChanged="Description_Changed" TextWrapping="Wrap" AcceptsReturn="True" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="2" Margin="0.2,39,0.4,0"/>
                 <TextBlock Name="txtBlockDescription" Text="{Binding Path=Description}" TextWrapping="Wrap" Visibility="Collapsed" Grid.Column="1" Grid.Row="2" Margin="3,39,7,0" Grid.ColumnSpan="3"/>
                 <Label Name="descMessage" Foreground="Red" Grid.Column="1" Grid.Row="3" Margin="0.2,0,68.4,0"/>
 
                 <Label Content="Due Date" FontSize="16" Grid.Column="0" Grid.Row="5" RenderTransformOrigin="2.718,5.24"/>
-                <DatePicker Name="dpDueDate" SelectedDate="{Binding Path=DueDate, StringFormat='dd/mm/yyyy', Mode=OneWay}" IsEnabled="{Binding Path=IsAssignee}" SelectedDateChanged="DueDate_Changed" Grid.Column="1" Grid.Row="5" Margin="0,6,97.245,4"/>
+                <DatePicker Name="dpDueDate" SelectedDate="{Binding Path=DueDate, StringFormat='dd/mm/yyyy', Mode=OneWay}" Background="White" IsEnabled="{Binding Path=IsAssignee}" SelectedDateChanged="DueDate_Changed" Grid.Column="1" Grid.Row="5" Margin="0,6,97.245,4"/>
                 <TextBlock Name="txtBlockDueDate" Text="{Binding Path=DueDate, StringFormat='dd/MM/yyyy'}" Visibility="Collapsed" Grid.Row="5" Margin="4.2,8,93.4,2" Grid.Column="1"/>
                 <Label Name="dueMessage" Content="{Binding Path=dpMessage}" Foreground="Red" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" Margin="308.2,7,79.4,33" Grid.RowSpan="2"/>
 

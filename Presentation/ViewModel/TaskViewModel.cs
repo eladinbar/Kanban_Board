@@ -239,7 +239,10 @@ namespace Presentation.ViewModel
         {
             txtHintTitle.Visibility = Visibility.Visible;
             if (txtTitle.Text.Length > 0)
+            {
                 txtHintTitle.Visibility = Visibility.Hidden;
+                txtTitle.Background = Brushes.White;
+            }
             if (!IsAssignee) {
                 txtBlockTitle.Visibility = Visibility.Visible;
                 txtTitle.Visibility = Visibility.Collapsed;
@@ -272,7 +275,10 @@ namespace Presentation.ViewModel
         {
             txtHintDescription.Visibility = Visibility.Visible;
             if (txtDescription.Text.Length > 0)
+            {
                 txtHintDescription.Visibility = Visibility.Hidden;
+                txtDescription.Background = Brushes.White;
+            }
             if (!IsAssignee)
             {
                 txtHintDescription.Visibility = Visibility.Collapsed;
