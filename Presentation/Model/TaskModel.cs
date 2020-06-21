@@ -8,9 +8,9 @@ namespace Presentation.Model
     /// </summary>
     public class TaskModel : NotifiableModelObject
     {
-        public readonly SolidColorBrush ALMOST_DUE_DATE_BACKGROUND_COLOR = Brushes.Orange;
+        public readonly SolidColorBrush ALMOST_DUE_DATE_BACKGROUND_COLOR = Brushes.DarkOrange;
         public readonly SolidColorBrush PAST_DUE_DATE_BACKGROUND_COLOR = Brushes.Red;
-        public readonly SolidColorBrush ORIGINAL_BACKGROUND_COLOR = Brushes.Khaki;
+        public readonly SolidColorBrush ORIGINAL_BACKGROUND_COLOR = Brushes.Gold;
         public readonly SolidColorBrush CURRENT_USER_BORDER_COLOR = Brushes.Blue;
         public readonly SolidColorBrush ORIGINAL_BORDER_COLOR = Brushes.Black;
 
